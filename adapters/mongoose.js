@@ -27,6 +27,8 @@ module.exports = function (model) {
       return objectType(type, function (key) {
         return getTypeFromNative(type[key]);
       });
+    } else if (_.isFunction(type) && type.name === 'ObjectId') {
+      return 'String';
     }
 
     switch (type) {
