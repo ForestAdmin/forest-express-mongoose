@@ -67,14 +67,32 @@ module.exports = function (model) {
     }
   }
 
+  function detectReference(opts) {
+    if (opts.options) {
+      if (opts.options.ref) {
+        return opts.options.ref + '._id' ;
+      } else if (_.isArray(opts.options.type) && opts.options.type.length &&
+        opts.options.type[0].ref) {
+        return opts.options.type[0].ref + '._id';
+      }
+    }
+  }
+
+  function detectRequireFlag(opts) {
+   return !!opts.isRequired;
+  }
+
   function getSchema(path) {
     var opts = paths[path];
 
     var schema = {
       field: path,
       type: getTypeFromMongoose(paths[path]),
-      isRequired: !!opts.isRequired
+      isRequired: !!detectRequireFlag(opts)
     };
+
+    var ref = detectReference(opts);
+    if (ref) { schema.ref = ref; }
 
     if (opts.enumValues && opts.enumValues.length) {
       schema.enumValues = opts.enumValues;

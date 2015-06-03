@@ -3,7 +3,7 @@
 
 var expect = require('chai').expect;
 var mongoose = require('mongoose');
-console.log(mongoose.version);
+console.log('Mongoose Version: ' + mongoose.version);
 var SchemaAdapter = require('../adapters/mongoose');
 
 afterEach(function (done) {
@@ -296,6 +296,40 @@ describe('SchemaAdapter', function () {
             .eql('field2Field1');
           expect(schema.fields[0].type[0].fields[0].type[0].fields[1].type
             .fields[0]).to.have.property('type').eql('Boolean');
+
+          done(null);
+        });
+    });
+  });
+
+  describe('hasOne relationship', function () {
+    it('should have the ref attribute set', function (done) {
+      var schema = mongoose.Schema({
+        foo: { type: String, ref: 'Bar' }
+      });
+      var model = mongoose.model('Foo', schema);
+
+      return new SchemaAdapter(model)
+        .then(function (schema) {
+          expect(schema).to.have.property('fields');
+          expect(schema).to.have.deep.property('fields[0].ref', 'Bar._id');
+
+          done(null);
+        });
+    });
+  });
+
+  describe('hasMany relationship', function () {
+    it('should have the ref attribute set', function (done) {
+      var schema = mongoose.Schema({
+        foos: [{ type: String, ref: 'Bar' }]
+      });
+      var model = mongoose.model('Foo', schema);
+
+      return new SchemaAdapter(model)
+        .then(function (schema) {
+          expect(schema).to.have.property('fields');
+          expect(schema.fields[0].ref).eql('Bar._id');
 
           done(null);
         });
