@@ -71,8 +71,7 @@ module.exports = function (model) {
     var schema = {
       field: path,
       type: getTypeFromMongoose(paths[path]),
-      isRequired: opts.isRequired,
-      collectionName: model.collection.name
+      isRequired: !!opts.isRequired
     };
 
     if (opts.enumValues && opts.enumValues.length) {

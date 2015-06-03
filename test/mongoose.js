@@ -109,6 +109,25 @@ describe('SchemaAdapter', function () {
     });
   });
 
+  describe('ObjectID', function () {
+    it('should have the type `String`', function (done) {
+      var schema = mongoose.Schema({
+        foo: mongoose.Schema.Types.ObjectId
+      });
+
+      var model = mongoose.model('Foo', schema);
+
+      return new SchemaAdapter(model)
+        .then(function (schema) {
+          expect(schema).to.have.property('fields');
+          expect(schema).to.have.deep.property('fields[0].field', 'foo');
+          expect(schema).to.have.deep.property('fields[0].type', 'String');
+
+          done(null);
+        });
+    });
+  });
+
   describe('Array of dates', function () {
     it('should have the type `[\'Date\']`', function (done) {
       var schema = mongoose.Schema({
@@ -175,6 +194,22 @@ describe('SchemaAdapter', function () {
           expect(schema).to.have.property('fields');
           expect(schema.fields[0].field).eql('foo');
           expect(schema.fields[0].type).eql(['Number']);
+
+          done(null);
+        });
+    });
+  });
+
+  describe('Array of objectids', function () {
+    it('should have the type `[String]`', function (done) {
+      var schema = mongoose.Schema({ foo: [mongoose.Schema.Types.ObjectId] });
+      var model = mongoose.model('Foo', schema);
+
+      return new SchemaAdapter(model)
+        .then(function (schema) {
+          expect(schema).to.have.property('fields');
+          expect(schema).to.have.deep.property('fields[0].field', 'foo');
+          expect(schema).to.have.deep.property('fields[0].type').eql(['String']);
 
           done(null);
         });
@@ -261,29 +296,6 @@ describe('SchemaAdapter', function () {
             .eql('field2Field1');
           expect(schema.fields[0].type[0].fields[0].type[0].fields[1].type
             .fields[0]).to.have.property('type').eql('Boolean');
-
-          done(null);
-        });
-    });
-  });
-
-  describe('ObjectID', function () {
-    it('should have the type `String`', function (done) {
-      var schema = mongoose.Schema({
-        foo: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'User',
-          index: true
-        }
-      });
-
-      var model = mongoose.model('Foo', schema);
-
-      return new SchemaAdapter(model)
-        .then(function (schema) {
-          expect(schema).to.have.property('fields');
-          expect(schema).to.have.deep.property('fields[0].field', 'foo');
-          expect(schema).to.have.deep.property('fields[0].type', 'String');
 
           done(null);
         });
