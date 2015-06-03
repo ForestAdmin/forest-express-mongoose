@@ -1,0 +1,26 @@
+{
+  "name": "forest-express-mongoose",
+  "version": "0.0.1",
+  "description": "Forest connector for Expressjs and Mongoose",
+  "main": "index.js",
+  "scripts": {
+    "test-mongoose-3": "npm install mongoose@3.8.8 && ./node_modules/mocha/bin/mocha",
+    "test-mongoose-4": "npm install mongoose@4.0.4 && ./node_modules/mocha/bin/mocha",
+    "test": "npm run test-mongoose-3 && npm run test-mongoose-4"
+  },
+  "author": "Sandro Munda <sandro@munda.me>",
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^2.9.25",
+    "express": "^4.12.4",
+    "express-cors": "0.0.3",
+    "flat": "^1.6.0",
+    "jsonapi-serializer": "0.0.1",
+    "lodash": "^3.9.3",
+    "semver": "^4.3.6"
+  },
+  "devDependencies": {
+    "chai": "^2.3.0",
+    "mocha": "^2.2.5"
+  }
+}
