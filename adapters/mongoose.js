@@ -24,6 +24,8 @@ module.exports = function (model) {
     if (type instanceof Array) {
       return [getTypeFromNative(type[0])];
     } else if (_.isPlainObject(type)) {
+      if (_.isEmpty(type)) { return null; }
+
       return objectType(type, function (key) {
         return getTypeFromNative(type[key]);
       });
@@ -58,12 +60,15 @@ module.exports = function (model) {
           return getTypeFromNative(opts.options.type[0][key]);
         })];
       }
-    } else {
+    } else if (opts.instance === 'ObjectID') {
       // Deal with ObjectID
-      if (opts.instance === 'ObjectID') { return 'String'; }
-
+      return 'String';
+    } else if (opts.instance === 'Mixed') {
+      // Deal with Mixed object
+      return null;
+    } else {
       // Deal with primitive type
-      return opts.instance || getTypeFromNative(opts.options.type);
+      return opts.instance || getTypeFromNative(opts.options.type) || null;
     }
   }
 

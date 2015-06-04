@@ -78,7 +78,7 @@ describe('SchemaAdapter', function () {
   });
 
   describe('Object', function () {
-    it('should have the type `{ fields: [ ... ]}`', function (done) {
+    it('should have the type `{ fields: [...]}`', function (done) {
       var schema = mongoose.Schema({
         foo: {
           field1: String,
@@ -122,6 +122,23 @@ describe('SchemaAdapter', function () {
           expect(schema).to.have.property('fields');
           expect(schema).to.have.deep.property('fields[0].field', 'foo');
           expect(schema).to.have.deep.property('fields[0].type', 'String');
+
+          done(null);
+        });
+    });
+  });
+
+  describe('{}', function () {
+    it('should have the type null', function (done) {
+      var schema = mongoose.Schema({
+        foo: {}
+      });
+      var model = mongoose.model('Foo', schema);
+
+      return new SchemaAdapter(model)
+        .then(function (schema) {
+          expect(schema).to.have.property('fields');
+          expect(schema.fields[0].type).eql(null);
 
           done(null);
         });
@@ -217,8 +234,25 @@ describe('SchemaAdapter', function () {
     });
   });
 
+  describe('Array of {}', function () {
+    it('should have the type [null]', function (done) {
+      var schema = mongoose.Schema({
+        foo: [{}]
+      });
+      var model = mongoose.model('Foo', schema);
+
+      return new SchemaAdapter(model)
+        .then(function (schema) {
+          expect(schema).to.have.property('fields');
+          expect(schema.fields[0].type).eql([null]);
+
+          done(null);
+        });
+    });
+  });
+
   describe('Array of objects', function () {
-    it('should have [dot notations for fields]', function (done) {
+    it('should have the type fields: [{...}, {...}]', function (done) {
       var schema = mongoose.Schema({
         foo: [{
           field1: String,
@@ -252,7 +286,7 @@ describe('SchemaAdapter', function () {
   });
 
   describe('Shower of nested objects/arrays', function () {
-    it('should have [dot notations for fields]', function (done) {
+    it('should have the type fields: [{...}, {...}]', function (done) {
       var schema = mongoose.Schema({
         foo: [{
           field1: [{
@@ -365,7 +399,7 @@ describe('SchemaAdapter', function () {
       return new SchemaAdapter(model)
         .then(function (schema) {
           expect(schema).to.have.property('fields');
-          expect(schema.fields[1].isRequired).eql(undefined);
+          expect(schema.fields[0].isRequired).eql(undefined);
 
           done(null);
         });
