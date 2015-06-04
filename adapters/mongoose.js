@@ -85,14 +85,13 @@ module.exports = function (model) {
   function getSchema(path) {
     var opts = paths[path];
 
-    var schema = {
-      field: path,
-      type: getTypeFromMongoose(paths[path]),
-      isRequired: !!detectRequireFlag(opts)
-    };
+    var schema = { field: path, type: getTypeFromMongoose(paths[path]) };
 
     var ref = detectReference(opts);
     if (ref) { schema.ref = ref; }
+
+    var isRequired = !!detectRequireFlag(opts);
+    if (isRequired) { schema.isRequired = isRequired; }
 
     if (opts.enumValues && opts.enumValues.length) {
       schema.enumValues = opts.enumValues;

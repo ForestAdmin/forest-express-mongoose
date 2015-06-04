@@ -209,7 +209,8 @@ describe('SchemaAdapter', function () {
         .then(function (schema) {
           expect(schema).to.have.property('fields');
           expect(schema).to.have.deep.property('fields[0].field', 'foo');
-          expect(schema).to.have.deep.property('fields[0].type').eql(['String']);
+          expect(schema).to.have.deep.property('fields[0].type')
+            .eql(['String']);
 
           done(null);
         });
@@ -330,6 +331,41 @@ describe('SchemaAdapter', function () {
         .then(function (schema) {
           expect(schema).to.have.property('fields');
           expect(schema.fields[0].ref).eql('Bar._id');
+
+          done(null);
+        });
+    });
+  });
+
+  describe('isRequired flag', function () {
+    it('should be set to true', function (done) {
+      var schema = mongoose.Schema({
+        foo: { type: String, required: true },
+        bar: String
+      });
+      var model = mongoose.model('Foo', schema);
+
+      return new SchemaAdapter(model)
+        .then(function (schema) {
+          expect(schema).to.have.property('fields');
+          expect(schema.fields[0].isRequired).eql(true);
+
+          done(null);
+        });
+    });
+  });
+
+  describe('isRequired flag', function () {
+    it('should not appear', function (done) {
+      var schema = mongoose.Schema({
+        bar: String
+      });
+      var model = mongoose.model('Foo', schema);
+
+      return new SchemaAdapter(model)
+        .then(function (schema) {
+          expect(schema).to.have.property('fields');
+          expect(schema.fields[1].isRequired).eql(undefined);
 
           done(null);
         });
