@@ -104,7 +104,6 @@ module.exports = function (model) {
   return P
     .each(Object.keys(paths), function (path) {
       var schema = getSchema(path);
-      schema.collectionName = model.collection.name;
       fields.push(schema);
     })
     .then(function () {
