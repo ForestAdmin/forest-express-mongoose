@@ -15,6 +15,7 @@
     "express": "^4.12.4",
     "express-cors": "0.0.3",
     "flat": "^1.6.0",
+    "inflected": "^1.1.6",
     "jsonapi-serializer": "0.0.1",
     "lodash": "^3.9.3",
     "semver": "^4.3.6"

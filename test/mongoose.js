@@ -347,7 +347,7 @@ describe('SchemaAdapter', function () {
       return new SchemaAdapter(model)
         .then(function (schema) {
           expect(schema).to.have.property('fields');
-          expect(schema).to.have.deep.property('fields[0].ref', 'Bar._id');
+          expect(schema).to.have.deep.property('fields[0].ref', 'bars._id');
 
           done(null);
         });
@@ -364,7 +364,7 @@ describe('SchemaAdapter', function () {
       return new SchemaAdapter(model)
         .then(function (schema) {
           expect(schema).to.have.property('fields');
-          expect(schema.fields[0].ref).eql('Bar._id');
+          expect(schema.fields[0].ref).eql('bars._id');
 
           done(null);
         });

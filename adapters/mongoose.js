@@ -1,7 +1,8 @@
 'use strict';
 var P = require('bluebird');
-var flat = require('flat');
 var _ = require('lodash');
+var flat = require('flat');
+var Inflector = require('inflected');
 
 module.exports = function (model) {
   var fields = [];
@@ -72,13 +73,17 @@ module.exports = function (model) {
     }
   }
 
+  function formatRef(ref) {
+    return Inflector.pluralize(ref.toLowerCase());
+  }
+
   function detectReference(opts) {
     if (opts.options) {
       if (opts.options.ref) {
-        return opts.options.ref + '._id' ;
+        return formatRef(opts.options.ref) + '._id';
       } else if (_.isArray(opts.options.type) && opts.options.type.length &&
         opts.options.type[0].ref) {
-        return opts.options.type[0].ref + '._id';
+        return formatRef(opts.options.type[0].ref) + '._id';
       }
     }
   }
