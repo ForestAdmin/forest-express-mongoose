@@ -1,5 +1,6 @@
 'use strict';
 var P = require('bluebird');
+var _ = require('lodash');
 var express = require('express');
 var path = require('path');
 var fs = P.promisifyAll(require('fs'));
@@ -8,15 +9,19 @@ var jwt = require('express-jwt');
 var ApiGenerator = require('./generators/api-generator');
 var ConfigGenerator = require('./generators/config-generator');
 
-function requireAllModels(modelsDir) {
+function requireAllModels(modelsDir, opts) {
   return fs.readdirAsync(modelsDir)
-    .map(function (file) {
-      return require(path.join(modelsDir, file));
+    .each(function (file) {
+      require(path.join(modelsDir, file));
+    })
+    .then(function () {
+      return _.values(opts.mongoose.models);
     });
 }
 
 exports.init = function (opts) {
   var app = express();
+
   app.use(cors({
     allowedOrigins: [ 'http://localhost:4200' ],
       headers: ['Authorization', 'X-Requested-With', 'Content-Type']
@@ -27,7 +32,7 @@ exports.init = function (opts) {
   }));
 
   var absModelDirs = path.resolve('.', opts.modelsDir);
-  requireAllModels(absModelDirs)
+  requireAllModels(absModelDirs, opts)
     .each(function (model) {
       return new ApiGenerator(app, model, opts).perform();
     })
