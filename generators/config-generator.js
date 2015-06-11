@@ -27,6 +27,6 @@ module.exports = function (app, models, opts) {
   };
 
   this.perform = function () {
-    app.get('/forestapi', this.apiConfig);
+    app.get('/forest', this.apiConfig);
   };
 };

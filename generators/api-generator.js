@@ -2,7 +2,6 @@
 var ResourceFinder = require('../services/resource-finder');
 
 module.exports = function (app, model, opts) {
-
   this.list = function (req, res, next) {
     new ResourceFinder(model, opts)
       .perform()
@@ -36,11 +35,10 @@ module.exports = function (app, model, opts) {
   this.perform = function () {
     var modelName = model.collection.name;
 
-    app.get('/forestapi/' + modelName, this.list);
-    app.get('/forestapi/' + modelName + '/:recordId', this.get);
-    app.post('/forestapi/' + modelName, this.create);
-    app.put('/forestapi/' + modelName + '/:recordId', this.update);
-    app.delete('/forestapi/' + modelName + '/:recordId',
-      this.remove);
+    app.get('/forest/' + modelName, this.list);
+    app.get('/forest/' + modelName + '/:recordId', this.get);
+    app.post('/forest/' + modelName, this.create);
+    app.put('/forest/' + modelName + '/:recordId', this.update);
+    app.delete('/forest/' + modelName + '/:recordId', this.remove);
   };
 };
