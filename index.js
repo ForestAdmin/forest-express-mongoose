@@ -4,6 +4,7 @@ var express = require('express');
 var path = require('path');
 var fs = P.promisifyAll(require('fs'));
 var cors = require('express-cors');
+var jwt = require('express-jwt');
 var ApiGenerator = require('./generators/api-generator');
 var ConfigGenerator = require('./generators/config-generator');
 
@@ -19,6 +20,10 @@ exports.init = function (opts) {
   app.use(cors({
     allowedOrigins: [ 'http://localhost:4200' ],
       headers: ['Authorization', 'X-Requested-With', 'Content-Type']
+  }));
+
+  app.use(jwt({
+    secret: opts.jwtSigningKey
   }));
 
   var absModelDirs = path.resolve('.', opts.modelsDir);
