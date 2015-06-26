@@ -1,9 +1,10 @@
 'use strict';
+var ResourcesFinder = require('../services/resources-finder');
 var ResourceFinder = require('../services/resource-finder');
 
 module.exports = function (app, model, opts) {
   this.list = function (req, res, next) {
-    new ResourceFinder(model, opts)
+    new ResourcesFinder(model, opts)
       .perform()
       .then(function (records) {
         res.send(records);
@@ -12,9 +13,9 @@ module.exports = function (app, model, opts) {
   };
 
   this.get = function (req, res, next) {
-    model
-      .findById(req.params.recordId)
-      .then(function(record) {
+    new ResourceFinder(model, req.params)
+      .perform()
+      .then(function (record) {
         res.send(record);
       })
       .catch(next);

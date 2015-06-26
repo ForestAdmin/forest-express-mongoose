@@ -2,23 +2,25 @@
 var P = require('bluebird');
 var JSONAPISerializer = require('jsonapi-serializer');
 
-function ResourceFinder(model, params) {
+function ResourcesFinder(model, opts) {
   function find() {
     return new P(function (resolve, reject) {
       model
-        .findById(params.recordId)
+        .find()
+        .limit(15)
         .lean()
-        .exec(function (err, record) {
+        .exec(function (err, records) {
           if (err) { return reject(err); }
-          resolve(record);
+          resolve(records);
         });
     });
   }
 
   this.perform = function () {
     return find()
-      .then(function (record) {
-        return new JSONAPISerializer(model.collection.name, record, {
+      .then(function (records) {
+        return new JSONAPISerializer(model.collection.name, records, {
+          apiEndpoint: opts.apiEndpoint,
           id: '_id',
           attributes: Object.keys(model.schema.paths)
         });
@@ -26,4 +28,4 @@ function ResourceFinder(model, params) {
   };
 }
 
-module.exports = ResourceFinder;
+module.exports = ResourcesFinder;
