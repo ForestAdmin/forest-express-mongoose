@@ -32,7 +32,11 @@ module.exports = function (model, opts) {
 
   function getTypeFromNative(type) {
     if (type instanceof Array) {
-      return [getTypeFromNative(type[0].type || type[0])];
+      if (_.isEmpty(type)) {
+        return [null];
+      } else {
+        return [getTypeFromNative(type[0].type || type[0])];
+      }
     } else if (_.isPlainObject(type)) {
       if (_.isEmpty(type)) { return null; }
 

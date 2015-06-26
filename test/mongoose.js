@@ -145,6 +145,23 @@ describe('SchemaAdapter', function () {
     });
   });
 
+  describe('[]', function () {
+    it('should have the type [null]', function (done) {
+      var schema = mongoose.Schema({
+        foo: []
+      });
+      var model = mongoose.model('Foo', schema);
+
+      return new SchemaAdapter(model, { mongoose: mongoose })
+        .then(function (schema) {
+          expect(schema).to.have.property('fields');
+          expect(schema.fields[0].type).eql([null]);
+
+          done(null);
+        });
+    });
+  });
+
   describe('Array of dates', function () {
     it('should have the type `[\'Date\']`', function (done) {
       var schema = mongoose.Schema({
