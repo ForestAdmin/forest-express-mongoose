@@ -4,9 +4,10 @@ var _ = require('lodash');
 var flat = require('flat');
 var Inflector = require('inflected');
 
-module.exports = function (model) {
+module.exports = function (model, opts) {
   var fields = [];
   var paths = flat.unflatten(model.schema.paths);
+  var mongoose = opts.mongoose;
 
   function objectType(object, getType) {
     var type = { fields: [] };
@@ -21,9 +22,17 @@ module.exports = function (model) {
     return type;
   }
 
+  function schemaType(type) {
+    return {
+      fields: _.map(type.paths, function (type, field) {
+        return { field: field, type: getTypeFromMongoose(type) };
+      })
+    };
+  }
+
   function getTypeFromNative(type) {
     if (type instanceof Array) {
-      return [getTypeFromNative(type[0])];
+      return [getTypeFromNative(type[0].type || type[0])];
     } else if (_.isPlainObject(type)) {
       if (_.isEmpty(type)) { return null; }
 
@@ -32,6 +41,8 @@ module.exports = function (model) {
       });
     } else if (_.isFunction(type) && type.name === 'ObjectId') {
       return 'String';
+    } else if (type instanceof mongoose.Schema) {
+      return schemaType(type);
     }
 
     switch (type) {
@@ -57,9 +68,15 @@ module.exports = function (model) {
       if (opts.caster.instance) {
         return [getTypeFromMongoose(opts.caster)];
       } else {
-        return [objectType(opts.options.type[0], function (key) {
-          return getTypeFromNative(opts.options.type[0][key]);
-        })];
+        if (opts.options.type[0] instanceof mongoose.Schema) {
+          // Schema
+          return [schemaType(opts.options.type[0])];
+        } else {
+          // Object
+          return [objectType(opts.options.type[0], function (key) {
+            return getTypeFromNative(opts.options.type[0][key]);
+          })];
+        }
       }
     } else if (opts.instance === 'ObjectID') {
       // Deal with ObjectID

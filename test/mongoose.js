@@ -18,7 +18,7 @@ describe('SchemaAdapter', function () {
       var schema = mongoose.Schema({ foo: Date });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model)
+      return new SchemaAdapter(model, { mongoose: mongoose })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
           expect(schema).to.have.deep.property('fields[0].field', 'foo');
@@ -34,7 +34,7 @@ describe('SchemaAdapter', function () {
       var schema = mongoose.Schema({ foo: String });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model)
+      return new SchemaAdapter(model, { mongoose: mongoose })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
           expect(schema).to.have.deep.property('fields[0].field', 'foo');
@@ -50,7 +50,7 @@ describe('SchemaAdapter', function () {
       var schema = mongoose.Schema({ foo: Boolean });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model)
+      return new SchemaAdapter(model, { mongoose: mongoose })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
           expect(schema).to.have.deep.property('fields[0].field', 'foo');
@@ -66,7 +66,7 @@ describe('SchemaAdapter', function () {
       var schema = mongoose.Schema({ foo: Number });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model)
+      return new SchemaAdapter(model, { mongoose: mongoose })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
           expect(schema).to.have.deep.property('fields[0].field', 'foo');
@@ -87,7 +87,7 @@ describe('SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model)
+      return new SchemaAdapter(model, { mongoose: mongoose })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
           expect(schema.fields[0]).to.have.property('type').and.to.be
@@ -117,7 +117,7 @@ describe('SchemaAdapter', function () {
 
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model)
+      return new SchemaAdapter(model, { mongoose: mongoose })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
           expect(schema).to.have.deep.property('fields[0].field', 'foo');
@@ -135,7 +135,7 @@ describe('SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model)
+      return new SchemaAdapter(model, { mongoose: mongoose })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
           expect(schema.fields[0].type).eql(null);
@@ -152,7 +152,7 @@ describe('SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model)
+      return new SchemaAdapter(model, { mongoose: mongoose })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
           expect(schema.fields[0].field).eql('foo');
@@ -170,7 +170,7 @@ describe('SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model)
+      return new SchemaAdapter(model, { mongoose: mongoose })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
           expect(schema.fields[0].field).eql('foo');
@@ -188,7 +188,7 @@ describe('SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model)
+      return new SchemaAdapter(model, { mongoose: mongoose })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
           expect(schema.fields[0].field).eql('foo');
@@ -206,7 +206,7 @@ describe('SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model)
+      return new SchemaAdapter(model, { mongoose: mongoose })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
           expect(schema.fields[0].field).eql('foo');
@@ -217,17 +217,38 @@ describe('SchemaAdapter', function () {
     });
   });
 
-  describe('Array of objectids', function () {
+  describe('Array of objectids ([ObjectId])', function () {
     it('should have the type `[String]`', function (done) {
       var schema = mongoose.Schema({ foo: [mongoose.Schema.Types.ObjectId] });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model)
+      return new SchemaAdapter(model, { mongoose: mongoose })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
           expect(schema).to.have.deep.property('fields[0].field', 'foo');
           expect(schema).to.have.deep.property('fields[0].type')
             .eql(['String']);
+
+          done(null);
+        });
+    });
+  });
+
+  describe('Array of objectids ([type: ObjectId])', function () {
+    it('should have the type `[String]`', function (done) {
+      var schema = mongoose.Schema({
+        foo: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
+      });
+      var model = mongoose.model('Foo', schema);
+
+      return new SchemaAdapter(model, { mongoose: mongoose })
+        .then(function (schema) {
+          expect(schema).to.have.property('fields');
+          expect(schema).to.have.deep.property('fields[0].field', 'foo');
+          expect(schema).to.have.deep.property('fields[0].type')
+            .eql(['String']);
+          expect(schema).to.have.deep.property('fields[0].ref')
+            .eql('users._id');
 
           done(null);
         });
@@ -241,7 +262,7 @@ describe('SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model)
+      return new SchemaAdapter(model, { mongoose: mongoose })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
           expect(schema.fields[0].type).eql([null]);
@@ -261,7 +282,7 @@ describe('SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model)
+      return new SchemaAdapter(model, { mongoose: mongoose })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
           expect(schema.fields[0].field).eql('foo');
@@ -285,6 +306,41 @@ describe('SchemaAdapter', function () {
     });
   });
 
+  describe('Array of schemas', function () {
+    it('should have the type `{ fields: [...]}`', function (done) {
+      var userSchema = mongoose.Schema({
+        firstName: String,
+        lastName: String,
+        createdAt: Date
+      });
+
+      var schema = mongoose.Schema({
+        users: [userSchema]
+      });
+
+      var model = mongoose.model('Foo', schema);
+
+      return new SchemaAdapter(model, { mongoose: mongoose })
+        .then(function (schema) {
+          expect(schema).to.have.property('fields');
+          expect(schema.fields[0].field).eql('users');
+          expect(schema.fields[0]).to.have.property('type').and.to.be
+            .instanceof(Array).and.have.length.of(1);
+          expect(schema.fields[0].type[0]).to.be.instanceof(Object).and.to
+            .have.property('fields');
+
+          expect(schema.fields[0].type[0].fields).to.be.eql([
+            { field: 'firstName', type: 'String' },
+            { field: 'lastName', type: 'String' },
+            { field: 'createdAt', type: 'Date' },
+            { field: '_id', type: 'String' }
+          ]);
+
+          done(null);
+        });
+    });
+  });
+
   describe('Shower of nested objects/arrays', function () {
     it('should have the type fields: [{...}, {...}]', function (done) {
       var schema = mongoose.Schema({
@@ -297,7 +353,7 @@ describe('SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model)
+      return new SchemaAdapter(model, { mongoose: mongoose })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
           expect(schema.fields[0].field).eql('foo');
@@ -344,7 +400,7 @@ describe('SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model)
+      return new SchemaAdapter(model, { mongoose: mongoose })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
           expect(schema).to.have.deep.property('fields[0].ref', 'bars._id');
@@ -361,7 +417,7 @@ describe('SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model)
+      return new SchemaAdapter(model, { mongoose: mongoose })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
           expect(schema.fields[0].ref).eql('bars._id');
@@ -379,7 +435,7 @@ describe('SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model)
+      return new SchemaAdapter(model, { mongoose: mongoose })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
           expect(schema.fields[0].isRequired).eql(true);
@@ -396,7 +452,7 @@ describe('SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model)
+      return new SchemaAdapter(model, { mongoose: mongoose })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
           expect(schema.fields[0].isRequired).eql(undefined);
