@@ -12,6 +12,8 @@
   "license": "MIT",
   "dependencies": {
     "bluebird": "^2.9.25",
+    "body-parser": "^1.13.1",
+    "change-case": "^2.3.0",
     "express": "^4.12.4",
     "express-cors": "0.0.3",
     "express-jwt": "^3.0.1",

@@ -1,6 +1,7 @@
 'use strict';
 var ResourcesFinder = require('../services/resources-finder');
 var ResourceFinder = require('../services/resource-finder');
+var ResourceUpdater = require('../services/resource-updater');
 
 module.exports = function (app, model, opts) {
   this.list = function (req, res, next) {
@@ -26,7 +27,12 @@ module.exports = function (app, model, opts) {
   };
 
   this.update = function (req, res, next) {
-    next(new Error('Not implemented yet.'));
+    new ResourceUpdater(model, req.body)
+      .perform()
+      .then(function (record) {
+        res.send(record);
+      })
+      .catch(next);
   };
 
   this.remove = function (req, res, next) {
@@ -39,7 +45,7 @@ module.exports = function (app, model, opts) {
     app.get('/forest/' + modelName, this.list);
     app.get('/forest/' + modelName + '/:recordId', this.get);
     app.post('/forest/' + modelName, this.create);
-    app.put('/forest/' + modelName + '/:recordId', this.update);
+    app.patch('/forest/' + modelName + '/:recordId', this.update);
     app.delete('/forest/' + modelName + '/:recordId', this.remove);
   };
 };
