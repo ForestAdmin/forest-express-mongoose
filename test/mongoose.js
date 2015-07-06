@@ -264,7 +264,7 @@ describe('SchemaAdapter', function () {
           expect(schema).to.have.deep.property('fields[0].field', 'foo');
           expect(schema).to.have.deep.property('fields[0].type')
             .eql(['String']);
-          expect(schema).to.have.deep.property('fields[0].ref')
+          expect(schema).to.have.deep.property('fields[0].reference')
             .eql('users._id');
 
           done(null);
@@ -420,7 +420,7 @@ describe('SchemaAdapter', function () {
       return new SchemaAdapter(model, { mongoose: mongoose })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
-          expect(schema).to.have.deep.property('fields[0].ref', 'bars._id');
+          expect(schema).to.have.deep.property('fields[0].reference', 'bars._id');
 
           done(null);
         });
@@ -437,7 +437,7 @@ describe('SchemaAdapter', function () {
       return new SchemaAdapter(model, { mongoose: mongoose })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
-          expect(schema.fields[0].ref).eql('bars._id');
+          expect(schema.fields[0].reference).eql('bars._id');
 
           done(null);
         });

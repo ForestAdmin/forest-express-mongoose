@@ -119,7 +119,7 @@ module.exports = function (model, opts) {
     var schema = { field: path, type: getTypeFromMongoose(paths[path]) };
 
     var ref = detectReference(opts);
-    if (ref) { schema.ref = ref; }
+    if (ref) { schema.reference = ref; }
 
     var isRequired = !!detectRequireFlag(opts);
     if (isRequired) { schema.isRequired = isRequired; }
