@@ -133,6 +133,7 @@ module.exports = function (model, opts) {
 
   return P
     .each(Object.keys(paths), function (path) {
+      if (path === '__v') { return; }
       var schema = getSchema(path);
       fields.push(schema);
     })

@@ -478,4 +478,19 @@ describe('SchemaAdapter', function () {
         });
     });
   });
+
+  describe('__v', function () {
+    it('should not appear', function (done) {
+      var schema = mongoose.Schema({
+        foo: String
+      });
+      var model = mongoose.model('Foo', schema);
+
+      return new SchemaAdapter(model, { mongoose: mongoose })
+        .then(function (schema) {
+          expect(schema.fields.length).equal(2);
+          done(null);
+        });
+    });
+  });
 });
