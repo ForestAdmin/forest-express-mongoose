@@ -2,8 +2,15 @@
 var P = require('bluebird');
 var _ = require('lodash');
 var MongooseUtils = require('../services/mongoose-utils');
+var HasManyFinder = require('./has-many-finder');
 
-function ResourcesFinder(model, params) {
+function ResourcesFinder(model, opts, params) {
+
+  function getHasManyParam() {
+    return _.findKey(params, function (value, key) {
+      return /.*Id/.test(key);
+    });
+  }
 
   function count () {
     return new P(function (resolve, reject) {
@@ -14,16 +21,33 @@ function ResourcesFinder(model, params) {
     });
   }
 
-  function getRecords(query) {
+  function getRecords() {
     return new P(function (resolve, reject) {
+      var query = model.find();
+
       query
         .limit(getLimit())
-        .skip(getSkip())
-        .lean()
-        .exec(function (err, records) {
-          if (err) { return reject(err); }
-          resolve(records);
-        });
+        .skip(getSkip());
+
+      _.each(model.schema.paths, function (value, key) {
+        if (MongooseUtils.getReference(value)) {
+          query = query.populate(key);
+        }
+      });
+
+
+      if (params.sort) {
+        if (params.sort.split('.').length > 1) {
+          query.sort(params.sort.split('.')[0]);
+        } else {
+          query.sort(params.sort);
+        }
+      }
+
+      query.lean().exec(function (err, records) {
+        if (err) { return reject(err); }
+        resolve(records);
+      });
     });
   }
 
@@ -48,15 +72,12 @@ function ResourcesFinder(model, params) {
   }
 
   this.perform = function () {
-    var query = model.find();
-
-    _.each(model.schema.paths, function (value, key) {
-      if (MongooseUtils.getReference(value)) {
-        query = query.populate(key);
-      }
-    });
-
-    return new P.all([count(), getRecords(query)]);
+    var hasManyParam = getHasManyParam();
+    if (hasManyParam) {
+      return new HasManyFinder(model, hasManyParam, opts, params).perform();
+    } else {
+      return new P.all([count(), getRecords()]);
+    }
   };
 }
 

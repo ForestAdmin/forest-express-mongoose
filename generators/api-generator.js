@@ -6,10 +6,10 @@ var ResourceSerializer = require('../serializers/resource');
 
 module.exports = function (app, model, opts) {
   this.list = function (req, res, next) {
-    new ResourcesFinder(model, req.query)
+    new ResourcesFinder(model, opts, req.query)
       .perform()
       .spread(function (count, records) {
-        return new ResourceSerializer(model, records, { count: count })
+        return new ResourceSerializer(model, records, opts, { count: count })
           .perform();
       })
       .then(function (records) {
@@ -22,7 +22,7 @@ module.exports = function (app, model, opts) {
     new ResourceFinder(model, req.params)
       .perform()
       .then(function (record) {
-        return new ResourceSerializer(model, record).perform();
+        return new ResourceSerializer(model, record, opts).perform();
       })
       .then(function (record) {
         res.send(record);

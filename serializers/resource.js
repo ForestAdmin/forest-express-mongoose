@@ -4,7 +4,7 @@ var JSONAPISerializer = require('jsonapi-serializer');
 var Inflector = require('inflected');
 var MongooseUtils = require('../services/mongoose-utils');
 
-function ResourceSerializer(model, records, meta) {
+function ResourceSerializer(model, records, opts, meta) {
 
   this.perform = function () {
     var serializationOptions = {
@@ -27,9 +27,18 @@ function ResourceSerializer(model, records, meta) {
     _.each(model.schema.paths, function (value, key) {
       var ref = MongooseUtils.getReference(value);
       if (ref) {
+        var models = opts.mongoose.models;
+
         serializationOptions[key] = {
           ref: '_id',
-          attributes: []
+          attributes: Object.keys(models[ref].schema.paths),
+          relationshipLinks: {
+            related: function (dataSet, relationship) {
+              return {
+                meta: { count: relationship.length || 0 }
+              };
+            }
+          }
         };
       }
     });
