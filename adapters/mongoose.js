@@ -13,10 +13,15 @@ module.exports = function (model, opts) {
     var type = { fields: [] };
 
     Object.keys(object).forEach(function (key) {
-      type.fields.push({
+      var fields = {
         field: key,
         type: getType(key)
-      });
+      };
+
+      var ref = detectReference(object[key]);
+      if (ref) { fields.reference = ref; }
+
+      type.fields.push(fields);
     });
 
     return type;

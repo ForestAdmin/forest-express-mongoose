@@ -1,15 +1,15 @@
 'use strict';
 var P = require('bluebird');
 var _ = require('lodash');
-var humps = require('humps');
 var MongooseUtils = require('../services/mongoose-utils');
 
-function ResourceUpdater(model, body) {
+function ResourceUpdater(model, params) {
+
   this.perform = function () {
     return new P(function (resolve, reject) {
       var query = model
-        .findByIdAndUpdate(body.data.id, {
-          $set: humps.camelizeKeys(body.data.attributes)
+        .findByIdAndUpdate(params.id, {
+          $set: params
         }, {
           new: true
         });

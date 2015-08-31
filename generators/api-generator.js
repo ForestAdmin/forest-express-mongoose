@@ -3,6 +3,7 @@ var ResourcesFinder = require('../services/resources-finder');
 var ResourceFinder = require('../services/resource-finder');
 var ResourceUpdater = require('../services/resource-updater');
 var ResourceSerializer = require('../serializers/resource');
+var ResourceDeserializer = require('../deserializers/resource');
 
 module.exports = function (app, model, opts) {
   this.list = function (req, res, next) {
@@ -35,15 +36,19 @@ module.exports = function (app, model, opts) {
   };
 
   this.update = function (req, res, next) {
-    new ResourceUpdater(model, req.body)
+    new ResourceDeserializer(model, req.body, opts)
       .perform()
-      .then(function (record) {
-        return new ResourceSerializer(model, record).perform();
-      })
-      .then(function (record) {
-        res.send(record);
-      })
-      .catch(next);
+      .then(function (params) {
+        new ResourceUpdater(model, params)
+          .perform()
+          .then(function (record) {
+            return new ResourceSerializer(model, record, opts).perform();
+          })
+          .then(function (record) {
+            res.send(record);
+          })
+          .catch(next);
+      });
   };
 
   this.remove = function (req, res, next) {
@@ -56,7 +61,7 @@ module.exports = function (app, model, opts) {
     app.get('/forest/' + modelName, this.list);
     app.get('/forest/' + modelName + '/:recordId', this.get);
     app.post('/forest/' + modelName, this.create);
-    app.patch('/forest/' + modelName + '/:recordId', this.update);
+    app.put('/forest/' + modelName + '/:recordId', this.update);
     app.delete('/forest/' + modelName + '/:recordId', this.remove);
   };
 };

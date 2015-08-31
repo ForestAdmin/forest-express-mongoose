@@ -1,7 +1,6 @@
 'use strict';
 var P = require('bluebird');
 var _ = require('lodash');
-var MongooseUtils = require('../services/mongoose-utils');
 var HasManyFinder = require('./has-many-finder');
 
 function ResourcesFinder(model, opts, params) {
@@ -73,22 +72,12 @@ function ResourcesFinder(model, opts, params) {
   function getRecords() {
     var query = model.find();
 
-    _.each(model.schema.paths, function (value, key) {
-      if (MongooseUtils.getReference(value)) {
-        query = query.populate(key);
-      }
-    });
-
     if (params.search) {
       handleSearchParam(query);
     }
 
     if (params.filter) {
-      handleFilterParams();
-    }
-
-    if (params.sort) {
-      handleSortParam();
+      handleFilterParams(query);
     }
 
     return query;
@@ -96,6 +85,10 @@ function ResourcesFinder(model, opts, params) {
 
   function exec(query) {
     return new P(function (resolve, reject) {
+      if (params.sort) {
+        handleSortParam(query);
+      }
+
       query
         .limit(getLimit())
         .skip(getSkip())
@@ -112,11 +105,12 @@ function ResourcesFinder(model, opts, params) {
   }
 
   function getLimit() {
-    if (hasPagination()) {
-      return params.page.size || 10;
-    } else {
-      return 10;
-    }
+    return 10;
+    //if (hasPagination()) {
+      //return params.page.size || 10;
+    //} else {
+      //return 10;
+    //}
   }
 
   function getSkip() {

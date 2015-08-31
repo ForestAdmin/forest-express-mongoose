@@ -410,6 +410,28 @@ describe('SchemaAdapter', function () {
     });
   });
 
+  describe('Nested object with hasOne relationship', function () {
+    it('should have the reference set', function (done) {
+      var schema = mongoose.Schema({
+        foo: {
+          bar: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+        }
+      });
+      var model = mongoose.model('Foo', schema);
+
+      return new SchemaAdapter(model, { mongoose: mongoose })
+        .then(function (schema) {
+          expect(schema.fields[0].type.fields[0]).eql({
+            field: 'bar',
+            type: 'String',
+            reference: 'users._id'
+          });
+
+          done(null);
+        });
+    });
+  });
+
   describe('hasOne relationship', function () {
     it('should have the ref attribute set', function (done) {
       var schema = mongoose.Schema({
