@@ -1,9 +1,8 @@
 'use strict';
 var P = require('bluebird');
 var _ = require('lodash');
-var MongooseUtils = require('../services/mongoose-utils');
 
-function ResourceUpdater(model, params) {
+function ResourceUpdater(model, schema, params) {
 
   this.perform = function () {
     return new P(function (resolve, reject) {
@@ -14,10 +13,8 @@ function ResourceUpdater(model, params) {
           new: true
         });
 
-      _.each(model.schema.paths, function (value, key) {
-        if (MongooseUtils.getReference(value)) {
-          query = query.populate(key);
-        }
+      _.each(schema.fields, function (field) {
+        if (field.reference) { query.populate(field); }
       });
 
       query

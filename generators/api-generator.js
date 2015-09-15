@@ -45,18 +45,22 @@ module.exports = function (app, model, opts) {
   };
 
   this.update = function (req, res, next) {
-    new ResourceDeserializer(model, req.body, opts)
-      .perform()
-      .then(function (params) {
-        new ResourceUpdater(model, params)
+    new SchemaAdapter(model, opts)
+      .then(function (schema) {
+        new ResourceDeserializer(model, schema, req.body, opts)
           .perform()
-          .then(function (record) {
-            return new ResourceSerializer(model, record, opts).perform();
-          })
-          .then(function (record) {
-            res.send(record);
-          })
-          .catch(next);
+          .then(function (params) {
+            new ResourceUpdater(model, schema, params)
+              .perform()
+              .then(function (record) {
+                return new ResourceSerializer(model, schema, record, opts)
+                  .perform();
+              })
+              .then(function (record) {
+                res.send(record);
+              })
+              .catch(next);
+          });
       });
   };
 

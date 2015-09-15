@@ -1,9 +1,9 @@
 'use strict';
+var _ = require('lodash');
 var P = require('bluebird');
-var SchemaAdapter = require('../adapters/mongoose');
 var humps = require('humps');
 
-function ResourceDeserializer(model, params, opts) {
+function ResourceDeserializer(model, schema, params) {
 
   function extractAttributes() {
     return new P(function (resolve) {
@@ -13,13 +13,25 @@ function ResourceDeserializer(model, params, opts) {
     });
   }
 
+  function extractRelationships() {
+    return new P(function (resolve) {
+      var relationships = {};
+
+      _.each(schema.fields, function (field) {
+        if (field.reference && params.data.relationships[field.field]) {
+          relationships[field.field] = params.data.relationships[field.field]
+            .data.id;
+        }
+      });
+
+      resolve(relationships);
+    });
+  }
+
   this.perform = function () {
-    return new SchemaAdapter(model, opts)
-      .then(function (schema) {
-        return extractAttributes(schema)
-          .then(function (params) {
-            return humps.camelizeKeys(params);
-          });
+    return P.all([extractAttributes(), extractRelationships()])
+      .spread(function (attributes, relationships) {
+        return humps.camelizeKeys(_.extend(attributes, relationships));
       });
   };
 }

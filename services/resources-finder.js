@@ -23,13 +23,7 @@ function ResourcesFinder(model, schema, opts, params) {
   function handlePopulate(query) {
     _.each(schema.fields, function (field) {
       if (field.reference) {
-        var path = field.reference.substring(0,
-          field.reference.length - '._id'.length);
-
-        query.populate({
-          path: path,
-          select: '_id'
-        });
+        query.populate({ path: field.field, select: '_id' });
       }
     });
   }
