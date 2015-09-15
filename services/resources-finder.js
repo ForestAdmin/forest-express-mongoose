@@ -3,7 +3,7 @@ var P = require('bluebird');
 var _ = require('lodash');
 var HasManyFinder = require('./has-many-finder');
 
-function ResourcesFinder(model, opts, params) {
+function ResourcesFinder(model, schema, opts, params) {
 
   function getHasManyParam() {
     return _.findKey(params, function (value, key) {
@@ -17,6 +17,20 @@ function ResourcesFinder(model, opts, params) {
         if (err) { return reject(err); }
         resolve(count);
       });
+    });
+  }
+
+  function handlePopulate(query) {
+    _.each(schema.fields, function (field) {
+      if (field.reference) {
+        var path = field.reference.substring(0,
+          field.reference.length - '._id'.length);
+
+        query.populate({
+          path: path,
+          select: '_id'
+        });
+      }
     });
   }
 
@@ -72,6 +86,8 @@ function ResourcesFinder(model, opts, params) {
   function getRecords() {
     var query = model.find();
 
+    handlePopulate(query);
+
     if (params.search) {
       handleSearchParam(query);
     }
@@ -105,12 +121,11 @@ function ResourcesFinder(model, opts, params) {
   }
 
   function getLimit() {
-    return 10;
-    //if (hasPagination()) {
-      //return params.page.size || 10;
-    //} else {
-      //return 10;
-    //}
+    if (hasPagination()) {
+      return params.page.size || 10;
+    } else {
+      return 10;
+    }
   }
 
   function getSkip() {

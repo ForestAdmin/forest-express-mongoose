@@ -1,4 +1,5 @@
 'use strict';
+var SchemaAdapter = require('../adapters/mongoose');
 var ResourcesFinder = require('../services/resources-finder');
 var ResourceFinder = require('../services/resource-finder');
 var ResourceUpdater = require('../services/resource-updater');
@@ -7,11 +8,15 @@ var ResourceDeserializer = require('../deserializers/resource');
 
 module.exports = function (app, model, opts) {
   this.list = function (req, res, next) {
-    new ResourcesFinder(model, opts, req.query)
-      .perform()
-      .spread(function (count, records) {
-        return new ResourceSerializer(model, records, opts, { count: count })
-          .perform();
+    new SchemaAdapter(model, opts)
+      .then(function (schema) {
+        return new ResourcesFinder(model, schema, opts, req.query)
+          .perform()
+          .spread(function (count, records) {
+            return new ResourceSerializer(model, schema, records, opts, {
+              count: count
+            }).perform();
+          });
       })
       .then(function (records) {
         res.send(records);
@@ -20,10 +25,14 @@ module.exports = function (app, model, opts) {
   };
 
   this.get = function (req, res, next) {
-    new ResourceFinder(model, req.params)
-      .perform()
-      .then(function (record) {
-        return new ResourceSerializer(model, record, opts).perform();
+    new SchemaAdapter(model, opts)
+      .then(function (schema) {
+        return new ResourceFinder(model, schema, req.params)
+          .perform()
+          .then(function (record) {
+            return new ResourceSerializer(model, schema, record, opts)
+              .perform();
+          });
       })
       .then(function (record) {
         res.send(record);
