@@ -16,7 +16,7 @@ function ResourceUpdater(model, params) {
         });
 
       _.each(schema.fields, function (field) {
-        if (field.reference) { query.populate(field); }
+        if (field.reference) { query.populate(field.field); }
       });
 
       query
