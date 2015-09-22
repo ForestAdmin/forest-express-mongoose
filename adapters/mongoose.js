@@ -18,6 +18,8 @@ module.exports = function (model, opts) {
         type: getType(key)
       };
 
+      if (!fields.type) { return; }
+
       var ref = detectReference(object[key]);
       if (ref) { fields.reference = ref; }
 

@@ -2,8 +2,10 @@
 var P = require('bluebird');
 var _ = require('lodash');
 var HasManyFinder = require('./has-many-finder');
+var Schemas = require('../generators/schemas');
 
-function ResourcesFinder(model, schema, opts, params) {
+function ResourcesFinder(model, opts, params) {
+  var schema = Schemas.schemas[model.collection.name];
 
   function getHasManyParam() {
     return _.findKey(params, function (value, key) {
@@ -23,7 +25,7 @@ function ResourcesFinder(model, schema, opts, params) {
   function handlePopulate(query) {
     _.each(schema.fields, function (field) {
       if (field.reference) {
-        query.populate({ path: field.field, select: '_id' });
+        query.populate(field.field);
       }
     });
   }

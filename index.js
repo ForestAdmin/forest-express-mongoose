@@ -7,8 +7,9 @@ var fs = P.promisifyAll(require('fs'));
 var cors = require('express-cors');
 var bodyParser = require('body-parser');
 var jwt = require('express-jwt');
-var ApiGenerator = require('./generators/api-generator');
-var ConfigGenerator = require('./generators/config-generator');
+var ApiGenerator = require('./generators/api');
+var ConfigGenerator = require('./generators/apimap');
+var Schemas = require('./generators/schemas');
 
 function requireAllModels(modelsDir, opts) {
   return fs.readdirAsync(modelsDir)
@@ -36,6 +37,9 @@ exports.init = function (opts) {
 
   var absModelDirs = path.resolve('.', opts.modelsDir);
   requireAllModels(absModelDirs, opts)
+    .then(function (models) {
+      return Schemas.perform(models, opts).thenReturn(models);
+    })
     .each(function (model) {
       return new ApiGenerator(app, model, opts).perform();
     })

@@ -1,8 +1,10 @@
 'use strict';
 var P = require('bluebird');
 var _ = require('lodash');
+var Schemas = require('../generators/schemas');
 
-function ResourceUpdater(model, schema, params) {
+function ResourceUpdater(model, params) {
+  var schema = Schemas.schemas[model.collection.name];
 
   this.perform = function () {
     return new P(function (resolve, reject) {

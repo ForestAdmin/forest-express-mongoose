@@ -2,8 +2,10 @@
 var _ = require('lodash');
 var P = require('bluebird');
 var humps = require('humps');
+var Schemas = require('../generators/schemas');
 
-function ResourceDeserializer(model, schema, params) {
+function ResourceDeserializer(model, params) {
+  var schema = Schemas.schemas[model.collection.name];
 
   function extractAttributes() {
     return new P(function (resolve) {

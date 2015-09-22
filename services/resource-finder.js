@@ -1,13 +1,15 @@
 'use strict';
 var P = require('bluebird');
 var _ = require('lodash');
+var Schemas = require('../generators/schemas');
 
-function ResourceFinder(model, schema, params) {
+function ResourceFinder(model, params) {
+  var schema = Schemas.schemas[model.collection.name];
 
   function handlePopulate(query) {
     _.each(schema.fields, function (field) {
       if (field.reference) {
-        query.populate({ path: field.field, select: '_id' });
+        query.populate(field.field);
       }
     });
   }

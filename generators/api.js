@@ -8,15 +8,12 @@ var ResourceDeserializer = require('../deserializers/resource');
 
 module.exports = function (app, model, opts) {
   this.list = function (req, res, next) {
-    new SchemaAdapter(model, opts)
-      .then(function (schema) {
-        return new ResourcesFinder(model, schema, opts, req.query)
-          .perform()
-          .spread(function (count, records) {
-            return new ResourceSerializer(model, schema, records, opts, {
-              count: count
-            }).perform();
-          });
+    return new ResourcesFinder(model, opts, req.query)
+      .perform()
+      .spread(function (count, records) {
+        return new ResourceSerializer(model, records, opts, {
+          count: count
+        }).perform();
       })
       .then(function (records) {
         res.send(records);
@@ -25,14 +22,11 @@ module.exports = function (app, model, opts) {
   };
 
   this.get = function (req, res, next) {
-    new SchemaAdapter(model, opts)
-      .then(function (schema) {
-        return new ResourceFinder(model, schema, req.params)
-          .perform()
-          .then(function (record) {
-            return new ResourceSerializer(model, schema, record, opts)
-              .perform();
-          });
+    return new ResourceFinder(model, req.params)
+      .perform()
+      .then(function (record) {
+        return new ResourceSerializer(model, record, opts)
+          .perform();
       })
       .then(function (record) {
         res.send(record);
@@ -45,22 +39,19 @@ module.exports = function (app, model, opts) {
   };
 
   this.update = function (req, res, next) {
-    new SchemaAdapter(model, opts)
-      .then(function (schema) {
-        new ResourceDeserializer(model, schema, req.body, opts)
+    new ResourceDeserializer(model, req.body)
+      .perform()
+      .then(function (params) {
+        new ResourceUpdater(model, params)
           .perform()
-          .then(function (params) {
-            new ResourceUpdater(model, schema, params)
-              .perform()
-              .then(function (record) {
-                return new ResourceSerializer(model, schema, record, opts)
-                  .perform();
-              })
-              .then(function (record) {
-                res.send(record);
-              })
-              .catch(next);
-          });
+          .then(function (record) {
+            return new ResourceSerializer(model, record, opts)
+              .perform();
+          })
+          .then(function (record) {
+            res.send(record);
+          })
+          .catch(next);
       });
   };
 
