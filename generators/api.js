@@ -3,6 +3,7 @@ var ResourcesFinder = require('../services/resources-finder');
 var ResourceFinder = require('../services/resource-finder');
 var ResourceCreator = require('../services/resource-creator');
 var ResourceUpdater = require('../services/resource-updater');
+var ResourceRemover = require('../services/resource-remover');
 var ResourceSerializer = require('../serializers/resource');
 var ResourceDeserializer = require('../deserializers/resource');
 
@@ -68,7 +69,12 @@ module.exports = function (app, model, opts) {
   };
 
   this.remove = function (req, res, next) {
-    next(new Error('Not implemented yet.'));
+    new ResourceRemover(model, req.params)
+      .perform()
+      .then(function () {
+        res.status(204).send();
+      })
+      .catch(next);
   };
 
   this.perform = function () {
