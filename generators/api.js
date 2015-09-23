@@ -1,7 +1,7 @@
 'use strict';
-var SchemaAdapter = require('../adapters/mongoose');
 var ResourcesFinder = require('../services/resources-finder');
 var ResourceFinder = require('../services/resource-finder');
+var ResourceCreator = require('../services/resource-creator');
 var ResourceUpdater = require('../services/resource-updater');
 var ResourceSerializer = require('../serializers/resource');
 var ResourceDeserializer = require('../deserializers/resource');
@@ -35,7 +35,19 @@ module.exports = function (app, model, opts) {
   };
 
   this.create = function (req, res, next) {
-    next(new Error('Not implemented yet.'));
+    new ResourceDeserializer(model, req.body)
+      .perform()
+      .then(function (params) {
+        return new ResourceCreator(model, params).perform();
+      })
+      .then(function (record) {
+        return new ResourceSerializer(model, record, opts)
+          .perform();
+      })
+      .then(function (record) {
+        res.send(record);
+      })
+      .catch(next);
   };
 
   this.update = function (req, res, next) {
