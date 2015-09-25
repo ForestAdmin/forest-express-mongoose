@@ -55,6 +55,10 @@ function ResourcesFinder(model, opts, params) {
 
       if (value[0] === '!') {
         q[key] = { $ne: value.substring(1) };
+      } else if (value[0] === '>') {
+        q[key] = { $gt: value.substring(1) };
+      } else if (value[0] === '<') {
+        q[key] = { $lt: value.substring(1) };
       } else if (value[0] === '*' && value[value.length - 1] === '*') {
         q[key] = new RegExp('.*' + value.substring(1, value.length - 1) +
           '.*');

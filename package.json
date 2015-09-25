@@ -1,6 +1,6 @@
 {
   "name": "forest-express-mongoose",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Forest connector for Expressjs and Mongoose",
   "main": "index.js",
   "scripts": {
