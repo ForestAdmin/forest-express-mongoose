@@ -14,7 +14,9 @@ var Schemas = require('./generators/schemas');
 function requireAllModels(modelsDir, opts) {
   return fs.readdirAsync(modelsDir)
     .each(function (file) {
-      require(path.join(modelsDir, file));
+      try {
+        require(path.join(modelsDir, file));
+      } catch (e) { }
     })
     .then(function () {
       return _.values(opts.mongoose.models);
