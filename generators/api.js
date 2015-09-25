@@ -1,4 +1,5 @@
 'use strict';
+var Inflector = require('inflected');
 var ResourcesFinder = require('../services/resources-finder');
 var ResourceFinder = require('../services/resource-finder');
 var ResourceCreator = require('../services/resource-creator');
@@ -78,7 +79,7 @@ module.exports = function (app, model, opts) {
   };
 
   this.perform = function () {
-    var modelName = model.collection.name;
+    var modelName = Inflector.pluralize(model.modelName).toLowerCase();
 
     app.get('/forest/' + modelName, this.list);
     app.get('/forest/' + modelName + '/:recordId', this.get);
