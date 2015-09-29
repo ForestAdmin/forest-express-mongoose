@@ -7,6 +7,8 @@ var ResourceUpdater = require('../services/resource-updater');
 var ResourceRemover = require('../services/resource-remover');
 var ResourceSerializer = require('../serializers/resource');
 var ResourceDeserializer = require('../deserializers/resource');
+var StripePaymentsFinder = require('../services/stripe-payments-finder');
+var StripePaymentsSerializer = require('../serializers/stripe-payments');
 
 module.exports = function (app, model, opts) {
   this.list = function (req, res, next) {
@@ -78,6 +80,18 @@ module.exports = function (app, model, opts) {
       .catch(next);
   };
 
+  this.stripePayments = function (req, res, next) {
+    new StripePaymentsFinder(req.headers['stripe-secret-key'])
+      .perform()
+      .then(function (payments) {
+        return new StripePaymentsSerializer(payments);
+      })
+      .then(function (payments) {
+        res.send(payments);
+      })
+      .catch(next);
+  };
+
   this.perform = function () {
     var modelName = Inflector.pluralize(model.modelName).toLowerCase();
 
@@ -86,5 +100,7 @@ module.exports = function (app, model, opts) {
     app.post('/forest/' + modelName, this.create);
     app.put('/forest/' + modelName + '/:recordId', this.update);
     app.delete('/forest/' + modelName + '/:recordId', this.remove);
+
+    app.get('/forest/stripe_payments', this.stripePayments);
   };
 };

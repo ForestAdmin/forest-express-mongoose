@@ -21,7 +21,8 @@
     "inflected": "^1.1.6",
     "jsonapi-serializer": "2.0.3",
     "lodash": "^3.9.3",
-    "semver": "^4.3.6"
+    "semver": "^4.3.6",
+    "stripe": "^4.0.0"
   },
   "devDependencies": {
     "chai": "^2.3.0",
