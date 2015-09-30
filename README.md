@@ -9,9 +9,8 @@ The official Express/Mongoose liana for Forest.
 ```javascript
 app.use(require('forest-express-mongoose').init({
   modelsDir: './models',  // The directory where all of your Mongoose models are defined.
-  apiEndpoint: 'http://www.myproject.com', // Your project api url endpoint.
   jwtSigningKey: 'ultrasecretkey', // The secret key given my Forest.
-  mongoose: mongoose // The mongoose instance given by require('mongoose')
+  mongoose: require('mongoose') // The mongoose instance given by require('mongoose').
 }));
 ```
 

@@ -22,7 +22,8 @@
     "jsonapi-serializer": "2.0.3",
     "lodash": "^3.9.3",
     "semver": "^4.3.6",
-    "stripe": "^4.0.0"
+    "stripe": "^4.0.0",
+    "winston": "^1.0.2"
   },
   "devDependencies": {
     "chai": "^2.3.0",

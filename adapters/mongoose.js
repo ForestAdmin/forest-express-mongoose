@@ -3,6 +3,7 @@ var P = require('bluebird');
 var _ = require('lodash');
 var flat = require('flat');
 var Inflector = require('inflected');
+var logger = require('../services/logger');
 
 module.exports = function (model, opts) {
   var fields = [];
@@ -138,13 +139,16 @@ module.exports = function (model, opts) {
     return schema;
   }
 
+  logger.debug('Analyzing model: ' + model.collection.name + '...');
   return P
     .each(Object.keys(paths), function (path) {
       if (path === '__v') { return; }
       var schema = getSchema(path);
+      logger.debug(schema);
       fields.push(schema);
     })
     .then(function () {
+      logger.debug('---------------------------------------');
       return { name: model.collection.name, fields: fields };
     });
 };

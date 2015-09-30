@@ -4,15 +4,21 @@ var JSONAPISerializer = require('jsonapi-serializer');
 var SchemaAdapter = require('../adapters/mongoose');
 
 module.exports = function (app, models, opts) {
+  function mapSeries(things, fn) {
+    var results = [];
+    return P.each(things, function (value, index, length) {
+      var ret = fn(value, index, length);
+      results.push(ret);
+      return ret;
+    }).thenReturn(results).all();
+  }
+
   this.apiConfig = function (req, res, next) {
-    P
-      .map(models, function (model) {
+      mapSeries(models, function (model) {
         return new SchemaAdapter(model, opts);
       })
       .then(function (collections) {
         return new JSONAPISerializer('collections', collections, {
-          apiEndpoint: opts.apiEndpoint + '/forestapi',
-          apiEndpointValue: opts.apiEndpoint + '/forestapi',
           id: 'name',
           attributes: ['name', 'fields'],
           fields: {
