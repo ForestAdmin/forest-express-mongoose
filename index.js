@@ -27,7 +27,8 @@ exports.init = function (opts) {
   var app = express();
 
   app.use(cors({
-    allowedOrigins: ['http://localhost:4200', 'https://www.forestadmin.com'],
+    allowedOrigins: ['http://localhost:4200', 'https://www.forestadmin.com',
+      'http://www.forestadmin.com'],
       headers: ['Authorization', 'X-Requested-With', 'Content-Type',
         'Stripe-Secret-Key']
   }));
