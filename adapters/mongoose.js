@@ -98,7 +98,8 @@ module.exports = function (model, opts) {
       return null;
     } else {
       // Deal with primitive type
-      return opts.instance || getTypeFromNative(opts.options.type) || null;
+      return opts.instance ||
+        (opts.options && getTypeFromNative(opts.options.type)) || null;
     }
   }
 

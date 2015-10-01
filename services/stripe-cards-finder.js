@@ -3,7 +3,7 @@ var P = require('bluebird');
 var StripeReferenceFinder = require('./stripe-reference-finder');
 var StripeUtils = require('../utils/stripe');
 
-function StripePaymentsFinder(secretKey, reference, params, opts) {
+function StripeCardsFinder(secretKey, reference, params, opts) {
   var stripe = require('stripe')(secretKey);
   var customer = null;
 
@@ -27,17 +27,14 @@ function StripePaymentsFinder(secretKey, reference, params, opts) {
     }
   }
 
-  function getCharges(query) {
+  function getCards(customer, query) {
     return new P(function (resolve, reject) {
-      if (customer) {
-        query.customer = customer[StripeUtils.getReferenceField(reference)];
-        if (!query.customer) { return resolve([0, []]); }
-      }
+      if (!customer) { return resolve([0, []]); }
 
-      stripe.charges.list(query, function (err, charges) {
+      stripe.customers.listCards(customer, query, function (err, cards) {
         if (err) { return reject(err); }
         // jshint camelcase: false
-        resolve([charges.total_count, charges.data]);
+        resolve([cards.total_count, cards.data]);
       });
     });
   }
@@ -65,30 +62,30 @@ function StripePaymentsFinder(secretKey, reference, params, opts) {
       .perform()
       .then(function (lCustomer) {
         customer = lCustomer;
+        var referenceField = StripeUtils.getReferenceField(reference);
 
         var query = {
           limit: getLimit(),
           offset: getOffset(),
-          source: { object: 'card' },
           'include[]': 'total_count'
         };
 
-        return getCharges(query);
+        return getCards(customer[referenceField], query);
       })
-      .spread(function (count, payments) {
+      .spread(function (count, cards) {
         return P
-          .map(payments, function (payment) {
-            return getCustomer(payment.customer)
+          .map(cards, function (card) {
+            return getCustomer(card.customer)
               .then(function (customer) {
-                payment.customer = customer;
-                return payment;
+                card.customer = customer;
+                return card;
               });
           })
-          .then(function (payments) {
-            return [count, payments];
+          .then(function (cards) {
+            return [count, cards];
           });
       });
   };
 }
 
-module.exports = StripePaymentsFinder;
+module.exports = StripeCardsFinder;

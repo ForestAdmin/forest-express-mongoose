@@ -3,7 +3,7 @@ var P = require('bluebird');
 var StripeReferenceFinder = require('./stripe-reference-finder');
 var StripeUtils = require('../utils/stripe');
 
-function StripePaymentsFinder(secretKey, reference, params, opts) {
+function StripeInvoicesFinder(secretKey, reference, params, opts) {
   var stripe = require('stripe')(secretKey);
   var customer = null;
 
@@ -27,17 +27,17 @@ function StripePaymentsFinder(secretKey, reference, params, opts) {
     }
   }
 
-  function getCharges(query) {
+  function getInvoices(query) {
     return new P(function (resolve, reject) {
       if (customer) {
         query.customer = customer[StripeUtils.getReferenceField(reference)];
         if (!query.customer) { return resolve([0, []]); }
       }
 
-      stripe.charges.list(query, function (err, charges) {
+      stripe.invoices.list(query, function (err, invoices) {
         if (err) { return reject(err); }
         // jshint camelcase: false
-        resolve([charges.total_count, charges.data]);
+        resolve([invoices.total_count, invoices.data]);
       });
     });
   }
@@ -69,26 +69,25 @@ function StripePaymentsFinder(secretKey, reference, params, opts) {
         var query = {
           limit: getLimit(),
           offset: getOffset(),
-          source: { object: 'card' },
           'include[]': 'total_count'
         };
 
-        return getCharges(query);
+        return getInvoices(query);
       })
-      .spread(function (count, payments) {
+      .spread(function (count, invoices) {
         return P
-          .map(payments, function (payment) {
-            return getCustomer(payment.customer)
+          .map(invoices, function (invoice) {
+            return getCustomer(invoice.customer)
               .then(function (customer) {
-                payment.customer = customer;
-                return payment;
+                invoice.customer = customer;
+                return invoice;
               });
           })
-          .then(function (payments) {
-            return [count, payments];
+          .then(function (invoices) {
+            return [count, invoices];
           });
       });
   };
 }
 
-module.exports = StripePaymentsFinder;
+module.exports = StripeInvoicesFinder;

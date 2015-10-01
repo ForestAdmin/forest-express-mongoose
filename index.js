@@ -30,13 +30,14 @@ exports.init = function (opts) {
     allowedOrigins: ['http://localhost:4200', 'https://www.forestadmin.com',
       'http://www.forestadmin.com'],
       headers: ['Authorization', 'X-Requested-With', 'Content-Type',
-        'Stripe-Secret-Key']
+        'Stripe-Secret-Key', 'Stripe-Reference']
   }));
 
   app.use(bodyParser.json({type: 'application/vnd.api+json'}));
 
   app.use(jwt({
-    secret: opts.jwtSigningKey
+    secret: opts.jwtSigningKey,
+    credentialsRequired: false
   }));
 
   var absModelDirs = path.resolve('.', opts.modelsDir);

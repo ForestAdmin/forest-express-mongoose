@@ -2,6 +2,7 @@
 var P = require('bluebird');
 var JSONAPISerializer = require('jsonapi-serializer');
 var SchemaAdapter = require('../adapters/mongoose');
+var auth = require('../services/auth');
 
 module.exports = function (app, models, opts) {
   function mapSeries(things, fn) {
@@ -33,6 +34,6 @@ module.exports = function (app, models, opts) {
   };
 
   this.perform = function () {
-    app.get('/forest', this.apiConfig);
+    app.get('/forest', auth.ensureAuthenticated, this.apiConfig);
   };
 };
