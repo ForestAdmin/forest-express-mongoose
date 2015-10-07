@@ -1,6 +1,6 @@
 {
   "name": "forest-express-mongoose",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Forest connector for Expressjs and Mongoose",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,11 @@
     "test": "npm run test-mongoose-3 && npm run test-mongoose-4"
   },
   "author": "Sandro Munda <sandro@munda.me>",
-  "license": "MIT",
+  "license": "GPL",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ForestAdmin/forest-express-mongoose.git"
+  },
   "dependencies": {
     "bluebird": "^2.9.25",
     "body-parser": "^1.13.1",
