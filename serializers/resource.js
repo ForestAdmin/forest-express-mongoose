@@ -28,9 +28,12 @@ function ResourceSerializer(model, records, opts, meta) {
           dest[field.field] = {
             ref: '_id',
             attributes: _.map(referenceSchema.fields, 'field'),
+            ignoreRelationshipData: true,
             relationshipLinks: {
               related: function (dataSet, relationship) {
                 return {
+                  href: '/forest/' + model.collection.name + '/' +
+                    dataSet._id + '/' + field.field,
                   meta: { count: relationship.length || 0 }
                 };
               }

@@ -1,57 +1,30 @@
 'use strict';
 var P = require('bluebird');
 
-function HasManyFinder(model, hasManyParam, opts, params) {
-
-  function capitalize(s) {
-    return s[0].toUpperCase() + s.substr(1);
-  }
+function HasManyFinder(model, opts, params) {
 
   function count() {
     return new P(function (resolve, reject) {
-      var models = opts.mongoose.models;
-
-      var parentModelName = capitalize(
-        hasManyParam.substring(0, hasManyParam.length - 2));
-      var parentModel = models[parentModelName];
-
-      var query = parentModel.findById(params[hasManyParam]);
-      query
+      model.findById(params.recordId)
         .exec(function (err, record) {
           if (err) { return reject(err); }
-          return resolve(record[model.collection.name].length);
+          resolve(record[params.associationName].length);
         });
     });
   }
 
   function getRecords() {
     return new P(function (resolve, reject) {
-      var models = opts.mongoose.models;
-
-      var parentModelName = capitalize(
-        hasManyParam.substring(0, hasManyParam.length - 2));
-        var parentModel = models[parentModelName];
-
-        var query = parentModel.findById(params[hasManyParam]);
-        var populateOpts = {
-          limit: getLimit(),
-          skip: getSkip()
-        };
-
-        if (params.sort) {
-          populateOpts.sort = params.sort;
-        }
-
-        query
+      var query = model.findById(params.recordId)
         .populate({
-          path: model.collection.name,
-          options: populateOpts
-        })
-        .lean()
-        .exec(function (err, record) {
-          if (err) { return reject(err); }
-          return resolve(record[model.collection.name]);
+          path: params.associationName,
+          options: { limit: getLimit(), skip: getSkip() }
         });
+
+      query.exec(function (err, record) {
+        if (err) { return reject(err); }
+        resolve(record[params.associationName]);
+      });
     });
   }
 

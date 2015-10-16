@@ -1,17 +1,10 @@
 'use strict';
 var P = require('bluebird');
 var _ = require('lodash');
-var HasManyFinder = require('./has-many-finder');
 var Schemas = require('../generators/schemas');
 
 function ResourcesFinder(model, opts, params) {
   var schema = Schemas.schemas[model.collection.name];
-
-  function getHasManyParam() {
-    return _.findKey(params, function (value, key) {
-      return /.*Id/.test(key);
-    });
-  }
 
   function count (query) {
     return new P(function (resolve, reject) {
@@ -137,13 +130,8 @@ function ResourcesFinder(model, opts, params) {
   }
 
   this.perform = function () {
-    var hasManyParam = getHasManyParam();
-    if (hasManyParam) {
-      return new HasManyFinder(model, hasManyParam, opts, params).perform();
-    } else {
-      var query = getRecords();
-      return new P.all([count(query), exec(getRecords())]);
-    }
+    var query = getRecords();
+    return new P.all([count(query), exec(getRecords())]);
   };
 }
 

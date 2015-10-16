@@ -8,6 +8,7 @@ var cors = require('express-cors');
 var bodyParser = require('body-parser');
 var jwt = require('express-jwt');
 var ResourcesRoutes = require('./routes/resources');
+var AssociationsRoutes = require('./routes/associations');
 var ApimapRoutes = require('./routes/apimap');
 var StripeRoutes = require('./routes/stripe');
 var Schemas = require('./generators/schemas');
@@ -47,7 +48,8 @@ exports.init = function (opts) {
       return Schemas.perform(models, opts).thenReturn(models);
     })
     .each(function (model) {
-      return new ResourcesRoutes(app, model, opts).perform();
+      new ResourcesRoutes(app, model, opts).perform();
+      new AssociationsRoutes(app, model, opts).perform();
     })
     .then(function (models) {
       new StripeRoutes(app, opts).perform();
