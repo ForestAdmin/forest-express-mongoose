@@ -8,9 +8,11 @@ var cors = require('express-cors');
 var bodyParser = require('body-parser');
 var jwt = require('express-jwt');
 var ResourcesRoutes = require('./routes/resources');
+var AssociationsRoutes = require('./routes/associations');
 var ApimapRoutes = require('./routes/apimap');
 var StripeRoutes = require('./routes/stripe');
 var Schemas = require('./generators/schemas');
+var Serializers = require('./generators/serializers');
 
 function requireAllModels(modelsDir, opts) {
   return fs.readdirAsync(modelsDir)
@@ -46,8 +48,12 @@ exports.init = function (opts) {
     .then(function (models) {
       return Schemas.perform(models, opts).thenReturn(models);
     })
+    .then(function (models) {
+      return Serializers.perform(models, opts).thenReturn(models);
+    })
     .each(function (model) {
-      return new ResourcesRoutes(app, model, opts).perform();
+      new ResourcesRoutes(app, model, opts).perform();
+      new AssociationsRoutes(app, model, opts).perform();
     })
     .then(function (models) {
       new StripeRoutes(app, opts).perform();
