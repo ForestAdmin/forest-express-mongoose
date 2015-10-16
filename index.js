@@ -7,8 +7,9 @@ var fs = P.promisifyAll(require('fs'));
 var cors = require('express-cors');
 var bodyParser = require('body-parser');
 var jwt = require('express-jwt');
-var ApiGenerator = require('./generators/api');
-var ConfigGenerator = require('./generators/apimap');
+var ResourcesRoutes = require('./routes/resources');
+var ApimapRoutes = require('./routes/apimap');
+var StripeRoutes = require('./routes/stripe');
 var Schemas = require('./generators/schemas');
 
 function requireAllModels(modelsDir, opts) {
@@ -46,10 +47,14 @@ exports.init = function (opts) {
       return Schemas.perform(models, opts).thenReturn(models);
     })
     .each(function (model) {
-      return new ApiGenerator(app, model, opts).perform();
+      return new ResourcesRoutes(app, model, opts).perform();
     })
     .then(function (models) {
-      return new ConfigGenerator(app, models, opts).perform();
+      new StripeRoutes(app, opts).perform();
+      return models;
+    })
+    .then(function (models) {
+      return new ApimapRoutes(app, models, opts).perform();
     });
 
 

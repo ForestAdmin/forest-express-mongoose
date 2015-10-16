@@ -37,3 +37,4 @@ module.exports = function (app, models, opts) {
     app.get('/forest', auth.ensureAuthenticated, this.apiConfig);
   };
 };
+
