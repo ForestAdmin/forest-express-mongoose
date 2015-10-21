@@ -31,11 +31,16 @@ function ResourceSerializer(model, records, opts, meta) {
             //ignoreRelationshipData: true,
             relationshipLinks: {
               related: function (dataSet, relationship) {
-                return {
+                var ret = {
                   href: '/forest/' + model.collection.name + '/' +
                     dataSet._id + '/' + field.field,
-                  meta: { count: relationship.length || 0 }
                 };
+
+                if (_.isArray(field.type)) {
+                  ret.meta = { count: relationship.length || 0 };
+                }
+
+                return ret;
               }
             }
           };
