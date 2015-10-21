@@ -20,10 +20,15 @@ function ResourceDeserializer(model, params) {
       var relationships = {};
 
       _.each(schema.fields, function (field) {
-        if (field.reference && params.data.relationships[field.field] &&
-          params.data.relationships[field.field].data) {
-          relationships[field.field] = params.data.relationships[field.field]
-            .data.id;
+        if (field.reference && params.data.relationships[field.field]) {
+          if (params.data.relationships[field.field].data === null) {
+            // Remove the relationships
+            relationships[field.field] = null;
+          } else if (params.data.relationships[field.field].data) {
+            // Set the relationship
+            relationships[field.field] = params.data.relationships[field.field]
+              .data.id;
+          }  // Else ignore the relationship
         }
       });
 
