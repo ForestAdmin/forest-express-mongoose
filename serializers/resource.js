@@ -28,7 +28,7 @@ function ResourceSerializer(model, records, opts, meta) {
           dest[field.field] = {
             ref: '_id',
             attributes: _.map(referenceSchema.fields, 'field'),
-            ignoreRelationshipData: true,
+            //ignoreRelationshipData: true,
             relationshipLinks: {
               related: function (dataSet, relationship) {
                 return {
