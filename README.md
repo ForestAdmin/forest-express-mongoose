@@ -8,7 +8,7 @@ The official Express/Mongoose liana for Forest.
 2. Add the following code to your `app.js` file:
 ```javascript
 app.use(require('forest-express-mongoose').init({
-  modelsDir: './models',  // The directory where all of your Mongoose models are defined.
+  modelsDir: __dirname + '/models',  // The directory where all of your Mongoose models are defined.
   jwtSigningKey: 'ultrasecretkey', // The secret key given my Forest.
   mongoose: require('mongoose') // The mongoose instance given by require('mongoose').
 }));
