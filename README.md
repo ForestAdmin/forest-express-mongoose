@@ -4,7 +4,7 @@ The official Express/Mongoose liana for Forest.
 
 ## Installation
 
-1. Run `$ npm install forest-express-mongoose`
+1. Run `$ npm install forest-express-mongoose --save`
 2. Add the following code to your `app.js` file:
 ```javascript
 app.use(require('forest-express-mongoose').init({
