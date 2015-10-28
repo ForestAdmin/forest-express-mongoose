@@ -2,6 +2,7 @@
 var P = require('bluebird');
 var _ = require('lodash');
 var Schemas = require('../generators/schemas');
+var OperatorValueParser = require('./operator-value-parser');
 
 function ResourcesFinder(model, opts, params) {
   var schema = Schemas.schemas[model.collection.name];
@@ -45,25 +46,7 @@ function ResourcesFinder(model, opts, params) {
   function handleFilterParams(query) {
     _.each(params.filter, function (value, key) {
       var q = {};
-
-      if (value[0] === '!') {
-        q[key] = { $ne: value.substring(1) };
-      } else if (value[0] === '>') {
-        q[key] = { $gt: value.substring(1) };
-      } else if (value[0] === '<') {
-        q[key] = { $lt: value.substring(1) };
-      } else if (value[0] === '*' && value[value.length - 1] === '*') {
-        q[key] = new RegExp('.*' + value.substring(1, value.length - 1) +
-          '.*');
-      } else if (value[0] === '*') {
-        q[key] = new RegExp('.*' + value.substring(1) + '$');
-      } else if (value[value.length - 1]) {
-        q[key] = new RegExp('^' + value.substring(0, value.length - 1) +
-          '.*');
-      } else {
-        q[key] = value;
-      }
-
+      q[key] = new OperatorValueParser(opts).perform(model, key, value);
       query.where(q);
     });
   }

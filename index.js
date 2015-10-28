@@ -11,6 +11,7 @@ var ResourcesRoutes = require('./routes/resources');
 var AssociationsRoutes = require('./routes/associations');
 var ApimapRoutes = require('./routes/apimap');
 var StripeRoutes = require('./routes/stripe');
+var StatRoutes = require('./routes/stats');
 var Schemas = require('./generators/schemas');
 
 function requireAllModels(modelsDir, opts) {
@@ -50,6 +51,7 @@ exports.init = function (opts) {
     .each(function (model) {
       new ResourcesRoutes(app, model, opts).perform();
       new AssociationsRoutes(app, model, opts).perform();
+      new StatRoutes(app, model, opts).perform();
     })
     .then(function (models) {
       new StripeRoutes(app, opts).perform();
