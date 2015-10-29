@@ -6,7 +6,7 @@ var StripeInvoicesFinder = require('../services/stripe-invoices-finder');
 var StripeInvoicesSerializer = require('../serializers/stripe-invoices');
 var StripeCardsFinder = require('../services/stripe-cards-finder');
 var StripeCardsSerializer = require('../serializers/stripe-cards');
-var StripeUtils = require('../utils/stripe');
+var SchemaUtils = require('../utils/schema');
 var auth = require('../services/auth');
 
 module.exports = function (app, opts) {
@@ -15,7 +15,7 @@ module.exports = function (app, opts) {
       req.headers['stripe-reference'], req.query, opts)
       .perform()
       .spread(function (count, payments) {
-        var customerCollectionName = StripeUtils.getReferenceCollectionName(
+        var customerCollectionName = SchemaUtils.getReferenceCollectionName(
           req.headers['stripe-reference']);
 
         return new StripePaymentsSerializer(payments, customerCollectionName, {
@@ -48,7 +48,7 @@ module.exports = function (app, opts) {
       req.headers['stripe-reference'], req.query, opts)
       .perform()
       .spread(function (count, invoices) {
-        var customerCollectionName = StripeUtils.getReferenceCollectionName(
+        var customerCollectionName = SchemaUtils.getReferenceCollectionName(
           req.headers['stripe-reference']);
 
         return new StripeInvoicesSerializer(invoices, customerCollectionName, {
@@ -66,7 +66,7 @@ module.exports = function (app, opts) {
       req.headers['stripe-reference'], req.query, opts)
       .perform()
       .spread(function (count, cards) {
-        var customerCollectionName = StripeUtils.getReferenceCollectionName(
+        var customerCollectionName = SchemaUtils.getReferenceCollectionName(
           req.headers['stripe-reference']);
 
         return new StripeCardsSerializer(cards, customerCollectionName, {

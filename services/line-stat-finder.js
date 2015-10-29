@@ -1,9 +1,9 @@
 'use strict';
 var _ = require('lodash');
-var Inflector = require('inflected');
 var P = require('bluebird');
 var Schemas = require('../generators/schemas');
 var OperatorValueParser = require('./operator-value-parser');
+var SchemaUtils = require('../utils/schema');
 
 // jshint sub: true
 function LineStatFinder(model, params, opts) {
@@ -27,16 +27,10 @@ function LineStatFinder(model, params, opts) {
     return field.reference ? field : null;
   }
 
-  function findReferenceModel(field) {
-    var collectionName = field.reference.split('.')[0];
-    var modelName = Inflector.camelize(Inflector.singularize(collectionName));
-
-    return opts.mongoose.models[modelName];
-  }
-
-  function handlePopulate(records, reference) {
+  function handlePopulate(records, referenceField) {
     return new P(function (resolve, reject) {
-      var referenceModel = findReferenceModel(reference);
+      var referenceModel = SchemaUtils.getReferenceModel(opts.mongoose,
+        referenceField.reference);
 
       referenceModel.populate(records.value, {
         path: 'values.key'

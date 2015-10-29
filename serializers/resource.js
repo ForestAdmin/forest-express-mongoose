@@ -4,7 +4,7 @@ var JSONAPISerializer = require('jsonapi-serializer');
 var Inflector = require('inflected');
 var Schemas = require('../generators/schemas');
 
-function ResourceSerializer(model, records, opts, meta) {
+function ResourceSerializer(model, records, opts, meta, include) {
   var schema = Schemas.schemas[model.collection.name];
 
   this.perform = function () {
@@ -61,6 +61,29 @@ function ResourceSerializer(model, records, opts, meta) {
     };
 
     getAttributesFor(serializationOptions, schema.fields);
+
+    if (include) {
+      _.forEach(include, function (reference, fieldName) {
+        fieldName = fieldName.split(':')[0];
+
+        serializationOptions.attributes.push(fieldName);
+
+        var referenceType = typeForAttributes[fieldName] =
+          reference.substring(0, reference.length - '._id'.length);
+
+        var referenceSchema = Schemas.schemas[referenceType];
+
+        serializationOptions[fieldName] = {
+          ref: '_id',
+          attributes: _.map(referenceSchema.fields, 'field'),
+          relationshipLinks: {
+            related: function (dataSet, relationship) {
+              return { meta: { count: relationship.length } };
+            }
+          }
+        };
+      });
+    }
 
     return new JSONAPISerializer(schema.name, records,
       serializationOptions);

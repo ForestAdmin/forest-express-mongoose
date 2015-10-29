@@ -1,7 +1,7 @@
 'use strict';
 var P = require('bluebird');
 var Inflector = require('inflected');
-var StripeUtils = require('../utils/stripe');
+var SchemaUtils = require('../utils/schema');
 
 function StripeReferenceFinder(secretKey, reference, params, opts) {
 
@@ -12,7 +12,7 @@ function StripeReferenceFinder(secretKey, reference, params, opts) {
 
   function getCustomer() {
     return new P(function (resolve, reject) {
-      var referenceModel = StripeUtils.getReferenceModel(opts.mongoose,
+      var referenceModel = SchemaUtils.getReferenceModel(opts.mongoose,
         reference);
       if (!referenceModel) { return resolve(null); }
 

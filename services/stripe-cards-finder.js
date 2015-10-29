@@ -1,7 +1,7 @@
 'use strict';
 var P = require('bluebird');
 var StripeReferenceFinder = require('./stripe-reference-finder');
-var StripeUtils = require('../utils/stripe');
+var SchemaUtils = require('../utils/schema');
 
 function StripeCardsFinder(secretKey, reference, params, opts) {
   var stripe = require('stripe')(secretKey);
@@ -42,8 +42,8 @@ function StripeCardsFinder(secretKey, reference, params, opts) {
   function getCustomer(customerId) {
     return new P(function (resolve, reject) {
       var query = {};
-      var Model = StripeUtils.getReferenceModel(opts.mongoose, reference);
-      var referenceField = StripeUtils.getReferenceField(reference);
+      var Model = SchemaUtils.getReferenceModel(opts.mongoose, reference);
+      var referenceField = SchemaUtils.getReferenceField(reference);
 
       if (!Model) { return resolve(null); }
 
@@ -62,7 +62,7 @@ function StripeCardsFinder(secretKey, reference, params, opts) {
       .perform()
       .then(function (lCustomer) {
         customer = lCustomer;
-        var referenceField = StripeUtils.getReferenceField(reference);
+        var referenceField = SchemaUtils.getReferenceField(reference);
 
         var query = {
           limit: getLimit(),

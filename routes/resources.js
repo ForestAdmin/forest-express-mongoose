@@ -16,7 +16,7 @@ module.exports = function (app, model, opts) {
       .spread(function (count, records) {
         return new ResourceSerializer(model, records, opts, {
           count: count
-        }).perform();
+        }, req.query.include).perform();
       })
       .then(function (records) {
         res.send(records);
