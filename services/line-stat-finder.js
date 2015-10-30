@@ -23,6 +23,7 @@ function LineStatFinder(model, params, opts) {
   }
 
   function getReference(fieldName) {
+    if (!fieldName) { return null; }
     var field = _.findWhere(schema.fields, { field: fieldName });
     return field.reference ? field : null;
   }
@@ -48,7 +49,9 @@ function LineStatFinder(model, params, opts) {
       var groupBy = {};
       var sort = {};
 
-      groupBy[params['group_by_field']] = '$' + params['group_by_field'];
+      if (params['group_by_field']) {
+        groupBy[params['group_by_field']] = '$' + params['group_by_field'];
+      }
 
       if (params['group_by_date_field']) {
         groupBy[params['group_by_date_field']] = '$' + params['group_by_date_field'];
@@ -60,14 +63,18 @@ function LineStatFinder(model, params, opts) {
         sum = '$' + params['aggregate_field'];
       }
 
-      model
+      var query = model
         .aggregate()
-        .match(getFilters())
-        .group({
+        .match(getFilters());
+
+      if (groupBy) {
+        query = query.group({
           _id: groupBy,
-          count: { $sum: '$price' }
-        })
-        .sort(sort)
+          count: { $sum: sum }
+        });
+      }
+
+      query.sort(sort)
         .project({
           label: '$_id.' + params['group_by_date_field'],
           values: {
