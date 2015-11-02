@@ -10,11 +10,6 @@ module.exports = function (app, model, opts) {
   this.create = function (req, res, next) {
     var promise = null;
 
-    var modelName = Inflector.camelize(
-      Inflector.singularize(req.body.collection));
-
-    var model = opts.mongoose.models[modelName];
-
     switch (req.body.type) {
       case 'Value':
         promise = new ValueStatFinder(model, req.body, opts).perform();
@@ -42,7 +37,9 @@ module.exports = function (app, model, opts) {
   };
 
   this.perform = function () {
-    app.post('/forest/stats', auth.ensureAuthenticated,
+    var modelName = Inflector.pluralize(model.modelName).toLowerCase();
+
+    app.post('/forest/stats/' + modelName, auth.ensureAuthenticated,
       this.create);
   };
 };
