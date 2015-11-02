@@ -71,6 +71,8 @@ function ResourcesFinder(model, opts, params) {
   function handleFilterParams(query) {
     _.each(params.filter, function (value, key) {
       var q = {};
+
+      key = key.replace(/:/g, '.');
       q[key] = new OperatorValueParser(opts).perform(model, key, value);
       query.where(q);
     });
