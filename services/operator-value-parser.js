@@ -48,6 +48,10 @@ function OperatorValueParser(opts) {
     } else if (value[value.length - 1] === '*') {
       ret = new RegExp('^' + parseFct(value.substring(0, value.length - 1)) +
         '.*');
+    } else if (value === '$present') {
+      ret = { $exists: true };
+    } else if (value === '$blank') {
+      ret = { $exists: false };
     } else {
       ret = parseFct(value);
     }
