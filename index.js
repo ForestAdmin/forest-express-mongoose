@@ -89,7 +89,7 @@ exports.init = function (opts) {
         })
         .then(function (json) {
           var forestUrl = process.env.FOREST_URL ||
-            'https://www.forestadmin.com';
+            'https://forestadmin-server.herokuapp.com';
 
           request
             .post(forestUrl + '/forest/apimaps')
