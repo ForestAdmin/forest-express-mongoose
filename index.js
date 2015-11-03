@@ -80,6 +80,10 @@ exports.init = function (opts) {
             attributes: ['name', 'fields'],
             fields: {
               attributes: ['field', 'type', 'collection_name']
+            },
+            meta: {
+              'liana': 'forest-express-mongoose',
+              'liana_version': require('./package.json').version
             }
           });
         })
