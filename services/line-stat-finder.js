@@ -54,8 +54,25 @@ function LineStatFinder(model, params, opts) {
       }
 
       if (params['group_by_date_field']) {
-        groupBy[params['group_by_date_field']] = '$' + params['group_by_date_field'];
-        sort['_id.' + params['group_by_date_field']] = 1;
+        switch (params['time_range']) {
+          case 'Day':
+            groupBy['day'] = { $dayOfMonth: '$' + params['group_by_date_field'] };
+            groupBy['month'] = { $month: '$' + params['group_by_date_field'] };
+            groupBy['year'] = { $year: '$' + params['group_by_date_field'] };
+            break;
+          case 'Week':
+            groupBy['week'] = { $week: '$' + params['group_by_date_field'] };
+            groupBy['month'] = { $month: '$' + params['group_by_date_field'] };
+            groupBy['year'] = { $year: '$' + params['group_by_date_field'] };
+            break;
+          case 'Year':
+            groupBy['year'] = { $year: '$' + params['group_by_date_field'] };
+            break;
+          default: // Month
+            groupBy['month'] = { $month: '$' + params['group_by_date_field'] };
+            groupBy['year'] = { $year: '$' + params['group_by_date_field'] };
+        }
+        sort[params['group_by_date_field']] = 1;
       }
 
       var sum = 1;
@@ -67,16 +84,28 @@ function LineStatFinder(model, params, opts) {
         .aggregate()
         .match(getFilters());
 
+      if (params['group_by_date_field']) {
+        var q = {};
+        q[params['group_by_date_field']] = { $ne: null };
+        query = query.match(q);
+      }
+
       if (groupBy) {
-        query = query.group({
+        var group = {
           _id: groupBy,
           count: { $sum: sum }
-        });
+        };
+
+        group[params['group_by_date_field']] = {
+          $last: '$' + params['group_by_date_field']
+        };
+
+        query = query.group(group);
       }
 
       query.sort(sort)
         .project({
-          label: '$_id.' + params['group_by_date_field'],
+          label: '$' + params['group_by_date_field'],
           values: {
             key: '$_id.'+  params['group_by_field'],
             value: '$count'
