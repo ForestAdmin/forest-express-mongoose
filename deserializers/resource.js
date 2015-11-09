@@ -20,7 +20,8 @@ function ResourceDeserializer(model, params) {
       var relationships = {};
 
       _.each(schema.fields, function (field) {
-        if (field.reference && params.data.relationships[field.field]) {
+        if (field.reference && params.data.relationships &&
+          params.data.relationships[field.field]) {
           if (params.data.relationships[field.field].data === null) {
             // Remove the relationships
             relationships[field.field] = null;
