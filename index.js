@@ -41,6 +41,7 @@ function mapSeries(things, fn) {
 exports.init = function (opts) {
   var app = express();
 
+  // CORS
   app.use(cors({
     allowedOrigins: ['http://localhost:4200', 'https://www.forestadmin.com',
       'http://www.forestadmin.com'],
@@ -48,13 +49,25 @@ exports.init = function (opts) {
         'Stripe-Secret-Key', 'Stripe-Reference']
   }));
 
+  // Mime type
   app.use(bodyParser.json({type: 'application/vnd.api+json'}));
 
+  // Authentication
   app.use(jwt({
     secret: opts.jwtSigningKey,
     credentialsRequired: false
   }));
 
+  // Default override middleware.
+  var middleware = function (req, res, next) { next(); };
+  if (!opts.resources) { opts.resources = {}; }
+  if (!opts.resources.list) { opts.resources.list = middleware; }
+  if (!opts.resources.get) { opts.resources.get = middleware; }
+  if (!opts.resources.create) { opts.resources.create = middleware; }
+  if (!opts.resources.update) { opts.resources.update = middleware; }
+  if (!opts.resources.remove) { opts.resources.remove = middleware; }
+
+  // Init
   var absModelDirs = path.resolve('.', opts.modelsDir);
   requireAllModels(absModelDirs, opts)
     .then(function (models) {
@@ -106,6 +119,9 @@ exports.init = function (opts) {
       }
     });
 
-
   return app;
 };
+
+exports.ensureAuthenticated = require('./services/auth').ensureAuthenticated;
+exports.StatSerializer = require('./serializers/stat') ;
+exports.ResourceSerializer = require('./serializers/resource') ;

@@ -82,18 +82,19 @@ module.exports = function (app, model, opts) {
   this.perform = function () {
     var modelName = Inflector.pluralize(model.modelName).toLowerCase();
 
-    app.get('/forest/' + modelName, auth.ensureAuthenticated, this.list);
+    app.get('/forest/' + modelName, auth.ensureAuthenticated,
+      opts.resources.list, this.list);
 
     app.get('/forest/' + modelName + '/:recordId', auth.ensureAuthenticated,
-      this.get);
+      opts.resources.get, this.get);
 
     app.post('/forest/' + modelName, auth.ensureAuthenticated,
-      this.create);
+      opts.resources.create, this.create);
 
     app.put('/forest/' + modelName + '/:recordId', auth.ensureAuthenticated,
-      this.update);
+      opts.resources.update, this.update);
 
     app.delete('/forest/' + modelName + '/:recordId', auth.ensureAuthenticated,
-      this.remove);
+      opts.resources.remove, this.remove);
   };
 };
