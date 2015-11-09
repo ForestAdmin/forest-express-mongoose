@@ -41,10 +41,35 @@ function ResourcesFinder(model, opts, params) {
     });
   }
 
+  function populateWhere(field) {
+    var where = {};
+
+    _.each(params.filter, function (value, key) {
+      if (key.indexOf(':') > -1) {
+        var splitted = key.split(':');
+        var fieldName = splitted[0];
+        var subFieldName = splitted[1];
+
+        if (fieldName === field.field) {
+          var currentField = _.findWhere(schema.fields, { field: fieldName });
+          if (currentField && currentField.reference) {
+            where[subFieldName] = new OperatorValueParser(opts)
+              .perform(model, key, value);
+          }
+        }
+      }
+    });
+
+    return where;
+  }
+
   function handlePopulate(query) {
     _.each(schema.fields, function (field) {
       if (field.reference) {
-        query.populate(field.field);
+        query.populate({
+          path: field.field,
+          match: populateWhere(field)
+        });
       }
     });
   }
@@ -72,8 +97,19 @@ function ResourcesFinder(model, opts, params) {
     _.each(params.filter, function (value, key) {
       var q = {};
 
-      key = key.replace(/:/g, '.');
-      q[key] = new OperatorValueParser(opts).perform(model, key, value);
+      if (key.indexOf(':') > -1) {
+        var splitted = key.split(':');
+        var fieldName = splitted[0];
+
+        var field = _.findWhere(schema.fields, { field: fieldName });
+        if (field && !field.reference) {
+          key = key.replace(/:/g, '.');
+          q[key] = new OperatorValueParser(opts).perform(model, key, value);
+        }
+      } else {
+        q[key] = new OperatorValueParser(opts).perform(model, key, value);
+      }
+
       query.where(q);
     });
   }
@@ -116,13 +152,35 @@ function ResourcesFinder(model, opts, params) {
           if (err) { return reject(err); }
           resolve(records);
         });
-    }).then(function (records) {
-      if (params.include) {
-        return fetchIncludes(records);
-      } else {
-        return records;
-      }
-    });
+    })
+      .filter(function (record) {
+        var ret = true;
+
+        // Refilter record based on the populated match.
+        _.each(params.filter, function (value, key) {
+          if (key.indexOf(':') > -1) {
+            var fieldName = key.split(':')[0];
+
+            var field = _.findWhere(schema.fields, { field: fieldName });
+            if (field && field.reference) {
+              if (_.isArray(field.type)) {
+                ret = !!(ret && record[fieldName] && record[fieldName].length);
+              } else {
+                ret = !!(ret && record[fieldName]);
+              }
+            }
+          }
+        });
+
+        return ret;
+      })
+      .then(function (records) {
+        if (params.include) {
+          return fetchIncludes(records);
+        } else {
+          return records;
+        }
+      });
   }
 
   function hasPagination() {
