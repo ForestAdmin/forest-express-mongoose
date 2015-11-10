@@ -32,6 +32,42 @@ function ResourcesFinder(model, opts, params) {
     });
   }
 
+  function refilterResult(records) {
+    return P.filter(records, function (record) {
+      var ret = true;
+
+      // Refilter record based on the populated match.
+      _.each(params.filter, function (value, key) {
+        if (key.indexOf(':') > -1) {
+          var fieldName = key.split(':')[0];
+
+          var field = _.findWhere(schema.fields, { field: fieldName });
+          if (field && field.reference) {
+            if (_.isArray(field.type)) {
+              ret = !!(ret && record[fieldName] && record[fieldName].length);
+            } else {
+              ret = !!(ret && record[fieldName]);
+            }
+          }
+        }
+      });
+
+      return ret;
+    });
+  }
+
+  function hasRelationshipFilter() {
+    var ret = false;
+
+    _.each(params.filter, function (value, key) {
+      if (key.indexOf(':') > -1) {
+        ret = true;
+      }
+    });
+
+    return ret;
+  }
+
   function count (query) {
     return new P(function (resolve, reject) {
       query.count(function (err, count) {
@@ -144,35 +180,25 @@ function ResourcesFinder(model, opts, params) {
         handleSortParam(query);
       }
 
+      if (!hasRelationshipFilter()) {
+        query
+          .limit(getLimit())
+          .skip(getSkip());
+      }
+
       query
-        .limit(getLimit())
-        .skip(getSkip())
         .lean()
         .exec(function (err, records) {
           if (err) { return reject(err); }
           resolve(records);
         });
     })
-      .filter(function (record) {
-        var ret = true;
-
-        // Refilter record based on the populated match.
-        _.each(params.filter, function (value, key) {
-          if (key.indexOf(':') > -1) {
-            var fieldName = key.split(':')[0];
-
-            var field = _.findWhere(schema.fields, { field: fieldName });
-            if (field && field.reference) {
-              if (_.isArray(field.type)) {
-                ret = !!(ret && record[fieldName] && record[fieldName].length);
-              } else {
-                ret = !!(ret && record[fieldName]);
-              }
-            }
-          }
-        });
-
-        return ret;
+      .then(function (records) {
+        if (hasRelationshipFilter()) {
+          return refilterResult(records);
+        } else {
+          return records;
+        }
       })
       .then(function (records) {
         if (params.include) {
@@ -205,7 +231,17 @@ function ResourcesFinder(model, opts, params) {
 
   this.perform = function () {
     var query = getRecords();
-    return new P.all([count(query), exec(getRecords())]);
+
+    if (hasRelationshipFilter()) {
+      return exec(getRecords())
+        .then(function (records) {
+          var count = records.length;
+          records = records.slice(getSkip(), getSkip() + getLimit());
+          return [count, records];
+        });
+    } else {
+      return P.all([count(query), exec(getRecords())]);
+    }
   };
 }
 
