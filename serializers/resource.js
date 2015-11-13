@@ -28,7 +28,6 @@ function ResourceSerializer(model, records, opts, meta, include) {
           dest[field.field] = {
             ref: '_id',
             attributes: _.map(referenceSchema.fields, 'field'),
-            //ignoreRelationshipData: true,
             relationshipLinks: {
               related: function (dataSet, relationship) {
                 var ret = {
@@ -44,6 +43,11 @@ function ResourceSerializer(model, records, opts, meta, include) {
               }
             }
           };
+
+          if (_.isArray(field.type)) {
+            dest[field.field].ignoreRelationshipData = true;
+            dest[field.field].included = false;
+          }
         }
       });
     }

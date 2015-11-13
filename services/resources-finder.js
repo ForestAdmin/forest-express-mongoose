@@ -3,36 +3,18 @@ var P = require('bluebird');
 var _ = require('lodash');
 var Schemas = require('../generators/schemas');
 var OperatorValueParser = require('./operator-value-parser');
-var SchemaUtils = require('../utils/schema');
+var IncludeParamParser = require('./include-param-parser');
 
 function ResourcesFinder(model, opts, params) {
   var schema = Schemas.schemas[model.collection.name];
 
   function fetchIncludes(records) {
     return P.each(records, function (record) {
-      return P.map(Object.keys(params.include), function (fieldName) {
-        var reference = params.include[fieldName];
-        var referenceField = SchemaUtils.getReferenceField(reference);
-
-        return new P(function (resolve, reject) {
-          var inverseOf = fieldName.split(':')[1];
-          var query = {};
-          query[inverseOf] = record[referenceField];
-
-          var referenceModel = SchemaUtils.getReferenceModel(
-            opts.mongoose, reference);
-
-          referenceModel.find(query).lean().exec(function (err, records) {
-            if (err) { reject(err); }
-            record[fieldName.split(':')[0]] = records;
-            resolve(record);
-          });
-        });
-      });
+      return new IncludeParamParser(record, params.include, opts).perform();
     });
   }
 
-  function refilterResult(records) {
+  function refilterBasedOnFilters(records) {
     return P.filter(records, function (record) {
       var ret = true;
 
@@ -48,6 +30,8 @@ function ResourcesFinder(model, opts, params) {
             } else {
               ret = !!(ret && record[fieldName]);
             }
+          } else {
+            ret = true;
           }
         }
       });
@@ -192,10 +176,9 @@ function ResourcesFinder(model, opts, params) {
           if (err) { return reject(err); }
           resolve(records);
         });
-    })
-      .then(function (records) {
+    }).then(function (records) {
         if (hasRelationshipFilter()) {
-          return refilterResult(records);
+          return refilterBasedOnFilters(records);
         } else {
           return records;
         }

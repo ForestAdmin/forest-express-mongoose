@@ -13,13 +13,12 @@ module.exports = function (app, model, opts) {
 
   function index(req, res, next) {
     var params = _.extend(req.query, req.params);
+    var associationModel = opts.mongoose.models[
+      getAssociationModel(req.params.associationName)];
 
-    return new HasManyFinder(model, opts, params)
+    return new HasManyFinder(model, associationModel, opts, params)
       .perform()
       .spread(function (count, records) {
-        var associationModel = opts.mongoose.models[
-          getAssociationModel(req.params.associationName)];
-
         return new ResourceSerializer(associationModel, records, opts, {
           count: count
         }).perform();

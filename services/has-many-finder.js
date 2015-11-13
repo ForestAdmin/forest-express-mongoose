@@ -1,8 +1,9 @@
 'use strict';
+var _ = require('lodash');
 var P = require('bluebird');
+var Schemas = require('../generators/schemas');
 
-function HasManyFinder(model, opts, params) {
-
+function HasManyFinder(model, association, opts, params) {
   function count() {
     return new P(function (resolve, reject) {
       model.findById(params.recordId)
@@ -13,17 +14,37 @@ function HasManyFinder(model, opts, params) {
     });
   }
 
+  function handlePopulate(query) {
+    var schema = Schemas.schemas[association.collection.name];
+
+    _.each(schema.fields, function (field) {
+      if (field.reference) {
+        query.populate(field.field);
+      }
+    });
+  }
+
   function getRecords() {
     return new P(function (resolve, reject) {
-      var query = model.findById(params.recordId)
+      model
+        .findById(params.recordId)
         .populate({
           path: params.associationName,
           options: { limit: getLimit(), skip: getSkip() }
+        })
+        .exec(function (err, record) {
+          if (err) { return reject(err); }
+          resolve(record[params.associationName]);
         });
+    }).map(function (record) {
+      return new P(function (resolve, reject) {
+        var query = association.findById(record.id);
+        handlePopulate(query);
 
-      query.exec(function (err, record) {
-        if (err) { return reject(err); }
-        resolve(record[params.associationName]);
+        query.lean().exec(function (err, record) {
+          if (err) { return reject(err); }
+          resolve(record);
+        });
       });
     });
   }

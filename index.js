@@ -12,7 +12,6 @@ var AssociationsRoutes = require('./routes/associations');
 var StripeRoutes = require('./routes/stripe');
 var StatRoutes = require('./routes/stats');
 var Schemas = require('./generators/schemas');
-var SchemaAdapter = require('./adapters/mongoose');
 var JSONAPISerializer = require('jsonapi-serializer');
 var request = require('superagent');
 var logger = require('./services/logger');
@@ -85,7 +84,7 @@ exports.init = function (opts) {
     .then(function (models) {
       if (opts.jwtSigningKey) {
         mapSeries(models, function (model) {
-          return new SchemaAdapter(model, opts);
+          return Schemas.schemas[model.collection.name];
         })
         .then(function (collections) {
           return new JSONAPISerializer('collections', collections, {
