@@ -8,6 +8,8 @@ function ResourceCreator(Model, params) {
 
   function create() {
     return new P(function (resolve, reject) {
+      if ('_id' in params) { delete params._id; }
+
       new Model(params)
         .save(function (err, record) {
           if (err) { return reject(err); }

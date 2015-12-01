@@ -1,7 +1,6 @@
 'use strict';
 var _ = require('lodash');
 var P = require('bluebird');
-var humps = require('humps');
 var Schemas = require('../generators/schemas');
 
 function ResourceDeserializer(model, params) {
@@ -40,7 +39,7 @@ function ResourceDeserializer(model, params) {
   this.perform = function () {
     return P.all([extractAttributes(), extractRelationships()])
       .spread(function (attributes, relationships) {
-        return humps.camelizeKeys(_.extend(attributes, relationships));
+        return _.extend(attributes, relationships);
       });
   };
 }

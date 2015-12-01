@@ -21,7 +21,6 @@
     "express-cors": "0.0.3",
     "express-jwt": "^3.0.1",
     "flat": "^1.6.0",
-    "humps": "^0.6.0",
     "inflected": "^1.1.6",
     "jsonapi-serializer": "2.0.4",
     "lodash": "^3.9.3",

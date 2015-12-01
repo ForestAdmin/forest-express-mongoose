@@ -9,7 +9,7 @@ function ResourceUpdater(model, params) {
   this.perform = function () {
     return new P(function (resolve, reject) {
       var query = model
-        .findByIdAndUpdate(params.id, {
+        .findByIdAndUpdate(params._id, {
           $set: params
         }, {
           new: true
