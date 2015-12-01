@@ -57,15 +57,6 @@ exports.init = function (opts) {
     credentialsRequired: false
   }));
 
-  // Default override middleware.
-  var middleware = function (req, res, next) { next(); };
-  if (!opts.resources) { opts.resources = {}; }
-  if (!opts.resources.list) { opts.resources.list = middleware; }
-  if (!opts.resources.get) { opts.resources.get = middleware; }
-  if (!opts.resources.create) { opts.resources.create = middleware; }
-  if (!opts.resources.update) { opts.resources.update = middleware; }
-  if (!opts.resources.remove) { opts.resources.remove = middleware; }
-
   // Init
   var absModelDirs = path.resolve('.', opts.modelsDir);
   requireAllModels(absModelDirs, opts)
