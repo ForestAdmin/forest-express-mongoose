@@ -24,6 +24,7 @@
     "inflected": "^1.1.6",
     "jsonapi-serializer": "2.0.4",
     "lodash": "^3.9.3",
+    "moment": "^2.10.6",
     "node-uuid": "^1.4.3",
     "semver": "^4.3.6",
     "stripe": "^4.0.0",
