@@ -33,6 +33,10 @@ function OperatorValueParser(opts) {
           };
           break;
       }
+
+      if (_.isArray(field.type)) {
+        parseFct = function (val) { return { $size: val }; };
+      }
     }
 
     function getValue() {
