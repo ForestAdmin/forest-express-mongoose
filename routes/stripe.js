@@ -11,7 +11,7 @@ var auth = require('../services/auth');
 
 module.exports = function (app, opts) {
   this.stripePayments = function (req, res, next) {
-    new StripePaymentsFinder(req.headers['stripe-secret-key'],
+    new StripePaymentsFinder(opts.integrations.stripe.apiKey,
       req.headers['stripe-reference'], req.query, opts)
       .perform()
       .spread(function (count, payments) {
@@ -44,7 +44,7 @@ module.exports = function (app, opts) {
   };
 
   this.stripeInvoices = function (req, res, next) {
-    new StripeInvoicesFinder(req.headers['stripe-secret-key'],
+    new StripeInvoicesFinder(opts.integrations.stripe.apiKey,
       req.headers['stripe-reference'], req.query, opts)
       .perform()
       .spread(function (count, invoices) {
@@ -62,7 +62,7 @@ module.exports = function (app, opts) {
   };
 
   this.stripeCards = function (req, res, next) {
-    new StripeCardsFinder(req.headers['stripe-secret-key'],
+    new StripeCardsFinder(opts.integrations.stripe.apiKey,
       req.headers['stripe-reference'], req.query, opts)
       .perform()
       .spread(function (count, cards) {
