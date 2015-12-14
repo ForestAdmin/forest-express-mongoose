@@ -3,16 +3,9 @@ var P = require('bluebird');
 var _ = require('lodash');
 var Schemas = require('../generators/schemas');
 var OperatorValueParser = require('./operator-value-parser');
-var IncludeParamParser = require('./include-param-parser');
 
 function ResourcesFinder(model, opts, params) {
   var schema = Schemas.schemas[model.collection.name];
-
-  function fetchIncludes(records) {
-    return P.each(records, function (record) {
-      return new IncludeParamParser(record, params.include, opts).perform();
-    });
-  }
 
   function refilterBasedOnFilters(records) {
     return P.filter(records, function (record) {
@@ -117,20 +110,30 @@ function ResourcesFinder(model, opts, params) {
     _.each(params.filter, function (value, key) {
       var q = {};
 
-      if (key.indexOf(':') > -1) {
-        var splitted = key.split(':');
-        var fieldName = splitted[0];
+      var field = _.findWhere(schema.fields, { field: key });
+      if (!field) { return; }
 
-        var field = _.findWhere(schema.fields, { field: fieldName });
-        if (field && !field.reference) {
-          key = key.replace(/:/g, '.');
+      // Search using a $where operator when the key field is an array and the
+      // operator is < or >.
+      if (_.isArray(field.type) && ['>', '<'].indexOf(value[0]) > -1) {
+        query.$where('this.' + key + ' && ' + 'this.' + key + '.length ' +
+          value);
+      } else {
+        if (key.indexOf(':') > -1) {
+          var splitted = key.split(':');
+          var fieldName = splitted[0];
+
+          field = _.findWhere(schema.fields, { field: fieldName });
+          if (field && !field.reference) {
+            key = key.replace(/:/g, '.');
+            q[key] = new OperatorValueParser(opts).perform(model, key, value);
+          }
+        } else {
           q[key] = new OperatorValueParser(opts).perform(model, key, value);
         }
-      } else {
-        q[key] = new OperatorValueParser(opts).perform(model, key, value);
-      }
 
-      query.where(q);
+        query.where(q);
+      }
     });
   }
 
@@ -179,13 +182,6 @@ function ResourcesFinder(model, opts, params) {
     }).then(function (records) {
         if (hasRelationshipFilter()) {
           return refilterBasedOnFilters(records);
-        } else {
-          return records;
-        }
-      })
-      .then(function (records) {
-        if (params.include) {
-          return fetchIncludes(records);
         } else {
           return records;
         }

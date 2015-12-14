@@ -14,9 +14,8 @@ module.exports = function (app, model, opts) {
     return new ResourcesFinder(model, opts, req.query)
       .perform()
       .spread(function (count, records) {
-        return new ResourceSerializer(model, records, opts, {
-          count: count
-        }, req.query.include).perform();
+        return new ResourceSerializer(model, records, opts, { count: count })
+          .perform();
       })
       .then(function (records) {
         res.send(records);
