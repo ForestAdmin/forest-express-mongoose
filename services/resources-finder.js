@@ -180,12 +180,12 @@ function ResourcesFinder(model, opts, params) {
           resolve(records);
         });
     }).then(function (records) {
-        if (hasRelationshipFilter()) {
-          return refilterBasedOnFilters(records);
-        } else {
-          return records;
-        }
-      });
+      if (hasRelationshipFilter()) {
+        return refilterBasedOnFilters(records);
+      } else {
+        return records;
+      }
+    });
   }
 
   function hasPagination() {
@@ -194,7 +194,11 @@ function ResourcesFinder(model, opts, params) {
 
   function getLimit() {
     if (hasPagination()) {
-      return params.page.size || 10;
+      if (params.page.size) {
+        return parseInt(params.page.size);
+      } else {
+        return 10;
+      }
     } else {
       return 10;
     }
