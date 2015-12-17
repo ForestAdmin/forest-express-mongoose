@@ -4,11 +4,17 @@ var Inflector = require('inflected');
 var auth = require('../services/auth');
 var HasManyFinder = require('../services/has-many-finder');
 var ResourceSerializer = require('../serializers/resource');
+var Schemas = require('../generators/schemas');
 
 module.exports = function (app, model, opts) {
 
   function getAssociationModel(associationName) {
-    return Inflector.camelize(Inflector.singularize(associationName));
+    var schema = Schemas.schemas[model.collection.name];
+    var field = _.findWhere(schema.fields, { field: associationName });
+    if (field && field.reference) {
+      var referenceName = field.reference.split('.')[0];
+      return Inflector.camelize(Inflector.singularize(referenceName));
+    }
   }
 
   function index(req, res, next) {
