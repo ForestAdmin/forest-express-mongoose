@@ -28,15 +28,6 @@ function requireAllModels(modelsDir, opts) {
     });
 }
 
-function mapSeries(things, fn) {
-  var results = [];
-  return P.each(things, function (value, index, length) {
-    var ret = fn(value, index, length);
-    results.push(ret);
-    return ret;
-  }).thenReturn(results).all();
-}
-
 exports.init = function (opts) {
   var app = express();
 
@@ -72,44 +63,44 @@ exports.init = function (opts) {
       new StripeRoutes(app, opts).perform();
       return models;
     })
-    .then(function (models) {
+    .then(function () {
       if (opts.jwtSigningKey) {
-        mapSeries(models, function (model) {
-          return Schemas.schemas[model.collection.name];
-        })
-        .then(function (collections) {
-          return new JSONAPISerializer('collections', collections, {
-            id: 'name',
-            attributes: ['name', 'fields'],
-            fields: {
-              attributes: ['field', 'type', 'collection_name']
-            },
-            meta: {
-              'liana': 'forest-express-mongoose',
-              'liana_version': require('./package.json').version
-            }
-          });
-        })
-        .then(function (json) {
-          var forestUrl = process.env.FOREST_URL ||
-            'https://forestadmin-server.herokuapp.com';
-
-          request
-            .post(forestUrl + '/forest/apimaps')
-              .send(json)
-              .set('forest-secret-key', opts.jwtSigningKey)
-              .end(function(err, res) {
-                if (res.status !== 204) {
-                  logger.debug('Forest cannot find your project secret key. ' +
-                    'Please, ensure you have installed the Forest Liana ' +
-                    'correctly.');
-                }
-              });
+        var collections = _.values(Schemas.schemas);
+        var json = new JSONAPISerializer('collections', collections, {
+          id: 'name',
+          attributes: ['name', 'fields'],
+          fields: {
+            attributes: ['field', 'type', 'collection_name']
+          },
+          meta: {
+            'liana': 'forest-express-mongoose',
+            'liana_version': require('./package.json').version
+          }
         });
+
+        var forestUrl = process.env.FOREST_URL ||
+          'https://forestadmin-server.herokuapp.com';
+
+        request
+          .post(forestUrl + '/forest/apimaps')
+            .send(json)
+            .set('forest-secret-key', opts.jwtSigningKey)
+            .end(function(err, res) {
+              if (res.status !== 204) {
+                logger.debug('Forest cannot find your project secret key. ' +
+                  'Please, ensure you have installed the Forest Liana ' +
+                  'correctly.');
+              }
+            });
       }
     });
 
   return app;
+};
+
+exports.smartCollection = function (name, opts) {
+  opts.name = name;
+  Schemas.schemas[name] = opts;
 };
 
 exports.ensureAuthenticated = require('./services/auth').ensureAuthenticated;
