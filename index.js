@@ -52,7 +52,11 @@ exports.init = function (opts) {
   var absModelDirs = path.resolve('.', opts.modelsDir);
   requireAllModels(absModelDirs, opts)
     .then(function (models) {
-      return Schemas.perform(models, opts).thenReturn(models);
+      return Schemas.perform(models, opts)
+        .then(function () {
+          return requireAllModels(absModelDirs + '/forest', opts);
+        })
+        .thenReturn(models);
     })
     .each(function (model) {
       new ResourcesRoutes(app, model, opts).perform();
@@ -68,9 +72,13 @@ exports.init = function (opts) {
         var collections = _.values(Schemas.schemas);
         var json = new JSONAPISerializer('collections', collections, {
           id: 'name',
-          attributes: ['name', 'fields'],
+          attributes: ['name', 'fields', 'actions'],
           fields: {
             attributes: ['field', 'type', 'collection_name']
+          },
+          actions: {
+            ref: 'name',
+            attributes: ['name', 'endpoint', 'httpMethod']
           },
           meta: {
             'liana': 'forest-express-mongoose',
@@ -98,9 +106,15 @@ exports.init = function (opts) {
   return app;
 };
 
-exports.smartCollection = function (name, opts) {
-  opts.name = name;
-  Schemas.schemas[name] = opts;
+exports.collection = function (name, opts) {
+  var collection = _.findWhere(Schemas.schemas, { name: name });
+
+  if (!collection) {
+    opts.name = name;
+    Schemas.schemas[name] = opts;
+  } else {
+    Schemas.schemas[name].actions = opts.actions;
+  }
 };
 
 exports.ensureAuthenticated = require('./services/auth').ensureAuthenticated;
