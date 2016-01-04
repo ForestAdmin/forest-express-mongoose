@@ -54,7 +54,10 @@ exports.init = function (opts) {
     .then(function (models) {
       return Schemas.perform(models, opts)
         .then(function () {
-          return requireAllModels(absModelDirs + '/forest', opts);
+          return requireAllModels(absModelDirs + '/forest', opts)
+            .catch(function () {
+              // The forest/ directory does not exist. It's not a problem.
+            });
         })
         .thenReturn(models);
     })
