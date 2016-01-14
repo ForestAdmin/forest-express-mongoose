@@ -1,21 +1,9 @@
 'use strict';
+var _ = require('lodash');
 var P = require('bluebird');
-var OperatorValueParser = require('./operator-value-parser');
+var FilterParser = require('./filter-parser');
 
 function ValueStatFinder(model, params, opts) {
-
-  function getFilters() {
-    var filters = {};
-
-    if (params.filters) {
-      params.filters.forEach(function (filter) {
-        filters[filter.field] = new OperatorValueParser(opts).perform(model,
-          filter.field, filter.value);
-      });
-    }
-
-    return filters;
-  }
 
   function getAggregateField() {
     // jshint sub: true
@@ -24,7 +12,16 @@ function ValueStatFinder(model, params, opts) {
 
   this.perform = function () {
     return new P(function (resolve, reject) {
-      var query = model.find(getFilters()).distinct(getAggregateField());
+      var query = model.find();
+
+      if (params.filters) {
+        _.each(params.filters, function (filter) {
+          query = new FilterParser(model, opts).perform(query, filter.field,
+            filter.value);
+        });
+      }
+
+      query = query.distinct(getAggregateField());
 
       query
         .lean()

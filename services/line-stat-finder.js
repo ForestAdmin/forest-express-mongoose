@@ -2,25 +2,12 @@
 var _ = require('lodash');
 var P = require('bluebird');
 var Schemas = require('../generators/schemas');
-var OperatorValueParser = require('./operator-value-parser');
+var FilterParser = require('./filter-parser');
 var SchemaUtils = require('../utils/schema');
 
 // jshint sub: true
 function LineStatFinder(model, params, opts) {
   var schema = Schemas.schemas[model.collection.name];
-
-  function getFilters() {
-    var filters = {};
-
-    if (params.filters) {
-      params.filters.forEach(function (filter) {
-        filters[filter.field] = new OperatorValueParser(opts).perform(model,
-          filter.field, filter.value);
-      });
-    }
-
-    return filters;
-  }
 
   function getReference(fieldName) {
     if (!fieldName) { return null; }
@@ -81,8 +68,16 @@ function LineStatFinder(model, params, opts) {
       }
 
       var query = model
-        .aggregate()
-        .match(getFilters());
+        .aggregate();
+
+      if (params.filters) {
+        _.each(params.filters, function (filter) {
+          new FilterParser(model, opts).perform(query, filter.field,
+            filter.value, 'match');
+
+          return query;
+        });
+      }
 
       if (params['group_by_date_field']) {
         var q = {};
