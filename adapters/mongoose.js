@@ -140,16 +140,75 @@ module.exports = function (model, opts) {
     return schema;
   }
 
-  //logger.debug('Analyzing model: ' + model.collection.name + '...');
+  function hasStripeIntegration() {
+    return opts.integrations && opts.integrations.stripe &&
+      opts.integrations.stripe.apiKey;
+  }
+
+  function setupStripeIntegration() {
+    fields.push({
+      field: 'stripe_payments',
+      type: ['String'],
+      reference: 'stripe_payments.id',
+      column: null,
+      isSearchable: false
+    });
+
+    fields.push({
+      field: 'stripe_invoices',
+      type: ['String'],
+      reference: 'stripe_invoices.id',
+      column: null,
+      isSearchable: false
+    });
+
+    fields.push({
+      field: 'stripe_cards',
+      type: ['String'],
+      reference: 'stripe_cards.id',
+      column: null,
+      isSearchable: false
+    });
+  }
+
+  function hasIntercomIntegration() {
+    return opts.integrations && opts.integrations.intercom &&
+      opts.integrations.intercom.apiKey;
+  }
+
+  function setupIntercomIntegration() {
+    fields.push({
+      field: 'intercom_conversations',
+      type: ['String'],
+      reference: 'intercom_conversations.id',
+      column: 'null',
+      isSearchable: false
+    });
+
+    fields.push({
+      field: 'intercom_attributes',
+      type: 'String',
+      reference: 'intercom_attributes.id',
+      column: 'null',
+      isSearchable: false
+    });
+  }
+
   return P
     .each(Object.keys(paths), function (path) {
       if (path === '__v') { return; }
       var schema = getSchema(path);
-      //logger.debug(schema);
       fields.push(schema);
     })
     .then(function () {
-      //logger.debug('---------------------------------------');
+      if (hasStripeIntegration()) {
+        setupStripeIntegration();
+      }
+
+      if (hasIntercomIntegration()) {
+        setupIntercomIntegration();
+      }
+
       return { name: model.collection.name, fields: fields };
     });
 };

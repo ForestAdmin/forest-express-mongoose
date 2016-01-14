@@ -1,4 +1,6 @@
 'use strict';
+var _ = require('lodash');
+var Inflector = require('inflected');
 var StripePaymentsFinder = require('../services/stripe-payments-finder');
 var StripePaymentsSerializer = require('../serializers/stripe-payments');
 var StripePaymentRefunder = require('../services/stripe-payment-refunder');
@@ -6,19 +8,16 @@ var StripeInvoicesFinder = require('../services/stripe-invoices-finder');
 var StripeInvoicesSerializer = require('../serializers/stripe-invoices');
 var StripeCardsFinder = require('../services/stripe-cards-finder');
 var StripeCardsSerializer = require('../serializers/stripe-cards');
-var SchemaUtils = require('../utils/schema');
 var auth = require('../services/auth');
 
-module.exports = function (app, opts) {
+module.exports = function (app, model, opts) {
+  var modelName = Inflector.pluralize(model.modelName).toLowerCase();
+
   this.stripePayments = function (req, res, next) {
-    new StripePaymentsFinder(opts.integrations.stripe.apiKey,
-      req.headers['stripe-reference'], req.query, opts)
+    new StripePaymentsFinder(_.extend(req.query, req.params), opts)
       .perform()
       .spread(function (count, payments) {
-        var customerCollectionName = SchemaUtils.getReferenceCollectionName(
-          req.headers['stripe-reference']);
-
-        return new StripePaymentsSerializer(payments, customerCollectionName, {
+        return new StripePaymentsSerializer(payments, modelName, {
           count: count
         });
       })
@@ -29,7 +28,7 @@ module.exports = function (app, opts) {
   };
 
   this.stripeRefund = function (req, res, next) {
-    new StripePaymentRefunder(req.body)
+    new StripePaymentRefunder(req.body, opts)
       .perform()
       .then(function () {
         res.status(204).send();
@@ -44,14 +43,10 @@ module.exports = function (app, opts) {
   };
 
   this.stripeInvoices = function (req, res, next) {
-    new StripeInvoicesFinder(opts.integrations.stripe.apiKey,
-      req.headers['stripe-reference'], req.query, opts)
+    new StripeInvoicesFinder(req.query, opts)
       .perform()
       .spread(function (count, invoices) {
-        var customerCollectionName = SchemaUtils.getReferenceCollectionName(
-          req.headers['stripe-reference']);
-
-        return new StripeInvoicesSerializer(invoices, customerCollectionName, {
+        return new StripeInvoicesSerializer(invoices, modelName, {
           count: count
         });
       })
@@ -62,16 +57,10 @@ module.exports = function (app, opts) {
   };
 
   this.stripeCards = function (req, res, next) {
-    new StripeCardsFinder(opts.integrations.stripe.apiKey,
-      req.headers['stripe-reference'], req.query, opts)
+    new StripeCardsFinder(_.extend(req.query, req.params), opts)
       .perform()
       .spread(function (count, cards) {
-        var customerCollectionName = SchemaUtils.getReferenceCollectionName(
-          req.headers['stripe-reference']);
-
-        return new StripeCardsSerializer(cards, customerCollectionName, {
-          count: count
-        });
+        return new StripeCardsSerializer(cards, modelName, { count: count });
       })
       .then(function (cards) {
         res.send(cards);
@@ -83,13 +72,19 @@ module.exports = function (app, opts) {
     app.get('/forest/stripe_payments', auth.ensureAuthenticated,
       this.stripePayments);
 
+    app.get('/forest/' + modelName + '/:recordId/stripe_payments',
+      auth.ensureAuthenticated, this.stripePayments);
+
     app.post('/forest/stripe_payments/refunds', auth.ensureAuthenticated,
       this.stripeRefund);
 
     app.get('/forest/stripe_invoices', auth.ensureAuthenticated,
       this.stripeInvoices);
 
-    app.get('/forest/stripe_cards', auth.ensureAuthenticated,
-      this.stripeCards);
+    app.get('/forest/' + modelName + '/:recordId/stripe_invoices',
+      auth.ensureAuthenticated, this.stripeInvoices);
+
+    app.get('/forest/' + modelName + '/:recordId/stripe_cards',
+      auth.ensureAuthenticated, this.stripeCards);
   };
 };

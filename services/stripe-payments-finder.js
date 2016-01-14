@@ -1,11 +1,9 @@
 'use strict';
 var P = require('bluebird');
-var StripeReferenceFinder = require('./stripe-reference-finder');
-var SchemaUtils = require('../utils/schema');
 
-function StripePaymentsFinder(secretKey, reference, params, opts) {
-  var stripe = require('stripe')(secretKey);
-  var customer = null;
+function StripePaymentsFinder(params, opts) {
+  var stripe = require('stripe')(opts.integrations.stripe.apiKey);
+  var customerModel = null;
 
   function hasPagination() {
     return params.page && params.page.number;
@@ -29,11 +27,6 @@ function StripePaymentsFinder(secretKey, reference, params, opts) {
 
   function getCharges(query) {
     return new P(function (resolve, reject) {
-      if (customer) {
-        query.customer = customer[SchemaUtils.getReferenceField(reference)];
-        if (!query.customer) { return resolve([0, []]); }
-      }
-
       stripe.charges.list(query, function (err, charges) {
         if (err) { return reject(err); }
         // jshint camelcase: false
@@ -44,15 +37,30 @@ function StripePaymentsFinder(secretKey, reference, params, opts) {
 
   function getCustomer(customerId) {
     return new P(function (resolve, reject) {
+      if (customerId) {
+        return customerModel
+          .findById(customerId)
+          .lean()
+          .exec(function (err, customer) {
+            if (err) { return reject(err); }
+            resolve(customer);
+          });
+      } else {
+        resolve();
+      }
+    });
+  }
+
+  function getCustomerByUserField(userField) {
+    return new P(function (resolve, reject) {
+      if (!customerModel) { return resolve(null); }
+
       var query = {};
-      var Model = SchemaUtils.getReferenceModel(opts.mongoose, reference);
-      var referenceField = SchemaUtils.getReferenceField(reference);
+      query[opts.integrations.stripe.userField] = userField;
 
-      if (!Model) { return resolve(null); }
-
-      query[referenceField] = customerId;
-      Model
+      customerModel
         .findOne(query)
+        .lean()
         .exec(function (err, customer) {
           if (err) { return reject(err); }
           resolve(customer);
@@ -61,11 +69,12 @@ function StripePaymentsFinder(secretKey, reference, params, opts) {
   }
 
   this.perform = function () {
-    return new StripeReferenceFinder(secretKey, reference, params, opts)
-      .perform()
-      .then(function (lCustomer) {
-        customer = lCustomer;
+    var userCollectionName = opts.integrations.stripe.userCollection;
+    var userField = opts.integrations.stripe.userField;
+    customerModel = opts.mongoose.model(userCollectionName);
 
+    return getCustomer(params.recordId)
+      .then(function (customer) {
         var query = {
           limit: getLimit(),
           offset: getOffset(),
@@ -73,19 +82,26 @@ function StripePaymentsFinder(secretKey, reference, params, opts) {
           'include[]': 'total_count'
         };
 
-        return getCharges(query);
-      })
-      .spread(function (count, payments) {
-        return P
-          .map(payments, function (payment) {
-            return getCustomer(payment.customer)
-              .then(function (customer) {
-                payment.customer = customer;
+        if (customer) { query.customer = customer[userField]; }
+
+        return getCharges(query)
+          .spread(function (count, payments) {
+            return P
+              .map(payments, function (payment) {
+                if (customer) {
+                  payment.customer = customer;
+                } else {
+                  return getCustomerByUserField(payment.customer)
+                    .then(function (customer) {
+                      payment.customer = customer;
+                      return payment;
+                    });
+                }
                 return payment;
+              })
+              .then(function (payments) {
+                return [count, payments];
               });
-          })
-          .then(function (payments) {
-            return [count, payments];
           });
       });
   };

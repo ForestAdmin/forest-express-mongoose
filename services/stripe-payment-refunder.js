@@ -1,8 +1,8 @@
 'use strict';
 var P = require('bluebird');
 
-function StripePaymentRefunder(params) {
-  var stripe = require('stripe')(params.parameters.stripeSecretKey);
+function StripePaymentRefunder(params, opts) {
+  var stripe = require('stripe')(opts.integrations.stripe.apiKey);
 
   function refund(chargeId) {
     return new P(function (resolve, reject) {

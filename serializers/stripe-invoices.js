@@ -17,12 +17,6 @@ function StripeInvoicesSerializer(invoices, customerCollectionName, meta) {
 
   invoices = invoices.map(function (invoice) {
     // jshint camelcase: false
-
-    if (invoice.customer) {
-      invoice.customer = invoice.customer.toJSON();
-      invoice.customer.id = invoice.customer._id;
-    }
-
     invoice.date =  new Date(invoice.date * 1000);
 
     if (invoice.period_start) {
@@ -45,7 +39,7 @@ function StripeInvoicesSerializer(invoices, customerCollectionName, meta) {
       'subtotal', 'total', 'application_fee', 'tax', 'tax_percent',
       'customer'],
     customer: {
-      ref: 'id',
+      ref: '_id',
       attributes: customerAttributes
     },
     keyForAttribute: function (key) {

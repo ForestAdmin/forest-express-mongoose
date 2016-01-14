@@ -16,11 +16,6 @@ function StripePaymentsSerializer(payments, customerCollectionName, meta) {
   var customerAttributes = getCustomerAttributes();
 
   payments = payments.map(function (payment) {
-    if (payment.customer) {
-      payment.customer = payment.customer.toJSON();
-      payment.customer.id = payment.customer._id;
-    }
-
     if (payment.created) {
       payment.created =  new Date(payment.created * 1000);
     }
@@ -34,7 +29,7 @@ function StripePaymentsSerializer(payments, customerCollectionName, meta) {
     attributes: ['created', 'status', 'amount', 'currency', 'refunded',
       'customer', 'description'],
     customer: {
-      ref: 'id',
+      ref: '_id',
       attributes: customerAttributes
     },
     keyForAttribute: function (key) {

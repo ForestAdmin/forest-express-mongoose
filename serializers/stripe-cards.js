@@ -9,17 +9,12 @@ function StripeCardsSerializer(cards, customerCollectionName, meta) {
   function getCustomerAttributes() {
     if (!cards.length) { return []; }
 
-    var schema = Schemas.schemas[cards[0].customer.collection.name];
+    var schema = Schemas.schemas[customerCollectionName];
+    if (!schema) { return []; }
     return _.map(schema.fields, 'field');
   }
 
   var customerAttributes = getCustomerAttributes();
-
-  cards = cards.map(function (card) {
-    card.customer = card.customer.toJSON();
-    card.customer.id = card.customer._id;
-    return card;
-  });
 
   return new JSONAPISerializer('stripe-cards', cards, {
     attributes: ['last4', 'brand', 'funding', 'exp_month', 'exp_year',

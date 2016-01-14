@@ -1,11 +1,9 @@
 'use strict';
 var P = require('bluebird');
-var StripeReferenceFinder = require('./stripe-reference-finder');
-var SchemaUtils = require('../utils/schema');
 
-function StripeCardsFinder(secretKey, reference, params, opts) {
-  var stripe = require('stripe')(secretKey);
-  var customer = null;
+function StripeCardsFinder(params, opts) {
+  var stripe = require('stripe')(opts.integrations.stripe.apiKey);
+  var customerModel = null;
 
   function hasPagination() {
     return params.page && params.page.number;
@@ -41,15 +39,30 @@ function StripeCardsFinder(secretKey, reference, params, opts) {
 
   function getCustomer(customerId) {
     return new P(function (resolve, reject) {
+      if (customerId) {
+        return customerModel
+          .findById(customerId)
+          .lean()
+          .exec(function (err, customer) {
+            if (err) { return reject(err); }
+            resolve(customer);
+          });
+      } else {
+        resolve();
+      }
+    });
+  }
+
+  function getCustomerByUserField(userField) {
+    return new P(function (resolve, reject) {
+      if (!customerModel) { return resolve(null); }
+
       var query = {};
-      var Model = SchemaUtils.getReferenceModel(opts.mongoose, reference);
-      var referenceField = SchemaUtils.getReferenceField(reference);
+      query[opts.integrations.stripe.userField] = userField;
 
-      if (!Model) { return resolve(null); }
-
-      query[referenceField] = customerId;
-      Model
+      customerModel
         .findOne(query)
+        .lean()
         .exec(function (err, customer) {
           if (err) { return reject(err); }
           resolve(customer);
@@ -58,31 +71,31 @@ function StripeCardsFinder(secretKey, reference, params, opts) {
   }
 
   this.perform = function () {
-    return new StripeReferenceFinder(secretKey, reference, params, opts)
-      .perform()
-      .then(function (lCustomer) {
-        customer = lCustomer;
-        var referenceField = SchemaUtils.getReferenceField(reference);
+    var userCollectionName = opts.integrations.stripe.userCollection;
+    var userField = opts.integrations.stripe.userField;
+    customerModel = opts.mongoose.model(userCollectionName);
 
+    return getCustomer(params.recordId)
+      .then(function (customer) {
         var query = {
           limit: getLimit(),
           offset: getOffset(),
           'include[]': 'total_count'
         };
 
-        return getCards(customer[referenceField], query);
-      })
-      .spread(function (count, cards) {
-        return P
-          .map(cards, function (card) {
-            return getCustomer(card.customer)
-              .then(function (customer) {
-                card.customer = customer;
-                return card;
+        return getCards(customer[userField], query)
+          .spread(function (count, cards) {
+            return P
+              .map(cards, function (card) {
+                return getCustomerByUserField(card.customer)
+                  .then(function (customer) {
+                    card.customer = customer;
+                    return card;
+                  });
+              })
+              .then(function (cards) {
+                return [count, cards];
               });
-          })
-          .then(function (cards) {
-            return [count, cards];
           });
       });
   };
