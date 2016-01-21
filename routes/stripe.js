@@ -43,7 +43,7 @@ module.exports = function (app, model, opts) {
   };
 
   this.stripeInvoices = function (req, res, next) {
-    new StripeInvoicesFinder(req.query, opts)
+    new StripeInvoicesFinder(_.extend(req.query, req.params), opts)
       .perform()
       .spread(function (count, invoices) {
         return new StripeInvoicesSerializer(invoices, modelName, {

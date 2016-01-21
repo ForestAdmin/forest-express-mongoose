@@ -3,7 +3,6 @@ var P = require('bluebird');
 var _ = require('lodash');
 var flat = require('flat');
 var Inflector = require('inflected');
-//var logger = require('../services/logger');
 
 module.exports = function (model, opts) {
   var fields = [];
@@ -151,7 +150,8 @@ module.exports = function (model, opts) {
       type: ['String'],
       reference: 'stripe_payments.id',
       column: null,
-      isSearchable: false
+      isSearchable: false,
+      integration: 'stripe'
     });
 
     fields.push({
@@ -159,7 +159,8 @@ module.exports = function (model, opts) {
       type: ['String'],
       reference: 'stripe_invoices.id',
       column: null,
-      isSearchable: false
+      isSearchable: false,
+      integration: 'stripe'
     });
 
     fields.push({
@@ -167,7 +168,8 @@ module.exports = function (model, opts) {
       type: ['String'],
       reference: 'stripe_cards.id',
       column: null,
-      isSearchable: false
+      isSearchable: false,
+      integration: 'stripe'
     });
   }
 
@@ -182,7 +184,8 @@ module.exports = function (model, opts) {
       type: ['String'],
       reference: 'intercom_conversations.id',
       column: 'null',
-      isSearchable: false
+      isSearchable: false,
+      integration: 'intercom'
     });
 
     fields.push({
@@ -190,7 +193,8 @@ module.exports = function (model, opts) {
       type: 'String',
       reference: 'intercom_attributes.id',
       column: 'null',
-      isSearchable: false
+      isSearchable: false,
+      integration: 'intercom'
     });
   }
 
@@ -201,11 +205,13 @@ module.exports = function (model, opts) {
       fields.push(schema);
     })
     .then(function () {
-      if (hasStripeIntegration()) {
+      if (hasStripeIntegration() &&
+        opts.integrations.stripe.userCollection === model.modelName) {
         setupStripeIntegration();
       }
 
-      if (hasIntercomIntegration()) {
+      if (hasIntercomIntegration() &&
+        opts.integrations.intercom.userCollection === model.modelName) {
         setupIntercomIntegration();
       }
 

@@ -33,22 +33,6 @@ function ResourceSerializer(model, records, opts, meta) {
       opts.integrations.intercom.apiKey && opts.integrations.intercom.appId;
   }
 
-  if (hasStripeIntegration()) {
-    // jshint camelcase: false
-    if (_.isArray(records)) {
-      records = records.map(function (record) {
-        record.stripe_payments = [];
-        record.stripe_invoices = [];
-        record.stripe_cards = [];
-        return record;
-      });
-    } else {
-      records.stripe_payments = [];
-      records.stripe_invoices = [];
-      records.stripe_cards = [];
-    }
-  }
-
   if (hasIntercomIntegration()) {
     // jshint camelcase: false
     if (_.isArray(records)) {
@@ -68,8 +52,7 @@ function ResourceSerializer(model, records, opts, meta) {
 
     function getAttributesFor(dest, fields) {
       _.map(fields, function (field) {
-        if (hasIntercomIntegration() && ['intercom_conversations',
-          'intercom_attributes'].indexOf(field.field) > -1) {
+        if (hasIntercomIntegration() && field.integration === 'intercom') {
           dest[field.field] = {
             ref: '_id',
             attributes: [],
@@ -85,8 +68,7 @@ function ResourceSerializer(model, records, opts, meta) {
               }
             }
           };
-        } else if (hasStripeIntegration() && ['stripe_payments', 'stripe_invoices',
-         'stripe_cards'].indexOf(field.field) > -1) {
+        } else if (hasStripeIntegration() && field.integration === 'stripe') {
           dest[field.field] = {
             ref: '_id',
             attributes: [],

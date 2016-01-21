@@ -35,7 +35,7 @@ function StripeInvoicesFinder(params, opts) {
     });
   }
 
-  function getCustomer(customerId) {
+  function getCustomer(customerId, userField) {
     return new P(function (resolve, reject) {
       if (customerId) {
         return customerModel
@@ -43,6 +43,8 @@ function StripeInvoicesFinder(params, opts) {
           .lean()
           .exec(function (err, customer) {
             if (err) { return reject(err); }
+            if (!customer || !customer[userField]) { return reject(); }
+
             resolve(customer);
           });
       } else {
@@ -73,7 +75,7 @@ function StripeInvoicesFinder(params, opts) {
     var userField = opts.integrations.stripe.userField;
     customerModel = opts.mongoose.model(userCollectionName);
 
-    return getCustomer(params.recordId)
+    return getCustomer(params.recordId, userField)
       .then(function (customer) {
         var query = {
           limit: getLimit(),
@@ -102,6 +104,8 @@ function StripeInvoicesFinder(params, opts) {
                   return [count, invoices];
                 });
             });
+      }, function () {
+        return new P(function (resolve) { resolve([0, []]); });
       });
   };
 }

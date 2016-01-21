@@ -7,9 +7,12 @@ var ResourceUpdater = require('../services/resource-updater');
 var ResourceRemover = require('../services/resource-remover');
 var ResourceSerializer = require('../serializers/resource');
 var ResourceDeserializer = require('../deserializers/resource');
+var ActivityLogLogger = require('../services/activity-log-logger');
 var auth = require('../services/auth');
 
 module.exports = function (app, model, opts) {
+  var modelName = Inflector.pluralize(model.modelName).toLowerCase();
+
   this.list = function (req, res, next) {
     return new ResourcesFinder(model, opts, req.query)
       .perform()
@@ -43,6 +46,11 @@ module.exports = function (app, model, opts) {
         return new ResourceCreator(model, params).perform();
       })
       .then(function (record) {
+        new ActivityLogLogger(opts).perform(req.user, 'created', modelName,
+          record._id);
+        return record;
+      })
+      .then(function (record) {
         return new ResourceSerializer(model, record, opts)
           .perform();
       })
@@ -59,11 +67,17 @@ module.exports = function (app, model, opts) {
         new ResourceUpdater(model, params)
           .perform()
           .then(function (record) {
+            new ActivityLogLogger(opts).perform(req.user, 'updated', modelName,
+              record._id);
+            return record;
+          })
+          .then(function (record) {
             return new ResourceSerializer(model, record, opts)
               .perform();
           })
           .then(function (record) {
             res.send(record);
+            return record;
           })
           .catch(next);
       });
@@ -73,14 +87,17 @@ module.exports = function (app, model, opts) {
     new ResourceRemover(model, req.params)
       .perform()
       .then(function () {
+        new ActivityLogLogger(opts).perform(req.user, 'deleted', modelName,
+          req.params.recordId);
+        return;
+      })
+      .then(function () {
         res.status(204).send();
       })
       .catch(next);
   };
 
   this.perform = function () {
-    var modelName = Inflector.pluralize(model.modelName).toLowerCase();
-
     app.get('/forest/' + modelName, auth.ensureAuthenticated, this.list);
 
     app.get('/forest/' + modelName + '/:recordId', auth.ensureAuthenticated,
