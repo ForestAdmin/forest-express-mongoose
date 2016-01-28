@@ -176,8 +176,7 @@ exports.init = function (opts) {
 
   // CORS
   app.use(cors({
-    allowedOrigins: ['http://localhost:4200', 'https://www.forestadmin.com',
-      'http://www.forestadmin.com'],
+    allowedOrigins: ['localhost:4200', '*.forestadmin.com'],
       headers: ['Authorization', 'X-Requested-With', 'Content-Type',
         'Stripe-Reference']
   }));
