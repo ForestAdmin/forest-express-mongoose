@@ -8,6 +8,8 @@ module.exports = function (model, opts) {
   var fields = [];
   var paths = flat.unflatten(model.schema.paths);
   var mongoose = opts.mongoose;
+  // mongoose.base is used when opts.mongoose is not the default connection.
+  var Schema = mongoose.Schema || mongoose.base.Schema;
 
   function objectType(object, getType) {
     var type = { fields: [] };
@@ -52,7 +54,7 @@ module.exports = function (model, opts) {
       });
     } else if (_.isFunction(type) && type.name === 'ObjectId') {
       return 'String';
-    } else if (type instanceof mongoose.Schema) {
+    } else if (type instanceof Schema) {
       return schemaType(type);
     }
 
@@ -79,7 +81,7 @@ module.exports = function (model, opts) {
       if (opts.caster.instance) {
         return [getTypeFromMongoose(opts.caster)];
       } else {
-        if (opts.options.type[0] instanceof mongoose.Schema) {
+        if (opts.options.type[0] instanceof Schema) {
           // Schema
           return [schemaType(opts.options.type[0])];
         } else {
