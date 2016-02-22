@@ -36,8 +36,6 @@ function ResourceCreator(Model, params) {
   }
 
   this.perform = function () {
-    console.log('ICIII');
-    console.log(require('util').inspect(params, { depth: null }));
     return create()
       .then(function (record) {
         return fetch(record);

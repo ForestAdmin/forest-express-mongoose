@@ -10,13 +10,12 @@ function ActivityLogLogger(opts) {
 
   this.perform = function (user, action, collectionName, resource) {
     var json = {
-      session: user.session,
       action: action,
       collection: collectionName,
       resource: resource
     };
 
-    var token = jwt.sign({}, opts.jwtSigningKey);
+    var token = jwt.sign(user, opts.jwtSigningKey);
 
     var forestUrl = process.env.FOREST_URL ||
       'https://forestadmin-server.herokuapp.com';
