@@ -12,10 +12,12 @@ var AssociationsRoutes = require('./routes/associations');
 var StripeRoutes = require('./routes/stripe');
 var IntercomRoutes = require('./routes/intercom');
 var StatRoutes = require('./routes/stats');
+var SessionRoute = require('./routes/sessions');
 var Schemas = require('./generators/schemas');
 var JSONAPISerializer = require('jsonapi-serializer');
 var request = require('superagent');
 var logger = require('./services/logger');
+var allowedUsers = require('./services/auth').allowedUsers;
 
 function requireAllModels(modelsDir, opts) {
   return fs.readdirAsync(modelsDir)
@@ -174,6 +176,14 @@ exports.init = function (opts) {
 
   var app = express();
 
+  if (opts.jwtSigningKey) {
+    console.warn('DEPRECATION WARNING: the use of jwtSigningKey option is ' +
+    'deprecated. Use secret_key and auth_key instead. More info at: ' +
+    'https://github.com/ForestAdmin/forest-express-mongoose/releases/tag/0.1.0');
+    opts.authKey = opts.jwtSigningKey;
+    opts.secretKey = opts.jwtSigningKey;
+  }
+
   // CORS
   app.use(cors({
     allowedOrigins: ['localhost:4200', '*.forestadmin.com'],
@@ -186,9 +196,11 @@ exports.init = function (opts) {
 
   // Authentication
   app.use(jwt({
-    secret: opts.jwtSigningKey,
+    secret: opts.authKey,
     credentialsRequired: false
   }));
+
+  new SessionRoute(app, opts).perform();
 
   // Init
   var absModelDirs = path.resolve('.', opts.modelsDir);
@@ -211,7 +223,7 @@ exports.init = function (opts) {
       new StatRoutes(app, model, opts).perform();
     })
     .then(function () {
-      if (opts.jwtSigningKey) {
+      if (opts.authKey) {
         var collections = _.values(Schemas.schemas);
 
         if (hasStripeIntegration()) {
@@ -246,12 +258,19 @@ exports.init = function (opts) {
         request
           .post(forestUrl + '/forest/apimaps')
             .send(json)
-            .set('forest-secret-key', opts.jwtSigningKey)
+            .set('forest-secret-key', opts.secretKey)
             .end(function(err, res) {
-              if (res.status !== 204) {
+              if (res.status !== 200) {
                 logger.debug('Forest cannot find your project secret key. ' +
                   'Please, ensure you have installed the Forest Liana ' +
                   'correctly.');
+              } else {
+                res.body.data.forEach(function (d) {
+                  var user = d.attributes;
+                  user.id = d.id;
+
+                  allowedUsers.push(user);
+                });
               }
             });
       }

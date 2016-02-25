@@ -8,3 +8,5 @@ exports.ensureAuthenticated = function (req, res, next) {
     return next(new error.Unauthorized('Bad JWT token.'));
   }
 };
+
+exports.allowedUsers = [];

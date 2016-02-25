@@ -15,6 +15,7 @@
     "url": "git://github.com/ForestAdmin/forest-express-mongoose.git"
   },
   "dependencies": {
+    "bcryptjs": "^2.3.0",
     "bluebird": "^2.9.25",
     "body-parser": "^1.13.1",
     "express": "^4.12.4",

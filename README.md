@@ -9,7 +9,8 @@ The official Express/Mongoose liana for Forest.
 ```javascript
 app.use(require('forest-express-mongoose').init({
   modelsDir: __dirname + '/models',  // The directory where all of your Mongoose models are defined.
-  jwtSigningKey: 'ultrasecretkey', // The secret key given my Forest.
+  secretKey: 'ultrasecretkey', // The secret key given my Forest.
+  authKey: 'catsOnKeyboard', // Choose an secret authentication key.
   mongoose: require('mongoose') // The mongoose instance given by require('mongoose').
 }));
 ```
