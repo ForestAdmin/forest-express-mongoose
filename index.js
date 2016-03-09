@@ -192,7 +192,7 @@ exports.init = function (opts) {
   }));
 
   // Mime type
-  app.use(bodyParser.json({type: 'application/vnd.api+json'}));
+  app.use(bodyParser.json());
 
   // Authentication
   app.use(jwt({
@@ -268,6 +268,8 @@ exports.init = function (opts) {
                 res.body.data.forEach(function (d) {
                   var user = d.attributes;
                   user.id = d.id;
+                  user.outlines = d.relationships.outlines.data.map(
+                    function (x) { return x.id; });
 
                   allowedUsers.push(user);
                 });
