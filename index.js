@@ -13,6 +13,7 @@ var StripeRoutes = require('./routes/stripe');
 var IntercomRoutes = require('./routes/intercom');
 var StatRoutes = require('./routes/stats');
 var SessionRoute = require('./routes/sessions');
+var ForestRoutes = require('./routes/forest');
 var Schemas = require('./generators/schemas');
 var JSONAPISerializer = require('jsonapi-serializer');
 var request = require('superagent');
@@ -220,6 +221,9 @@ exports.init = function (opts) {
       new ResourcesRoutes(app, model, opts).perform();
       new AssociationsRoutes(app, model, opts).perform();
       new StatRoutes(app, model, opts).perform();
+    })
+    .then(function () {
+      new ForestRoutes(app, opts).perform();
     })
     .then(function () {
       if (opts.authKey) {
