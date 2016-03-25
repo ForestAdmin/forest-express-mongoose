@@ -1,5 +1,4 @@
 'use strict';
-var Inflector = require('inflected');
 var ResourcesFinder = require('../services/resources-finder');
 var ResourceFinder = require('../services/resource-finder');
 var ResourceCreator = require('../services/resource-creator');
@@ -11,7 +10,7 @@ var ActivityLogLogger = require('../services/activity-log-logger');
 var auth = require('../services/auth');
 
 module.exports = function (app, model, opts) {
-  var modelName = Inflector.pluralize(model.modelName).toLowerCase();
+  var modelName = model.collection.name;
 
   this.list = function (req, res, next) {
     return new ResourcesFinder(model, opts, req.query)
