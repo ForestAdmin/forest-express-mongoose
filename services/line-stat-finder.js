@@ -4,6 +4,7 @@ var P = require('bluebird');
 var Schemas = require('../generators/schemas');
 var FilterParser = require('./filter-parser');
 var SchemaUtils = require('../utils/schema');
+var moment = require('moment');
 
 // jshint sub: true
 function LineStatFinder(model, params, opts) {
@@ -43,13 +44,12 @@ function LineStatFinder(model, params, opts) {
       if (params['group_by_date_field']) {
         switch (params['time_range']) {
           case 'Day':
-            groupBy['day'] = { $dayOfMonth: '$' + params['group_by_date_field'] };
-            groupBy['month'] = { $month: '$' + params['group_by_date_field'] };
             groupBy['year'] = { $year: '$' + params['group_by_date_field'] };
+            groupBy['month'] = { $month: '$' + params['group_by_date_field'] };
+            groupBy['day'] = { $dayOfMonth: '$' + params['group_by_date_field'] };
             break;
           case 'Week':
             groupBy['week'] = { $week: '$' + params['group_by_date_field'] };
-            groupBy['month'] = { $month: '$' + params['group_by_date_field'] };
             groupBy['year'] = { $year: '$' + params['group_by_date_field'] };
             break;
           case 'Year':
@@ -92,7 +92,7 @@ function LineStatFinder(model, params, opts) {
         };
 
         group[params['group_by_date_field']] = {
-          $last: '$' + params['group_by_date_field']
+          $first: '$' + params['group_by_date_field']
         };
 
         query = query.group(group);
@@ -109,9 +109,43 @@ function LineStatFinder(model, params, opts) {
         })
         .exec(function (err, records) {
           if (err) { return reject(err); }
-          resolve( {value: records });
+          resolve(records);
         });
-    }).then(function (records) {
+    })
+    .then(function (records) {
+      if (!records.length) { return { value: [] }; }
+      var momentRange = params['time_range'].toLowerCase();
+
+      var firstDate = moment(records[0].label).startOf(momentRange);
+      var lastDate = moment(records[records.length - 1].label)
+        .add(1, momentRange)
+        .startOf(momentRange);
+
+      var recordsWithEmptyValues = [];
+      var i = firstDate;
+      var j = 0;
+
+      records = records.map(function (record) {
+        record.label = moment(record.label).startOf(momentRange).toISOString();
+        return record;
+      });
+
+      while (i < lastDate) {
+        var currentRecord = _.findWhere(records, { label: i.toISOString() });
+        var value = currentRecord ? currentRecord.values.value : 0;
+
+        recordsWithEmptyValues.push({
+          label: i.toISOString(),
+          values: { value: value }
+        });
+
+        i = i.add(1, momentRange);
+        ++j;
+      }
+
+      return { value: recordsWithEmptyValues };
+    })
+    .then(function (records) {
       if (populateGroupByField) {
         return handlePopulate(records, populateGroupByField);
       } else {
