@@ -30,6 +30,23 @@ function LineStatFinder(model, params, opts) {
     });
   }
 
+  function buildDate(record, momentRange) {
+    switch(momentRange) {
+      case 'day':
+        return moment.utc().year(record._id.year).month(record._id.month)
+          .day(record._id.day).startOf(momentRange);
+      case 'week':
+        return moment.utc().year(record._id.year).week(record._id.week)
+          .day('Monday').startOf(momentRange);
+      case 'month':
+        return moment.utc().year(record._id.year).month(record._id.month)
+          .day('Monday').startOf(momentRange);
+      case 'year':
+        return moment.utc().year(record._id.year).day('Monday')
+          .startOf(momentRange);
+    }
+  }
+
   this.perform = function () {
     var populateGroupByField = getReference(params['group_by_field']);
 
@@ -100,12 +117,10 @@ function LineStatFinder(model, params, opts) {
 
       query.sort(sort)
         .project({
-          label: '$' + params['group_by_date_field'],
           values: {
             key: '$_id.'+  params['group_by_field'],
             value: '$count'
           },
-          _id: false
         })
         .exec(function (err, records) {
           if (err) { return reject(err); }
@@ -116,17 +131,16 @@ function LineStatFinder(model, params, opts) {
       if (!records.length) { return { value: [] }; }
       var momentRange = params['time_range'].toLowerCase();
 
-      var firstDate = moment(records[0].label).startOf(momentRange);
-      var lastDate = moment(records[records.length - 1].label)
-        .add(1, momentRange)
-        .startOf(momentRange);
+      var firstDate = buildDate(records[0], momentRange);
+      var lastDate = buildDate(records[records.length - 1], momentRange)
+        .add(1, momentRange);
 
       var recordsWithEmptyValues = [];
       var i = firstDate;
       var j = 0;
 
       records = records.map(function (record) {
-        record.label = moment(record.label).startOf(momentRange).toISOString();
+        record.label = buildDate(record, momentRange).toISOString();
         return record;
       });
 
