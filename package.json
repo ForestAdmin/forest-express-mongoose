@@ -1,11 +1,11 @@
 {
   "name": "forest-express-mongoose",
-  "version": "0.1.7",
+  "version": "0.2.0",
   "description": "Forest connector for Expressjs and Mongoose",
   "main": "index.js",
   "scripts": {
     "test-mongoose-3": "npm install mongoose@3.8.8 && ./node_modules/mocha/bin/mocha",
-    "test-mongoose-4": "npm install mongoose@4.0.4 && ./node_modules/mocha/bin/mocha",
+    "test-mongoose-4": "npm install mongoose@latest && ./node_modules/mocha/bin/mocha",
     "test": "npm run test-mongoose-3 && npm run test-mongoose-4"
   },
   "author": "Sandro Munda <sandro@munda.me>",
@@ -22,15 +22,12 @@
     "express-cors": "0.0.3",
     "express-jwt": "^3.0.1",
     "flat": "^1.6.0",
-    "inflected": "^1.1.6",
-    "intercom-client": "^2.6.0",
-    "jsonapi-serializer": "2.0.4",
+    "forest-express": "latest",
     "jsonwebtoken": "^5.5.4",
     "lodash": "^3.9.3",
     "moment": "^2.10.6",
     "node-uuid": "^1.4.3",
     "semver": "^4.3.6",
-    "stripe": "^4.0.0",
     "superagent": "^1.4.0",
     "useragent": "^2.1.8",
     "winston": "^1.0.2"

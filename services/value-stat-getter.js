@@ -3,7 +3,7 @@ var _ = require('lodash');
 var P = require('bluebird');
 var FilterParser = require('./filter-parser');
 
-function ValueStatFinder(model, params, opts) {
+function ValueStatGetter(model, params, opts) {
 
   function getAggregateField() {
     // jshint sub: true
@@ -33,4 +33,4 @@ function ValueStatFinder(model, params, opts) {
   };
 }
 
-module.exports = ValueStatFinder;
+module.exports = ValueStatGetter;

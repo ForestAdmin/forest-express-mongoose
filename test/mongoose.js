@@ -265,7 +265,7 @@ describe('SchemaAdapter', function () {
           expect(schema).to.have.deep.property('fields[0].type')
             .eql(['String']);
           expect(schema).to.have.deep.property('fields[0].reference')
-            .eql('users._id');
+            .eql('User._id');
 
           done(null);
         });
@@ -424,7 +424,7 @@ describe('SchemaAdapter', function () {
           expect(schema.fields[0].type.fields[0]).eql({
             field: 'bar',
             type: 'String',
-            reference: 'users._id'
+            reference: 'User._id'
           });
 
           done(null);
@@ -442,7 +442,7 @@ describe('SchemaAdapter', function () {
       return new SchemaAdapter(model, { mongoose: mongoose })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
-          expect(schema).to.have.deep.property('fields[0].reference', 'bars._id');
+          expect(schema).to.have.deep.property('fields[0].reference', 'Bar._id');
 
           done(null);
         });
@@ -459,7 +459,7 @@ describe('SchemaAdapter', function () {
       return new SchemaAdapter(model, { mongoose: mongoose })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
-          expect(schema.fields[0].reference).eql('bars._id');
+          expect(schema.fields[0].reference).eql('Bar._id');
 
           done(null);
         });

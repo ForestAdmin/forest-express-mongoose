@@ -1,10 +1,10 @@
 'use strict';
 var P = require('bluebird');
 var _ = require('lodash');
-var Schemas = require('../generators/schemas');
+var Interface = require('forest-express');
 
 function ResourceCreator(Model, params) {
-  var schema = Schemas.schemas[Model.collection.name];
+  var schema = Interface.Schemas.schemas[Model.modelName];
 
   function create() {
     return new P(function (resolve, reject) {

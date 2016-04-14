@@ -1,9 +1,9 @@
 'use strict';
 var _ = require('lodash');
 var P = require('bluebird');
-var Schemas = require('../generators/schemas');
+var Interface = require('forest-express');
 
-function HasManyFinder(model, association, opts, params) {
+function HasManyGetter(model, association, opts, params) {
   function count() {
     return new P(function (resolve, reject) {
       model.findById(params.recordId)
@@ -15,7 +15,7 @@ function HasManyFinder(model, association, opts, params) {
   }
 
   function handlePopulate(query) {
-    var schema = Schemas.schemas[association.collection.name];
+    var schema = Interface.Schemas.schemas[association.modelName];
 
     _.each(schema.fields, function (field) {
       if (field.reference) {
@@ -74,4 +74,4 @@ function HasManyFinder(model, association, opts, params) {
   };
 }
 
-module.exports = HasManyFinder;
+module.exports = HasManyGetter;

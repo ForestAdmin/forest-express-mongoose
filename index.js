@@ -1,291 +1,91 @@
 'use strict';
 var P = require('bluebird');
-var _ = require('lodash');
-var express = require('express');
-var path = require('path');
-var fs = P.promisifyAll(require('fs'));
-var cors = require('express-cors');
-var bodyParser = require('body-parser');
-var jwt = require('express-jwt');
-var ResourcesRoutes = require('./routes/resources');
-var AssociationsRoutes = require('./routes/associations');
-var StripeRoutes = require('./routes/stripe');
-var IntercomRoutes = require('./routes/intercom');
-var StatRoutes = require('./routes/stats');
-var SessionRoute = require('./routes/sessions');
-var ForestRoutes = require('./routes/forest');
-var Schemas = require('./generators/schemas');
-var JSONAPISerializer = require('jsonapi-serializer');
-var request = require('superagent');
-var logger = require('./services/logger');
+var Interface = require('forest-express');
 
-function requireAllModels(modelsDir, opts) {
-  return fs.readdirAsync(modelsDir)
-    .each(function (file) {
-      try {
-        require(path.join(modelsDir, file));
-      } catch (e) { }
-    })
-    .then(function () {
-      return _.values(opts.mongoose.models);
-    });
-}
+exports.collection = Interface.collection;
+exports.ensureAuthenticated = Interface.ensureAuthenticated;
+exports.StatSerializer = Interface.StatSerializer;
+exports.ResourceSerializer = Interface.ResourceSerializer;
 
-exports.init = function (opts) {
-  function hasStripeIntegration() {
-    return opts.integrations && opts.integrations.stripe &&
-      opts.integrations.stripe.apiKey;
-  }
+exports.init = function(opts) {
+  exports.opts = opts;
 
-  function setupStripeIntegration(apimap) {
-    // jshint camelcase: false
-    var Model = opts.mongoose.model(opts.integrations.stripe.userCollection);
-    var referenceName = Model.collection.collectionName + '.id';
+  exports.SchemaAdapter = require('./adapters/mongoose');
 
-    apimap.push({
-      name: 'stripe_payments',
-      isVirtual: true,
-      isReadOnly: true,
-      fields: [
-        { field: 'id', type: 'String', isSearchable: false },
-        { field: 'created', type: 'Date', isSearchable: false },
-        { field: 'amount', type: 'Number', isSearchable: false },
-        { field: 'status', type: 'String', isSearchable: false },
-        { field: 'currency', type: 'String', isSearchable: false },
-        { field: 'refunded', type: 'Boolean', isSearchable: false },
-        { field: 'description', type: 'String', isSearchable: false },
-        {
-          field: 'customer',
-          type: 'String',
-          reference: referenceName,
-          'isSearchable': false
-        }
-      ],
-      actions: [{
-        name: 'Refund',
-        endpoint: '/forest/stripe_payments/refunds'
-      }]
-    });
+  exports.getModels = function () {
+    return opts.mongoose.models;
+  };
 
-    apimap.push({
-      name: 'stripe_invoices',
-      isVirtual: true,
-      isReadOnly: true,
-      fields: [
-        { field: 'id', type: 'String', isSearchable: false },
-        { field: 'amount_due', type: 'Number', isSearchable: false },
-        { field: 'attempt_count', type: 'Number', isSearchable: false },
-        { field: 'attempted', type: 'Boolean', isSearchable: false },
-        { field: 'closed', type: 'Boolean', isSearchable: false },
-        { field: 'currency', type: 'String', isSearchable: false },
-        { field: 'date', type: 'Date', isSearchable: false },
-        { field: 'forgiven', type: 'Boolean', isSearchable: false },
-        { field: 'period_start', type: 'Date', isSearchable: false },
-        { field: 'period_end', type: 'Date', isSearchable: false },
-        { field: 'subtotal', type: 'Number', isSearchable: false },
-        { field: 'total', type: 'Number', isSearchable: false },
-        { field: 'application_fee', type: 'Number', isSearchable: false },
-        { field: 'tax', type: 'Number', isSearchable: false },
-        { field: 'tax_percent', type: 'Number', isSearchable: false },
-        {
-          field: 'customer',
-          type: 'String',
-          reference: referenceName,
-          isSearchable: false
-        }
-      ]
-    });
+  exports.getModelName = function (model) {
+    return model.modelName;
+  };
 
-    apimap.push({
-      name: 'stripe_cards',
-      isVirtual: true,
-      isReadOnly: true,
-      onlyForRelationships: true,
-      fields: [
-        { field: 'id', type: 'String', isSearchable: false },
-        { field: 'last4', type: 'String', isSearchable: false },
-        { field: 'brand', type: 'String', isSearchable: false },
-        { field: 'funding', type: 'String', isSearchable: false },
-        { field: 'exp_month', type: 'Number', isSearchable: false },
-        { field: 'exp_year', type: 'Number', isSearchable: false },
-        { field: 'country', type: 'String', isSearchable: false },
-        { field: 'name', type: 'String', isSearchable: false },
-        { field: 'address_line1', type: 'String', isSearchable: false },
-        { field: 'address_line2', type: 'String', isSearchable: false },
-        { field: 'address_city', type: 'String', isSearchable: false },
-        { field: 'address_state', type: 'String', isSearchable: false },
-        { field: 'address_zip', type: 'String', isSearchable: false },
-        { field: 'address_country', type: 'String', isSearchable: false },
-        { field: 'cvc_check', type: 'String', isSearchable: false },
-        {
-          field: 'customer',
-          type: 'String',
-          reference: referenceName,
-          isSearchable: false
-        }
-      ]
-    });
-  }
+  exports.ResourcesGetter = require('./services/resources-getter');
+  exports.ResourceGetter = require('./services/resource-getter');
+  exports.ResourceCreator = require('./services/resource-creator');
+  exports.ResourceUpdater = require('./services/resource-updater');
+  exports.ResourceRemover = require('./services/resource-remover');
 
-  function hasIntercomIntegration() {
-    return opts.integrations && opts.integrations.intercom &&
-      opts.integrations.intercom.apiKey && opts.integrations.intercom.appId;
-  }
+  exports.HasManyGetter = require('./services/has-many-getter');
 
-  function setupIntercomIntegration(apimap) {
-    // jshint camelcase: false
-    apimap.push({
-      name: 'intercom_conversations',
-      onlyForRelationships: true,
-      isVirtual: true,
-      fields: [
-        { field: 'subject', type: 'String' },
-        { field: 'body', type: ['String'], widget: 'link' },
-        { field: 'open', type: 'Boolean'},
-        { field: 'read', type: 'Boolean'},
-        { field: 'assignee', type: 'String' }
-      ]
-    });
+  exports.ValueStatGetter = require('./services/value-stat-getter');
+  exports.PieStatGetter = require('./services/pie-stat-getter');
+  exports.LineStatGetter = require('./services/line-stat-getter');
 
-    apimap.push({
-      name: 'intercom_attributes',
-      onlyForRelationships: true,
-      isVirtual: true,
-      fields: [
-        { field: 'created_at', type: 'Date', isSearchable: false },
-        { field: 'updated_at', type: 'Date', isSearchable: false  },
-        { field: 'session_count', type: 'Number', isSearchable: false  },
-        { field: 'last_seen_ip', type: 'String', isSearchable: false  },
-        { field: 'signed_up_at', type: 'Date', isSearchable: false  },
-        { field: 'country', type: 'String', isSearchable: false  },
-        { field: 'city', type: 'String', isSearchable: false  },
-        { field: 'browser', type: 'String', isSearchable: false  },
-        { field: 'platform', type: 'String', isSearchable: false  },
-        { field: 'companies', type: 'String', isSearchable: false  },
-        { field: 'segments', type: 'String', isSearchable: false  },
-        { field: 'tags', type: 'String', isSearchable: false  },
-        {
-          field: 'geoloc',
-          type: 'String',
-          widget: 'google map',
-          isSearchable: false
-        }
-      ]
-    });
-  }
+  exports.Stripe = {
+    getCustomer: function (customerModel, customerId, userField) {
+      return new P(function (resolve, reject) {
+        if (customerId) {
+          return customerModel
+            .findById(customerId)
+            .lean()
+            .exec(function (err, customer) {
+              if (err) { return reject(err); }
+              if (!customer || !customer[userField]) { return reject(); }
 
-  var app = express();
-
-  if (opts.jwtSigningKey) {
-    console.warn('DEPRECATION WARNING: the use of jwtSigningKey option is ' +
-    'deprecated. Use secret_key and auth_key instead. More info at: ' +
-    'https://github.com/ForestAdmin/forest-express-mongoose/releases/tag/0.1.0');
-    opts.authKey = opts.jwtSigningKey;
-    opts.secretKey = opts.jwtSigningKey;
-  }
-
-  // CORS
-  app.use(cors({
-    allowedOrigins: ['localhost:4200', '*.forestadmin.com'],
-      headers: ['Authorization', 'X-Requested-With', 'Content-Type',
-        'Stripe-Reference']
-  }));
-
-  // Mime type
-  app.use(bodyParser.json());
-
-  // Authentication
-  app.use(jwt({
-    secret: opts.authKey,
-    credentialsRequired: false
-  }));
-
-  new SessionRoute(app, opts).perform();
-
-  // Init
-  var absModelDirs = path.resolve('.', opts.modelsDir);
-  requireAllModels(absModelDirs, opts)
-    .then(function (models) {
-      return Schemas.perform(models, opts)
-        .then(function () {
-          return requireAllModels(absModelDirs + '/forest', opts)
-            .catch(function () {
-              // The forest/ directory does not exist. It's not a problem.
+              resolve(customer);
             });
-        })
-        .thenReturn(models);
-    })
-    .each(function (model) {
-      new StripeRoutes(app, model, opts).perform();
-      new IntercomRoutes(app, model, opts).perform();
-      new ResourcesRoutes(app, model, opts).perform();
-      new AssociationsRoutes(app, model, opts).perform();
-      new StatRoutes(app, model, opts).perform();
-    })
-    .then(function () {
-      new ForestRoutes(app, opts).perform();
-    })
-    .then(function () {
-      if (opts.authKey) {
-        var collections = _.values(Schemas.schemas);
-
-        if (hasStripeIntegration()) {
-          setupStripeIntegration(collections);
+        } else {
+          resolve();
         }
+      });
+    },
+    getCustomerByUserField: function (customerModel, userField) {
+      return new P(function (resolve, reject) {
+        if (!customerModel) { return resolve(null); }
 
-        if (hasIntercomIntegration()) {
-          setupIntercomIntegration(collections);
+        var query = {};
+        query[opts.integrations.stripe.userField] = userField;
+
+        customerModel
+          .findOne(query)
+          .lean()
+          .exec(function (err, customer) {
+            if (err) { return reject(err); }
+            resolve(customer);
+          });
+      });
+    }
+  };
+
+  exports.Intercom = {
+    getCustomer: function (userModel, customerId) {
+      return new P(function (resolve, reject) {
+        if (customerId) {
+          return userModel
+          .findById(customerId)
+          .lean()
+          .exec(function (err, customer) {
+            if (err) { return reject(err); }
+            if (!customer) { return reject(); }
+            resolve(customer);
+          });
+        } else {
+          resolve();
         }
+      });
+    }
+  };
 
-        var json = new JSONAPISerializer('collections', collections, {
-          id: 'name',
-          attributes: ['name', 'fields', 'actions', 'onlyForRelationships',
-            'isVirtual', 'isReadOnly'],
-          fields: {
-            attributes: ['field', 'type', 'collection_name', 'reference',
-              'column', 'isSearchable', 'widget']
-          },
-          actions: {
-            ref: 'name',
-            attributes: ['name', 'endpoint', 'httpMethod']
-          },
-          meta: {
-            'liana': 'forest-express-mongoose',
-            'liana_version': require('./package.json').version
-          }
-        });
-
-        var forestUrl = process.env.FOREST_URL ||
-          'https://forestadmin-server.herokuapp.com';
-
-        request
-          .post(forestUrl + '/forest/apimaps')
-            .send(json)
-            .set('forest-secret-key', opts.secretKey)
-            .end(function(err, res) {
-              if (res.status !== 204) {
-                logger.debug('Forest cannot find your project secret key. ' +
-                  'Please, ensure you have installed the Forest Liana ' +
-                  'correctly.');
-              }
-            });
-      }
-    });
-
-  return app;
+  return Interface.init(exports);
 };
-
-exports.collection = function (name, opts) {
-  var collection = _.findWhere(Schemas.schemas, { name: name });
-
-  if (!collection) {
-    opts.name = name;
-    Schemas.schemas[name] = opts;
-  } else {
-    Schemas.schemas[name].actions = opts.actions;
-  }
-};
-
-exports.ensureAuthenticated = require('./services/auth').ensureAuthenticated;
-exports.StatSerializer = require('./serializers/stat') ;
-exports.ResourceSerializer = require('./serializers/resource') ;

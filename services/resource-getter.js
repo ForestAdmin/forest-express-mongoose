@@ -1,10 +1,10 @@
 'use strict';
 var P = require('bluebird');
 var _ = require('lodash');
-var Schemas = require('../generators/schemas');
+var Interface = require('forest-express');
 
-function ResourceFinder(model, params) {
-  var schema = Schemas.schemas[model.collection.name];
+function ResourceGetter(model, params) {
+  var schema = Interface.Schemas.schemas[model.modelName];
 
   function handlePopulate(query) {
     _.each(schema.fields, function (field) {
@@ -30,4 +30,4 @@ function ResourceFinder(model, params) {
   };
 }
 
-module.exports = ResourceFinder;
+module.exports = ResourceGetter;

@@ -1,16 +1,7 @@
 'use strict';
-var _ = require('lodash');
-var Inflector = require('inflected');
 
 exports.getReferenceModel = function (mongoose, reference) {
-  var referenceCollectionName = exports.getReferenceCollectionName(reference);
-  var modelName = Inflector.classify(referenceCollectionName);
-
-  var models = _.mapKeys(mongoose.models, function (value, key) {
-    return key.toLowerCase();
-  });
-
-  return models[modelName.toLowerCase()];
+  return mongoose.models[exports.getReferenceCollectionName(reference)];
 };
 
 exports.getReferenceField = function (reference) {

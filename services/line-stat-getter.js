@@ -1,14 +1,14 @@
 'use strict';
 var _ = require('lodash');
 var P = require('bluebird');
-var Schemas = require('../generators/schemas');
 var FilterParser = require('./filter-parser');
 var SchemaUtils = require('../utils/schema');
 var moment = require('moment');
+var Interface = require('forest-express');
 
 // jshint sub: true
 function LineStatFinder(model, params, opts) {
-  var schema = Schemas.schemas[model.collection.name];
+  var schema = Interface.Schemas.schemas[model.modelName];
 
   function getReference(fieldName) {
     if (!fieldName) { return null; }

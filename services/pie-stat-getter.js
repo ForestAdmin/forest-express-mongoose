@@ -1,13 +1,13 @@
 'use strict';
 var _ = require('lodash');
 var P = require('bluebird');
-var Schemas = require('../generators/schemas');
 var FilterParser = require('./filter-parser');
 var SchemaUtils = require('../utils/schema');
+var Interface = require('forest-express');
 
 // jshint sub: true
-function PieStatFinder(model, params, opts) {
-  var schema = Schemas.schemas[model.collection.name];
+function PieStatGetter(model, params, opts) {
+  var schema = Interface.Schemas.schemas[model.modelName];
 
   function getReference(fieldName) {
     var field = _.findWhere(schema.fields, { field: fieldName });
@@ -71,4 +71,4 @@ function PieStatFinder(model, params, opts) {
   };
 }
 
-module.exports = PieStatFinder;
+module.exports = PieStatGetter;

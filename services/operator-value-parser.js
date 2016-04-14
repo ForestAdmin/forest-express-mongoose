@@ -1,12 +1,12 @@
 'use strict';
 var _ = require('lodash');
-var Schemas = require('../generators/schemas');
 var moment = require('moment');
+var Interface = require('forest-express');
 
 function OperatorValueParser(opts) {
 
   this.perform = function (model, fieldName, value) {
-    var schema = Schemas.schemas[model.collection.name];
+    var schema = Interface.Schemas.schemas[model.modelName];
     var parseFct = function (val) { return val; };
     var ret = null;
 

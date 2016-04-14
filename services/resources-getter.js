@@ -1,12 +1,12 @@
 'use strict';
 var P = require('bluebird');
 var _ = require('lodash');
-var Schemas = require('../generators/schemas');
 var OperatorValueParser = require('./operator-value-parser');
 var FilterParser = require('./filter-parser');
+var Interface = require('forest-express');
 
-function ResourcesFinder(model, opts, params) {
-  var schema = Schemas.schemas[model.collection.name];
+function ResourcesGetter(model, opts, params) {
+  var schema = Interface.Schemas.schemas[model.modelName];
 
   function refilterBasedOnFilters(records) {
     return P.filter(records, function (record) {
@@ -204,4 +204,4 @@ function ResourcesFinder(model, opts, params) {
   };
 }
 
-module.exports = ResourcesFinder;
+module.exports = ResourcesGetter;

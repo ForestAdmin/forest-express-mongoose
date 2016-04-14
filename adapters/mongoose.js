@@ -2,7 +2,6 @@
 var P = require('bluebird');
 var _ = require('lodash');
 var flat = require('flat');
-var Inflector = require('inflected');
 
 module.exports = function (model, opts) {
   var fields = [];
@@ -105,7 +104,7 @@ module.exports = function (model, opts) {
   }
 
   function formatRef(ref) {
-    return Inflector.pluralize(ref.toLowerCase());
+    return ref;
   }
 
   function detectReference(opts) {
@@ -141,40 +140,6 @@ module.exports = function (model, opts) {
     return schema;
   }
 
-  function hasStripeIntegration() {
-    return opts.integrations && opts.integrations.stripe &&
-      opts.integrations.stripe.apiKey;
-  }
-
-  function setupStripeIntegration() {
-    fields.push({
-      field: 'stripe_payments',
-      type: ['String'],
-      reference: 'stripe_payments.id',
-      column: null,
-      isSearchable: false,
-      integration: 'stripe'
-    });
-
-    fields.push({
-      field: 'stripe_invoices',
-      type: ['String'],
-      reference: 'stripe_invoices.id',
-      column: null,
-      isSearchable: false,
-      integration: 'stripe'
-    });
-
-    fields.push({
-      field: 'stripe_cards',
-      type: ['String'],
-      reference: 'stripe_cards.id',
-      column: null,
-      isSearchable: false,
-      integration: 'stripe'
-    });
-  }
-
   function hasIntercomIntegration() {
     return opts.integrations && opts.integrations.intercom &&
       opts.integrations.intercom.apiKey;
@@ -207,17 +172,7 @@ module.exports = function (model, opts) {
       fields.push(schema);
     })
     .then(function () {
-      if (hasStripeIntegration() &&
-        opts.integrations.stripe.userCollection === model.modelName) {
-        setupStripeIntegration();
-      }
-
-      if (hasIntercomIntegration() &&
-        opts.integrations.intercom.userCollection === model.modelName) {
-        setupIntercomIntegration();
-      }
-
-      return { name: model.collection.name, fields: fields };
+      return { name: model.modelName, idField: '_id', fields: fields };
     });
 };
 
