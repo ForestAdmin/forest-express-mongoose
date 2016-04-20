@@ -9,6 +9,10 @@ var SchemaAdapter = require('../adapters/mongoose');
 afterEach(function (done) {
   delete mongoose.models.Foo;
   delete mongoose.modelSchemas.Foo;
+  delete mongoose.models.User;
+  delete mongoose.modelSchemas.User;
+  delete mongoose.models.Bar;
+  delete mongoose.modelSchemas.Bar;
   done();
 });
 
@@ -253,6 +257,7 @@ describe('SchemaAdapter', function () {
 
   describe('Array of objectids ([type: ObjectId])', function () {
     it('should have the type `[String]`', function (done) {
+      mongoose.model('User', mongoose.Schema());
       var schema = mongoose.Schema({
         foo: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
       });
@@ -265,7 +270,7 @@ describe('SchemaAdapter', function () {
           expect(schema).to.have.deep.property('fields[0].type')
             .eql(['String']);
           expect(schema).to.have.deep.property('fields[0].reference')
-            .eql('User._id');
+            .eql('users._id');
 
           done(null);
         });
@@ -412,6 +417,7 @@ describe('SchemaAdapter', function () {
 
   describe('Nested object with hasOne relationship', function () {
     it('should have the reference set', function (done) {
+      mongoose.model('User', mongoose.Schema());
       var schema = mongoose.Schema({
         foo: {
           bar: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
@@ -424,7 +430,7 @@ describe('SchemaAdapter', function () {
           expect(schema.fields[0].type.fields[0]).eql({
             field: 'bar',
             type: 'String',
-            reference: 'User._id'
+            reference: 'users._id'
           });
 
           done(null);
@@ -434,6 +440,7 @@ describe('SchemaAdapter', function () {
 
   describe('hasOne relationship', function () {
     it('should have the ref attribute set', function (done) {
+      mongoose.model('Bar', mongoose.Schema());
       var schema = mongoose.Schema({
         foo: { type: String, ref: 'Bar' }
       });
@@ -442,7 +449,7 @@ describe('SchemaAdapter', function () {
       return new SchemaAdapter(model, { mongoose: mongoose })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
-          expect(schema).to.have.deep.property('fields[0].reference', 'Bar._id');
+          expect(schema).to.have.deep.property('fields[0].reference', 'bars._id');
 
           done(null);
         });
@@ -451,6 +458,7 @@ describe('SchemaAdapter', function () {
 
   describe('hasMany relationship', function () {
     it('should have the ref attribute set', function (done) {
+      mongoose.model('Bar', mongoose.Schema());
       var schema = mongoose.Schema({
         foos: [{ type: String, ref: 'Bar' }]
       });
@@ -459,7 +467,7 @@ describe('SchemaAdapter', function () {
       return new SchemaAdapter(model, { mongoose: mongoose })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
-          expect(schema.fields[0].reference).eql('Bar._id');
+          expect(schema.fields[0].reference).eql('bars._id');
 
           done(null);
         });
