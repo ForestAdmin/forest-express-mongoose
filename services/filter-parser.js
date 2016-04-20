@@ -2,9 +2,10 @@
 var _ = require('lodash');
 var OperatorValueParser = require('./operator-value-parser');
 var Interface = require('forest-express');
+var utils = require('../utils/schema');
 
 function FilterParser(model, opts) {
-  var schema = Interface.Schemas.schemas[model.modelName];
+  var schema = Interface.Schemas.schemas[utils.getModelName(model)];
 
   this.perform = function (query, key, values, fct) {
     var q = {};

@@ -2,9 +2,10 @@
 var P = require('bluebird');
 var _ = require('lodash');
 var Interface = require('forest-express');
+var utils = require('../utils/schema');
 
 function ResourceUpdater(model, params) {
-  var schema = Interface.Schemas.schemas[model.modelName];
+  var schema = Interface.Schemas.schemas[utils.getModelName(model)];
 
   this.perform = function () {
     return new P(function (resolve, reject) {

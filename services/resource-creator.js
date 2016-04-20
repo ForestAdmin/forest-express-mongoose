@@ -2,9 +2,10 @@
 var P = require('bluebird');
 var _ = require('lodash');
 var Interface = require('forest-express');
+var utils = require('../utils/schema');
 
 function ResourceCreator(Model, params) {
-  var schema = Interface.Schemas.schemas[Model.modelName];
+  var schema = Interface.Schemas.schemas[utils.getModelName(Model)];
 
   function create() {
     return new P(function (resolve, reject) {

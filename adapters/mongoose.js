@@ -2,6 +2,7 @@
 var P = require('bluebird');
 var _ = require('lodash');
 var flat = require('flat');
+var utils = require('../utils/schema');
 
 module.exports = function (model, opts) {
   var fields = [];
@@ -104,7 +105,7 @@ module.exports = function (model, opts) {
   }
 
   function formatRef(ref) {
-    return ref;
+    return utils.getModelName(opts.mongoose.models[ref]);
   }
 
   function detectReference(opts) {
@@ -140,31 +141,6 @@ module.exports = function (model, opts) {
     return schema;
   }
 
-  function hasIntercomIntegration() {
-    return opts.integrations && opts.integrations.intercom &&
-      opts.integrations.intercom.apiKey;
-  }
-
-  function setupIntercomIntegration() {
-    fields.push({
-      field: 'intercom_conversations',
-      type: ['String'],
-      reference: 'intercom_conversations.id',
-      column: 'null',
-      isSearchable: false,
-      integration: 'intercom'
-    });
-
-    fields.push({
-      field: 'intercom_attributes',
-      type: 'String',
-      reference: 'intercom_attributes.id',
-      column: 'null',
-      isSearchable: false,
-      integration: 'intercom'
-    });
-  }
-
   return P
     .each(Object.keys(paths), function (path) {
       if (path === '__v') { return; }
@@ -172,7 +148,11 @@ module.exports = function (model, opts) {
       fields.push(schema);
     })
     .then(function () {
-      return { name: model.modelName, idField: '_id', fields: fields };
+      return {
+        name: utils.getModelName(model),
+        idField: '_id',
+        fields: fields
+      };
     });
 };
 

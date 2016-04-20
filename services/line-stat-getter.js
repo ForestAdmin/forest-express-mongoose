@@ -5,10 +5,11 @@ var FilterParser = require('./filter-parser');
 var SchemaUtils = require('../utils/schema');
 var moment = require('moment');
 var Interface = require('forest-express');
+var utils = require('../utils/schema');
 
 // jshint sub: true
 function LineStatFinder(model, params, opts) {
-  var schema = Interface.Schemas.schemas[model.modelName];
+  var schema = Interface.Schemas.schemas[utils.getModelName(model)];
 
   function getReference(fieldName) {
     if (!fieldName) { return null; }

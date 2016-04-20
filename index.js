@@ -1,6 +1,7 @@
 'use strict';
 var P = require('bluebird');
 var Interface = require('forest-express');
+var utils = require('./utils/schema');
 
 exports.collection = Interface.collection;
 exports.ensureAuthenticated = Interface.ensureAuthenticated;
@@ -16,9 +17,7 @@ exports.init = function(opts) {
     return opts.mongoose.models;
   };
 
-  exports.getModelName = function (model) {
-    return model.modelName;
-  };
+  exports.getModelName = utils.getModelName;
 
   exports.ResourcesGetter = require('./services/resources-getter');
   exports.ResourceGetter = require('./services/resource-getter');

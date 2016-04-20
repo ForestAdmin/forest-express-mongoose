@@ -2,11 +2,12 @@
 var _ = require('lodash');
 var moment = require('moment');
 var Interface = require('forest-express');
+var utils = require('../utils/schema');
 
 function OperatorValueParser(opts) {
 
   this.perform = function (model, fieldName, value) {
-    var schema = Interface.Schemas.schemas[model.modelName];
+    var schema = Interface.Schemas.schemas[utils.getModelName(model)];
     var parseFct = function (val) { return val; };
     var ret = null;
 

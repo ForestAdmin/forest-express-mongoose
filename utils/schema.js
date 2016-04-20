@@ -11,3 +11,7 @@ exports.getReferenceField = function (reference) {
 exports.getReferenceCollectionName = function (reference) {
   return reference.split('.')[0];
 };
+
+exports.getModelName = function (model) {
+  return model.collection.name;
+};

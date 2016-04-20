@@ -4,9 +4,10 @@ var _ = require('lodash');
 var OperatorValueParser = require('./operator-value-parser');
 var FilterParser = require('./filter-parser');
 var Interface = require('forest-express');
+var utils = require('../utils/schema');
 
 function ResourcesGetter(model, opts, params) {
-  var schema = Interface.Schemas.schemas[model.modelName];
+  var schema = Interface.Schemas.schemas[utils.getModelName(model)];
 
   function refilterBasedOnFilters(records) {
     return P.filter(records, function (record) {

@@ -2,6 +2,7 @@
 var _ = require('lodash');
 var P = require('bluebird');
 var Interface = require('forest-express');
+var utils = require('../utils/schema');
 
 function HasManyGetter(model, association, opts, params) {
   function count() {
@@ -15,7 +16,7 @@ function HasManyGetter(model, association, opts, params) {
   }
 
   function handlePopulate(query) {
-    var schema = Interface.Schemas.schemas[association.modelName];
+    var schema = Interface.Schemas.schemas[utils.getModelName(association)];
 
     _.each(schema.fields, function (field) {
       if (field.reference) {

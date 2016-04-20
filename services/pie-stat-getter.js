@@ -4,10 +4,11 @@ var P = require('bluebird');
 var FilterParser = require('./filter-parser');
 var SchemaUtils = require('../utils/schema');
 var Interface = require('forest-express');
+var utils = require('../utils/schema');
 
 // jshint sub: true
 function PieStatGetter(model, params, opts) {
-  var schema = Interface.Schemas.schemas[model.modelName];
+  var schema = Interface.Schemas.schemas[utils.getModelName(model)];
 
   function getReference(fieldName) {
     var field = _.findWhere(schema.fields, { field: fieldName });
