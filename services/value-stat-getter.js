@@ -12,22 +12,28 @@ function ValueStatGetter(model, params, opts) {
 
   this.perform = function () {
     return new P(function (resolve, reject) {
-      var query = model.find();
+      var query = model.aggregate();
 
       if (params.filters) {
         _.each(params.filters, function (filter) {
           query = new FilterParser(model, opts).perform(query, filter.field,
-            filter.value);
+            filter.value, 'match');
         });
       }
 
-      query = query.distinct(getAggregateField());
+      var sum = 1;
+      if (params['aggregate_field']) {
+        sum = '$' + params['aggregate_field'];
+      }
 
       query
-        .lean()
+        .group({
+          _id: null,
+          total: { $sum: sum }
+        })
         .exec(function (err, records) {
           if (err) { return reject(err); }
-          resolve({ value: records.length });
+          resolve({ value: records[0].total });
         });
     });
   };

@@ -36,8 +36,7 @@ function PieStatGetter(model, params, opts) {
       var groupBy = {};
       groupBy[params['group_by_field']] = '$' + params['group_by_field'];
 
-      var query = model
-        .aggregate();
+      var query = model.aggregate();
 
       if (params.filters) {
         _.each(params.filters, function (filter) {
@@ -48,16 +47,22 @@ function PieStatGetter(model, params, opts) {
         });
       }
 
+      var sum = 1;
+      if (params['aggregate_field']) {
+        sum = '$' + params['aggregate_field'];
+      }
+
       query
         .group({
           _id: groupBy,
-          count: { $sum: 1 }
+          count: { $sum: sum }
         })
         .project({
-          key: '$_id.'+  params['group_by_field'],
+          key: '$_id.' +  params['group_by_field'],
           value: '$count',
           _id: false
         })
+        .sort({ value: -1 })
         .exec(function (err, records) {
           if (err) { return reject(err); }
           resolve( {value: records });
