@@ -47,6 +47,25 @@ function HasManyGetter(model, association, opts, params) {
           resolve(record);
         });
       });
+    })
+    .then(function(records) {
+      if (params.sort) {
+        var fieldSort = params.sort;
+        var descending = false;
+
+        if (params.sort[0] === '-') {
+          fieldSort = params.sort.substring(1);
+          descending = true;
+        }
+
+        let recordsSorted = _.sortBy(records, function(record) {
+          return record[fieldSort];
+        });
+
+        return descending ? recordsSorted.reverse() : recordsSorted;
+      } else {
+        return records;
+      }
     });
   }
 
