@@ -46,7 +46,7 @@ module.exports = function (model, opts) {
       } else {
         return [getTypeFromNative(type[0].type || type[0])];
       }
-    } else if (_.isPlainObject(type)) {
+    } else if (_.isPlainObject(type) && !type.type) {
       if (_.isEmpty(type)) { return null; }
 
       return objectType(type, function (key) {
