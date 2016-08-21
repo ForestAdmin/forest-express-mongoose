@@ -13,5 +13,5 @@ exports.getReferenceCollectionName = function (reference) {
 };
 
 exports.getModelName = function (model) {
-  return model.collection.name;
+  return model.collection.name.replace(' ', '');
 };

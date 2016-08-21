@@ -9,7 +9,7 @@
     "test": "npm run test-mongoose-3 && npm run test-mongoose-4"
   },
   "author": "Sandro Munda <sandro@munda.me>",
-  "license": "GPL",
+  "license": "GPL-3.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/ForestAdmin/forest-express-mongoose.git"
