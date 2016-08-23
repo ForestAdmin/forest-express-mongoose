@@ -10,8 +10,14 @@ function FilterParser(model, opts) {
   this.perform = function (query, key, values, fct) {
     var q = {};
 
-    var field = _.findWhere(schema.fields, { field: key });
-    if (!field) { return; }
+    var fieldValues = key.split(':');
+    var fieldName = fieldValues[0];
+    var subfieldName = fieldValues[1];
+
+    var field = _.findWhere(schema.fields, { field: fieldName });
+
+    var isEmbeddedField = !!field.type.fields;
+    if (subfieldName && !isEmbeddedField) { return query; }
 
     values.split(',').forEach(function (value) {
       // Search using a $where operator when the key field is an array and
@@ -20,17 +26,12 @@ function FilterParser(model, opts) {
         query.$where('this.' + key + ' && ' + 'this.' + key + '.length ' +
           value);
       } else {
-        if (key.indexOf(':') > -1) {
-          var splitted = key.split(':');
-          var fieldName = splitted[0];
+        var filter = new OperatorValueParser(opts).perform(model, key, value);
 
-          field = _.findWhere(schema.fields, { field: fieldName });
-          if (field && !field.reference) {
-            key = key.replace(/:/g, '.');
-            q[key] = new OperatorValueParser(opts).perform(model, key, value);
-          }
+        if (isEmbeddedField) {
+          q[fieldName + '.' + subfieldName] = filter;
         } else {
-          q[key] = new OperatorValueParser(opts).perform(model, key, value);
+          q[key] = filter;
         }
 
         if (!fct) { fct = 'where'; }

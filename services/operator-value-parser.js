@@ -6,13 +6,23 @@ var utils = require('../utils/schema');
 
 function OperatorValueParser(opts) {
 
-  this.perform = function (model, fieldName, value) {
+  this.perform = function (model, key, value) {
     var schema = Interface.Schemas.schemas[utils.getModelName(model)];
     var parseFct = function (val) { return val; };
     var ret = null;
 
+    var fieldValues = key.split(':');
+    var fieldName = fieldValues[0];
+    var subfieldName = fieldValues[1];
+
     // Mongoose Aggregate don't parse the value automatically.
     var field = _.findWhere(schema.fields, { field: fieldName });
+
+    var isEmbeddedField = !!field.type.fields;
+    if (isEmbeddedField) {
+      field = _.findWhere(field.type.fields, { field: subfieldName });
+    }
+
     if (field) {
       switch (field.type) {
         case 'Number':

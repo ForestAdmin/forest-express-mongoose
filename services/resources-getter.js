@@ -57,9 +57,9 @@ function ResourcesGetter(model, opts, params) {
   }
 
   function populateWhere(field) {
-    var where = {};
+    var conditions = [];
 
-    _.each(params.filter, function (value, key) {
+    _.each(params.filter, function (values, key) {
       if (key.indexOf(':') > -1) {
         var splitted = key.split(':');
         var fieldName = splitted[0];
@@ -68,14 +68,24 @@ function ResourcesGetter(model, opts, params) {
         if (fieldName === field.field) {
           var currentField = _.findWhere(schema.fields, { field: fieldName });
           if (currentField && currentField.reference) {
-            where[subFieldName] = new OperatorValueParser(opts)
-              .perform(model, key, value);
+            // NOTICE: Look for the associated model infos
+            var subModel = _.find(opts.mongoose.models, function(model) {
+              return model.collection.name ===
+                currentField.reference.split('.')[0];
+            })
+
+            values.split(',').forEach(function (value) {
+              var condition = {};
+              condition[subFieldName] = new OperatorValueParser(opts)
+                .perform(subModel, subFieldName, value);
+              conditions.push(condition);
+            });
           }
         }
       }
     });
 
-    return where;
+    return (conditions.length > 0) ? { $and: conditions } : {}
   }
 
   function handlePopulate(query) {
