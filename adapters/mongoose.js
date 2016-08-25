@@ -3,6 +3,7 @@ var P = require('bluebird');
 var _ = require('lodash');
 var flat = require('flat');
 var utils = require('../utils/schema');
+var Interface = require('forest-express');
 
 module.exports = function (model, opts) {
   var fields = [];
@@ -105,7 +106,12 @@ module.exports = function (model, opts) {
   }
 
   function formatRef(ref) {
-    return utils.getModelName(opts.mongoose.models[ref]);
+    if (opts.mongoose.models[ref]) {
+      return utils.getModelName(opts.mongoose.models[ref]);
+    } else {
+      Interface.logger.warn('Cannot find the reference \"' + ref +
+        '\" on the model \"' + model.modelName + '\".');
+    }
   }
 
   function detectReference(opts) {
