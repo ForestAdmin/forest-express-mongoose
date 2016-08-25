@@ -33,6 +33,8 @@ function ValueStatGetter(model, params, opts) {
         })
         .exec(function (err, records) {
           if (err) { return reject(err); }
+          if (!records || !records.length) { return resolve({ value: 0 }); }
+
           resolve({ value: records[0].total });
         });
     });
