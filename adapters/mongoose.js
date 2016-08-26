@@ -119,7 +119,7 @@ module.exports = function (model, opts) {
       if (opts.options.ref && opts.options.type) {
         return formatRef(opts.options.ref) + '._id';
       } else if (_.isArray(opts.options.type) && opts.options.type.length &&
-        opts.options.type[0].ref && !opts.options.type[0].type) {
+        opts.options.type[0].ref && opts.options.type[0].type) {
         return formatRef(opts.options.type[0].ref) + '._id';
       }
     }
