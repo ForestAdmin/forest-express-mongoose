@@ -40,7 +40,7 @@ exports.init = function(opts) {
   exports.LineStatGetter = require('./services/line-stat-getter');
 
   exports.Stripe = {
-    getCustomer: function (customerModel, customerId, userField) {
+    getCustomer: function (customerModel, customerField, customerId) {
       return new P(function (resolve, reject) {
         if (customerId) {
           return customerModel
@@ -48,7 +48,7 @@ exports.init = function(opts) {
             .lean()
             .exec(function (err, customer) {
               if (err) { return reject(err); }
-              if (!customer || !customer[userField]) { return reject(); }
+              if (!customer || !customer[customerField]) { return reject(); }
 
               resolve(customer);
             });
@@ -57,12 +57,12 @@ exports.init = function(opts) {
         }
       });
     },
-    getCustomerByUserField: function (customerModel, userField) {
+    getCustomerByUserField: function (customerModel, customerField, userField) {
       return new P(function (resolve, reject) {
         if (!customerModel) { return resolve(null); }
 
         var query = {};
-        query[opts.integrations.stripe.userField] = userField;
+        query[customerField] = userField;
 
         customerModel
           .findOne(query)
