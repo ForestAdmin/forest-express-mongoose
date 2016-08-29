@@ -92,6 +92,8 @@ module.exports = function (model, opts) {
           })];
         }
       }
+    } else if (opts.enumValues && opts.enumValues.length) {
+      return 'Enum';
     } else if (opts.instance === 'ObjectID') {
       // Deal with ObjectID
       return 'String';
@@ -141,7 +143,7 @@ module.exports = function (model, opts) {
     if (isRequired) { schema.isRequired = isRequired; }
 
     if (opts.enumValues && opts.enumValues.length) {
-      schema.enumValues = opts.enumValues;
+      schema.enums = opts.enumValues;
     }
 
     return schema;
