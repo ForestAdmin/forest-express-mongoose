@@ -1,6 +1,6 @@
 {
   "name": "forest-express-mongoose",
-  "version": "0.2.15",
+  "version": "0.2.16",
   "description": "Forest connector for Expressjs and Mongoose",
   "main": "index.js",
   "scripts": {
@@ -22,7 +22,7 @@
     "express-cors": "0.0.3",
     "express-jwt": "^3.0.1",
     "flat": "^1.6.0",
-    "forest-express": "^0.1.19",
+    "forest-express": "^0.1.20",
     "jsonwebtoken": "^5.5.4",
     "lodash": "^3.9.3",
     "moment": "^2.10.6",
