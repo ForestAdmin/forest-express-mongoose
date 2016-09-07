@@ -58,7 +58,7 @@ function OperatorValueParser(opts) {
       var from = null;
       var to = null;
 
-      let match = value.match(/^last(\d+)days$/);
+      var match = value.match(/^last(\d+)days$/);
       if (match && match[1]) {
         return { $gte: moment().subtract(match[1], 'days').toDate() };
       }
