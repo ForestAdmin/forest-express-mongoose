@@ -47,12 +47,16 @@ module.exports = function (model, opts) {
       } else {
         return [getTypeFromNative(type[0].type || type[0])];
       }
-    } else if (_.isPlainObject(type) && !type.type) {
+    } else if (_.isPlainObject(type)) {
       if (_.isEmpty(type)) { return null; }
 
-      return objectType(type, function (key) {
-        return getTypeFromNative(type[key]);
-      });
+      if (type.type) {
+        return type.type;
+      } else {
+        return objectType(type, function (key) {
+          return getTypeFromNative(type[key]);
+        });
+      }
     } else if (_.isFunction(type) && type.name === 'ObjectId') {
       return 'String';
     } else if (type instanceof Schema) {
