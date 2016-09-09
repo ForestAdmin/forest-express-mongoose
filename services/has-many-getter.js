@@ -58,7 +58,7 @@ function HasManyGetter(model, association, opts, params) {
           descending = true;
         }
 
-        let recordsSorted = _.sortBy(records, function(record) {
+        var recordsSorted = _.sortBy(records, function(record) {
           return record[fieldSort];
         });
 
