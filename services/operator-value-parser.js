@@ -4,6 +4,28 @@ var moment = require('moment');
 var Interface = require('forest-express');
 var utils = require('../utils/schema');
 
+var PERIODS_FROM_NOW = 'fromNow';
+var PERIODS_TODAY = 'today';
+var PERIODS_YESTERDAY = 'yesterday';
+var PERIODS_LAST_WEEK = 'lastWeek';
+var PERIODS_LAST_2_WEEK = 'last2Weeks';
+var PERIODS_LAST_MONTH = 'lastMonth';
+var PERIODS_LAST_3_MONTH = 'last3Months';
+var PERIODS_LAST_YEAR = 'lastYear';
+
+var VALUES_DATE = [
+  PERIODS_FROM_NOW,
+  PERIODS_TODAY,
+  PERIODS_YESTERDAY,
+  PERIODS_LAST_WEEK,
+  PERIODS_LAST_2_WEEK,
+  PERIODS_LAST_MONTH,
+  PERIODS_LAST_3_MONTH,
+  PERIODS_LAST_YEAR
+];
+
+var PERIODS_LAST_X_DAYS = /^last(\d+)days$/;
+
 function OperatorValueParser(opts) {
 
   this.perform = function (model, key, value) {
@@ -51,40 +73,57 @@ function OperatorValueParser(opts) {
     }
 
     function isIntervalDateValue(value) {
-      return value === 'yesterday' || value.indexOf('last') === 0;
+      var match = value.match(PERIODS_LAST_X_DAYS);
+      if (match && match[1]) { return true; }
+
+      return VALUES_DATE.indexOf(value) !== -1;
     }
 
     function getIntervalDateValue(value) {
       var from = null;
       var to = null;
 
+      if (value === PERIODS_FROM_NOW) {
+        return { $gte: moment().toDate() };
+      }
+
+      if (value === PERIODS_TODAY) {
+        return {
+          $gte: moment().startOf('day').toDate(),
+          $lte: moment().endOf('day').toDate()
+        };
+      }
+
       var match = value.match(/^last(\d+)days$/);
       if (match && match[1]) {
-        return { $gte: moment().subtract(match[1], 'days').toDate() };
+        return {
+          $gte: moment().subtract(match[1], 'days').startOf('day').toDate(),
+          $lte: moment().subtract(1, 'days').endOf('day').toDate()
+        };
       }
 
       switch (value) {
-        case 'yesterday':
+        case PERIODS_YESTERDAY:
           from = moment().subtract(1, 'days').startOf('day').toDate();
           to = moment().subtract(1, 'days').endOf('day').toDate();
           break;
-        case 'lastWeek':
+        case PERIODS_LAST_WEEK:
           from = moment().subtract(1, 'weeks').startOf('isoWeek').toDate();
           to = moment().subtract(1, 'weeks').endOf('isoWeek').toDate();
           break;
-        case 'last2Weeks':
+        case PERIODS_LAST_2_WEEK:
           from = moment().subtract(2, 'weeks').startOf('isoWeek').toDate();
           to = moment().subtract(1, 'weeks').endOf('isoWeek').toDate();
           break;
-        case 'lastMonth':
+        case PERIODS_LAST_MONTH:
           from = moment().subtract(1, 'months').startOf('month').toDate();
           to = moment().subtract(1, 'months').endOf('month').toDate();
           break;
-        case 'last3Months':
+        case PERIODS_LAST_3_MONTH:
           from = moment().subtract(3, 'months').startOf('month').toDate();
           to = moment().subtract(1, 'months').endOf('month').toDate();
           break;
-        case 'lastYear':
+        case PERIODS_LAST_YEAR:
           from = moment().subtract(1, 'years').startOf('year').toDate();
           to = moment().subtract(1, 'years').endOf('year').toDate();
           break;
