@@ -88,13 +88,20 @@ function LineStatFinder(model, params, opts) {
       var query = model
         .aggregate();
 
-      if (params.filters) {
-        _.each(params.filters, function (filter) {
-          new FilterParser(model, opts).perform(query, filter.field,
-            filter.value, 'match');
+      if (params.filterType && params.filters) {
+        var operator = '$' + params.filterType;
+        var queryFilters = {};
+        queryFilters[operator] = [];
 
-          return query;
+        _.each(params.filters, function (filter) {
+          var conditions = new FilterParser(model, opts)
+            .perform(filter.field, filter.value);
+          _.each(conditions, (condition) => {
+            queryFilters[operator].push(condition);
+          })
         });
+
+        query.match(queryFilters);
       }
 
       if (params['group_by_date_field']) {
