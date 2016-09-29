@@ -51,7 +51,7 @@ module.exports = function (model, opts) {
       if (_.isEmpty(type)) { return null; }
 
       if (type.type) {
-        return type.type;
+        return getTypeFromNative(type.type);
       } else {
         return objectType(type, function (key) {
           return getTypeFromNative(type[key]);

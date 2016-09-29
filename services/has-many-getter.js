@@ -5,6 +5,26 @@ var Interface = require('forest-express');
 var utils = require('../utils/schema');
 
 function HasManyGetter(model, association, opts, params) {
+
+  function hasPagination() {
+    return params.page && params.page.number;
+  }
+
+  function getLimit() {
+    if (hasPagination()) {
+      return parseInt(params.page.number) * params.page.size;
+    } else {
+      return 5;
+    }
+  }
+
+  function getSkip() {
+    if (hasPagination()) {
+      return (parseInt(params.page.number) - 1) * params.page.size;
+    } else {
+      return 0;
+    }
+  }
   function count() {
     return new P(function (resolve, reject) {
       model.findById(params.recordId)
@@ -25,21 +45,31 @@ function HasManyGetter(model, association, opts, params) {
     });
   }
 
+  function getProjection() {
+    var projection = {};
+    projection[params.associationName] = 1;
+    projection._id = 0;
+
+    return projection;
+  }
+
   function getRecords() {
     return new P(function (resolve, reject) {
-      model
-        .findById(params.recordId)
-        .populate({
-          path: params.associationName,
-          options: { limit: getLimit(), skip: getSkip() }
-        })
-        .exec(function (err, record) {
+      return model
+        .aggregate()
+        .match({ _id: opts.mongoose.Types.ObjectId(params.recordId) })
+        .unwind(params.associationName)
+        .project(getProjection())
+        .limit(getLimit())
+        .skip(getSkip())
+        .exec(function (err, records) {
           if (err) { return reject(err); }
-          resolve(record[params.associationName]);
+          resolve(records);
         });
-    }).map(function (record) {
+    })
+    .map(function (record) {
       return new P(function (resolve, reject) {
-        var query = association.findById(record.id);
+        var query = association.findById(record[params.associationName]);
         handlePopulate(query);
 
         query.lean().exec(function (err, record) {
@@ -67,26 +97,6 @@ function HasManyGetter(model, association, opts, params) {
         return records;
       }
     });
-  }
-
-  function hasPagination() {
-    return params.page && params.page.number;
-  }
-
-  function getLimit() {
-    if (hasPagination()) {
-      return params.page.size || 5;
-    } else {
-      return 5;
-    }
-  }
-
-  function getSkip() {
-    if (hasPagination()) {
-      return (parseInt(params.page.number) - 1) * getLimit();
-    } else {
-      return 0;
-    }
   }
 
   this.perform = function () {
