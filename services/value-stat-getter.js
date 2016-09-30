@@ -14,11 +14,20 @@ function ValueStatGetter(model, params, opts) {
     return new P(function (resolve, reject) {
       var query = model.aggregate();
 
-      if (params.filters) {
+      if (params.filterType && params.filters) {
+        var operator = '$' + params.filterType;
+        var queryFilters = {};
+        queryFilters[operator] = [];
+
         _.each(params.filters, function (filter) {
-          query = new FilterParser(model, opts).perform(query, filter.field,
-            filter.value, 'match');
+          var conditions = new FilterParser(model, opts)
+            .perform(filter.field, filter.value);
+          _.each(conditions, (condition) => {
+            queryFilters[operator].push(condition);
+          })
         });
+
+        query.match(queryFilters);
       }
 
       var sum = 1;

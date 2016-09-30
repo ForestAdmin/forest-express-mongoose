@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Added
+- Filters - Users want the OR filter operator with their conditions (restricted to simple conditions).
 
 ## RELEASE 0.2.19 - 2016-09-29
 - Pagination - fix the hasMany number of records.

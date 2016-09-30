@@ -57,6 +57,7 @@ function ResourcesGetter(model, opts, params) {
   }
 
   function populateWhere(field) {
+    var filter = {};
     var conditions = [];
 
     _.each(params.filter, function (values, key) {
@@ -85,7 +86,10 @@ function ResourcesGetter(model, opts, params) {
       }
     });
 
-    return (conditions.length > 0) ? { $and: conditions } : {}
+    if (conditions.length > 0) {
+      filter['$' + params.filterType] = conditions;
+    }
+    return filter;
   }
 
   function handlePopulate(query) {
@@ -119,9 +123,18 @@ function ResourcesGetter(model, opts, params) {
   }
 
   function handleFilterParams(query) {
+    var operator = '$' + params.filterType;
+    var queryFilters = {};
+    queryFilters[operator] = [];
+
     _.each(params.filter, function (values, key) {
-      query = new FilterParser(model, opts).perform(query, key, values);
+      var conditions = new FilterParser(model, opts).perform(key, values);
+      _.each(conditions, (condition) => {
+        queryFilters[operator].push(condition);
+      });
     });
+
+    query.where(queryFilters);
   }
 
   function handleSortParam(query) {

@@ -58,7 +58,11 @@ function OperatorValueParser(opts) {
           break;
         case 'String':
           parseFct = function (val) {
-            if (opts.mongoose.Types.ObjectId.isValid(val)) {
+            // NOTICE: Check if the value is a real ObjectID. By default, the
+            // isValid method returns true for a random string with length 12.
+            // Example: 'Black Friday'.
+            if (opts.mongoose.Types.ObjectId.isValid(val) &&
+              opts.mongoose.Types.ObjectId(val).toString() === val) {
               return opts.mongoose.Types.ObjectId(val);
             } else {
               return val;

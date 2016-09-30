@@ -7,8 +7,8 @@ var utils = require('../utils/schema');
 function FilterParser(model, opts) {
   var schema = Interface.Schemas.schemas[utils.getModelName(model)];
 
-  this.perform = function (query, key, values, fct) {
-    var q = {};
+  this.perform = function (key, values) {
+    var conditions = [];
 
     var fieldValues = key.split(':');
     var fieldName = fieldValues[0];
@@ -17,29 +17,22 @@ function FilterParser(model, opts) {
     var field = _.findWhere(schema.fields, { field: fieldName });
 
     var isEmbeddedField = !!field.type.fields;
-    if (subfieldName && !isEmbeddedField) { return query; }
+    if (subfieldName && !isEmbeddedField) { return []; }
 
     values.split(',').forEach(function (value) {
-      // Search using a $where operator when the key field is an array and
-      // the operator is < or >.
-      if (_.isArray(field.type) && ['>', '<'].indexOf(value[0]) > -1) {
-        query.$where('this.' + key + ' && ' + 'this.' + key + '.length ' +
-          value);
+      var condition = {};
+      var filter = new OperatorValueParser(opts).perform(model, key, value);
+
+      if (isEmbeddedField) {
+        condition[fieldName + '.' + subfieldName] = filter;
       } else {
-        var filter = new OperatorValueParser(opts).perform(model, key, value);
-
-        if (isEmbeddedField) {
-          q[fieldName + '.' + subfieldName] = filter;
-        } else {
-          q[key] = filter;
-        }
-
-        if (!fct) { fct = 'where'; }
-        query[fct](q);
+        condition[key] = filter;
       }
+
+      conditions.push(condition);
     });
 
-    return query;
+    return conditions;
   };
 }
 
