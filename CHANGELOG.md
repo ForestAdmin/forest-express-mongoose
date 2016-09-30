@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 0.2.20 - 2016-09-30
 ### Added
 - Filters - Users want the OR filter operator with their conditions (restricted to simple conditions).
 
