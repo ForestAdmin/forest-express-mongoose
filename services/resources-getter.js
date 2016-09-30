@@ -9,6 +9,30 @@ var utils = require('../utils/schema');
 function ResourcesGetter(model, opts, params) {
   var schema = Interface.Schemas.schemas[utils.getModelName(model)];
 
+  function hasPagination() {
+    return params.page && params.page.number;
+  }
+
+  function getLimit() {
+    if (hasPagination()) {
+      if (params.page.size) {
+        return parseInt(params.page.size);
+      } else {
+        return 10;
+      }
+    } else {
+      return 10;
+    }
+  }
+
+  function getSkip() {
+    if (hasPagination()) {
+      return (parseInt(params.page.number) - 1) * getLimit();
+    } else {
+      return 0;
+    }
+  }
+
   function refilterBasedOnFilters(records) {
     return P.filter(records, function (record) {
       var ret = true;
@@ -73,7 +97,7 @@ function ResourcesGetter(model, opts, params) {
             var subModel = _.find(opts.mongoose.models, function(model) {
               return model.collection.name ===
                 currentField.reference.split('.')[0];
-            })
+            });
 
             values.split(',').forEach(function (value) {
               var condition = {};
@@ -86,7 +110,7 @@ function ResourcesGetter(model, opts, params) {
       }
     });
 
-    if (conditions.length > 0) {
+    if (params.filterType && conditions.length > 0) {
       filter['$' + params.filterType] = conditions;
     }
     return filter;
@@ -186,30 +210,6 @@ function ResourcesGetter(model, opts, params) {
         return records;
       }
     });
-  }
-
-  function hasPagination() {
-    return params.page && params.page.number;
-  }
-
-  function getLimit() {
-    if (hasPagination()) {
-      if (params.page.size) {
-        return parseInt(params.page.size);
-      } else {
-        return 10;
-      }
-    } else {
-      return 10;
-    }
-  }
-
-  function getSkip() {
-    if (hasPagination()) {
-      return (parseInt(params.page.number) - 1) * getLimit();
-    } else {
-      return 0;
-    }
   }
 
   this.perform = function () {
