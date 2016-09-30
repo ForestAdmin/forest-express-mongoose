@@ -326,6 +326,56 @@ describe('SchemaAdapter', function () {
           done(null);
         });
     });
+
+    it('should support array of objects with syntax { type: String }', function (done) {
+      var schema = mongoose.Schema({
+        people: [{
+          firstName: { type: String }
+        }]
+      });
+      var model = mongoose.model('Foo', schema);
+
+      return new SchemaAdapter(model, { mongoose: mongoose })
+        .then(function (schema) {
+          expect(schema.fields[0].type[0].fields[0]).to.have.property('type')
+            .eql('String');
+          done(null);
+        });
+    });
+
+    it('should support array of object with sub schema', function (done) {
+      var schemaEmbed = mongoose.Schema({
+        field1: { type: String },
+        field2: Date
+      });
+
+      var schema = mongoose.Schema({
+        foo: [schemaEmbed]
+      });
+      var model = mongoose.model('Foo', schema);
+
+      return new SchemaAdapter(model, { mongoose: mongoose })
+        .then(function (schema) {
+          expect(schema).to.have.property('fields');
+          expect(schema.fields[0].field).eql('foo');
+          expect(schema.fields[0]).to.have.property('type').and.to.be
+            .instanceof(Array).and.have.length.of(1);
+          expect(schema.fields[0].type[0]).to.be.instanceof(Object).and.to
+            .have.property('fields');
+          expect(schema.fields[0].type[0].fields).to.be.instanceof(Array).and
+            .have.length.of(3);
+          expect(schema.fields[0].type[0].fields[0]).to.have.property('field')
+            .eql('field1');
+          expect(schema.fields[0].type[0].fields[0]).to.have.property('type')
+            .eql('String');
+          expect(schema.fields[0].type[0].fields[1]).to.have.property('field')
+            .eql('field2');
+          expect(schema.fields[0].type[0].fields[1]).to.have.property('type')
+            .eql('Date');
+
+          done(null);
+        });
+    });
   });
 
   describe('Array of schemas', function () {

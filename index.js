@@ -34,6 +34,9 @@ exports.init = function(opts) {
   exports.ResourceRemover = require('./services/resource-remover');
 
   exports.HasManyGetter = require('./services/has-many-getter');
+  exports.HasManyAssociator = require('./services/has-many-associator');
+  exports.HasManyDissociator = require('./services/has-many-dissociator');
+  exports.BelongsToUpdater = require('./services/belongs-to-updater');
 
   exports.ValueStatGetter = require('./services/value-stat-getter');
   exports.PieStatGetter = require('./services/pie-stat-getter');

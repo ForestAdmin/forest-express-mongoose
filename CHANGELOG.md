@@ -4,6 +4,11 @@
 ### Added
 - Filters - Users want the OR filter operator with their conditions (restricted to simple conditions).
 
+### Fixed
+- Record Update - Fix the potential dissociations on record update.
+- Pagination - Fix hasMany arrays.
+- Schema - support array of objects with syntax { type: String }
+
 ## RELEASE 0.2.19 - 2016-09-29
 - Pagination - fix the hasMany number of records.
 
