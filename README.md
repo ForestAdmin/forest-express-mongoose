@@ -18,3 +18,8 @@ app.use(require('forest-express-mongoose').init({
 # License
 
 [GPL v3](https://github.com/SeyZ/forest-express-mongoose/blob/master/LICENSE)
+
+# Contribute
+
+Install JSHint for the Git hooks:
+`npm install jshint -g`
