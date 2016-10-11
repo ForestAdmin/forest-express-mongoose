@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "chai": "^2.3.0",
+    "git-hooks": "^1.1.6",
     "mocha": "^2.2.5"
   }
 }

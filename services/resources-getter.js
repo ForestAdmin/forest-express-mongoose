@@ -153,7 +153,7 @@ function ResourcesGetter(model, opts, params) {
 
     _.each(params.filter, function (values, key) {
       var conditions = new FilterParser(model, opts).perform(key, values);
-      _.each(conditions, (condition) => {
+      _.each(conditions, function (condition) {
         queryFilters[operator].push(condition);
       });
     });
