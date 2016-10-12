@@ -5,11 +5,6 @@ var FilterParser = require('./filter-parser');
 
 function ValueStatGetter(model, params, opts) {
 
-  function getAggregateField() {
-    // jshint sub: true
-    return params['aggregate_field'] || '_id';
-  }
-
   this.perform = function () {
     return new P(function (resolve, reject) {
       var query = model.aggregate();
@@ -22,15 +17,16 @@ function ValueStatGetter(model, params, opts) {
         _.each(params.filters, function (filter) {
           var conditions = new FilterParser(model, opts)
             .perform(filter.field, filter.value);
-          _.each(conditions, (condition) => {
+          _.each(conditions, function (condition) {
             queryFilters[operator].push(condition);
-          })
+          });
         });
 
         query.match(queryFilters);
       }
 
       var sum = 1;
+      // jshint sub: true
       if (params['aggregate_field']) {
         sum = '$' + params['aggregate_field'];
       }
