@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Added
+- Smart field - Enable search on smart fields.
 
 ## RELEASE 0.2.22 - 2016-10-12
 ### Fixed
