@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- ES5 - Fix remaining ES5 incompatible syntax.
 
 ## RELEASE 0.2.21 - 2016-10-11
 ### Fixed
