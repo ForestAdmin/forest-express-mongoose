@@ -182,6 +182,14 @@ function ResourcesGetter(model, opts, params) {
       handleFilterParams(query);
     }
 
+    if (params.search) {
+      _.each(schema.fields, function (field) {
+        if (field.search) {
+          field.search(query, params.search);
+        }
+      });
+    }
+
     return query;
   }
 
