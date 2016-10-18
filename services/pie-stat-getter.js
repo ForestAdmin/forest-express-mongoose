@@ -46,9 +46,9 @@ function PieStatGetter(model, params, opts) {
         _.each(params.filters, function (filter) {
           var conditions = new FilterParser(model, opts)
             .perform(filter.field, filter.value);
-          _.each(conditions, (condition) => {
+          _.each(conditions, function (condition) {
             queryFilters[operator].push(condition);
-          })
+          });
         });
 
         query.match(queryFilters);
