@@ -158,7 +158,9 @@ function ResourcesGetter(model, opts, params) {
       });
     });
 
-    query.where(queryFilters);
+    if (queryFilters[operator].length) {
+      query.where(queryFilters);
+    }
   }
 
   function handleSortParam(query) {

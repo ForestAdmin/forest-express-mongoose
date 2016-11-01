@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- Filters - Fix records retrieval with a single association filter.
 
 ## RELEASE 0.2.24 - 2016-10-28
 ### Changed
