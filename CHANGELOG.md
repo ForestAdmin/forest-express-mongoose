@@ -1,6 +1,13 @@
 # Change Log
 
 ## [Unreleased]
+### Changed
+- Date Filters - Date filters operators are now based on the client timezone.
+
+### Fixed
+- Line Charts - Fix per-week line charts on several years.
+- Line Charts - Fix the bad month displayed in the per-month line charts.
+- Value Charts - Format Pie charts value properly for groupBy on Date type field.
 
 ## RELEASE 0.2.25 - 2016-11-04
 ### Fixed

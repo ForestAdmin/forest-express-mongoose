@@ -5,10 +5,12 @@ var FilterParser = require('./filter-parser');
 var SchemaUtils = require('../utils/schema');
 var Interface = require('forest-express');
 var utils = require('../utils/schema');
+var moment = require('moment');
 
 // jshint sub: true
 function PieStatGetter(model, params, opts) {
   var schema = Interface.Schemas.schemas[utils.getModelName(model)];
+  var field = _.findWhere(schema.fields, { field: params['group_by_field'] });
 
   function getReference(fieldName) {
     var field = _.findWhere(schema.fields, { field: fieldName });
@@ -44,7 +46,7 @@ function PieStatGetter(model, params, opts) {
         queryFilters[operator] = [];
 
         _.each(params.filters, function (filter) {
-          var conditions = new FilterParser(model, opts)
+          var conditions = new FilterParser(model, opts, params.timezone)
             .perform(filter.field, filter.value);
           _.each(conditions, function (condition) {
             queryFilters[operator].push(condition);
@@ -78,6 +80,11 @@ function PieStatGetter(model, params, opts) {
       if (populateGroupByField) {
         return handlePopulate(records, populateGroupByField);
       } else {
+        if (field.type === 'Date') {
+          _.each(records.value, function (record) {
+            record.key = moment(record.key).format('DD/MM/YYYY HH:mm:ss');
+          });
+        }
         return records;
       }
     });

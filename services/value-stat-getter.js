@@ -15,7 +15,7 @@ function ValueStatGetter(model, params, opts) {
         queryFilters[operator] = [];
 
         _.each(params.filters, function (filter) {
-          var conditions = new FilterParser(model, opts)
+          var conditions = new FilterParser(model, opts, params.timezone)
             .perform(filter.field, filter.value);
           _.each(conditions, function (condition) {
             queryFilters[operator].push(condition);

@@ -4,16 +4,6 @@ var moment = require('moment');
 var Interface = require('forest-express');
 var utils = require('../utils/schema');
 
-// TODO: Remove once new filter protocol is live
-var PERIODS_FROM_NOW = 'fromNow';
-var PERIODS_TODAY_DEPRECATED = 'today';
-var PERIODS_YESTERDAY_DEPRECATED = 'yesterday';
-var PERIODS_LAST_WEEK = 'lastWeek';
-var PERIODS_LAST_2_WEEK = 'last2Weeks';
-var PERIODS_LAST_MONTH = 'lastMonth';
-var PERIODS_LAST_3_MONTH = 'last3Months';
-var PERIODS_LAST_YEAR = 'lastYear';
-
 var PERIODS_PAST = '$past';
 var PERIODS_FUTURE = '$future';
 var PERIODS_TODAY = '$today';
@@ -28,14 +18,6 @@ var PERIODS_QUARTER_TO_DATE = '$quarterToDate';
 var PERIODS_YEAR_TO_DATE = '$yearToDate';
 
 var VALUES_DATE = [
-  PERIODS_FROM_NOW, // TODO: Remove once new filter protocol is live
-  PERIODS_TODAY_DEPRECATED, // TODO: Remove once new filter protocol is live
-  PERIODS_YESTERDAY_DEPRECATED, // TODO: Remove once new filter protocol is live
-  PERIODS_LAST_WEEK, // TODO: Remove once new filter protocol is live
-  PERIODS_LAST_2_WEEK, // TODO: Remove once new filter protocol is live
-  PERIODS_LAST_MONTH, // TODO: Remove once new filter protocol is live
-  PERIODS_LAST_3_MONTH, // TODO: Remove once new filter protocol is live
-  PERIODS_LAST_YEAR, // TODO: Remove once new filter protocol is live
   PERIODS_PAST,
   PERIODS_FUTURE,
   PERIODS_TODAY,
@@ -50,13 +32,10 @@ var VALUES_DATE = [
   PERIODS_YEAR_TO_DATE
 ];
 
-// TODO: Remove once new filter protocol is live
-var PERIODS_LAST_X_DAYS = /^last(\d+)days$/;
-
 var PERIODS_PREVIOUS_X_DAYS = /^\$previous(\d+)Days$/;
 var PERIODS_X_DAYS_TO_DATE = /^\$(\d+)DaysToDate$/;
 
-function OperatorValueParser(opts) {
+function OperatorValueParser(opts, timezone) {
 
   this.perform = function (model, key, value) {
     var schema = Interface.Schemas.schemas[utils.getModelName(model)];
@@ -74,6 +53,10 @@ function OperatorValueParser(opts) {
     if (isEmbeddedField) {
       field = _.findWhere(field.type.fields, { field: subfieldName });
     }
+
+    var offsetClient = parseInt(timezone, 10);
+    var offsetServer = moment().utcOffset() / 60;
+    var offsetHours = offsetServer - offsetClient;
 
     if (field) {
       switch (field.type) {
@@ -107,11 +90,7 @@ function OperatorValueParser(opts) {
     }
 
     function isIntervalDateValue(value) {
-      // TODO: Remove once new filter protocol is live
-      var match = value.match(PERIODS_LAST_X_DAYS);
-      if (match && match[1]) { return true; }
-
-      match = value.match(PERIODS_PREVIOUS_X_DAYS);
+      var match = value.match(PERIODS_PREVIOUS_X_DAYS);
       if (match && match[1]) { return true; }
       match = value.match(PERIODS_X_DAYS_TO_DATE);
       if (match && match[1]) { return true; }
@@ -123,11 +102,6 @@ function OperatorValueParser(opts) {
       var from = null;
       var to = null;
 
-      // TODO: Remove once new filter protocol is live
-      if (value === PERIODS_FROM_NOW) {
-        return { $gte: moment().toDate() };
-      }
-
       if (value === PERIODS_FUTURE) {
         return { $gte: moment().toDate() };
       }
@@ -136,108 +110,85 @@ function OperatorValueParser(opts) {
         return { $lte: moment().toDate() };
       }
 
-      // TODO: Remove once new filter protocol is live
-      if (value === PERIODS_TODAY_DEPRECATED) {
-        return {
-          $gte: moment().startOf('day').toDate(),
-          $lte: moment().endOf('day').toDate()
-        };
-      }
-
       if (value === PERIODS_TODAY) {
         return {
-          $gte: moment().startOf('day').toDate(),
-          $lte: moment().endOf('day').toDate()
+          $gte: moment().startOf('day')
+                  .add(offsetHours, 'h').toDate(),
+          $lte: moment().endOf('day')
+                  .add(offsetHours, 'h').toDate()
         };
       }
 
-      // TODO: Remove once new filter protocol is live
-      var match = value.match(PERIODS_LAST_X_DAYS);
+      var match = value.match(PERIODS_PREVIOUS_X_DAYS);
       if (match && match[1]) {
         return {
-          $gte: moment().subtract(match[1], 'days').startOf('day').toDate(),
-          $lte: moment().subtract(1, 'days').endOf('day').toDate()
-        };
-      }
-
-      match = value.match(PERIODS_PREVIOUS_X_DAYS);
-      if (match && match[1]) {
-        return {
-          $gte: moment().subtract(match[1], 'days').startOf('day').toDate(),
-          $lte: moment().subtract(1, 'days').endOf('day').toDate()
+          $gte: moment().subtract(match[1], 'days')
+                  .startOf('day').add(offsetHours, 'h').toDate(),
+          $lte: moment().subtract(1, 'days').endOf('day')
+                  .add(offsetHours, 'h').toDate()
         };
       }
 
       match = value.match(PERIODS_X_DAYS_TO_DATE);
       if (match && match[1]) {
         return {
-          $gte: moment().subtract(match[1] - 1, 'days').startOf('day').toDate(),
-          $lte: moment().toDate()
+          $gte: moment().subtract(match[1] - 1, 'days')
+                  .startOf('day').toDate(),
+          $lte: moment().add(offsetHours, 'h').toDate()
         };
       }
 
       switch (value) {
-        // TODO: Remove once new filter protocol is live
-        case PERIODS_YESTERDAY_DEPRECATED:
-          from = moment().subtract(1, 'days').startOf('day').toDate();
-          to = moment().subtract(1, 'days').endOf('day').toDate();
-          break;
-        case PERIODS_LAST_WEEK:
-          from = moment().subtract(1, 'weeks').startOf('isoWeek').toDate();
-          to = moment().subtract(1, 'weeks').endOf('isoWeek').toDate();
-          break;
-        case PERIODS_LAST_2_WEEK:
-          from = moment().subtract(2, 'weeks').startOf('isoWeek').toDate();
-          to = moment().subtract(1, 'weeks').endOf('isoWeek').toDate();
-          break;
-        case PERIODS_LAST_MONTH:
-          from = moment().subtract(1, 'months').startOf('month').toDate();
-          to = moment().subtract(1, 'months').endOf('month').toDate();
-          break;
-        case PERIODS_LAST_3_MONTH:
-          from = moment().subtract(3, 'months').startOf('month').toDate();
-          to = moment().subtract(1, 'months').endOf('month').toDate();
-          break;
-        case PERIODS_LAST_YEAR:
-          from = moment().subtract(1, 'years').startOf('year').toDate();
-          to = moment().subtract(1, 'years').endOf('year').toDate();
-          break;
-
         case PERIODS_YESTERDAY:
-          from = moment().subtract(1, 'days').startOf('day').toDate();
-          to = moment().subtract(1, 'days').endOf('day').toDate();
+          from = moment().subtract(1, 'days').startOf('day')
+                   .add(offsetHours, 'h').toDate();
+          to = moment().subtract(1, 'days').endOf('day')
+                 .add(offsetHours, 'h').toDate();
           break;
         case PERIODS_PREVIOUS_WEEK:
-          from = moment().subtract(1, 'weeks').startOf('isoWeek').toDate();
-          to = moment().subtract(1, 'weeks').endOf('isoWeek').toDate();
+          from = moment().subtract(1, 'weeks')
+            .startOf('isoWeek').add(offsetHours, 'h').toDate();
+          to = moment().subtract(1, 'weeks').endOf('isoWeek')
+            .add(offsetHours, 'h').toDate();
           break;
         case PERIODS_PREVIOUS_MONTH:
-          from = moment().subtract(1, 'months').startOf('month').toDate();
-          to = moment().subtract(1, 'months').endOf('month').toDate();
+          from = moment().subtract(1, 'months').startOf('month')
+            .add(offsetHours, 'h').toDate();
+          to = moment().subtract(1, 'months').endOf('month')
+            .add(offsetHours, 'h').toDate();
           break;
         case PERIODS_PREVIOUS_QUARTER:
-          from = moment().subtract(1, 'quarters').startOf('quarter').toDate();
-          to = moment().subtract(1, 'quarters').endOf('quarter').toDate();
+          from = moment().subtract(1, 'quarters')
+            .startOf('quarter').add(offsetHours, 'h').toDate();
+          to = moment().subtract(1, 'quarters').endOf('quarter')
+            .add(offsetHours, 'h').toDate();
           break;
         case PERIODS_PREVIOUS_YEAR:
-          from = moment().subtract(1, 'years').startOf('year').toDate();
-          to = moment().subtract(1, 'years').endOf('year').toDate();
+          from = moment().subtract(1, 'years').startOf('year')
+            .add(offsetHours, 'h').toDate();
+          to = moment().subtract(1, 'years').endOf('year')
+            .add(offsetHours, 'h').toDate();
           break;
         case PERIODS_WEEK_TO_DATE:
-          from = moment().startOf('week').toDate();
-          to = moment().toDate();
+          from = moment().startOf('week').add(offsetHours, 'h')
+            .toDate();
+          to = moment().add(offsetHours, 'h')
+            .toDate();
           break;
         case PERIODS_MONTH_TO_DATE:
-          from = moment().startOf('month').toDate();
-          to = moment().toDate();
+          from = moment().startOf('month').add(offsetHours, 'h')
+            .toDate();
+          to = moment().add(offsetHours, 'h').toDate();
           break;
         case PERIODS_QUARTER_TO_DATE:
-          from = moment().startOf('quarter').toDate();
-          to = moment().toDate();
+          from = moment().startOf('quarter')
+            .add(offsetHours, 'h').toDate();
+          to = moment().add(offsetHours, 'h').toDate();
           break;
         case PERIODS_YEAR_TO_DATE:
-          from = moment().startOf('year').toDate();
-          to = moment().toDate();
+          from = moment().startOf('year').add(offsetHours, 'h')
+            .toDate();
+          to = moment().add(offsetHours, 'h').toDate();
           break;
       }
 
@@ -249,20 +200,10 @@ function OperatorValueParser(opts) {
       ret = { $ne: parseFct(value) };
     } else if (value[0] === '>') {
       value = value.substring(1);
-
-      if (isIntervalDateValue(value)) {
-        ret = getIntervalDateValue(value);
-      } else {
-        ret = { $gt: parseFct(value) };
-      }
+      ret = { $gt: parseFct(value) };
     } else if (value[0] === '<') {
       value = value.substring(1);
-
-      if (isIntervalDateValue(value)) {
-        ret = getIntervalDateValue(value);
-      } else {
-        ret = { $lt: parseFct(value) };
-      }
+      ret = { $lt: parseFct(value) };
     } else if (value[0] === '*' && value[value.length - 1] === '*') {
       value = value.substring(1, value.length - 1);
       ret = new RegExp('.*' + parseFct(value) + '.*');
