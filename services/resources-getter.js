@@ -101,8 +101,8 @@ function ResourcesGetter(model, opts, params) {
 
             values.split(',').forEach(function (value) {
               var condition = {};
-              condition[subFieldName] = new OperatorValueParser(opts)
-                .perform(subModel, subFieldName, value);
+              condition[subFieldName] = new OperatorValueParser(opts,
+                params.timezone).perform(subModel, subFieldName, value);
               conditions.push(condition);
             });
           }
@@ -152,7 +152,8 @@ function ResourcesGetter(model, opts, params) {
     queryFilters[operator] = [];
 
     _.each(params.filter, function (values, key) {
-      var conditions = new FilterParser(model, opts).perform(key, values);
+      var conditions = new FilterParser(model, opts, params.timezone)
+        .perform(key, values);
       _.each(conditions, function (condition) {
         queryFilters[operator].push(condition);
       });

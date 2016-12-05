@@ -4,7 +4,7 @@ var OperatorValueParser = require('./operator-value-parser');
 var Interface = require('forest-express');
 var utils = require('../utils/schema');
 
-function FilterParser(model, opts) {
+function FilterParser(model, opts, timezone) {
   var schema = Interface.Schemas.schemas[utils.getModelName(model)];
 
   this.perform = function (key, values) {
@@ -21,7 +21,8 @@ function FilterParser(model, opts) {
 
     values.split(',').forEach(function (value) {
       var condition = {};
-      var filter = new OperatorValueParser(opts).perform(model, key, value);
+      var filter = new OperatorValueParser(opts, timezone)
+        .perform(model, key, value);
 
       if (isEmbeddedField) {
         condition[fieldName + '.' + subfieldName] = filter;
