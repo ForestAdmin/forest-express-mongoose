@@ -26,7 +26,6 @@
     "jsonwebtoken": "^5.5.4",
     "lodash": "^3.9.3",
     "moment": "^2.10.6",
-    "node-uuid": "^1.4.3",
     "semver": "^4.3.6",
     "superagent": "^1.4.0",
     "useragent": "^2.1.8",

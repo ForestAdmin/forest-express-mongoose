@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Changed
 - Date Filters - Date filters operators are now based on the client timezone.
+- Packages - Remove useless node-uuid package.
 
 ### Fixed
 - Line Charts - Fix per-week line charts on several years.
