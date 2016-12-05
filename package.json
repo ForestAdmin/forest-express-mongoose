@@ -26,10 +26,10 @@
     "jsonwebtoken": "^5.5.4",
     "lodash": "^3.9.3",
     "moment": "^2.10.6",
-    "node-uuid": "^1.4.3",
     "semver": "^4.3.6",
     "superagent": "^1.4.0",
     "useragent": "^2.1.8",
+    "uuid": "^3.0.0",
     "winston": "^1.0.2"
   },
   "devDependencies": {
