@@ -3,8 +3,10 @@
 ## [Unreleased]
 
 ## RELEASE 0.2.27 - 2016-12-04
-### Changed
+### Added
 - Date Filters - Date filters operators are now based on the client timezone.
+
+### Changed
 - Packages - Remove useless node-uuid package.
 
 ### Fixed
