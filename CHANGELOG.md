@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 0.2.27 - 2016-12-04
 ### Changed
 - Date Filters - Date filters operators are now based on the client timezone.
 - Packages - Remove useless node-uuid package.
@@ -9,6 +11,10 @@
 - Line Charts - Fix per-week line charts on several years.
 - Line Charts - Fix the bad month displayed in the per-month line charts.
 - Value Charts - Format Pie charts value properly for groupBy on Date type field.
+
+## RELEASE 0.2.26 - 2016-11-04
+### Changed
+- Packages - Fix several issues updating the forest-express package to the latest version.
 
 ## RELEASE 0.2.25 - 2016-11-04
 ### Fixed
