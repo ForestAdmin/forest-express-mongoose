@@ -1,6 +1,10 @@
 # Change Log
 
 ## [Unreleased]
+### Changed
+- Package - Add contributors, keywords, homepage...
+- Package - Remove all unused packages.
+- Dependencies - Freeze the dependencies versions to reduce packages versions changes between projects/environments.
 
 ## RELEASE 0.2.27 - 2016-12-04
 ### Added

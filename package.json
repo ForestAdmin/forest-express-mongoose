@@ -1,39 +1,40 @@
 {
   "name": "forest-express-mongoose",
   "version": "0.2.27",
-  "description": "Forest connector for Expressjs and Mongoose",
-  "main": "index.js",
-  "scripts": {
-    "test-mongoose-3": "npm install mongoose@3.8.8 && ./node_modules/mocha/bin/mocha",
-    "test-mongoose-4": "npm install mongoose@latest && ./node_modules/mocha/bin/mocha",
-    "test": "npm run test-mongoose-3 && npm run test-mongoose-4"
-  },
+  "description": "Official Express/Mongoose Liana for Forest",
   "author": "Sandro Munda <sandro@munda.me>",
+  "contributors": [
+    "Arnaud Besnier <arnaudibesnier@gmail.com>"
+  ],
   "license": "GPL-3.0",
+  "homepage": "http://www.forestadmin.com",
+  "keywords": [
+    "forest",
+    "admin",
+    "panel",
+    "interface",
+    "mongoose"
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/ForestAdmin/forest-express-mongoose.git"
   },
+  "main": "index.js",
   "dependencies": {
-    "bcryptjs": "^2.3.0",
-    "bluebird": "^2.9.25",
-    "body-parser": "^1.13.1",
-    "express": "^4.12.4",
-    "express-cors": "0.0.3",
-    "express-jwt": "^3.0.1",
-    "flat": "^1.6.0",
-    "forest-express": "^0.1.33",
-    "jsonwebtoken": "^5.5.4",
-    "lodash": "^3.9.3",
-    "moment": "^2.10.6",
-    "semver": "^4.3.6",
-    "superagent": "^1.4.0",
-    "useragent": "^2.1.8",
-    "winston": "^1.0.2"
+    "bluebird": "2.9.25",
+    "flat": "1.6.0",
+    "forest-express": "0.1.33",
+    "lodash": "3.9.3",
+    "moment": "2.10.6"
   },
   "devDependencies": {
-    "chai": "^2.3.0",
-    "git-hooks": "^1.1.6",
-    "mocha": "^2.2.5"
+    "chai": "2.3.0",
+    "git-hooks": "1.1.6",
+    "mocha": "2.2.5"
+  },
+  "scripts": {
+    "test-mongoose-3": "npm install mongoose@3.8.8 && ./node_modules/mocha/bin/mocha",
+    "test-mongoose-4": "npm install mongoose@latest && ./node_modules/mocha/bin/mocha",
+    "test": "npm run test-mongoose-3 && npm run test-mongoose-4"
   }
 }
