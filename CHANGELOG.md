@@ -1,6 +1,9 @@
 # Change Log
 
 ## [Unreleased]
+### Added
+- Segments - Smart Segments can be created to define specific records subsets.
+
 ### Changed
 - Package - Add contributors, keywords, homepage...
 - Package - Remove all unused packages.

@@ -8,6 +8,7 @@ var utils = require('../utils/schema');
 
 function ResourcesGetter(model, opts, params) {
   var schema = Interface.Schemas.schemas[utils.getModelName(model)];
+  var segment;
 
   function hasPagination() {
     return params.page && params.page.number;
@@ -185,6 +186,10 @@ function ResourcesGetter(model, opts, params) {
       handleFilterParams(query);
     }
 
+    if (segment) {
+      query.where(segment.where);
+    }
+
     if (params.search) {
       _.each(schema.fields, function (field) {
         if (field.search) {
@@ -223,19 +228,44 @@ function ResourcesGetter(model, opts, params) {
     });
   }
 
-  this.perform = function () {
-    var query = getRecords();
+  function getSegment() {
+    if (schema.segments && params.segment) {
+      segment = _.find(schema.segments, function (segment) {
+        return segment.name === params.segment;
+      });
+    }
+  }
 
-    if (hasRelationshipFilter()) {
-      return exec(getRecords())
-        .then(function (records) {
-          var count = records.length;
-          records = records.slice(getSkip(), getSkip() + getLimit());
-          return [count, records];
+  function getSegmentCondition() {
+    if (segment && segment.where && typeof segment.where === 'function') {
+      return segment.where()
+        .then(function (where) {
+          segment.where = where;
+          return;
         });
     } else {
-      return P.all([count(query), exec(getRecords())]);
+      return new P(function (resolve) { return resolve(); });
     }
+  }
+
+  this.perform = function () {
+    getSegment();
+
+    return getSegmentCondition()
+      .then(function () {
+        var query = getRecords();
+
+        if (hasRelationshipFilter()) {
+          return exec(getRecords())
+            .then(function (records) {
+              var count = records.length;
+              records = records.slice(getSkip(), getSkip() + getLimit());
+              return [count, records];
+            });
+        } else {
+          return P.all([count(query), exec(getRecords())]);
+        }
+      });
   };
 }
 
