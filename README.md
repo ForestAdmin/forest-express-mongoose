@@ -20,10 +20,15 @@ You will then follow a 4-step process:
   // Add the following code to your app.js file:
   app.use(require('forest-express-mongoose').init({
     modelsDir: __dirname + '/models', // Your models directory.
-    secretKey: 'YOUR-SUPER-SECRET-SECRET-KEY',
-    authKey: 'YOUR-SUPER-SECRET-AUTH-KEY', // Choose a secret authentication key.
+    envSecret: process.env.FOREST_ENV_SECRET,
+    authSecret: process.env.FOREST_AUTH_SECRET,
     mongoose: require('mongoose') // The mongoose database connection.
   }));
+  ```
+  ```bash
+  # Setup Forest environment variables and do not version them
+  FOREST_ENV_SECRET=FOREST-ENV-SECRET # This secret is provided by Forest during the project creation
+  FOREST_AUTH_SECRET=FOREST-AUTH-SECRET # Choose a secure auth secret and keep it in a safe place
   ```
 3. Get your app running, provide your application URL and check if you have successfully installed the Forest Liana on your app.  
 4. Choose your credentials, log into https://app.forestadmin.com and start customizing your admin interface! 🎉
