@@ -11,33 +11,51 @@ module.exports = function (model, opts) {
   var mongoose = opts.mongoose;
   // mongoose.base is used when opts.mongoose is not the default connection.
   var Schema = mongoose.Schema || mongoose.base.Schema;
+  var schemaType;
 
-  function objectType(object, getType) {
+  function formatRef(ref) {
+    if (opts.mongoose.models[ref]) {
+      return utils.getModelName(opts.mongoose.models[ref]);
+    } else {
+      Interface.logger.warn('Cannot find the reference \"' + ref +
+        '\" on the model \"' + model.modelName + '\".');
+    }
+  }
+
+  function detectReference(opts) {
+    if (opts.options) {
+      if (opts.options.ref && opts.options.type) {
+        return formatRef(opts.options.ref) + '._id';
+      } else if (_.isArray(opts.options.type) && opts.options.type.length &&
+        opts.options.type[0].ref && opts.options.type[0].type) {
+        return formatRef(opts.options.type[0].ref) + '._id';
+      }
+    }
+  }
+
+  function objectType(fields, getType) {
     var type = { fields: [] };
 
-    Object.keys(object).forEach(function (key) {
-      var fields = {
-        field: key,
-        type: getType(key)
+    Object.keys(fields).forEach(function (fieldName) {
+      var fieldInfo = fields[fieldName];
+      var field = {
+        field: fieldName,
+        type: getType(fieldName)
       };
 
-      if (!fields.type) { return; }
+      if (!field.type) { return; }
 
-      var ref = detectReference(object[key]);
-      if (ref) { fields.reference = ref; }
+      var ref = detectReference(fieldInfo);
+      if (ref) { field.reference = ref; }
 
-      type.fields.push(fields);
+      if (fieldInfo.enumValues && fieldInfo.enumValues.length) {
+        field.enums = fieldInfo.enumValues;
+      }
+
+      type.fields.push(field);
     });
 
     return type;
-  }
-
-  function schemaType(type) {
-    return {
-      fields: _.map(type.paths, function (type, field) {
-        return { field: field, type: getTypeFromMongoose(type) };
-      })
-    };
   }
 
   function getTypeFromNative(type) {
@@ -78,8 +96,8 @@ module.exports = function (model, opts) {
   function getTypeFromMongoose(opts) {
     if (_.isPlainObject(opts) && !opts.path) {
       // Deal with Object
-      return objectType(opts, function (key) {
-        return getTypeFromMongoose(opts[key]);
+      return objectType(opts, function (fieldName) {
+        return getTypeFromMongoose(opts[fieldName]);
       });
     } else if (opts.instance === 'Array') {
       // Deal with Array
@@ -111,31 +129,19 @@ module.exports = function (model, opts) {
     }
   }
 
-  function formatRef(ref) {
-    if (opts.mongoose.models[ref]) {
-      return utils.getModelName(opts.mongoose.models[ref]);
-    } else {
-      Interface.logger.warn('Cannot find the reference \"' + ref +
-        '\" on the model \"' + model.modelName + '\".');
-    }
-  }
-
-  function detectReference(opts) {
-    if (opts.options) {
-      if (opts.options.ref && opts.options.type) {
-        return formatRef(opts.options.ref) + '._id';
-      } else if (_.isArray(opts.options.type) && opts.options.type.length &&
-        opts.options.type[0].ref && opts.options.type[0].type) {
-        return formatRef(opts.options.type[0].ref) + '._id';
-      }
-    }
-  }
+  schemaType = function (type) {
+    return {
+      fields: _.map(type.paths, function (type, field) {
+        return { field: field, type: getTypeFromMongoose(type) };
+      })
+    };
+  };
 
   function detectRequireFlag(opts) {
-   return !!opts.isRequired;
+    return !!opts.isRequired;
   }
 
-  function getSchema(path) {
+  function getFieldSchema(path) {
     var opts = paths[path];
 
     var schema = { field: path, type: getTypeFromMongoose(paths[path]) };
@@ -156,8 +162,8 @@ module.exports = function (model, opts) {
   return P
     .each(Object.keys(paths), function (path) {
       if (path === '__v') { return; }
-      var schema = getSchema(path);
-      fields.push(schema);
+      var field = getFieldSchema(path);
+      fields.push(field);
     })
     .then(function () {
       return {
@@ -167,4 +173,3 @@ module.exports = function (model, opts) {
       };
     });
 };
-
