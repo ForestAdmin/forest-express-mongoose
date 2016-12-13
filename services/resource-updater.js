@@ -9,8 +9,14 @@ function ResourceUpdater(model, params) {
 
   this.perform = function () {
     return new P(function (resolve, reject) {
+      var recordId = params._id;
+
+      // NOTICE: Old versions of MongoDB (2.X) seem to refuse the presence of
+      //         the _id in the $set. So we remove it. It is useless anyway.
+      delete params._id;
+
       var query = model
-        .findByIdAndUpdate(params._id, {
+        .findByIdAndUpdate(recordId, {
           $set: params
         }, {
           new: true
