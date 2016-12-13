@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- Record Updates - Fix record updates for apps using MongoDB 2.X.
 
 ## RELEASE 0.3.0 - 2016-12-12
 ### Added
