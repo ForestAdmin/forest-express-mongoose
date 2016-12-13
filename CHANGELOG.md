@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 0.3.1 - 2016-12-13
 ### Fixed
 - Record Updates - Fix record updates for apps using MongoDB 2.X.
 - Embedded fields - Fix the record detail display of the embedded Enum type fields.
