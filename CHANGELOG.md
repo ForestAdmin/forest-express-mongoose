@@ -10,8 +10,8 @@
 - Package - Add contributors, keywords, homepage...
 - Package - Remove all unused packages.
 - Dependencies - Freeze the dependencies versions to reduce packages versions changes between projects/environments.
-- Configuration - Rename secret values to env_secret and auth_secret.
-- Installation - env_secret and auth_secret are now defined in environment variables and, thus, in all non-development environments, need to be set manually.
+- Configuration - Rename secret values to envSecret and authSecret.
+- Installation - envSecret and authSecret are now defined in environment variables and, thus, in all non-development environments, need to be set manually.
 
 ## RELEASE 0.2.27 - 2016-12-04
 ### Added
