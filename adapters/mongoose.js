@@ -153,10 +153,55 @@ module.exports = function (model, opts) {
     return !!opts.isRequired;
   }
 
+  function getValidations(opts) {
+    var validations = [];
+
+    console.log(opts);
+    if (opts.validators && opts.validators.length > 0) {
+      _.each(opts.validators, function (validator) {
+        if (validator.type === 'required') {
+          validations.push({
+            type: 'is present'
+          });
+        }
+
+        if (validator.type === 'minlength') {
+          validations.push({
+            type: 'is longer than',
+            value: validator.minlength
+          });
+        }
+
+        if (validator.type === 'maxlength') {
+          validations.push({
+            type: 'is shorter than',
+            value: validator.maxlength
+          });
+        }
+
+        if (validator.type === 'min') {
+          validations.push({
+            type: 'is greater than',
+            value: validator.min
+          });
+        }
+
+        if (validator.type === 'max') {
+          validations.push({
+            type: 'is less than',
+            value: validator.max
+          });
+        }
+      });
+    }
+
+    return validations;
+  }
+
   function getFieldSchema(path) {
     var opts = paths[path];
 
-    var schema = { field: path, type: getTypeFromMongoose(paths[path]) };
+    var schema = { field: path, type: getTypeFromMongoose(opts) };
 
     var ref = detectReference(opts);
     if (ref) { schema.reference = ref; }
@@ -166,6 +211,12 @@ module.exports = function (model, opts) {
 
     if (opts.enumValues && opts.enumValues.length) {
       schema.enums = opts.enumValues;
+    }
+
+    schema.validations = getValidations(opts);
+
+    if (schema.validations.length === 0) {
+      delete schema.validations;
     }
 
     return schema;
