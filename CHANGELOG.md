@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## RELEASE 0.3.2 - 2016-01-04
+### Changed
+- Forest - Upgrade forest-express
+
 ## RELEASE 0.3.1 - 2016-12-13
 ### Fixed
 - Record Updates - Fix record updates for apps using MongoDB 2.X.
