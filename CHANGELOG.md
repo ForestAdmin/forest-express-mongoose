@@ -3,8 +3,11 @@
 ## [Unreleased]
 
 ## RELEASE 0.3.2 - 2016-01-04
-### Changed
-- Forest - Upgrade forest-express
+### Added
+- Configurations - Users can specify the directory for Forest Smart Implementation.
+
+### Fixed
+- Configuration - Fix bad authentication when a custom path is configured.
 
 ## RELEASE 0.3.1 - 2016-12-13
 ### Fixed
