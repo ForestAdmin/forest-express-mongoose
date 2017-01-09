@@ -1,6 +1,7 @@
 # Change Log
 
 ## [Unreleased]
+- Smart field - Ensure a hasMany smart field doesn't trigger any error when the route is not yet implemented.
 
 ## RELEASE 0.3.2 - 2016-01-04
 ### Added
