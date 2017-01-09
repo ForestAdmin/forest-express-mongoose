@@ -30,6 +30,11 @@ function HasManyGetter(model, association, opts, params) {
       model.findById(params.recordId)
         .exec(function (err, record) {
           if (err) { return reject(err); }
+          if (!record[params.associationName]) {
+            Interface.logger.warn('Cannot find the association name \"' + params.associationName + '". Please, ensure you\'ve created the Smart field route (http://doc.forestadmin.com/developers-guide/?stack=express%2Fmongoose#creating-a-hasmany-smart-field).');
+            return resolve(0);
+          }
+
           resolve(record[params.associationName].length);
         });
     });
@@ -69,6 +74,7 @@ function HasManyGetter(model, association, opts, params) {
     })
     .map(function (record) {
       return new P(function (resolve, reject) {
+        if (!record[params.associationName]) { return resolve(); }
         var query = association.findById(record[params.associationName]);
         handlePopulate(query);
 
