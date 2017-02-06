@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## RELEASE 1.0.0 - 2016-02-06
+### Added
+- Smart Actions - Support file download.
+
 ## RELEASE 0.3.3 - 2016-01-09
 ### Changed
 - Smart field - Ensure a hasMany smart field doesn't trigger any error when the route is not yet implemented.
