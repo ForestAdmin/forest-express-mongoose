@@ -4,6 +4,7 @@ var _ = require('lodash');
 var flat = require('flat');
 var utils = require('../utils/schema');
 var Interface = require('forest-express');
+var mongooseUtils = require('../services/mongoose-utils');
 
 module.exports = function (model, opts) {
   var fields = [];
@@ -14,8 +15,9 @@ module.exports = function (model, opts) {
   var schemaType;
 
   function formatRef(ref) {
-    if (opts.mongoose.models[ref]) {
-      return utils.getModelName(opts.mongoose.models[ref]);
+    var models = mongooseUtils.getModels(opts);
+    if (models[ref]) {
+      return utils.getModelName(models[ref]);
     } else {
       Interface.logger.warn('Cannot find the reference \"' + ref +
         '\" on the model \"' + model.modelName + '\".');

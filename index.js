@@ -2,6 +2,7 @@
 var P = require('bluebird');
 var Interface = require('forest-express');
 var utils = require('./utils/schema');
+var mongooseUtils = require('./services/mongoose-utils');
 
 exports.collection = Interface.collection;
 exports.ensureAuthenticated = Interface.ensureAuthenticated;
@@ -22,7 +23,7 @@ exports.init = function(opts) {
   exports.SchemaAdapter = require('./adapters/mongoose');
 
   exports.getModels = function () {
-    return opts.mongoose.models;
+    return mongooseUtils.getModels(opts);
   };
 
   exports.getModelName = utils.getModelName;
