@@ -19,15 +19,18 @@ module.exports = {
     }
     // Initially opts.mongoose.models is indexed by modelName
     // so we filter (which gives us an array)
-    // then we re-index by modelName)
-    return _.chain(opts.mongoose.models)
-      .filter(function (model, modelName) {
-        if (!_.isEmpty(opts.includedModels)) {
-          return _.includes(opts.includedModels, modelName);
-        } else {
-          return !_.includes(opts.excludedModels, modelName);
-        }
-      })
+    // then we re-index by modelName
+    var models = _.chain(opts.mongoose.models);
+    if (!_.isEmpty(opts.includedModels)) {
+      models = models.filter(function (model, modelName) {
+        return _.includes(opts.includedModels, modelName);
+      });
+    } else {
+      models = models.filter(function (model, modelName) {
+        return !_.includes(opts.excludedModels, modelName);
+      });
+    }
+    return models
       .indexBy('modelName')
       .value();
   }
