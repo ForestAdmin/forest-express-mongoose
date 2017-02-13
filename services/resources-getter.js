@@ -5,6 +5,7 @@ var OperatorValueParser = require('./operator-value-parser');
 var FilterParser = require('./filter-parser');
 var Interface = require('forest-express');
 var utils = require('../utils/schema');
+var mongooseUtils = require('./mongoose-utils');
 
 function ResourcesGetter(model, opts, params) {
   var schema = Interface.Schemas.schemas[utils.getModelName(model)];
@@ -95,7 +96,7 @@ function ResourcesGetter(model, opts, params) {
           var currentField = _.findWhere(schema.fields, { field: fieldName });
           if (currentField && currentField.reference) {
             // NOTICE: Look for the associated model infos
-            var subModel = _.find(opts.mongoose.models, function(model) {
+            var subModel = _.find(mongooseUtils.getModels(opts), function(model) {
               return model.collection.name ===
                 currentField.reference.split('.')[0];
             });
