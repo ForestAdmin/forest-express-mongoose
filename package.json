@@ -1,7 +1,7 @@
 {
   "name": "forest-express-mongoose",
   "description": "Official Express/Mongoose Liana for Forest",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Sandro Munda <sandro@munda.me>",
   "contributors": [
     "Arnaud Besnier <arnaudibesnier@gmail.com>"
@@ -33,6 +33,7 @@
     "gulp": "3.9.1",
     "mocha": "2.2.5",
     "moment": "2.10.6",
+    "semver": "^5.3.0",
     "simple-git": "1.65.0"
   },
   "scripts": {

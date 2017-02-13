@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 1.0.1 - 2017-02-13
 ### Added
 - Collections - Add includedModels & excludedModels options to choose which collections to display in Forest.
 
