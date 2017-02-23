@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 1.0.2 - 2017-02-23
 ### Fixed
 - HasMany - Fix the list of hasMany when IDs are Strings and not ObjectIds.
 
