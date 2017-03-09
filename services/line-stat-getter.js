@@ -193,7 +193,7 @@ function LineStatFinder(model, params, opts) {
         query = query.match(q);
       }
 
-      if (groupBy) {
+      if (!_.isEmpty(groupBy)) {
         var group = {
           _id: groupBy,
           count: { $sum: sum }
@@ -206,8 +206,11 @@ function LineStatFinder(model, params, opts) {
         query = query.group(group);
       }
 
-      query.sort(sort)
-        .project({
+      if (!_.isEmpty(sort)) {
+        query = query.sort(sort);
+      }
+
+      query.project({
           values: {
             key: '$_id.'+  params['group_by_field'],
             value: '$count'

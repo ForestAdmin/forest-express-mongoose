@@ -32,6 +32,10 @@ function PieStatGetter(model, params, opts) {
   }
 
   this.perform = function () {
+    if (!params['group_by_field']) {
+      return P.reject(new Error('Missing param `group_by_field`'));
+    }
+
     var populateGroupByField = getReference(params['group_by_field']);
 
     return new P(function (resolve, reject) {
