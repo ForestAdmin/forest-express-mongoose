@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Added
+- Enums - Support Enums in subdocuments. 
 
 ## RELEASE 1.0.1 - 2017-02-13
 ### Added
