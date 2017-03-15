@@ -1,6 +1,9 @@
 # Change Log
 
 ## [Unreleased]
+### Added
+- Enums - Support Enums in subdocuments.
+
 ### Fixed
 - Record Getter - Prevent an unexpected error if the record does not exist.
 

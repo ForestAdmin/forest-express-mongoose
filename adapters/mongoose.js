@@ -54,6 +54,11 @@ module.exports = function (model, opts) {
         field.enums = fieldInfo.enumValues;
       }
 
+      // NOTICE: Detect enum values for Enums in subdocument arrays.
+      if (fieldInfo.enum && fieldInfo.enum.length) {
+        field.enums = fieldInfo.enum;
+      }
+
       type.fields.push(field);
     });
 
@@ -71,7 +76,12 @@ module.exports = function (model, opts) {
       if (_.isEmpty(type)) { return null; }
 
       if (type.type) {
-        return getTypeFromNative(type.type);
+        if (type.enum) {
+          // NOTICE: Detect enum values for Enums in subdocument arrays.
+          return 'Enum';
+        } else {
+          return getTypeFromNative(type.type);
+        }
       } else {
         return objectType(type, function (key) {
           return getTypeFromNative(type[key]);
