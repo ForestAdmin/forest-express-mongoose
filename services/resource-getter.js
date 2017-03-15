@@ -3,6 +3,7 @@ var P = require('bluebird');
 var _ = require('lodash');
 var Interface = require('forest-express');
 var utils = require('../utils/schema');
+var createError = require('http-errors');
 
 function ResourceGetter(model, params) {
   var schema = Interface.Schemas.schemas[utils.getModelName(model)];
@@ -23,8 +24,12 @@ function ResourceGetter(model, params) {
 
       query
         .lean()
-        .exec(function (err, record) {
-          if (err) { return reject(err); }
+        .exec(function (error, record) {
+          if (!record) {
+            reject(createError(404, 'The ' + model.name + ' #' +
+              params.recordId + ' does not exist.'));
+          }
+          if (error) { return reject(error); }
           resolve(record);
         });
     });

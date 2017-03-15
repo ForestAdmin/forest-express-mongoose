@@ -5,6 +5,7 @@ var Interface = require('forest-express');
 var utils = require('../utils/schema');
 
 function HasManyGetter(model, association, opts, params) {
+  var OBJECTID_REGEXP = /^[0-9a-fA-F]{24}$/;
 
   function hasPagination() {
     return params.page && params.page.number;
@@ -60,9 +61,14 @@ function HasManyGetter(model, association, opts, params) {
 
   function getRecords() {
     return new P(function (resolve, reject) {
+      var id = params.recordId;
+      if (OBJECTID_REGEXP.test(params.recordId)) {
+        id = opts.mongoose.Types.ObjectId(id);
+      }
+
       return model
         .aggregate()
-        .match({ _id: opts.mongoose.Types.ObjectId(params.recordId) })
+        .match({ _id: id })
         .unwind(params.associationName)
         .project(getProjection())
         .limit(getLimit())

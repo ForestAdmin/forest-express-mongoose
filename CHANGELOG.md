@@ -2,7 +2,14 @@
 
 ## [Unreleased]
 ### Added
-- Enums - Support Enums in subdocuments. 
+- Enums - Support Enums in subdocuments.
+
+### Fixed
+- Record Getter - Prevent an unexpected error if the record does not exist.
+
+## RELEASE 1.0.2 - 2017-02-23
+### Fixed
+- HasMany - Fix the list of hasMany when IDs are Strings and not ObjectIds.
 
 ## RELEASE 1.0.1 - 2017-02-13
 ### Added

@@ -1,7 +1,7 @@
 {
   "name": "forest-express-mongoose",
   "description": "Official Express/Mongoose Liana for Forest",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Sandro Munda <sandro@munda.me>",
   "contributors": [
     "Arnaud Besnier <arnaudibesnier@gmail.com>"
@@ -24,6 +24,7 @@
     "bluebird": "2.9.25",
     "flat": "1.6.0",
     "forest-express": "1.0.0",
+    "http-errors": "1.6.1",
     "lodash": "3.9.3",
     "moment": "2.10.6"
   },
