@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 1.0.4 - 2017-03-27
 ### Added
 - Search - Enable the search inside arrays of strings.
 
