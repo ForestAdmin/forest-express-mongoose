@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 1.0.8 - 2017-04-21
 ### Fixed
 - Filters ToDate - Fix the end of period filtering for "toDate" date operator types.
 - Smart Fields - Smart fields are sent in the detail view request.
