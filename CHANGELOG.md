@@ -1,7 +1,7 @@
 # Change Log
 
 ## [Unreleased]
-### Fixed
+### Fixed
 - Filters ToDate - Fix the end of period filtering for "toDate" date operator types.
 
 ## RELEASE 1.0.7 - 2017-04-14
@@ -21,7 +21,7 @@
 - Search - Enable the search inside arrays of strings.
 
 ## RELEASE 1.0.3 - 2017-03-16
-### Added
+### Added
 - Enums - Support Enums in subdocuments.
 
 ### Fixed
@@ -59,7 +59,7 @@
 ### Added
 - Segments - Smart Segments can be created to define specific records subsets.
 
-### Changed
+### Changed
 - Package - Add contributors, keywords, homepage...
 - Package - Remove all unused packages.
 - Dependencies - Freeze the dependencies versions to reduce packages versions changes between projects/environments.
@@ -73,7 +73,7 @@
 ### Changed
 - Packages - Remove useless node-uuid package.
 
-### Fixed
+### Fixed
 - Line Charts - Fix per-week line charts on several years.
 - Line Charts - Fix the bad month displayed in the per-month line charts.
 - Value Charts - Format Pie charts value properly for groupBy on Date type field.
