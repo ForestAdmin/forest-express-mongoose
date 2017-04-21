@@ -134,7 +134,7 @@ function OperatorValueParser(opts, timezone) {
         return {
           $gte: moment().subtract(match[1] - 1, 'days')
                   .startOf('day').toDate(),
-          $lte: moment().add(offsetHours, 'h').toDate()
+          $lte: moment().toDate()
         };
       }
 
@@ -172,23 +172,22 @@ function OperatorValueParser(opts, timezone) {
         case PERIODS_WEEK_TO_DATE:
           from = moment().startOf('week').add(offsetHours, 'h')
             .toDate();
-          to = moment().add(offsetHours, 'h')
-            .toDate();
+          to = moment().toDate();
           break;
         case PERIODS_MONTH_TO_DATE:
           from = moment().startOf('month').add(offsetHours, 'h')
             .toDate();
-          to = moment().add(offsetHours, 'h').toDate();
+          to = moment().toDate();
           break;
         case PERIODS_QUARTER_TO_DATE:
           from = moment().startOf('quarter')
             .add(offsetHours, 'h').toDate();
-          to = moment().add(offsetHours, 'h').toDate();
+          to = moment().toDate();
           break;
         case PERIODS_YEAR_TO_DATE:
           from = moment().startOf('year').add(offsetHours, 'h')
             .toDate();
-          to = moment().add(offsetHours, 'h').toDate();
+          to = moment().toDate();
           break;
       }
 
