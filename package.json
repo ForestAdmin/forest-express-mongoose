@@ -23,7 +23,7 @@
   "dependencies": {
     "bluebird": "2.9.25",
     "flat": "1.6.0",
-    "forest-express": "1.0.6",
+    "forest-express": "1.0.7",
     "http-errors": "1.6.1",
     "lodash": "3.9.3",
     "moment": "2.10.6"
