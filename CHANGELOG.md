@@ -1,6 +1,11 @@
 # Change Log
 
 ## [Unreleased]
+### Added
+- Smart Fields - Developers can now define Smart Fields setters.
+
+### Changed
+- Smart Fields - Replace the Smart Fields value method by get.
 
 ## RELEASE 1.0.8 - 2017-04-21
 ### Fixed
