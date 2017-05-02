@@ -200,7 +200,12 @@ function ResourcesGetter(model, opts, params) {
     if (params.search) {
       _.each(schema.fields, function (field) {
         if (field.search) {
-          field.search(query, params.search);
+          try {
+            field.search(query, params.search);
+          } catch(error) {
+            Interface.logger.error('Cannot search properly on Smart Field ' +
+              field.field + ':\n' + error);
+          }
         }
       });
     }
