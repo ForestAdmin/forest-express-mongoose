@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 1.1.1 - 2017-05-04
 ### Added
 - Smart Fields - Add an explicit error message if the search on a Smart Field generates an error.
 
