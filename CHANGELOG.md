@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 1.1.2 - 2017-05-11
 ### Added
 - Customization Errors - Do not send the apimap when users create Forest customization with syntax errors in code.
 - Customization Errors - Add errors in the console when users create Forest customization with syntax errors in code.
