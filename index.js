@@ -8,8 +8,9 @@ exports.collection = Interface.collection;
 exports.ensureAuthenticated = Interface.ensureAuthenticated;
 exports.StatSerializer = Interface.StatSerializer;
 exports.ResourceSerializer = Interface.ResourceSerializer;
+exports.Schemas = Interface.Schemas;
 
-exports.init = function(opts) {
+exports.init = function (opts) {
   exports.opts = opts;
 
   exports.getLianaName = function () {
@@ -38,13 +39,13 @@ exports.init = function(opts) {
 
   exports.ResourcesGetter = require('./services/resources-getter');
   exports.ResourceGetter = require('./services/resource-getter');
-  exports.ResourceCreator = require('./services/resource-creator');
-  exports.ResourceUpdater = require('./services/resource-updater');
-  exports.ResourceRemover = require('./services/resource-remover');
+  exports.ResourceCreator = opts.ResourceCreator || require('./services/resource-creator');
+  exports.ResourceUpdater = opts.ResourceUpdater || require('./services/resource-updater');
+  exports.ResourceRemover = opts.ResourceRemover || require('./services/resource-remover');
 
   exports.HasManyGetter = require('./services/has-many-getter');
-  exports.HasManyAssociator = require('./services/has-many-associator');
-  exports.HasManyDissociator = require('./services/has-many-dissociator');
+  exports.HasManyAssociator = opts.HasManyAssociator || require('./services/has-many-associator');
+  exports.HasManyDissociator = opts.HasManyDissociator || require('./services/has-many-dissociator');
   exports.BelongsToUpdater = require('./services/belongs-to-updater');
 
   exports.ValueStatGetter = require('./services/value-stat-getter');
@@ -92,13 +93,13 @@ exports.init = function(opts) {
       return new P(function (resolve, reject) {
         if (customerId) {
           return userModel
-          .findById(customerId)
-          .lean()
-          .exec(function (err, customer) {
-            if (err) { return reject(err); }
-            if (!customer) { return reject(); }
-            resolve(customer);
-          });
+            .findById(customerId)
+            .lean()
+            .exec(function (err, customer) {
+              if (err) { return reject(err); }
+              if (!customer) { return reject(); }
+              resolve(customer);
+            });
         } else {
           resolve();
         }
