@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 1.1.3 - 2017-05-16
 ### Fixed
 - Smart Fields - Fix some bad Smart Fields getter calls on records list and detail display.
 
