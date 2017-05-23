@@ -4,20 +4,20 @@ var _ = require('lodash');
 var Interface = require('forest-express');
 var utils = require('../utils/schema');
 
-function ResourceUpdater(model, params) {
+function ResourceUpdater(model, params, record) {
   var schema = Interface.Schemas.schemas[utils.getModelName(model)];
 
   this.perform = function () {
     return new P(function (resolve, reject) {
-      var recordId = params._id;
+      var recordId = record._id;
 
       // NOTICE: Old versions of MongoDB (2.X) seem to refuse the presence of
       //         the _id in the $set. So we remove it. It is useless anyway.
-      delete params._id;
+      delete record._id;
 
       var query = model
         .findByIdAndUpdate(recordId, {
-          $set: params
+          $set: record
         }, {
           new: true
         });
