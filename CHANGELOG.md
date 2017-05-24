@@ -4,6 +4,9 @@
 ### Changed
 - Resources Updater - Pass the params.recordId to the ResourceUpdater.
 
+### Fixed
+- Smart Fields - Serialize Smart Fields values for hasMany associations.
+
 ## RELEASE 1.1.3 - 2017-05-16
 ### Fixed
 - Smart Fields - Fix some bad Smart Fields getter calls on records list and detail display.
