@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Changed
+- Resources Updater - Pass the params.recordId to the ResourceUpdater.
 
 ## RELEASE 1.1.3 - 2017-05-16
 ### Fixed
