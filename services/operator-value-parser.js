@@ -194,7 +194,7 @@ function OperatorValueParser(opts, timezone) {
       return { $gte: from, $lte: to };
     }
 
-    if (value[0] === '!') {
+    if (value[0] === '!' && value[1] !== '*') {
       value = value.substring(1);
       ret = { $ne: parseFct(value) };
     } else if (value[0] === '>') {
@@ -206,6 +206,9 @@ function OperatorValueParser(opts, timezone) {
     } else if (value[0] === '*' && value[value.length - 1] === '*') {
       value = value.substring(1, value.length - 1);
       ret = new RegExp('.*' + parseFct(value) + '.*');
+    } else if (value[0] === '!' && value[1] === '*' && value[value.length - 1] === '*') {
+      value = value.substring(2, value.length - 1);
+      ret = { $not: new RegExp('.*' + parseFct(value) + '.*') };
     } else if (value[0] === '*') {
       value = value.substring(1);
       ret = new RegExp('.*' + parseFct(value) + '$');
