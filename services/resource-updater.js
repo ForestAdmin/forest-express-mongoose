@@ -19,8 +19,7 @@ function ResourceUpdater(model, params, record) {
         .findByIdAndUpdate(recordId, {
           $set: record
         }, {
-          new: true,
-          runValidators: true
+          new: true
         });
 
       _.each(schema.fields, function (field) {
