@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- Record Update - Trigger validations on record update.
 
 ## RELEASE 1.1.4 - 2017-05-24
 ### Changed
