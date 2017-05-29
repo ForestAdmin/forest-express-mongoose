@@ -4,6 +4,9 @@
 ### Added
 - Smart Collections - Add a new isSearchable property to display the search bar for Smart Collections.
 
+### Fixed
+- Record Update - Trigger validations on record update.
+
 ## RELEASE 1.1.4 - 2017-05-24
 ### Changed
 - Resources Updater - Pass the params.recordId to the ResourceUpdater.
