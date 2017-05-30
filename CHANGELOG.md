@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Added
 - Smart Collections - Add a new isSearchable property to display the search bar for Smart Collections.
+- Filters - Add the not contains operator.
 
 ### Fixed
 - Record Update - Trigger validations on record update.
