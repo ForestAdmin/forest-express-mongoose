@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 1.1.6 - 2017-06-01
 ### Fixed
 - HasMany Smart Fields - Fix routes conflicts between hasMany Smart Fields and other associations.
 
