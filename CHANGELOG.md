@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- Records Serialization - Fix the object types case (kebab case) to prevent potential JSON api adapter errors on client side.
 
 ## RELEASE 1.1.6 - 2017-06-01
 ### Fixed
