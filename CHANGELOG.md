@@ -1,6 +1,11 @@
 # Change Log
 
 ## [Unreleased]
+### Changed
+- Error Messages - Display the stack trace on unexpected errors.
+
+### Fixed
+- Error Messages - Display an explicit warning if Forest servers are in maintenance.
 
 ## RELEASE 1.1.7 - 2017-06-07
 ### Fixed
