@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 1.1.8 - 2017-06-13
 ### Changed
 - Error Messages - Display the stack trace on unexpected errors.
 
