@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Fix
+- Search - Fix crash on hasmany array association.
 
 ## RELEASE 1.1.8 - 2017-06-13
 ### Changed
