@@ -1,6 +1,9 @@
 # Change Log
 
 ## [Unreleased]
+### Added
+- Apimap - Send database type and orm version in apimap.
+
 ### Fix
 - Search - Fix crash on hasmany array association.
 

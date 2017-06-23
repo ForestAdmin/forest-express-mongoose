@@ -20,6 +20,14 @@ exports.init = function(opts) {
     return require('./package.json').version;
   };
 
+  exports.getOrmVersion = function () {
+    return opts.mongoose.version;
+  };
+
+  exports.getDatabaseType = function () {
+    return 'MongoDB';
+  };
+
   exports.SchemaAdapter = require('./adapters/mongoose');
 
   exports.getModels = function () {
