@@ -2,11 +2,15 @@
 
 ## [Unreleased]
 
+## RELEASE 1.1.10 - 2017-06-28
+### Fixed
+- Serializer - Log an error in the console if the association doesn't exist.
+
 ## RELEASE 1.1.9 - 2017-06-23
 ### Added
 - Apimap - Send database type and orm version in apimap.
 
-### Fix
+### Fixed
 - Search - Fix crash on hasmany array association.
 
 ## RELEASE 1.1.8 - 2017-06-13
