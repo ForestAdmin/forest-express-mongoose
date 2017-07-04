@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- Liana Version & Orm Version - Prevent server crash on bad format version.
 
 ## RELEASE 1.1.10 - 2017-06-28
 ### Fixed
