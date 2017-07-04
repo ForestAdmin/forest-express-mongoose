@@ -145,7 +145,7 @@ function OperatorValueParser(opts, timezone) {
 
       match = value.match(PERIODS_X_HOURS_BEFORE);
       if (match && match[1]) {
-        return { $lte: moment().subtract(match[1], 'days').toDate() };
+        return { $lte: moment().subtract(match[1], 'hours').toDate() };
       }
 
       switch (value) {
