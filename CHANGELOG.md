@@ -1,6 +1,9 @@
 # Change Log
 
 ## [Unreleased]
+### Added
+- Filters - Add the before x hours operator.
+
 ### Fixed
 - Liana Version & Orm Version - Prevent server crash on bad format version.
 
