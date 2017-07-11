@@ -60,7 +60,7 @@ function HasManyGetter(model, association, opts, params) {
       };
 
       if (params.search) {
-        var conditionsSearch = new SearchBuilder(model, opts, params)
+        var conditionsSearch = new SearchBuilder(association, opts, params)
           .getConditions();
         conditions.$and.push(conditionsSearch);
       }
