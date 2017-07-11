@@ -2,6 +2,7 @@
 var P = require('bluebird');
 var _ = require('lodash');
 var OperatorValueParser = require('./operator-value-parser');
+var SearchBuilder = require('./search-builder');
 var FilterParser = require('./filter-parser');
 var Interface = require('forest-express');
 var utils = require('../utils/schema');
@@ -96,7 +97,8 @@ function ResourcesGetter(model, opts, params) {
           var currentField = _.findWhere(schema.fields, { field: fieldName });
           if (currentField && currentField.reference) {
             // NOTICE: Look for the associated model infos
-            var subModel = _.find(mongooseUtils.getModels(opts), function(model) {
+            var subModel = _.find(mongooseUtils.getModels(opts),
+              function(model) {
               return model.collection.name ===
                 currentField.reference.split('.')[0];
             });
@@ -127,32 +129,6 @@ function ResourcesGetter(model, opts, params) {
         });
       }
     });
-  }
-
-  function handleSearchParam(query) {
-    if (new RegExp('^[0-9a-fA-F]{24}$').test(params.search)) {
-      query.where({ _id: params.search });
-    } else {
-      var orQuery = { $or: [] };
-
-      _.each(model.schema.paths, function (value, key) {
-        var q = {};
-
-        if (value.instance === 'String') {
-          q[key] = new RegExp('.*' + params.search + '.*', 'i');
-          orQuery.$or.push(q);
-        } else if (value.instance === 'Array') {
-          var field = _.findWhere(schema.fields, { field: key });
-          if (field && _.isArray(field.type) && field.type[0] === 'String' &&
-            !field.reference) {
-            q[key] = new RegExp('.*' + params.search + '.*', 'i');
-            orQuery.$or.push(q);
-          }
-        }
-      });
-
-      query.where(orQuery);
-    }
   }
 
   function handleFilterParams(query) {
@@ -187,7 +163,7 @@ function ResourcesGetter(model, opts, params) {
     handlePopulate(query);
 
     if (params.search) {
-      handleSearchParam(query);
+      new SearchBuilder(model, opts, params).getWhere(query);
     }
 
     if (params.filter) {
