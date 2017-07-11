@@ -2,7 +2,7 @@
 var P = require('bluebird');
 var _ = require('lodash');
 var OperatorValueParser = require('./operator-value-parser');
-var HandleSearchParam = require('./handle-search-param');
+var SearchBuilder = require('./search-builder');
 var FilterParser = require('./filter-parser');
 var Interface = require('forest-express');
 var utils = require('../utils/schema');
@@ -163,7 +163,7 @@ function ResourcesGetter(model, opts, params) {
     handlePopulate(query);
 
     if (params.search) {
-      new HandleSearchParam(model, opts, params).perform(query);
+      new SearchBuilder(model, opts, params).getWhere(query);
     }
 
     if (params.filter) {

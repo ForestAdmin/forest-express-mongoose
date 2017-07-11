@@ -1,11 +1,11 @@
 'use strict';
 var _ = require('lodash');
 var P = require('bluebird');
-var Interface = require('forest-express');
-var utils = require('../utils/schema');
+var SearchBuilder = require('./search-builder');
 
 function HasManyGetter(model, association, opts, params) {
   var OBJECTID_REGEXP = /^[0-9a-fA-F]{24}$/;
+  var count = 0;
 
   function hasPagination() {
     return params.page && params.page.number;
@@ -25,30 +25,6 @@ function HasManyGetter(model, association, opts, params) {
     } else {
       return 0;
     }
-  }
-  function count() {
-    return new P(function (resolve, reject) {
-      model.findById(params.recordId)
-        .exec(function (err, record) {
-          if (err) { return reject(err); }
-          if (!record[params.associationName]) {
-            Interface.logger.warn('Cannot find the association name \"' + params.associationName + '". Please, ensure you\'ve created the Smart field route (http://doc.forestadmin.com/developers-guide/?stack=express%2Fmongoose#creating-a-hasmany-smart-field).');
-            return resolve(0);
-          }
-
-          resolve(record[params.associationName].length);
-        });
-    });
-  }
-
-  function handlePopulate(query) {
-    var schema = Interface.Schemas.schemas[utils.getModelName(association)];
-
-    _.each(schema.fields, function (field) {
-      if (field.reference) {
-        query.populate(field.field);
-      }
-    });
   }
 
   function getProjection() {
@@ -71,24 +47,25 @@ function HasManyGetter(model, association, opts, params) {
         .match({ _id: id })
         .unwind(params.associationName)
         .project(getProjection())
-        .limit(getLimit())
-        .skip(getSkip())
-        .exec(function (err, records) {
-          if (err) { return reject(err); }
-          resolve(records);
+        .exec(function (error, records) {
+          if (error) { return reject(error); }
+          resolve(_.map(records, function (record) {
+            return record[params.associationName];
+          }));
         });
     })
-    .map(function (record) {
-      return new P(function (resolve, reject) {
-        if (!record[params.associationName]) { return resolve(); }
-        var query = association.findById(record[params.associationName]);
-        handlePopulate(query);
+    .then(function (recordIds) {
+      var conditions = {
+        $and: [{ _id: { $in: recordIds }}]
+      };
 
-        query.lean().exec(function (err, record) {
-          if (err) { return reject(err); }
-          resolve(record);
-        });
-      });
+      if (params.search) {
+        var conditionsSearch = new SearchBuilder(model, opts, params)
+          .getConditions();
+        conditions.$and.push(conditionsSearch);
+      }
+
+      return association.find(conditions);
     })
     .then(function(records) {
       if (params.sort) {
@@ -108,11 +85,18 @@ function HasManyGetter(model, association, opts, params) {
       } else {
         return records;
       }
+    })
+    .then(function (records) {
+      count = records.length;
+      return _.slice(records, getSkip(), getSkip() + getLimit());
     });
   }
 
   this.perform = function () {
-    return P.all([count(), getRecords()]);
+    return getRecords()
+      .then(function (records) {
+        return [count, records];
+      });
   };
 }
 

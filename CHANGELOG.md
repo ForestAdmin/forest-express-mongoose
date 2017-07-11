@@ -1,6 +1,11 @@
 # Change Log
 
 ## [Unreleased]
+### Added
+- Search - Users can search on the hasMany associated data of a specific record.
+
+### Fixed
+- HasMany Records - Fix the sorting of HasMany records.
 
 ## RELEASE 1.1.11 - 2017-07-05
 ### Added
@@ -28,7 +33,7 @@
 - Error Messages - Display an explicit warning if Forest servers are in maintenance.
 
 ## RELEASE 1.1.7 - 2017-06-07
-### Fixed
+### Fixed
 - Records Serialization - Fix the object types case (kebab case) to prevent potential JSON api adapter errors on client side.
 
 ## RELEASE 1.1.6 - 2017-06-01
@@ -117,7 +122,7 @@
 - Smart Actions - Support file download.
 
 ## RELEASE 0.3.3 - 2016-01-09
-### Changed
+### Changed
 - Smart field - Ensure a hasMany smart field doesn't trigger any error when the route is not yet implemented.
 
 ## RELEASE 0.3.2 - 2016-01-04
@@ -128,7 +133,7 @@
 - Configuration - Fix bad authentication when a custom path is configured.
 
 ## RELEASE 0.3.1 - 2016-12-13
-### Fixed
+### Fixed
 - Record Updates - Fix record updates for apps using MongoDB 2.X.
 - Embedded fields - Fix the record detail display of the embedded Enum type fields.
 

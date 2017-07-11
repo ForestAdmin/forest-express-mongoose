@@ -3,12 +3,12 @@ var _ = require('lodash');
 var Interface = require('forest-express');
 var utils = require('../utils/schema');
 
-function HandleSearchParam(model, opts, params) {
+function SearchBuilder(model, opts, params) {
   var schema = Interface.Schemas.schemas[utils.getModelName(model)];
 
-  this.perform = function (query) {
+  this.getConditions = function () {
     if (new RegExp('^[0-9a-fA-F]{24}$').test(params.search)) {
-      query.where({ _id: params.search });
+      return { _id: params.search };
     } else {
       var orQuery = { $or: [] };
 
@@ -28,9 +28,15 @@ function HandleSearchParam(model, opts, params) {
         }
       });
 
-      query.where(orQuery);
+      return orQuery;
     }
   };
+
+  this.getWhere = function (query) {
+    query.where(this.getConditions());
+  };
+
+
 }
 
-module.exports = HandleSearchParam;
+module.exports = SearchBuilder;
