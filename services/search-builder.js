@@ -35,8 +35,6 @@ function SearchBuilder(model, opts, params) {
   this.getWhere = function (query) {
     query.where(this.getConditions());
   };
-
-
 }
 
 module.exports = SearchBuilder;
