@@ -1,6 +1,9 @@
 # Change Log
 
 ## [Unreleased]
+### Added
+- Validations - Start the support of forms validations (with 5 first validations).
+- Fields - Send the defaultValue for creation forms.
 
 ## RELEASE 1.1.12 - 2017-07-11
 ### Added

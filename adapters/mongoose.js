@@ -149,23 +149,81 @@ module.exports = function (model, opts) {
     };
   };
 
-  function detectRequireFlag(opts) {
-    return !!opts.isRequired;
+  function getRequired(opts) {
+    return opts.isRequired === true;
+  }
+
+  function getValidations(opts) {
+    var validations = [];
+
+    if (opts.validators && opts.validators.length > 0) {
+      _.each(opts.validators, function (validator) {
+        if (validator.type === 'required') {
+          validations.push({
+            type: 'is present'
+          });
+        }
+
+        if (validator.type === 'minlength') {
+          validations.push({
+            type: 'is longer than',
+            value: validator.minlength
+          });
+        }
+
+        if (validator.type === 'maxlength') {
+          validations.push({
+            type: 'is shorter than',
+            value: validator.maxlength
+          });
+        }
+
+        if (validator.type === 'min') {
+          validations.push({
+            type: 'is greater than',
+            value: validator.min
+          });
+        }
+
+        if (validator.type === 'max') {
+          validations.push({
+            type: 'is less than',
+            value: validator.max
+          });
+        }
+      });
+    }
+
+    return validations;
   }
 
   function getFieldSchema(path) {
     var opts = paths[path];
 
-    var schema = { field: path, type: getTypeFromMongoose(paths[path]) };
+    var schema = { field: path, type: getTypeFromMongoose(opts) };
 
     var ref = detectReference(opts);
     if (ref) { schema.reference = ref; }
 
-    var isRequired = !!detectRequireFlag(opts);
-    if (isRequired) { schema.isRequired = isRequired; }
-
     if (opts.enumValues && opts.enumValues.length) {
       schema.enums = opts.enumValues;
+    }
+
+    var isRequired = getRequired(opts);
+    if (isRequired) {
+      schema.isRequired = isRequired;
+    }
+
+    if (opts.options && !_.isNull(opts.options.default) &&
+      !_.isUndefined(opts.options.default) &&
+      !_.isFunction(opts.options.default)) {
+      schema.defaultValue = opts.options.default;
+    }
+
+    schema.validations = getValidations(opts);
+
+    if (schema.validations.length === 0) {
+      delete schema.validations;
     }
 
     return schema;
