@@ -149,14 +149,13 @@ module.exports = function (model, opts) {
     };
   };
 
-  function detectRequireFlag(opts) {
-    return !!opts.isRequired;
+  function getRequired(opts) {
+    return opts.isRequired === true;
   }
 
   function getValidations(opts) {
     var validations = [];
 
-    console.log(opts);
     if (opts.validators && opts.validators.length > 0) {
       _.each(opts.validators, function (validator) {
         if (validator.type === 'required') {
@@ -206,11 +205,19 @@ module.exports = function (model, opts) {
     var ref = detectReference(opts);
     if (ref) { schema.reference = ref; }
 
-    var isRequired = !!detectRequireFlag(opts);
-    if (isRequired) { schema.isRequired = isRequired; }
-
     if (opts.enumValues && opts.enumValues.length) {
       schema.enums = opts.enumValues;
+    }
+
+    var isRequired = getRequired(opts);
+    if (isRequired) {
+      schema.isRequired = isRequired;
+    }
+
+    if (opts.options && !_.isNull(opts.options.default) &&
+      !_.isUndefined(opts.options.default) &&
+      !_.isFunction(opts.options.default)) {
+      schema.defaultValue = opts.options.default;
     }
 
     schema.validations = getValidations(opts);
