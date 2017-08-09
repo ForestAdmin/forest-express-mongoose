@@ -5,6 +5,9 @@ var fs = require('fs');
 var simpleGit = require('simple-git')();
 var semver = require('semver');
 
+var BRANCH_MASTER = 'master';
+var BRANCH_DEVEL = 'devel';
+
 gulp.task('build', function () {
   var numberToIncrement = 'patch';
   if (process.argv && process.argv[3]) {
@@ -28,10 +31,19 @@ gulp.task('build', function () {
   data.splice(3, 0, '\n## RELEASE ' + version + ' - ' + today);
   var text = data.join('\n');
 
-  fs.writeFileSync('CHANGELOG.md', text);
-
-  // COMMIT
-  simpleGit.add(['CHANGELOG.md', 'package.json'], function () {
-    simpleGit.commit('Release ' + version);
-  });
+  simpleGit
+    .checkout(BRANCH_DEVEL)
+    .then(function() { console.log('Starting pull on ' + BRANCH_DEVEL + '...'); })
+    .pull(function(error) { if (error) { console.log(error); } })
+    .then(function() { console.log(BRANCH_DEVEL + ' pull done.'); })
+    .then(function() { fs.writeFileSync('CHANGELOG.md', text); })
+    .add(['CHANGELOG.md', 'package.json'])
+    .commit('Release ' + version)
+    .push()
+    .checkout(BRANCH_MASTER)
+    .then(function() { console.log('Starting pull on ' + BRANCH_MASTER + '...'); })
+    .pull(function(error) { if (error) { console.log(error); } })
+    .then(function() { console.log(BRANCH_MASTER + ' pull done.'); })
+    .mergeFromTo(BRANCH_DEVEL, BRANCH_MASTER)
+    .push();
 });
