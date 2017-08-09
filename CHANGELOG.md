@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 1.1.14 - 2017-08-09
 ### Added
 - Integrations - Add a first version of Layer integration.
 
