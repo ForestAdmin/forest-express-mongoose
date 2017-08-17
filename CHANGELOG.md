@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Added
+- Exports - Forest can now handle large data exports.
 
 ## RELEASE 1.1.14 - 2017-08-09
 ### Added
