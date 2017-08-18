@@ -24,14 +24,15 @@ function SearchBuilder(model, opts, params) {
             !field.reference) {
             q[key] = new RegExp('.*' + params.search + '.*', 'i');
             orQuery.$or.push(q);
-          } else if (field && _.isArray(field.type) && !field.reference && parseInt(params.deep)) {
-            let elemMatch = { $elemMatch: { $or: [], } };
+          } else if (field && _.isArray(field.type) &&
+            !field.reference && parseInt(params.deep)) {
+            var elemMatch = { $elemMatch: { $or: [], } };
 
-            field.type[0].fields.forEach((subField) => {
-              let query = {};
+            field.type[0].fields.forEach(function(subField) {
+              var query = {};
               query[subField.field] = new RegExp('.*' + params.search + '.*', 'i');
               elemMatch.$elemMatch.$or.push(query);
-            })
+            });
             q[key] = elemMatch;
             orQuery.$or.push(q);
           }
