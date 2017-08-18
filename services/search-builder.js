@@ -36,7 +36,6 @@ function SearchBuilder(model, opts, params) {
             q[key] = elemMatch;
             orQuery.$or.push(q);
           }
-
         }
       });
 
