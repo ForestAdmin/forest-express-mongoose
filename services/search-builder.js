@@ -30,8 +30,14 @@ function SearchBuilder(model, opts, params) {
 
             field.type[0].fields.forEach(function(subField) {
               var query = {};
-              query[subField.field] = new RegExp('.*' + params.search + '.*', 'i');
-              elemMatch.$elemMatch.$or.push(query);
+              if (subField.type === 'String') {
+                query[subField.field] = new RegExp('.*' + params.search + '.*', 'i');
+                elemMatch.$elemMatch.$or.push(query);
+              }
+              else if (subField.type === 'Number' && parseInt(params.search)) {
+                query[subField.field] = parseInt(params.search);
+                elemMatch.$elemMatch.$or.push(query);
+              }
             });
             q[key] = elemMatch;
             orQuery.$or.push(q);
