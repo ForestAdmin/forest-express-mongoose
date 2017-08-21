@@ -3,7 +3,7 @@
 ## [Unreleased]
 ### Added
 - Exports - Forest can now handle large data exports.
-- Search - Add a params to include or not embedded array results.
+- Search - Split "simple" and "deep" search features with a new param.
 - Search - Users can search on array of embeded documents.
 
 ## RELEASE 1.1.14 - 2017-08-09

@@ -25,7 +25,7 @@ function SearchBuilder(model, opts, params) {
             q[key] = new RegExp('.*' + params.search + '.*', 'i');
             orQuery.$or.push(q);
           } else if (field && _.isArray(field.type) &&
-            !field.reference && parseInt(params.deep)) {
+            !field.reference && parseInt(params.searchExtended)) {
             var elemMatch = { $elemMatch: { $or: [], } };
 
             field.type[0].fields.forEach(function(subField) {
