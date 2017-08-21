@@ -30,11 +30,13 @@ function SearchBuilder(model, opts, params) {
 
             field.type[0].fields.forEach(function(subField) {
               var query = {};
-              if (subField.type === 'String') {
-                query[subField.field] = new RegExp('.*' + params.search + '.*', 'i');
+              if (subField.type === 'String' &&
+                !value.schema.obj[subField.field].ref) {
+                query[subField.field] = new RegExp('.*' + params.search + '.*',
+                  'i');
                 elemMatch.$elemMatch.$or.push(query);
-              }
-              else if (subField.type === 'Number' && parseInt(params.search)) {
+              } else if (subField.type === 'Number' &&
+                parseInt(params.search)) {
                 query[subField.field] = parseInt(params.search);
                 elemMatch.$elemMatch.$or.push(query);
               }
