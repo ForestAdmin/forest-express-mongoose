@@ -24,6 +24,25 @@ function SearchBuilder(model, opts, params) {
             !field.reference) {
             q[key] = new RegExp('.*' + params.search + '.*', 'i');
             orQuery.$or.push(q);
+          } else if (field && _.isArray(field.type) &&
+            !field.reference && parseInt(params.searchExtended)) {
+            var elemMatch = { $elemMatch: { $or: [], } };
+
+            field.type[0].fields.forEach(function(subField) {
+              var query = {};
+              if (subField.type === 'String' &&
+                !value.schema.obj[subField.field].ref) {
+                query[subField.field] = new RegExp('.*' + params.search + '.*',
+                  'i');
+                elemMatch.$elemMatch.$or.push(query);
+              } else if (subField.type === 'Number' &&
+                parseInt(params.search)) {
+                query[subField.field] = parseInt(params.search);
+                elemMatch.$elemMatch.$or.push(query);
+              }
+            });
+            q[key] = elemMatch;
+            orQuery.$or.push(q);
           }
         }
       });
