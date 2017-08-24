@@ -113,5 +113,25 @@ exports.init = function(opts) {
     }
   };
 
+  exports.Layer = {
+    getUser: function (customerModel, customerField, customerId) {
+      return new P(function (resolve, reject) {
+        if (customerId) {
+          return customerModel
+            .findById(customerId)
+            .lean()
+            .exec(function (err, customer) {
+              if (err) { return reject(err); }
+              if (!customer || !customer[customerField]) { return reject(); }
+
+              resolve(customer);
+            });
+        } else {
+          resolve();
+        }
+      });
+    }
+  };
+
   return Interface.init(exports);
 };
