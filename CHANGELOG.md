@@ -6,6 +6,9 @@
 ### Added
 - Integrations - Add the Layer integration.
 
+### Fixed
+- Code Inspection - Fix Forest customization code inspection to be recursive through directories.
+
 ## RELEASE 1.2.1 - 2017-08-23
 ### Fixed
 - Exports - Fix bad initial implementation for exports authentication.
