@@ -237,8 +237,6 @@ module.exports = function (model, opts) {
     .each(Object.keys(paths), function (path) {
       if (path === '__v') { return; }
       var field = getFieldSchema(path);
-      if (field.fields) {
-      }
       fields.push(field);
     })
     .then(function () {
