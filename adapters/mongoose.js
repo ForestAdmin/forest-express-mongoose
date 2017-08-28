@@ -45,10 +45,6 @@ module.exports = function (model, opts) {
         type: getType(fieldName)
       };
 
-      console.log('-----------------');
-      console.log(field.type);
-      console.log();
-
       if (!field.type) { return; }
 
       var ref = detectReference(fieldInfo);
@@ -66,7 +62,6 @@ module.exports = function (model, opts) {
       type.fields.push(field);
     });
 
-    console.log(type);
     return type;
   }
 
@@ -210,7 +205,6 @@ module.exports = function (model, opts) {
     var opts = paths[path];
 
     var schema = { field: path, type: getTypeFromMongoose(opts) };
-    console.log(schema);
 
     var ref = detectReference(opts);
     if (ref) { schema.reference = ref; }
@@ -244,12 +238,10 @@ module.exports = function (model, opts) {
       if (path === '__v') { return; }
       var field = getFieldSchema(path);
       if (field.fields) {
-        // console.log(field.fields);
       }
       fields.push(field);
     })
     .then(function () {
-      // console.log(utils.getModelName(model));
       return {
         name: utils.getModelName(model),
         idField: '_id',
