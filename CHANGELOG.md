@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Updated
+- Apimap - Send embedded schemas.
 
 ## RELEASE 1.2.1 - 2017-08-23
 ### Fixed
