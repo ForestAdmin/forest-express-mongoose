@@ -2,7 +2,7 @@
 
 ## [Unreleased]
 ### Updated
-- Apimap - Send embedded schemas.
+- Models Introspection - Support nested custom schemas for models.
 
 ## RELEASE 1.2.1 - 2017-08-23
 ### Fixed
