@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Updated
+- Models Introspection - Support nested custom schemas for models.
 
 ## RELEASE 1.2.2 - 2017-08-24
 ### Added

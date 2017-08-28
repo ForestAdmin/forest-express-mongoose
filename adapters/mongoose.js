@@ -131,6 +131,10 @@ module.exports = function (model, opts) {
     } else if (opts.instance === 'ObjectID') {
       // Deal with ObjectID
       return 'String';
+    } else if (opts.instance === 'Embedded') {
+      return objectType(opts.schema.obj, function (fieldName) {
+        return getTypeFromNative(opts.schema.obj[fieldName]);
+      });
     } else if (opts.instance === 'Mixed') {
       // Deal with Mixed object
       return null;
