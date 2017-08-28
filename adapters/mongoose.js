@@ -62,6 +62,7 @@ module.exports = function (model, opts) {
       type.fields.push(field);
     });
 
+    console.log(type);
     return type;
   }
 
@@ -131,6 +132,14 @@ module.exports = function (model, opts) {
     } else if (opts.instance === 'ObjectID') {
       // Deal with ObjectID
       return 'String';
+    } else if (opts.instance === 'Embedded') {
+     /* return objectType(opts.schema.obj, function (fieldName) {*/
+        //console.log(process.env.FOREST_URL);
+        //return {
+          //field: fieldName,
+          //type: 'String'
+        //}
+      /*});*/
     } else if (opts.instance === 'Mixed') {
       // Deal with Mixed object
       return null;
