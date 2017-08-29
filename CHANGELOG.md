@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 1.2.3 - 2017-08-29
 ### Added
 - Onboarding - Display an error message if the envSecret option is missing.
 - Models Introspection - Support nested custom schemas for models.
