@@ -1,8 +1,13 @@
 # Change Log
 
 ## [Unreleased]
-### Updated
+### Added
+- Onboarding - Display an error message if the envSecret option is missing.
 - Models Introspection - Support nested custom schemas for models.
+
+### Fixed
+- Exports - Escape special characters for the string fields.
+- Integrations - Display models "mapping" errors if any.
 
 ## RELEASE 1.2.2 - 2017-08-24
 ### Added
