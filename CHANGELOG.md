@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 1.2.4 - 2017-09-07
 ### Fixed
 - Export - Fix datetime formatting regression introduced by liana version 1.2.3.
 
