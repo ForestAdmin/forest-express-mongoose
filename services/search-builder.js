@@ -13,7 +13,9 @@ function SearchBuilder(model, opts, params, searchFields) {
       var orQuery = { $or: [] };
 
       _.each(model.schema.paths, function (value, key) {
-        if (searchFields && searchFields.indexOf(value.path) === -1) { return ; }
+        if (searchFields && searchFields.indexOf(value.path) === -1) {
+          return null;
+        }
         var q = {};
 
         if (value.instance === 'String') {

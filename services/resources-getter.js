@@ -10,8 +10,6 @@ var mongooseUtils = require('./mongoose-utils');
 
 function ResourcesGetter(model, opts, params) {
   var schema = Interface.Schemas.schemas[utils.getModelName(model)];
-  var hasSearchFields = schema.searchFields && _.isArray(schema.searchFields);
-  //var searchAssociationFields;
   var segment;
 
   function hasPagination() {
@@ -125,7 +123,6 @@ function ResourcesGetter(model, opts, params) {
   function handlePopulate(query) {
     _.each(schema.fields, function (field) {
       if (field.reference) {
-        console.log(field.field);
         query.populate({
           path: field.field,
           match: populateWhere(field)
@@ -160,18 +157,10 @@ function ResourcesGetter(model, opts, params) {
     }
   }
 
-  function selectSearchFields() {
-    console.log(schema.searchFields);
-  }
-
   function getRecords() {
     var query = model.find();
 
     handlePopulate(query);
-
-    if (hasSearchFields) {
-      selectSearchFields();
-    }
 
     if (params.search) {
       new SearchBuilder(model, opts, params, schema.searchFields)
