@@ -132,6 +132,7 @@ module.exports = function (model, opts) {
       // Deal with ObjectID
       return 'String';
     } else if (opts.instance === 'Embedded') {
+      console.log('------------------------------');
       return objectType(opts.schema.obj, function (fieldName) {
         return getTypeFromNative(opts.schema.obj[fieldName]);
       });
