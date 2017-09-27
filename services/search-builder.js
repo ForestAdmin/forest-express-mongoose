@@ -3,7 +3,7 @@ var _ = require('lodash');
 var Interface = require('forest-express');
 var utils = require('../utils/schema');
 
-function SearchBuilder(model, opts, params) {
+function SearchBuilder(model, opts, params, searchFields) {
   var schema = Interface.Schemas.schemas[utils.getModelName(model)];
 
   this.getConditions = function () {
@@ -13,6 +13,9 @@ function SearchBuilder(model, opts, params) {
       var orQuery = { $or: [] };
 
       _.each(model.schema.paths, function (value, key) {
+        if (searchFields && searchFields.indexOf(value.path) === -1) {
+          return null;
+        }
         var q = {};
 
         if (value.instance === 'String') {

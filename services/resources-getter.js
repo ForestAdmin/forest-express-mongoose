@@ -163,7 +163,8 @@ function ResourcesGetter(model, opts, params) {
     handlePopulate(query);
 
     if (params.search) {
-      new SearchBuilder(model, opts, params).getWhere(query);
+      new SearchBuilder(model, opts, params, schema.searchFields)
+        .getWhere(query);
     }
 
     if (params.filter) {
