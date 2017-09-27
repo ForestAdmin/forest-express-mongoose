@@ -6,10 +6,10 @@
 
 ## RELEASE 1.3.0 - 2017-09-20
 ### Added
-Smart Fields - Add a parameter to specify if the sorting is allowed on this field.
+- Smart Fields - Add a parameter to specify if the sorting is allowed on this field.
 
 ### Fixed
-Initialization - Ignore directories while loading models.
+- Initialization - Ignore directories while loading models.
 
 ## RELEASE 1.2.5 - 2017-09-10
 ### Changed
