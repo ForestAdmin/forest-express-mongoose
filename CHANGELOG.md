@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 1.4.1 - 2017-09-29
 ### Added
 - Search - A search will now try to search in ObjectID type fields if the search value is a correct ObjectID.
 
