@@ -18,7 +18,12 @@ function SearchBuilder(model, opts, params, searchFields) {
         }
         var q = {};
 
-        if (value.instance === 'String') {
+        if (value.instance === 'ObjectID') {
+          try {
+            q[key] = opts.mongoose.Types.ObjectId(params.search);
+            orQuery.$or.push(q);
+          } catch(error) { return null; }
+        } else if (value.instance === 'String') {
           q[key] = new RegExp('.*' + params.search + '.*', 'i');
           orQuery.$or.push(q);
         } else if (value.instance === 'Array') {
@@ -50,7 +55,7 @@ function SearchBuilder(model, opts, params, searchFields) {
         }
       });
 
-      return orQuery;
+      return orQuery.$or.length ? orQuery : { _id: null };
     }
   };
 
