@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 1.4.4 - 2017-10-02
 ### Fixed
 - Filters - Fix boolean filters with "false" or "null" values.
 
