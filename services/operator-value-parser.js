@@ -68,7 +68,11 @@ function OperatorValueParser(opts, timezone) {
           parseFct = function (val) { return new Date(val); };
           break;
         case 'Boolean':
-          parseFct = function (val) { return val ? true : false; };
+          parseFct = function (val) {
+            if (val === 'true') { return true; }
+            if (val === 'false') { return false; }
+            return null;
+          };
           break;
         case 'String':
           parseFct = function (val) {
