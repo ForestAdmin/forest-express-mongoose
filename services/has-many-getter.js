@@ -2,9 +2,12 @@
 var _ = require('lodash');
 var P = require('bluebird');
 var SearchBuilder = require('./search-builder');
+var Interface = require('forest-express');
+var utils = require('../utils/schema');
 
 function HasManyGetter(model, association, opts, params) {
   var OBJECTID_REGEXP = /^[0-9a-fA-F]{24}$/;
+  var schema = Interface.Schemas.schemas[utils.getModelName(association)];
   var count = 0;
 
   function hasPagination() {
@@ -33,6 +36,16 @@ function HasManyGetter(model, association, opts, params) {
     projection._id = 0;
 
     return projection;
+  }
+
+  function handlePopulate(query) {
+    _.each(schema.fields, function (field) {
+      if (field.reference) {
+        query.populate({
+          path: field.field
+        });
+      }
+    });
   }
 
   function getRecords() {
@@ -65,7 +78,10 @@ function HasManyGetter(model, association, opts, params) {
         conditions.$and.push(conditionsSearch);
       }
 
-      return association.find(conditions);
+      var query = association.find(conditions);
+      handlePopulate(query);
+
+      return query;
     })
     .then(function(records) {
       if (params.sort) {

@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- HasMany Relationships - Display BelongsTo links in the HasMany relationships table. 
 
 ## RELEASE 1.4.7 - 2017-10-06
 ### Fixed
