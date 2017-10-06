@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 1.4.7 - 2017-10-06
 ### Fixed
 - Stripe - Fix the 'mapping' collection name on Express/Mongoose.
 - Integrations - Ensure all the models are loading before integrations setup.
