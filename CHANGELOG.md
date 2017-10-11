@@ -2,9 +2,15 @@
 
 ## [Unreleased]
 
+### Changed
+- Sessions - Display a clean error message if the renderingId and envSecret are missing or inconsistent.
+
+### Fixed
+- Initialisation - Prevent bad "import" syntax error detections on initialisation.
+
 ## RELEASE 1.4.8 - 2017-10-06
 ### Fixed
-- HasMany Relationships - Display BelongsTo links in the HasMany relationships table. 
+- HasMany Relationships - Display BelongsTo links in the HasMany relationships table.
 
 ## RELEASE 1.4.7 - 2017-10-06
 ### Fixed
