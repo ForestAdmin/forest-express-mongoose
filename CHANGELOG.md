@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 
+## RELEASE 1.4.9 - 2017-10-11
 ### Changed
 - Sessions - Display a clean error message if the renderingId and envSecret are missing or inconsistent.
 
