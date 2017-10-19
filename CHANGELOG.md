@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- Apimaps - Prevent bad detection of Array of Embedded having the "key" keyword.
 
 ## RELEASE 1.4.9 - 2017-10-11
 ### Changed

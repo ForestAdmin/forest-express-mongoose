@@ -113,7 +113,8 @@ module.exports = function (model, opts) {
       });
     } else if (opts.instance === 'Array') {
       // Deal with Array
-      if (opts.caster.instance) {
+      if (opts.caster.instance && (opts.caster.options.ref ||
+        _.keys(opts.caster.options).length === 0)) {
         return [getTypeFromMongoose(opts.caster)];
       } else {
         if (opts.options.type[0] instanceof Schema) {

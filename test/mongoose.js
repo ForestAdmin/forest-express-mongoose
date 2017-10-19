@@ -6,6 +6,8 @@ var mongoose = require('mongoose');
 console.log('Mongoose Version: ' + mongoose.version);
 var SchemaAdapter = require('../adapters/mongoose');
 
+var isMongoose3 = parseInt(mongoose.version.split('.')[0], 10) === 3;
+
 afterEach(function (done) {
   delete mongoose.models.Foo;
   delete mongoose.modelSchemas.Foo;
@@ -412,6 +414,30 @@ describe('SchemaAdapter', function () {
         });
     });
   });
+
+  if (!isMongoose3) {
+    describe('Array of schemas with reserved keyword "type"', function () {
+      it('should have the type `{ fields: [...]}`', function (done) {
+        var schema = mongoose.Schema({
+          action: [{
+            type: String,
+            value: String,
+          }]
+        });
+        var model = mongoose.model('Foo', schema);
+
+        return new SchemaAdapter(model, { mongoose: mongoose })
+          .then(function (schema) {
+            expect(schema.fields[0].type[0].fields).to.be.eql([
+              { field: 'type', type: 'String' },
+              { field: 'value', type: 'String' },
+            ]);
+
+            done(null);
+          });
+      });
+    });
+  }
 
   describe('Shower of nested objects/arrays', function () {
     it('should have the type fields: [{...}, {...}]', function (done) {

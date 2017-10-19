@@ -5,11 +5,13 @@ var Interface = require('forest-express');
 var utils = require('../utils/schema');
 
 function ResourceUpdater(model, params, record) {
+  var modelName = utils.getModelName(model);
   var schema = Interface.Schemas.schemas[utils.getModelName(model)];
+  var recordId;
 
   this.perform = function () {
     return new P(function (resolve, reject) {
-      var recordId = record._id;
+      recordId = record._id;
 
       // NOTICE: Old versions of MongoDB (2.X) seem to refuse the presence of
       //         the _id in the $set. So we remove it. It is useless anyway.
@@ -33,7 +35,18 @@ function ResourceUpdater(model, params, record) {
           if (err) { return reject(err); }
           resolve(record);
         });
-    });
+      })
+      .catch(function (error) {
+        if (error.message.indexOf('Cast to') > -1 && error.message.indexOf('failed for value') > -1) {
+          Interface.logger.warn('Cannot update the ' + modelName + ' #' + recordId +
+            ' because of a "type" key usage (which is a reserved keyword in Mongoose).');
+        } else {
+          Interface.logger.error('Cannot update the ' + modelName + ' #' + recordId +
+            ' because of an unexpected issue: ' + error);
+        }
+
+        return model.findByIdAndUpdate(recordId);
+      });
   };
 }
 
