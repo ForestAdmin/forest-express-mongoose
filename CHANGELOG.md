@@ -2,7 +2,7 @@
 
 ## [Unreleased]
 ### Fixed
-- Apimaps - Prevent bad detection of Array of Embedded having the "key" keyword.
+- Apimaps - Prevent bad detection of Array of Embedded having the "type" keyword.
 
 ## RELEASE 1.4.9 - 2017-10-11
 ### Changed
@@ -12,7 +12,7 @@
 - Initialisation - Prevent bad "import" syntax error detections on initialisation.
 
 ## RELEASE 1.4.8 - 2017-10-06
-### Fixed
+### Fixed
 - HasMany Relationships - Display BelongsTo links in the HasMany relationships table.
 
 ## RELEASE 1.4.7 - 2017-10-06
@@ -21,7 +21,7 @@
 - Integrations - Ensure all the models are loading before integrations setup.
 
 ## RELEASE 1.4.6 - 2017-10-04
-### Fixed
+### Fixed
 - Initialisation - Do not try to require file that don't have the js extension.
 
 ## RELEASE 1.4.5 - 2017-10-03
