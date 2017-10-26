@@ -4,6 +4,10 @@
 ### Fixed
 - Apimaps - Prevent bad detection of Array of Embedded having the "type" keyword.
 
+### Changed
+- Smart Relationships - Add a warning if a Smart Collection does not define the "idField" attribute necessary for Smart Relationships.
+- Smart Fields - Prevent the Smart Fields computation errors to generate a crash and handle it letting the value empty.
+
 ## RELEASE 1.4.9 - 2017-10-11
 ### Changed
 - Sessions - Display a clean error message if the renderingId and envSecret are missing or inconsistent.
