@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 1.5.0 - 2017-10-26
 ### Fixed
 - Apimaps - Prevent bad detection of Array of Embedded having the "type" keyword.
 
