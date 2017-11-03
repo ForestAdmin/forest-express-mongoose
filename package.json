@@ -24,10 +24,10 @@
   "dependencies": {
     "bluebird": "2.9.25",
     "flat": "1.6.0",
-    "forest-express": "1.4.0",
+    "forest-express": "1.5.1",
     "http-errors": "1.6.1",
     "lodash": "3.9.3",
-    "moment": "2.10.6"
+    "moment": "2.18.1"
   },
   "devDependencies": {
     "chai": "2.3.0",
