@@ -35,12 +35,14 @@
     "gulp": "3.9.1",
     "mocha": "2.2.5",
     "moment": "2.10.6",
+    "nsp": "2.8.1",
     "semver": "^5.3.0",
     "simple-git": "1.65.0"
   },
   "scripts": {
     "test-mongoose-3": "npm install mongoose@3.8.8 && ./node_modules/mocha/bin/mocha",
     "test-mongoose-4": "npm install mongoose@latest && ./node_modules/mocha/bin/mocha",
-    "test": "npm run test-mongoose-3 && npm run test-mongoose-4"
+    "test": "npm run test-mongoose-3 && npm run test-mongoose-4",
+    "detect-vulnerabilities": "nsp check --output summary"
   }
 }
