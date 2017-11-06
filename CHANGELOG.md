@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Changed
+- Security - Remove all detected vulnerabilities upgrading some dependencies (nsp check --output summary).
 
 ## RELEASE 1.5.0 - 2017-10-26
 ### Fixed
