@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 1.5.2 - 2017-11-08
 ### Fixed
 - Custom Domains - Make the feature usable natively with the CORS_ORIGINS variable.
 
