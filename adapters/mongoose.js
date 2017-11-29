@@ -243,7 +243,7 @@ module.exports = function (model, opts) {
     .then(function () {
       return {
         name: utils.getModelName(model),
-        // TODO: Remove nameOld attribute once the lianas versions older than 1.4.0 are minority.
+        // TODO: Remove nameOld attribute once the lianas versions older than 2.0.0 are minority.
         nameOld: model.collection.name.replace(' ', ''),
         idField: '_id',
         fields: fields
