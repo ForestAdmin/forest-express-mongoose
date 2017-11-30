@@ -42,6 +42,8 @@ exports.init = function(opts) {
   };
 
   exports.getModelName = utils.getModelName;
+  // TODO: Remove nameOld attribute once the lianas versions older than 2.0.0 are minority
+  exports.getModelNameOld = utils.getModelNameOld;
 
   exports.ResourcesGetter = require('./services/resources-getter');
   exports.ResourceGetter = require('./services/resource-getter');
