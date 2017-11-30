@@ -15,3 +15,8 @@ exports.getReferenceCollectionName = function (reference) {
 exports.getModelName = function (model) {
   return model.modelName;
 };
+
+// TODO: Remove nameOld attribute once the lianas versions older than 2.0.0 are minority
+exports.getModelNameOld = function (model) {
+  return model.collection.name.replace(' ', '');
+};
