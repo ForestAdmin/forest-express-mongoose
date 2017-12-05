@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- Filters - A filter condition set on related belongsTo/hasOne will not crash the list view anymore [Regression introduced in 2.0.0].
 
 ## RELEASE 2.0.0 - 2017-11-30
 ### Changed
