@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 2.0.2 - 2017-12-06
 ### Fixed
 - Summary View - Fix potential Summary View freeze on records having "Point" type fields (if some related data are displayed).
 
