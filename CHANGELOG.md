@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- Smart Fields - Prevent Smart Fields promise values injection errors on related data retrieval.
 
 ## RELEASE 2.0.3 - 2017-12-12
 ### Added
