@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 2.0.3 - 2017-12-12
 ### Added
 - TypeScript Support - Forest can now load TypeScript modules.
 
