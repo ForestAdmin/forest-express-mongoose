@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 2.0.5 - 2017-12-22
 ### Added
 - Smart BelongsTo - Developers can now implement Smart BelongsTo values updates.
 - Smart Fields - Add a "isFilterable" option to let them appear in the filters selection.
