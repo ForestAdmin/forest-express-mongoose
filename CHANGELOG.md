@@ -1,6 +1,11 @@
 # Change Log
 
 ## [Unreleased]
+### Changed
+- Performance - Reduce drastically the number of CORS preflight requests send by the API clients.
+
+### Fixed
+- Authentication - Developers whom want to extend the Admin API can now use the authentication for the overridden routes.
 
 ## RELEASE 2.0.5 - 2017-12-22
 ### Added

@@ -257,6 +257,13 @@ core-util-is@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
 
+cors@2.8.4:
+  version "2.8.4"
+  resolved "https://registry.yarnpkg.com/cors/-/cors-2.8.4.tgz#2bd381f2eb201020105cd50ea59da63090694686"
+  dependencies:
+    object-assign "^4"
+    vary "^1"
+
 csv-stringify@1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/csv-stringify/-/csv-stringify-1.0.4.tgz#bc18bab9ad4cef3195fd257980b58b479c42d3e5"
@@ -414,10 +421,6 @@ expand-tilde@^2.0.2:
   dependencies:
     homedir-polyfill "^1.0.1"
 
-"express-cors@git://github.com/ForestAdmin/express-cors.git":
-  version "0.0.4"
-  resolved "git://github.com/ForestAdmin/express-cors.git#0dba7ba1567863d97bb9993d4183cd243b5ccc41"
-
 express-jwt@5.3.0:
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/express-jwt/-/express-jwt-5.3.0.tgz#3d90cd65802e6336252f19e6a3df3e149e0c5ea0"
@@ -564,17 +567,17 @@ for-own@^1.0.0:
   dependencies:
     for-in "^1.0.1"
 
-forest-express@2.0.5:
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-2.0.5.tgz#b0f50d3a175fc7e3f4afbdfa80fc4fbed0e70d88"
+forest-express@2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-2.0.6.tgz#2d996133d84b1db9748005edaf3b316087d1099c"
   dependencies:
     bcryptjs "2.4.3"
     bluebird "3.3.4"
     body-parser "1.18.2"
+    cors "2.8.4"
     csv-stringify "1.0.4"
     esprima "4.0.0"
     express "4.16.2"
-    express-cors "git://github.com/ForestAdmin/express-cors.git"
     express-jwt "5.3.0"
     jsonapi-serializer "3.4.1"
     jsonwebtoken "7.1.9"
@@ -1420,6 +1423,10 @@ object-assign@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-3.0.0.tgz#9bedd5ca0897949bca47e7ff408062d549f587f2"
 
+object-assign@^4:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
+
 object.defaults@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/object.defaults/-/object.defaults-1.1.0.tgz#3a7f868334b407dea06da16d88d5cd29e435fecf"
@@ -1919,7 +1926,7 @@ v8flags@^2.0.2:
   dependencies:
     user-home "^1.1.1"
 
-vary@~1.1.2:
+vary@^1, vary@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
 
