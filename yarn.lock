@@ -567,9 +567,9 @@ for-own@^1.0.0:
   dependencies:
     for-in "^1.0.1"
 
-forest-express@2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-2.1.0.tgz#9ce2975f28bac0a1d559a77079c7b67d6302fab6"
+forest-express@2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-2.2.1.tgz#fd8b392a7d0f78bde9f72702b3895f4e2f251635"
   dependencies:
     bcryptjs "2.4.3"
     bluebird "3.3.4"
