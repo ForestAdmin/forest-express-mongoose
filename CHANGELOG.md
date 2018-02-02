@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Changed
+- Smart Fields - Compute only the necessary Smart Fields values for list views and CSV exports.
 
 ## RELEASE 2.1.2 - 2018-02-01
 ### Fixed
