@@ -30,6 +30,8 @@ exports.init = function(opts) {
   };
 
   exports.getOrmVersion = function () {
+    if (!opts.mongoose) { return null; }
+
     var ormVersion = opts.mongoose.version.match(REGEX_VERSION);
     if (ormVersion && ormVersion[0]) {
       return ormVersion[0];
