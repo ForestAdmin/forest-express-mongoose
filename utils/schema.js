@@ -1,6 +1,7 @@
 'use strict';
 
 exports.getReferenceModel = function (mongoose, reference) {
+  // TODO: Adapt the code here
   return mongoose.models[exports.getReferenceCollectionName(reference)];
 };
 
