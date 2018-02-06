@@ -14,21 +14,26 @@ module.exports = {
   },
   getModels: function (opts) {
     // NOTICE: By default return all detected models
-    if (_.isEmpty(opts.includedModels) && _.isEmpty(opts.excludedModels)) {
-      return opts.mongoose.models;
-    }
+    var detectAllModels = _.isEmpty(opts.includedModels) &&
+      _.isEmpty(opts.excludedModels);
+    var models = {};
 
-    var models = _.chain(opts.mongoose.models);
-    if (!_.isEmpty(opts.includedModels)) {
-      models = models.filter(function (model, modelName) {
-        return _.includes(opts.includedModels, modelName);
+    _.each(opts.connections, function (connection) {
+      _.each(connection.models, function (model) {
+        console.log(model.modelName);
+        if (detectAllModels) {
+          models[model.modelName] = model;
+        } else {
+          if (!_.isEmpty(opts.includedModels) &&
+            _.includes(opts.includedModels, model.modelName)) {
+            models[model.modelName] = model;
+          } else if (!_.includes(opts.excludedModels, model.modelName)) {
+            models[model.modelName] = model;
+          }
+        }
       });
-    } else {
-      models = models.filter(function (model, modelName) {
-        return !_.includes(opts.excludedModels, modelName);
-      });
-    }
+    });
 
-    return models.indexBy('modelName').value();
+    return models;
   }
 };

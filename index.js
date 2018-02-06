@@ -13,6 +13,11 @@ exports.ResourceSerializer = Interface.ResourceSerializer;
 exports.init = function(opts) {
   exports.opts = opts;
 
+  // NOTICE: Ensure compatibility with the old middleware configuration.
+  if (!('connections' in opts)) {
+    opts.connections = [opts.mongoose];
+  }
+
   exports.getLianaName = function () {
     return 'forest-express-mongoose';
   };

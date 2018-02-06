@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Added
+- Databases Connections - Support multiple mongoose connections.
 
 ## RELEASE 2.2.0 - 2018-02-02
 ### Changed
