@@ -13,6 +13,11 @@ exports.ResourceSerializer = Interface.ResourceSerializer;
 exports.init = function(opts) {
   exports.opts = opts;
 
+  // NOTICE: Ensure compatibility with the old middleware configuration.
+  if (!('connections' in opts)) {
+    opts.connections = [opts.mongoose];
+  }
+
   exports.getLianaName = function () {
     return 'forest-express-mongoose';
   };
@@ -25,6 +30,8 @@ exports.init = function(opts) {
   };
 
   exports.getOrmVersion = function () {
+    if (!opts.mongoose) { return null; }
+
     var ormVersion = opts.mongoose.version.match(REGEX_VERSION);
     if (ormVersion && ormVersion[0]) {
       return ormVersion[0];

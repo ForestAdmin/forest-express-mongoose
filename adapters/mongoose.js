@@ -10,7 +10,7 @@ module.exports = function (model, opts) {
   var fields = [];
   var paths = flat.unflatten(model.schema.paths);
   var mongoose = opts.mongoose;
-  // mongoose.base is used when opts.mongoose is not the default connection.
+  // NOTICE: mongoose.base is used when opts.mongoose is not the default connection.
   var Schema = mongoose.Schema || mongoose.base.Schema;
   var schemaType;
 
@@ -19,8 +19,8 @@ module.exports = function (model, opts) {
     if (models[ref]) {
       return utils.getModelName(models[ref]);
     } else {
-      Interface.logger.warn('Cannot find the reference \"' + ref +
-        '\" on the model \"' + model.modelName + '\".');
+      Interface.logger.warn('Cannot find the reference "' + ref +
+        '" on the model "' + model.modelName + '".');
     }
   }
 
