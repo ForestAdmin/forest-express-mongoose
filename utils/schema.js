@@ -1,8 +1,10 @@
 'use strict';
+var mongooseUtils = require('../services/mongoose-utils');
 
-exports.getReferenceModel = function (mongoose, reference) {
+exports.getReferenceModel = function (options, reference) {
   // TODO: Adapt the code here
-  return mongoose.models[exports.getReferenceCollectionName(reference)];
+  var models = mongooseUtils.getModels(options);
+  return models[exports.getReferenceCollectionName(reference)];
 };
 
 exports.getReferenceField = function (reference) {

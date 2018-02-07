@@ -19,8 +19,8 @@ module.exports = function (model, opts) {
     if (models[ref]) {
       return utils.getModelName(models[ref]);
     } else {
-      Interface.logger.warn('Cannot find the reference \"' + ref +
-        '\" on the model \"' + model.modelName + '\".');
+      Interface.logger.warn('Cannot find the reference "' + ref +
+        '" on the model "' + model.modelName + '".');
     }
   }
 

@@ -20,7 +20,6 @@ module.exports = {
 
     _.each(opts.connections, function (connection) {
       _.each(connection.models, function (model) {
-        console.log(model.modelName);
         if (detectAllModels) {
           models[model.modelName] = model;
         } else {

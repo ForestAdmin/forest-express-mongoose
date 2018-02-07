@@ -19,7 +19,7 @@ function PieStatGetter(model, params, opts) {
 
   function handlePopulate(records, referenceField) {
     return new P(function (resolve, reject) {
-      var referenceModel = SchemaUtils.getReferenceModel(opts.mongoose,
+      var referenceModel = SchemaUtils.getReferenceModel(opts,
         referenceField.reference);
 
       referenceModel.populate(records.value, {
@@ -67,7 +67,7 @@ function PieStatGetter(model, params, opts) {
           count: { $sum: sum }
         })
         .project({
-          key: '$_id.' +  params['group_by_field'],
+          key: '$_id.' + params['group_by_field'],
           value: '$count',
           _id: false
         })
