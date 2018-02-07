@@ -2,7 +2,6 @@
 var mongooseUtils = require('../services/mongoose-utils');
 
 exports.getReferenceModel = function (options, reference) {
-  // TODO: Adapt the code here
   var models = mongooseUtils.getModels(options);
   return models[exports.getReferenceCollectionName(reference)];
 };
