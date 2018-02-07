@@ -4,6 +4,12 @@
 ### Added
 - Databases Connections - Support multiple mongoose connections.
 
+### Changed
+- Apimap - Prevent random sorting collections and useless updates.
+
+### Fixed
+- Search - Prevent the records search to crash if no fields parameter is sent by the client.
+
 ## RELEASE 2.2.0 - 2018-02-02
 ### Changed
 - Smart Fields - Compute only the necessary Smart Fields values for list views and CSV exports.
