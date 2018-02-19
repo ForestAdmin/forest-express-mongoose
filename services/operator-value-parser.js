@@ -35,6 +35,7 @@ var VALUES_DATE = [
 var PERIODS_PREVIOUS_X_DAYS = /^\$previous(\d+)Days$/;
 var PERIODS_X_DAYS_TO_DATE = /^\$(\d+)DaysToDate$/;
 var PERIODS_X_HOURS_BEFORE = /^\$(\d+)HoursBefore$/;
+var PERIODS_X_HOURS_AFTER = /^\$(\d+)HoursAfter$/;
 
 function OperatorValueParser(opts, timezone) {
 
@@ -104,6 +105,9 @@ function OperatorValueParser(opts, timezone) {
       match = value.match(PERIODS_X_HOURS_BEFORE);
       if (match && match[1]) { return true; }
 
+      match = value.match(PERIODS_X_HOURS_AFTER);
+      if (match && match[1]) { return true; }
+
       return VALUES_DATE.indexOf(value) !== -1;
     }
 
@@ -150,6 +154,11 @@ function OperatorValueParser(opts, timezone) {
       match = value.match(PERIODS_X_HOURS_BEFORE);
       if (match && match[1]) {
         return { $lte: moment().subtract(match[1], 'hours').toDate() };
+      }
+
+      match = value.match(PERIODS_X_HOURS_AFTER);
+      if (match && match[1]) {
+        return { $gte: moment().subtract(match[1], 'hours').toDate() };
       }
 
       switch (value) {
