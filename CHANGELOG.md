@@ -1,6 +1,11 @@
 # Change Log
 
 ## [Unreleased]
+### Changed
+- Apimap - Catch potential failure during the apimap sorting.
+
+### Fixed
+- Smart Actions - Display the Smart Actions form fields in the declaration order. [Regression introduced in 2.4.0]
 
 ## RELEASE 2.3.1 - 2018-02-21
 ### Added
