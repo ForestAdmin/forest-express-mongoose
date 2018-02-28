@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 2.3.2 - 2018-02-28
 ### Changed
 - Apimap - Catch potential failure during the apimap sorting.
 
