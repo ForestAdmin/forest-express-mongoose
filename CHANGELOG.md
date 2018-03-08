@@ -2,7 +2,7 @@
 
 ## [Unreleased]
 ### Added
-- MongoDB HasMany - Allow documents embedded to an array to be editable.
+- MongoDB HasMany - Users can edit a document in an array of embedded documents.
 
 ## RELEASE 2.4.3 - 2018-03-12
 ### Added
