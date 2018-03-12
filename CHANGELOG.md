@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Added
+- Smart Actions - Developers can define Smart Actions that can send their request to a different endpoint than the current environment endpoint.
 
 ## RELEASE 2.4.2 - 2018-03-08
 ### Fixed
