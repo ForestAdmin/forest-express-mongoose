@@ -4,6 +4,9 @@
 ### Added
 - MongoDB HasMany - Users can edit a document in an array of embedded documents.
 
+### Changed
+- Security - Fix low impact vulnerabilities.
+
 ## RELEASE 2.4.3 - 2018-03-12
 ### Added
 - Smart Actions - Developers can define Smart Actions that can send their request to a different endpoint than the current environment endpoint.
@@ -13,11 +16,11 @@
 - Close.io Integration - Send a "No Content" (204) status code if not customer lead has been found instead of an "Internal Server Error" (500).
 
 ## RELEASE 2.4.1 - 2018-03-07
-### Changed
+### Changed
 - Smart Fields - Display a warning if an error occurs during Smart Field value computations.
 
 ## RELEASE 2.4.0 - 2018-03-01
-### Added
+### Added
 - Smart Actions - Users can define Smart Actions only available in a record detail.
 
 ## RELEASE 2.3.2 - 2018-02-28
