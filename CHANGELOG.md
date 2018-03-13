@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 2.5.0 - 2018-03-13
 ### Added
 - MongoDB HasMany - Users can edit a document in an array of embedded documents.
 
