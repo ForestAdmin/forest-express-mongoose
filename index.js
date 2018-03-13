@@ -58,6 +58,7 @@ exports.init = function(opts) {
   exports.ResourceUpdater = require('./services/resource-updater');
   exports.ResourceRemover = require('./services/resource-remover');
   exports.RecordsExporter = require('./services/records-exporter');
+  exports.EmbeddedDocumentUpdater = require('./services/embedded-document-updater');
 
   exports.HasManyGetter = require('./services/has-many-getter');
   exports.HasManyAssociator = require('./services/has-many-associator');
