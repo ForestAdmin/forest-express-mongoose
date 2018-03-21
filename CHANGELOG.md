@@ -1,6 +1,9 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- Smart Elements - Fix error swallowing on load and clean some useless code.
+- Smart Fields - Boolean Smart Fields that return a "false" value are now properly sent though the API.
 
 ## RELEASE 2.5.0 - 2018-03-13
 ### Added

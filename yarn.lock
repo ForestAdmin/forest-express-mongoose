@@ -389,10 +389,6 @@ escape-string-regexp@^1.0.2:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
 
-esprima@4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/esprima/-/esprima-4.0.0.tgz#4499eddcd1110e0b218bacf2fa7f7f59f55ca804"
-
 etag@~1.8.1:
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
@@ -567,16 +563,15 @@ for-own@^1.0.0:
   dependencies:
     for-in "^1.0.1"
 
-forest-express@2.6.0:
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-2.6.0.tgz#47641367ed0cee34794840aeb264de385016e1e6"
+forest-express@2.6.2:
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-2.6.2.tgz#f0ac539c449489fc83b646a269f32e21e4eda43f"
   dependencies:
     bcryptjs "2.4.3"
     bluebird "3.3.4"
     body-parser "1.18.2"
     cors "2.8.4"
     csv-stringify "1.0.4"
-    esprima "4.0.0"
     express "4.16.2"
     express-jwt "5.3.1"
     jsonapi-serializer "3.4.1"
