@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 2.5.2 - 2018-03-27
 ### Changed
 - Collections - Allow collection customization before liana initialization.
 
