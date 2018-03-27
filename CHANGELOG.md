@@ -1,6 +1,11 @@
 # Change Log
 
 ## [Unreleased]
+### Changed
+- Collections - Allow collection customization before liana initialization.
+
+### Fixed
+- Authentication - Fix the missing email/name/teams information set in the token for user using Google SSO.
 
 ## RELEASE 2.5.1 - 2018-03-21
 ### Fixed
