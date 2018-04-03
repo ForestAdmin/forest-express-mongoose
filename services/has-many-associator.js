@@ -5,12 +5,13 @@ function HasManyAssociator(model, association, opts, params, data) {
   this.perform = function () {
     return new P(function (resolve, reject) {
       var updateParams = {};
-      updateParams[params.associationName] =
-        data.data.map(function (d) { return d.id; });
+      updateParams[params.associationName] = {
+        $each: data.data.map(function (document) { return document.id; }),
+      };
 
       model
         .findByIdAndUpdate(params.recordId, {
-          $pushAll: updateParams
+          $push: updateParams,
         }, {
           new: true
         })
