@@ -1,6 +1,11 @@
 # Change Log
 
 ## [Unreleased]
+### Added
+- Related Data - Delete records directly from a hasMany listing.
+
+### Fixed
+- Related Data - Fix a potential error on hasMany association update (remove a deprecated $pushAll operator).
 
 ## RELEASE 2.6.0 - 2018-03-29
 ### Added
