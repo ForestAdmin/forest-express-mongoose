@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- Smart Relationships - Make the Smart BelongsTo work when it references a Smart Collection record.
 
 ## RELEASE 2.7.0 - 2018-04-03
 ### Added
