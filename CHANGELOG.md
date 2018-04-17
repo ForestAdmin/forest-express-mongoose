@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## RELEASE 2.8.1 - 2018-04-17
+
 ## RELEASE 2.8.0 - 2018-04-17
 ### Added
 - Premium Security - Add IP Whitelist feature.
