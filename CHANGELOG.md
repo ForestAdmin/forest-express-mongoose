@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 2.8.2 - 2018-04-23
 ### Fixed
 - Apimap - Prevent an error on Apimap generation if the Mongoose ORM version is not found.
 
