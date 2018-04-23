@@ -1,8 +1,11 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- Apimap - Prevent an error on Apimap generation if the Mongoose ORM version is not found.
 
 ## RELEASE 2.8.1 - 2018-04-17
+### Changed
 - Technical - Update yarn.lock.
 
 ## RELEASE 2.8.0 - 2018-04-17
