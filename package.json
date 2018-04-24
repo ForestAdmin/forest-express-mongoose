@@ -28,11 +28,12 @@
     "http-errors": "1.6.1",
     "lodash": "3.9.3",
     "moment": "2.18.1",
-    "mongoose-fixture-loader": "1.0.2"
+    "mongoose-fixture-loader": "1.0.2",
+    "pre-commit": "1.2.2"
   },
   "devDependencies": {
     "chai": "2.3.0",
-    "git-hooks": "1.1.9",
+    "eslint": "4.19.1",
     "gulp": "3.9.1",
     "mocha": "2.2.5",
     "mongoose": "5.0.16",
@@ -43,6 +44,10 @@
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha test/**/* --timeout 15000",
     "test:watch": "./node_modules/mocha/bin/mocha test/**/* adapters/** services/** utils/** --timeout 15000 --watch",
+    "lint": "./node_modules/eslint/bin/eslint.js test/**/* adapters/** services/** utils/**",
     "detect-vulnerabilities": "nsp check --output summary"
-  }
+  },
+  "pre-commit": [
+    "lint"
+  ]
 }
