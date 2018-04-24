@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Added
+- Search & Technical - Add tests for search on selected field & switch linter to eslint.
 
 ## RELEASE 2.8.3 - 2018-04-25
 ### Fixed

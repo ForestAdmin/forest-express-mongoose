@@ -27,22 +27,22 @@
     "forest-express": "2.8.2",
     "http-errors": "1.6.1",
     "lodash": "3.9.3",
-    "moment": "2.18.1"
+    "moment": "2.18.1",
+    "mongoose-fixture-loader": "1.0.2"
   },
   "devDependencies": {
     "chai": "2.3.0",
     "git-hooks": "1.1.9",
     "gulp": "3.9.1",
     "mocha": "2.2.5",
-    "mongoose": "5.0.12",
+    "mongoose": "5.0.16",
     "nsp": "2.8.1",
     "semver": "^5.3.0",
     "simple-git": "1.65.0"
   },
   "scripts": {
-    "test-mongoose-3": "yarn add mongoose@3.8.8 && ./node_modules/mocha/bin/mocha",
-    "test-mongoose-4": "yarn add mongoose@latest && ./node_modules/mocha/bin/mocha",
-    "test": "npm run test-mongoose-3 && npm run test-mongoose-4",
+    "test": "./node_modules/mocha/bin/mocha test/**/* --timeout 15000",
+    "test:watch": "./node_modules/mocha/bin/mocha test/**/* adapters/** services/** utils/** --timeout 15000 --watch",
     "detect-vulnerabilities": "nsp check --output summary"
   }
 }

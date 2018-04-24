@@ -1396,42 +1396,46 @@ moment@2.x.x:
   version "2.19.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.19.1.tgz#56da1a2d1cbf01d38b7e1afc31c10bcfa1929167"
 
-mongodb-core@3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/mongodb-core/-/mongodb-core-3.0.4.tgz#a3fdf466e697a2f1df87e458e5e2df1c26cc654b"
+mongodb-core@3.0.7:
+  version "3.0.7"
+  resolved "https://registry.yarnpkg.com/mongodb-core/-/mongodb-core-3.0.7.tgz#a9941f14883a75768d554cef5fd67756a9cc0f25"
   dependencies:
     bson "~1.0.4"
     require_optional "^1.0.1"
 
-mongodb@3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-3.0.4.tgz#ee0c0f7bc565edc5f40ee2d23170e522a8ad2286"
+mongodb@3.0.7:
+  version "3.0.7"
+  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-3.0.7.tgz#cfcbaee992d78dabca67177f8f9db9cf13ac3a44"
   dependencies:
-    mongodb-core "3.0.4"
+    mongodb-core "3.0.7"
+
+mongoose-fixture-loader@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/mongoose-fixture-loader/-/mongoose-fixture-loader-1.0.2.tgz#f2daf6d8072398e555b582d751feeea462d142ac"
 
 mongoose-legacy-pluralize@1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/mongoose-legacy-pluralize/-/mongoose-legacy-pluralize-1.0.2.tgz#3ba9f91fa507b5186d399fb40854bff18fb563e4"
 
-mongoose@5.0.12:
-  version "5.0.12"
-  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.0.12.tgz#608a3829bf2edae47b0078cd1970ede2a033b3a0"
+mongoose@5.0.16:
+  version "5.0.16"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.0.16.tgz#a405ff0a6583442d9c55fead8ea4fdbdc0b4f5ba"
   dependencies:
     async "2.1.4"
     bson "~1.0.4"
     kareem "2.0.6"
     lodash.get "4.4.2"
-    mongodb "3.0.4"
+    mongodb "3.0.7"
     mongoose-legacy-pluralize "1.0.2"
-    mpath "0.3.0"
+    mpath "0.4.1"
     mquery "3.0.0"
     ms "2.0.0"
     regexp-clone "0.0.1"
     sliced "1.0.1"
 
-mpath@0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/mpath/-/mpath-0.3.0.tgz#7a58f789e9b5fd3c94520634157960f26bd5ef44"
+mpath@0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/mpath/-/mpath-0.4.1.tgz#ed10388430380bf7bbb5be1391e5d6969cb08e89"
 
 mquery@3.0.0:
   version "3.0.0"
