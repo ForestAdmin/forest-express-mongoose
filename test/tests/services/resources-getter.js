@@ -11,7 +11,7 @@ describe('Service > ResourcesGetter', function () {
   const options = {
     mongoose: mongoose,
     connections: [mongoose],
-  }
+  };
 
   before(function () {
     Interface.Schemas = {
@@ -58,8 +58,8 @@ describe('Service > ResourcesGetter', function () {
             comment: 'this is a gift',
             giftMessage: 'Thank you',
           }
-        ])
-      })
+        ]);
+      });
   });
 
   describe('Request on the resources getter with a search on a collection with searchFields', function () {
@@ -81,4 +81,4 @@ describe('Service > ResourcesGetter', function () {
         });
     });
   });
-})
+});

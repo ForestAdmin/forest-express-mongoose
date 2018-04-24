@@ -99,8 +99,8 @@ function ResourcesGetter(model, opts, params) {
             // NOTICE: Look for the associated model infos
             var subModel = _.find(mongooseUtils.getModels(opts),
               function(model) {
-              return utils.getModelName(model) === currentField.reference.split('.')[0];
-            });
+                return utils.getModelName(model) === currentField.reference.split('.')[0];
+              });
 
             values.split(',').forEach(function (value) {
               var condition = {};
