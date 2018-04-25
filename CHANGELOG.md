@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 2.8.3 - 2018-04-25
 ### Fixed
 - Premium Security - Handle mutli instances ip whitelist refresh.
 
