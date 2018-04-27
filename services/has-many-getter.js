@@ -67,45 +67,45 @@ function HasManyGetter(model, association, opts, params) {
           }));
         });
     })
-    .then(function (recordIds) {
-      var conditions = {
-        $and: [{ _id: { $in: recordIds }}]
-      };
+      .then(function (recordIds) {
+        var conditions = {
+          $and: [{ _id: { $in: recordIds }}]
+        };
 
-      if (params.search) {
-        var conditionsSearch = new SearchBuilder(association, opts, params)
-          .getConditions();
-        conditions.$and.push(conditionsSearch);
-      }
-
-      var query = association.find(conditions);
-      handlePopulate(query);
-
-      return query;
-    })
-    .then(function(records) {
-      if (params.sort) {
-        var fieldSort = params.sort;
-        var descending = false;
-
-        if (params.sort[0] === '-') {
-          fieldSort = params.sort.substring(1);
-          descending = true;
+        if (params.search) {
+          var conditionsSearch = new SearchBuilder(association, opts, params)
+            .getConditions();
+          conditions.$and.push(conditionsSearch);
         }
 
-        var recordsSorted = _.sortBy(records, function(record) {
-          return record[fieldSort];
-        });
+        var query = association.find(conditions);
+        handlePopulate(query);
 
-        return descending ? recordsSorted.reverse() : recordsSorted;
-      } else {
-        return records;
-      }
-    })
-    .then(function (records) {
-      count = records.length;
-      return _.slice(records, getSkip(), getSkip() + getLimit());
-    });
+        return query;
+      })
+      .then(function(records) {
+        if (params.sort) {
+          var fieldSort = params.sort;
+          var descending = false;
+
+          if (params.sort[0] === '-') {
+            fieldSort = params.sort.substring(1);
+            descending = true;
+          }
+
+          var recordsSorted = _.sortBy(records, function(record) {
+            return record[fieldSort];
+          });
+
+          return descending ? recordsSorted.reverse() : recordsSorted;
+        } else {
+          return records;
+        }
+      })
+      .then(function (records) {
+        count = records.length;
+        return _.slice(records, getSkip(), getSkip() + getLimit());
+      });
   }
 
   this.perform = function () {
