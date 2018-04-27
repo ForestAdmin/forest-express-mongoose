@@ -125,28 +125,23 @@ function OperatorValueParser(opts, timezone) {
 
       if (value === PERIODS_TODAY) {
         return {
-          $gte: moment().startOf('day')
-                  .add(offsetHours, 'h').toDate(),
-          $lte: moment().endOf('day')
-                  .add(offsetHours, 'h').toDate()
+          $gte: moment().startOf('day').add(offsetHours, 'h').toDate(),
+          $lte: moment().endOf('day').add(offsetHours, 'h').toDate()
         };
       }
 
       var match = value.match(PERIODS_PREVIOUS_X_DAYS);
       if (match && match[1]) {
         return {
-          $gte: moment().subtract(match[1], 'days')
-                  .startOf('day').add(offsetHours, 'h').toDate(),
-          $lte: moment().subtract(1, 'days').endOf('day')
-                  .add(offsetHours, 'h').toDate()
+          $gte: moment().subtract(match[1], 'days').startOf('day').add(offsetHours, 'h').toDate(),
+          $lte: moment().subtract(1, 'days').endOf('day').add(offsetHours, 'h').toDate()
         };
       }
 
       match = value.match(PERIODS_X_DAYS_TO_DATE);
       if (match && match[1]) {
         return {
-          $gte: moment().subtract(match[1] - 1, 'days')
-                  .startOf('day').toDate(),
+          $gte: moment().subtract(match[1] - 1, 'days').startOf('day').toDate(),
           $lte: moment().toDate()
         };
       }
@@ -163,53 +158,39 @@ function OperatorValueParser(opts, timezone) {
 
       switch (value) {
         case PERIODS_YESTERDAY:
-          from = moment().subtract(1, 'days').startOf('day')
-                   .add(offsetHours, 'h').toDate();
-          to = moment().subtract(1, 'days').endOf('day')
-                 .add(offsetHours, 'h').toDate();
+          from = moment().subtract(1, 'days').startOf('day').add(offsetHours, 'h').toDate();
+          to = moment().subtract(1, 'days').endOf('day').add(offsetHours, 'h').toDate();
           break;
         case PERIODS_PREVIOUS_WEEK:
-          from = moment().subtract(1, 'weeks')
-            .startOf('isoWeek').add(offsetHours, 'h').toDate();
-          to = moment().subtract(1, 'weeks').endOf('isoWeek')
-            .add(offsetHours, 'h').toDate();
+          from = moment().subtract(1, 'weeks').startOf('isoWeek').add(offsetHours, 'h').toDate();
+          to = moment().subtract(1, 'weeks').endOf('isoWeek').add(offsetHours, 'h').toDate();
           break;
         case PERIODS_PREVIOUS_MONTH:
-          from = moment().subtract(1, 'months').startOf('month')
-            .add(offsetHours, 'h').toDate();
-          to = moment().subtract(1, 'months').endOf('month')
-            .add(offsetHours, 'h').toDate();
+          from = moment().subtract(1, 'months').startOf('month').add(offsetHours, 'h').toDate();
+          to = moment().subtract(1, 'months').endOf('month').add(offsetHours, 'h').toDate();
           break;
         case PERIODS_PREVIOUS_QUARTER:
-          from = moment().subtract(1, 'quarters')
-            .startOf('quarter').add(offsetHours, 'h').toDate();
-          to = moment().subtract(1, 'quarters').endOf('quarter')
-            .add(offsetHours, 'h').toDate();
+          from = moment().subtract(1, 'quarters').startOf('quarter').add(offsetHours, 'h').toDate();
+          to = moment().subtract(1, 'quarters').endOf('quarter').add(offsetHours, 'h').toDate();
           break;
         case PERIODS_PREVIOUS_YEAR:
-          from = moment().subtract(1, 'years').startOf('year')
-            .add(offsetHours, 'h').toDate();
-          to = moment().subtract(1, 'years').endOf('year')
-            .add(offsetHours, 'h').toDate();
+          from = moment().subtract(1, 'years').startOf('year').add(offsetHours, 'h').toDate();
+          to = moment().subtract(1, 'years').endOf('year').add(offsetHours, 'h').toDate();
           break;
         case PERIODS_WEEK_TO_DATE:
-          from = moment().startOf('week').add(offsetHours, 'h')
-            .toDate();
+          from = moment().startOf('week').add(offsetHours, 'h').toDate();
           to = moment().toDate();
           break;
         case PERIODS_MONTH_TO_DATE:
-          from = moment().startOf('month').add(offsetHours, 'h')
-            .toDate();
+          from = moment().startOf('month').add(offsetHours, 'h').toDate();
           to = moment().toDate();
           break;
         case PERIODS_QUARTER_TO_DATE:
-          from = moment().startOf('quarter')
-            .add(offsetHours, 'h').toDate();
+          from = moment().startOf('quarter').add(offsetHours, 'h').toDate();
           to = moment().toDate();
           break;
         case PERIODS_YEAR_TO_DATE:
-          from = moment().startOf('year').add(offsetHours, 'h')
-            .toDate();
+          from = moment().startOf('year').add(offsetHours, 'h').toDate();
           to = moment().toDate();
           break;
       }

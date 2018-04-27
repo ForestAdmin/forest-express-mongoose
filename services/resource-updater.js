@@ -35,7 +35,7 @@ function ResourceUpdater(model, params, record) {
           if (err) { return reject(err); }
           resolve(record);
         });
-      })
+    })
       .catch(function (error) {
         if (error.message.indexOf('Cast to') > -1 && error.message.indexOf('failed for value') > -1) {
           Interface.logger.warn('Cannot update the ' + modelName + ' #' + recordId +

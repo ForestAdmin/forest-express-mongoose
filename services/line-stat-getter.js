@@ -115,49 +115,49 @@ function LineStatFinder(model, params, opts) {
           case 'Day':
             groupBy['year'] = {
               $year: [{
-                $subtract: [ '$' + params['group_by_date_field'], timezoneOffset
-              ]}]
+                $subtract: [ '$' + params['group_by_date_field'], timezoneOffset ]
+              }]
             };
             groupBy['month'] = {
               $month: [{
-                $subtract: [ '$' + params['group_by_date_field'], timezoneOffset
-              ]}]
+                $subtract: [ '$' + params['group_by_date_field'], timezoneOffset ]
+              }]
             };
             groupBy['day'] = {
               $dayOfMonth: [{
-                $subtract: [ '$' + params['group_by_date_field'], timezoneOffset
-              ]}]
+                $subtract: [ '$' + params['group_by_date_field'], timezoneOffset ]
+              }]
             };
             break;
           case 'Week':
             groupBy['week'] = {
               $week: [{
-                $subtract: [ '$' + params['group_by_date_field'], timezoneOffset
-              ]}]
+                $subtract: [ '$' + params['group_by_date_field'], timezoneOffset ]
+              }]
             };
             groupBy['year'] = {
               $year: [{
-                $subtract: [ '$' + params['group_by_date_field'], timezoneOffset
-              ]}]
+                $subtract: [ '$' + params['group_by_date_field'], timezoneOffset ]
+              }]
             };
             break;
           case 'Year':
             groupBy['year'] = {
               $year: [{
-                $subtract: [ '$' + params['group_by_date_field'], timezoneOffset
-              ]}]
+                $subtract: [ '$' + params['group_by_date_field'], timezoneOffset ]
+              }]
             };
             break;
           default: // Month
             groupBy['month'] = {
               $month: [{
-                $subtract: [ '$' + params['group_by_date_field'], timezoneOffset
-              ]}]
+                $subtract: [ '$' + params['group_by_date_field'], timezoneOffset ]
+              }]
             };
             groupBy['year'] = {
               $year: [{
-                $subtract: [ '$' + params['group_by_date_field'], timezoneOffset
-              ]}]
+                $subtract: [ '$' + params['group_by_date_field'], timezoneOffset ]
+              }]
             };
         }
         sort[params['group_by_date_field']] = 1;
