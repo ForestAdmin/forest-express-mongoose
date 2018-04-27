@@ -102,7 +102,7 @@ function ResourcesGetter(model, opts, params) {
                 return utils.getModelName(model) === currentField.reference.split('.')[0];
               });
 
-            values.split(',').forEach(function (value) {
+            values.split(',').forEach((value) => {
               var condition = {};
               condition[subFieldName] = new OperatorValueParser(opts,
                 params.timezone).perform(subModel, subFieldName, value);
