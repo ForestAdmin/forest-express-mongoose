@@ -218,30 +218,30 @@ function LineStatFinder(model, params, opts) {
           resolve(records);
         });
     })
-    .then(function (records) {
-      if (!records.length) { return { value: [] }; }
-      var momentRange = params['time_range'].toLowerCase();
-      var firstDate = setDate(records[0], momentRange);
-      var lastDate = setDate(records[records.length - 1], momentRange);
+      .then(function (records) {
+        if (!records.length) { return { value: [] }; }
+        var momentRange = params['time_range'].toLowerCase();
+        var firstDate = setDate(records[0], momentRange);
+        var lastDate = setDate(records[records.length - 1], momentRange);
 
-      records = records.map(function (record) {
+        records = records.map(function (record) {
+          return {
+            label: formatLabel(record, momentRange),
+            values: record.values
+          };
+        });
+
         return {
-          label: formatLabel(record, momentRange),
-          values: record.values
+          value: fillEmptyIntervals(records, momentRange, firstDate, lastDate)
         };
+      })
+      .then(function (records) {
+        if (populateGroupByField) {
+          return handlePopulate(records, populateGroupByField);
+        } else {
+          return records;
+        }
       });
-
-      return {
-        value: fillEmptyIntervals(records, momentRange, firstDate, lastDate)
-      };
-    })
-    .then(function (records) {
-      if (populateGroupByField) {
-        return handlePopulate(records, populateGroupByField);
-      } else {
-        return records;
-      }
-    });
   };
 }
 
