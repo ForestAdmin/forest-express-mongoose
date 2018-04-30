@@ -8,7 +8,7 @@ var mongooseConnect = require('../../utils/mongoose-connect');
 describe('Service > ResourcesGetter', function () {
   var OrderModel;
 
-  const options = {
+  var options = {
     mongoose: mongoose,
     connections: [mongoose],
   };
