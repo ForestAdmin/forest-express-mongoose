@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- Collections - Allow search fields customization before liana initialization.
 
 ## RELEASE 2.8.3 - 2018-04-25
 ### Fixed
