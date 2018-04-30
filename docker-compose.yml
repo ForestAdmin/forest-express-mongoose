@@ -1,0 +1,6 @@
+MongoDB:
+  image: sameersbn/mongodb:latest
+  ports:
+    - "27017:27017"
+  volumes:
+    - ./data/mongodb:/var/lib/mongodb

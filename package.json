@@ -31,18 +31,23 @@
   },
   "devDependencies": {
     "chai": "2.3.0",
-    "git-hooks": "1.1.9",
+    "eslint": "4.19.1",
     "gulp": "3.9.1",
     "mocha": "2.2.5",
-    "mongoose": "5.0.12",
+    "mongoose": "5.0.16",
+    "mongoose-fixture-loader": "1.0.2",
     "nsp": "2.8.1",
+    "pre-commit": "1.2.2",
     "semver": "^5.3.0",
     "simple-git": "1.65.0"
   },
   "scripts": {
-    "test-mongoose-3": "yarn add mongoose@3.8.8 && ./node_modules/mocha/bin/mocha",
-    "test-mongoose-4": "yarn add mongoose@latest && ./node_modules/mocha/bin/mocha",
-    "test": "npm run test-mongoose-3 && npm run test-mongoose-4",
+    "test": "./node_modules/mocha/bin/mocha test/**/* --timeout 15000",
+    "test:watch": "./node_modules/mocha/bin/mocha test/**/* adapters/** services/** utils/** --timeout 15000 --watch",
+    "lint": "./node_modules/eslint/bin/eslint.js test/**/* adapters/** services/** utils/**",
     "detect-vulnerabilities": "nsp check --output summary"
-  }
+  },
+  "pre-commit": [
+    "lint"
+  ]
 }
