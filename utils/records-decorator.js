@@ -11,7 +11,7 @@ function decorateForSearch(records, fieldsSearched, searchValue) {
         if (match) {
           if (!matchFields[index]) {
             matchFields[index] = {
-              id: record.id,
+              id: record._id,
               search: [],
             };
           }
