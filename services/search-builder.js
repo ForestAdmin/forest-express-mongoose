@@ -5,6 +5,11 @@ var utils = require('../utils/schema');
 
 function SearchBuilder(model, opts, params, searchFields) {
   var schema = Interface.Schemas.schemas[utils.getModelName(model)];
+  var fieldsSearched = [];
+
+  this.getFieldsSearched = function () {
+    return fieldsSearched;
+  };
 
   this.getConditions = function () {
     if (new RegExp('^[0-9a-fA-F]{24}$').test(params.search)) {
@@ -22,16 +27,19 @@ function SearchBuilder(model, opts, params, searchFields) {
           try {
             q[key] = opts.mongoose.Types.ObjectId(params.search);
             orQuery.$or.push(q);
+            fieldsSearched.push(key);
           } catch(error) { return null; }
         } else if (value.instance === 'String') {
           q[key] = new RegExp('.*' + params.search + '.*', 'i');
           orQuery.$or.push(q);
+          fieldsSearched.push(key);
         } else if (value.instance === 'Array') {
           var field = _.findWhere(schema.fields, { field: key });
           if (field && _.isArray(field.type) && field.type[0] === 'String' &&
             !field.reference) {
             q[key] = new RegExp('.*' + params.search + '.*', 'i');
             orQuery.$or.push(q);
+            fieldsSearched.push(key);
           } else if (field && _.isArray(field.type) &&
             !field.reference && parseInt(params.searchExtended)) {
             var elemMatch = { $elemMatch: { $or: [], } };
@@ -43,14 +51,17 @@ function SearchBuilder(model, opts, params, searchFields) {
                 query[subField.field] = new RegExp('.*' + params.search + '.*',
                   'i');
                 elemMatch.$elemMatch.$or.push(query);
+                fieldsSearched.push(subField.field);
               } else if (subField.type === 'Number' &&
                 parseInt(params.search)) {
                 query[subField.field] = parseInt(params.search);
                 elemMatch.$elemMatch.$or.push(query);
+                fieldsSearched.push(subField.field);
               }
             });
             q[key] = elemMatch;
             orQuery.$or.push(q);
+            fieldsSearched.push(key);
           }
         }
       });

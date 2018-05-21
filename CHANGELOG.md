@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Added
 - Search - Add tests for search on selected field.
+- Search - Display highlighted matches on table view when searching.
 
 ### Changed
 - Technical - Switch the linter to eslint.

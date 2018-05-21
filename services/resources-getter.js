@@ -7,10 +7,13 @@ var FilterParser = require('./filter-parser');
 var Interface = require('forest-express');
 var utils = require('../utils/schema');
 var mongooseUtils = require('./mongoose-utils');
+var RecordsDecorator = require('../utils/records-decorator');
 
 function ResourcesGetter(model, opts, params) {
   var schema = Interface.Schemas.schemas[utils.getModelName(model)];
   var segment;
+
+  var searchBuilder = new SearchBuilder(model, opts, params, schema.searchFields);
 
   function hasPagination() {
     return params.page && params.page.number;
@@ -162,8 +165,7 @@ function ResourcesGetter(model, opts, params) {
     handlePopulate(query);
 
     if (params.search) {
-      new SearchBuilder(model, opts, params, schema.searchFields)
-        .getWhere(query);
+      searchBuilder.getWhere(query);
     }
 
     if (params.filter) {
@@ -243,16 +245,46 @@ function ResourcesGetter(model, opts, params) {
     return getSegmentCondition()
       .then(function () {
         var query = getRecords();
+        var decorators = null;
 
         if (hasRelationshipFilter()) {
           return exec(getRecords())
             .then(function (records) {
               var count = records.length;
               records = records.slice(getSkip(), getSkip() + getLimit());
-              return [count, records];
+
+              if (params.search) {
+                var decoratorsSearch = RecordsDecorator.decorateForSearch(
+                  records,
+                  searchBuilder.getFieldsSearched(),
+                  params.search
+                );
+                if (!_.isEmpty(decoratorsSearch)) {
+                  decorators = decoratorsSearch;
+                }
+              }
+
+              return [records, count, decorators];
             });
         } else {
-          return P.all([count(query), exec(getRecords())]);
+          return P.all([exec(getRecords()), count(query)])
+            .then(function (results) {
+              var records = results[0];
+              var count = results[1];
+
+              if (params.search) {
+                var decoratorsSearch = RecordsDecorator.decorateForSearch(
+                  records,
+                  searchBuilder.getFieldsSearched(),
+                  params.search
+                );
+                if (!_.isEmpty(decoratorsSearch)) {
+                  decorators = decoratorsSearch;
+                }
+              }
+
+              return [records, count, decorators];
+            });
         }
       });
   };

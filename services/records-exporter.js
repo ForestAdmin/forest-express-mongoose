@@ -22,7 +22,7 @@ function RecordsExporter(model, options, params, association) {
     return getter()
       .perform()
       .then(function (results) {
-        var records = results[1];
+        var records = results[0];
 
         return dataSender(records)
           .then(function () {
