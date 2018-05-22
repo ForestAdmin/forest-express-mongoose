@@ -12,34 +12,38 @@ function SearchBuilder(model, opts, params, searchFields) {
   };
 
   this.getConditions = function () {
+
+    var orQuery = { $or: [] };
+
+    function pushCondition(condition, fieldName) {
+      orQuery.$or.push(condition);
+      fieldsSearched.push(fieldName);
+    }
+
     if (new RegExp('^[0-9a-fA-F]{24}$').test(params.search)) {
       return { _id: params.search };
     } else {
-      var orQuery = { $or: [] };
 
       _.each(model.schema.paths, function (value, key) {
         if (searchFields && searchFields.indexOf(value.path) === -1) {
           return null;
         }
-        var q = {};
+        var condition = {};
 
         if (value.instance === 'ObjectID') {
           try {
-            q[key] = opts.mongoose.Types.ObjectId(params.search);
-            orQuery.$or.push(q);
-            fieldsSearched.push(key);
+            condition[key] = opts.mongoose.Types.ObjectId(params.search);
+            pushCondition(condition, key);
           } catch(error) { return null; }
         } else if (value.instance === 'String') {
-          q[key] = new RegExp('.*' + params.search + '.*', 'i');
-          orQuery.$or.push(q);
-          fieldsSearched.push(key);
+          condition[key] = new RegExp('.*' + params.search + '.*', 'i');
+          pushCondition(condition, key);
         } else if (value.instance === 'Array') {
           var field = _.findWhere(schema.fields, { field: key });
           if (field && _.isArray(field.type) && field.type[0] === 'String' &&
             !field.reference) {
-            q[key] = new RegExp('.*' + params.search + '.*', 'i');
-            orQuery.$or.push(q);
-            fieldsSearched.push(key);
+            condition[key] = new RegExp('.*' + params.search + '.*', 'i');
+            pushCondition(condition, key);
           } else if (field && _.isArray(field.type) &&
             !field.reference && parseInt(params.searchExtended)) {
             var elemMatch = { $elemMatch: { $or: [], } };
@@ -51,17 +55,14 @@ function SearchBuilder(model, opts, params, searchFields) {
                 query[subField.field] = new RegExp('.*' + params.search + '.*',
                   'i');
                 elemMatch.$elemMatch.$or.push(query);
-                fieldsSearched.push(subField.field);
               } else if (subField.type === 'Number' &&
                 parseInt(params.search)) {
                 query[subField.field] = parseInt(params.search);
                 elemMatch.$elemMatch.$or.push(query);
-                fieldsSearched.push(subField.field);
               }
             });
-            q[key] = elemMatch;
-            orQuery.$or.push(q);
-            fieldsSearched.push(key);
+            condition[key] = elemMatch;
+            pushCondition(condition, key);
           }
         }
       });
