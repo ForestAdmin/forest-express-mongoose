@@ -115,14 +115,11 @@ function HasManyGetter(model, association, opts, params) {
         var decorators = null;
 
         if (params.search) {
-          var decoratorsSearch = RecordsDecorator.decorateForSearch(
+          decorators = RecordsDecorator.decorateForSearch(
             getRecords(),
             searchBuilder.getFieldsSearched(),
             params.search
           );
-          if (!_.isEmpty(decoratorsSearch)) {
-            decorators = decoratorsSearch;
-          }
         }
 
         return [records, count, decorators];
