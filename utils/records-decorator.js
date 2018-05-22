@@ -1,5 +1,7 @@
 'use strict';
 
+var _ = require('lodash');
+
 function decorateForSearch(records, fieldsSearched, searchValue) {
   var matchFields = {};
   records.forEach(function (record, index) {
@@ -20,6 +22,10 @@ function decorateForSearch(records, fieldsSearched, searchValue) {
       }
     });
   });
+
+  if (_.isEmpty(matchFields)) {
+    matchFields = null;
+  }
 
   return matchFields;
 }

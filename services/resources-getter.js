@@ -254,14 +254,11 @@ function ResourcesGetter(model, opts, params) {
               records = records.slice(getSkip(), getSkip() + getLimit());
 
               if (params.search) {
-                var decoratorsSearch = RecordsDecorator.decorateForSearch(
+                decorators = RecordsDecorator.decorateForSearch(
                   records,
                   searchBuilder.getFieldsSearched(),
                   params.search
                 );
-                if (!_.isEmpty(decoratorsSearch)) {
-                  decorators = decoratorsSearch;
-                }
               }
 
               return [records, count, decorators];
@@ -273,14 +270,11 @@ function ResourcesGetter(model, opts, params) {
               var count = results[1];
 
               if (params.search) {
-                var decoratorsSearch = RecordsDecorator.decorateForSearch(
+                decorators = RecordsDecorator.decorateForSearch(
                   records,
                   searchBuilder.getFieldsSearched(),
                   params.search
                 );
-                if (!_.isEmpty(decoratorsSearch)) {
-                  decorators = decoratorsSearch;
-                }
               }
 
               return [records, count, decorators];
