@@ -205,7 +205,6 @@ function ResourcesGetter(model, opts, params) {
       }
 
       query
-        .lean()
         .exec(function (err, records) {
           if (err) { return reject(err); }
           resolve(records);

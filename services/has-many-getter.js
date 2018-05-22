@@ -116,7 +116,7 @@ function HasManyGetter(model, association, opts, params) {
 
         if (params.search) {
           decorators = RecordsDecorator.decorateForSearch(
-            getRecords(),
+            records,
             searchBuilder.getFieldsSearched(),
             params.search
           );

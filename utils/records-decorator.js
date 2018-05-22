@@ -5,6 +5,7 @@ var _ = require('lodash');
 function decorateForSearch(records, fieldsSearched, searchValue) {
   var matchFields = {};
   records.forEach(function (record, index) {
+    record = record.toObject();
     Object.keys(record).forEach(function (attributeName) {
       var value = record[attributeName];
       if (value) {
