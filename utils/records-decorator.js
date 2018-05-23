@@ -6,11 +6,11 @@ function decorateForSearch(records, fieldsSearched, searchValue) {
   var matchFields = {};
   records.forEach(function (record, index) {
     record = record.toObject();
-    Object.keys(record).forEach(function (attributeName) {
-      var value = record[attributeName];
+    fieldsSearched.forEach(function (fieldName) {
+      var value = record[fieldName];
       if (value) {
         value = value.toString();
-        var match = fieldsSearched.includes(attributeName) && value.match(new RegExp(searchValue, 'i'));
+        var match = fieldsSearched.includes(fieldName) && value.match(new RegExp(searchValue, 'i'));
         if (match) {
           if (!matchFields[index]) {
             matchFields[index] = {
@@ -18,7 +18,7 @@ function decorateForSearch(records, fieldsSearched, searchValue) {
               search: [],
             };
           }
-          matchFields[index]['search'].push(attributeName);
+          matchFields[index]['search'].push(fieldName);
         }
       }
     });
