@@ -244,7 +244,7 @@ function ResourcesGetter(model, opts, params) {
     return getSegmentCondition()
       .then(function () {
         var query = getRecords();
-        var decorators = null;
+        var fieldsSearched = null;
 
         if (hasRelationshipFilter()) {
           return exec(getRecords())
@@ -253,14 +253,10 @@ function ResourcesGetter(model, opts, params) {
               records = records.slice(getSkip(), getSkip() + getLimit());
 
               if (params.search) {
-                decorators = RecordsDecorator.decorateForSearch(
-                  records,
-                  searchBuilder.getFieldsSearched(),
-                  params.search
-                );
+                fieldsSearched = searchBuilder.getFieldsSearched();
               }
 
-              return [records, count, decorators];
+              return [records, count, fieldsSearched];
             });
         } else {
           return P.all([exec(getRecords()), count(query)])
@@ -269,14 +265,10 @@ function ResourcesGetter(model, opts, params) {
               var count = results[1];
 
               if (params.search) {
-                decorators = RecordsDecorator.decorateForSearch(
-                  records,
-                  searchBuilder.getFieldsSearched(),
-                  params.search
-                );
+                fieldsSearched = searchBuilder.getFieldsSearched();
               }
 
-              return [records, count, decorators];
+              return [records, count, fieldsSearched];
             });
         }
       });

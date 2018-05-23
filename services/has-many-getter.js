@@ -112,17 +112,13 @@ function HasManyGetter(model, association, opts, params) {
   this.perform = function () {
     return getRecords()
       .then(function (records) {
-        var decorators = null;
+        var fieldsSearched = null;
 
         if (params.search) {
-          decorators = RecordsDecorator.decorateForSearch(
-            records,
-            searchBuilder.getFieldsSearched(),
-            params.search
-          );
+          fieldsSearched = searchBuilder.getFieldsSearched();
         }
 
-        return [records, count, decorators];
+        return [records, count, fieldsSearched];
       });
   };
 }
