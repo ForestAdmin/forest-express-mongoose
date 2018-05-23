@@ -7,7 +7,6 @@ var FilterParser = require('./filter-parser');
 var Interface = require('forest-express');
 var utils = require('../utils/schema');
 var mongooseUtils = require('./mongoose-utils');
-var RecordsDecorator = require('../utils/records-decorator');
 
 function ResourcesGetter(model, opts, params) {
   var schema = Interface.Schemas.schemas[utils.getModelName(model)];

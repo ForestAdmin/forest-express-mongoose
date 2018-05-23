@@ -4,7 +4,6 @@ var P = require('bluebird');
 var SearchBuilder = require('./search-builder');
 var Interface = require('forest-express');
 var utils = require('../utils/schema');
-var RecordsDecorator = require('../utils/records-decorator');
 
 function HasManyGetter(model, association, opts, params) {
   var OBJECTID_REGEXP = /^[0-9a-fA-F]{24}$/;
