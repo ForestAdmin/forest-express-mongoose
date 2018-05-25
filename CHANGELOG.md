@@ -4,6 +4,9 @@
 ### Added
 - Search - Add tests for search on selected field.
 
+### Fixed
+- Technical - Use local packages for npm scripts.
+
 ### Changed
 - Technical - Switch the linter to eslint.
 - Technical - Save exact dependencies version.
