@@ -11,10 +11,25 @@
   "homepage": "http://www.forestadmin.com",
   "keywords": [
     "forest",
+    "admininistrator",
     "admin",
     "panel",
+    "panel-admin",
+    "admin-panel",
     "interface",
-    "mongoose"
+    "back",
+    "office",
+    "backoffice",
+    "back-office",
+    "management",
+    "dashboard",
+    "rest",
+    "liana",
+    "express",
+    "mongoose",
+    "mongo",
+    "mongodb",
+    "nosql"
   ],
   "repository": {
     "type": "git",
