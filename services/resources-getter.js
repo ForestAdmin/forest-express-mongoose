@@ -13,6 +13,7 @@ function ResourcesGetter(model, opts, params) {
   var segment;
 
   var searchBuilder = new SearchBuilder(model, opts, params, schema.searchFields);
+  var hasSmartFieldSearch = false;
 
   function hasPagination() {
     return params.page && params.page.number;
@@ -180,12 +181,19 @@ function ResourcesGetter(model, opts, params) {
         if (field.search) {
           try {
             field.search(query, params.search);
+            hasSmartFieldSearch = true;
           } catch(error) {
             Interface.logger.error('Cannot search properly on Smart Field ' +
               field.field, error);
           }
         }
       });
+
+      var fieldsSearched = searchBuilder.getFieldsSearched();
+      if (fieldsSearched.length === 0 && !hasSmartFieldSearch) {
+        // NOTICE: No search condition has been set in the queryis possible on the current model,
+        return [0, []];
+      }
     }
 
     return query;

@@ -2,15 +2,14 @@
 
 var _ = require('lodash');
 
-function decorateForSearch(records, fieldsSearched, searchValue) {
+function decorateForSearch(records, fields, searchValue) {
   var matchFields = {};
   records.forEach(function (record, index) {
     record = record.toObject();
-    fieldsSearched.forEach(function (fieldName) {
+    fields.forEach(function (fieldName) {
       var value = record[fieldName];
       if (value) {
-        value = value.toString();
-        var match = fieldsSearched.includes(fieldName) && value.match(new RegExp(searchValue, 'i'));
+        var match = value.toString().match(new RegExp(searchValue, 'i'));
         if (match) {
           if (!matchFields[index]) {
             matchFields[index] = {
@@ -18,7 +17,7 @@ function decorateForSearch(records, fieldsSearched, searchValue) {
               search: [],
             };
           }
-          matchFields[index]['search'].push(fieldName);
+          matchFields[index].search.push(fieldName);
         }
       }
     });

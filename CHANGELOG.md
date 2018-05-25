@@ -4,6 +4,7 @@
 ### Added
 - Search - Add tests for search on selected field.
 - Search - Display highlighted matches on table view when searching.
+- Search - Return empty result instead of the whole list of records if no field can be searched on the collection.
 
 ### Changed
 - Technical - Switch the linter to eslint.
