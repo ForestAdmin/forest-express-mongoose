@@ -6,6 +6,7 @@
 
 ### Changed
 - Technical - Switch the linter to eslint.
+- Technical - Save exact dependencies version.
 
 ## RELEASE 2.8.4 - 2018-04-30
 ### Fixed

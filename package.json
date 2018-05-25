@@ -38,7 +38,7 @@
     "mongoose-fixture-loader": "1.0.2",
     "nsp": "2.8.1",
     "pre-commit": "1.2.2",
-    "semver": "^5.3.0",
+    "semver": "5.4.1",
     "simple-git": "1.65.0"
   },
   "scripts": {
