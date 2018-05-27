@@ -191,7 +191,7 @@ function ResourcesGetter(model, opts, params) {
 
       var fieldsSearched = searchBuilder.getFieldsSearched();
       if (fieldsSearched.length === 0 && !hasSmartFieldSearch) {
-        // NOTICE: No search condition has been set in the queryis possible on the current model,
+        // NOTICE: No search condition has been set for the current search, no record can be found.
         return [0, []];
       }
     }
