@@ -73,6 +73,8 @@ exports.init = function(opts) {
   exports.PieStatGetter = require('./services/pie-stat-getter');
   exports.LineStatGetter = require('./services/line-stat-getter');
 
+  exports.RecordsDecorator = require('./utils/records-decorator');
+
   exports.Stripe = {
     getCustomer: function (customerModel, customerField, customerId) {
       return new P(function (resolve, reject) {

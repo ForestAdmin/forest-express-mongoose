@@ -8,6 +8,7 @@ var utils = require('../utils/schema');
 function HasManyGetter(model, association, opts, params) {
   var OBJECTID_REGEXP = /^[0-9a-fA-F]{24}$/;
   var schema = Interface.Schemas.schemas[utils.getModelName(association)];
+  var searchBuilder = new SearchBuilder(association, opts, params);
   var count = 0;
 
   function hasPagination() {
@@ -73,8 +74,7 @@ function HasManyGetter(model, association, opts, params) {
         };
 
         if (params.search) {
-          var conditionsSearch = new SearchBuilder(association, opts, params)
-            .getConditions();
+          var conditionsSearch = searchBuilder.getConditions();
           conditions.$and.push(conditionsSearch);
         }
 
@@ -111,7 +111,13 @@ function HasManyGetter(model, association, opts, params) {
   this.perform = function () {
     return getRecords()
       .then(function (records) {
-        return [count, records];
+        var fieldsSearched = null;
+
+        if (params.search) {
+          fieldsSearched = searchBuilder.getFieldsSearched();
+        }
+
+        return [records, count, fieldsSearched];
       });
   };
 }

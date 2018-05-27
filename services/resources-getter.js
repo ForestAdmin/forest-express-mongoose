@@ -12,6 +12,9 @@ function ResourcesGetter(model, opts, params) {
   var schema = Interface.Schemas.schemas[utils.getModelName(model)];
   var segment;
 
+  var searchBuilder = new SearchBuilder(model, opts, params, schema.searchFields);
+  var hasSmartFieldSearch = false;
+
   function hasPagination() {
     return params.page && params.page.number;
   }
@@ -162,8 +165,7 @@ function ResourcesGetter(model, opts, params) {
     handlePopulate(query);
 
     if (params.search) {
-      new SearchBuilder(model, opts, params, schema.searchFields)
-        .getWhere(query);
+      searchBuilder.getWhere(query);
     }
 
     if (params.filter) {
@@ -179,6 +181,7 @@ function ResourcesGetter(model, opts, params) {
         if (field.search) {
           try {
             field.search(query, params.search);
+            hasSmartFieldSearch = true;
           } catch(error) {
             Interface.logger.error('Cannot search properly on Smart Field ' +
               field.field, error);
@@ -203,7 +206,6 @@ function ResourcesGetter(model, opts, params) {
       }
 
       query
-        .lean()
         .exec(function (err, records) {
           if (err) { return reject(err); }
           resolve(records);
@@ -249,11 +251,24 @@ function ResourcesGetter(model, opts, params) {
             .then(function (records) {
               var count = records.length;
               records = records.slice(getSkip(), getSkip() + getLimit());
-              return [count, records];
+              return [records, count];
             });
         } else {
-          return P.all([count(query), exec(getRecords())]);
+          return P.all([exec(getRecords()), count(query)]);
         }
+      })
+      .spread(function (records, count) {
+        var fieldsSearched = null;
+
+        if (params.search) {
+          fieldsSearched = searchBuilder.getFieldsSearched();
+          if (fieldsSearched.length === 0 && !hasSmartFieldSearch) {
+            // NOTICE: No search condition has been set for the current search, no record can be found.
+            return [[], 0];
+          }
+        }
+
+        return [records, count, fieldsSearched];
       });
   };
 }

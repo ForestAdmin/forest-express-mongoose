@@ -76,7 +76,7 @@ describe('Service > ResourcesGetter', function () {
       return new ResourcesGetter(OrderModel, options, params)
         .perform()
         .then(function (result) {
-          expect(result[0]).equal(1);
+          expect(result[1]).equal(1);
           done();
         });
     });
