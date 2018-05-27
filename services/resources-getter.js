@@ -251,33 +251,26 @@ function ResourcesGetter(model, opts, params) {
     return getSegmentCondition()
       .then(function () {
         var query = getRecords();
-        var fieldsSearched = null;
 
         if (hasRelationshipFilter()) {
           return exec(getRecords())
             .then(function (records) {
               var count = records.length;
               records = records.slice(getSkip(), getSkip() + getLimit());
-
-              if (params.search) {
-                fieldsSearched = searchBuilder.getFieldsSearched();
-              }
-
-              return [records, count, fieldsSearched];
+              return [records, count];
             });
         } else {
-          return P.all([exec(getRecords()), count(query)])
-            .then(function (results) {
-              var records = results[0];
-              var count = results[1];
-
-              if (params.search) {
-                fieldsSearched = searchBuilder.getFieldsSearched();
-              }
-
-              return [records, count, fieldsSearched];
-            });
+          return P.all([exec(getRecords()), count(query)]);
         }
+      })
+      .spread(function (records, count) {
+        var fieldsSearched = null;
+
+        if (params.search) {
+          fieldsSearched = searchBuilder.getFieldsSearched();
+        }
+
+        return [records, count, fieldsSearched];
       });
   };
 }
