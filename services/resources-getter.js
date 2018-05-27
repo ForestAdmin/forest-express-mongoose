@@ -188,12 +188,6 @@ function ResourcesGetter(model, opts, params) {
           }
         }
       });
-
-      var fieldsSearched = searchBuilder.getFieldsSearched();
-      if (fieldsSearched.length === 0 && !hasSmartFieldSearch) {
-        // NOTICE: No search condition has been set for the current search, no record can be found.
-        return [0, []];
-      }
     }
 
     return query;
@@ -268,6 +262,10 @@ function ResourcesGetter(model, opts, params) {
 
         if (params.search) {
           fieldsSearched = searchBuilder.getFieldsSearched();
+          if (fieldsSearched.length === 0 && !hasSmartFieldSearch) {
+            // NOTICE: No search condition has been set for the current search, no record can be found.
+            return [[], 0];
+          }
         }
 
         return [records, count, fieldsSearched];

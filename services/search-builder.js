@@ -67,7 +67,7 @@ function SearchBuilder(model, opts, params, searchFields) {
         }
       });
 
-      return orQuery.$or.length ? orQuery : { _id: null };
+      return orQuery.$or.length ? orQuery : {};
     }
   };
 
