@@ -8,6 +8,9 @@
 ### Changed
 - Technical - Switch the linter to eslint.
 
+### Fixed
+- Search - Return empty result instead of the whole list of records if no field can be searched on the collection.
+
 ## RELEASE 2.8.4 - 2018-04-30
 ### Fixed
 - Collections - Allow search fields customization before liana initialization.
