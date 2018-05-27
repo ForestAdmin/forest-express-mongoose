@@ -45,7 +45,7 @@
     "test": "./node_modules/mocha/bin/mocha test/**/* --timeout 15000",
     "test:watch": "./node_modules/mocha/bin/mocha test/**/* adapters/** services/** utils/** --timeout 15000 --watch",
     "lint": "./node_modules/eslint/bin/eslint.js test/**/* adapters/** services/** utils/**",
-    "detect-vulnerabilities": "nsp check --output summary"
+    "detect-vulnerabilities": "./node_modules/nsp/bin/nsp check --output summary"
   },
   "pre-commit": [
     "lint"

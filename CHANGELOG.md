@@ -8,6 +8,9 @@
 - Technical - Switch the linter to eslint.
 - Technical - Save exact dependencies version.
 
+### Fixed
+- Technical - Use local packages for npm scripts.
+
 ## RELEASE 2.8.4 - 2018-04-30
 ### Fixed
 - Collections - Allow search fields customization before liana initialization.
