@@ -2,7 +2,6 @@
 
 ## [Unreleased]
 ### Added
-- Search - Add tests for search on selected field.
 - Search - Display highlighted matches on table view when searching.
 
 ### Changed
@@ -11,9 +10,6 @@
 
 ### Fixed
 - Technical - Use local packages for npm scripts.
-
-### Fixed
-- Search - Return empty result instead of the whole list of records if no field can be searched on the collection.
 
 ## RELEASE 2.8.4 - 2018-04-30
 ### Fixed
