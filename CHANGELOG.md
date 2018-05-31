@@ -1,6 +1,11 @@
 # Change Log
 
 ## [Unreleased]
+### Added
+- Permissions - Add a permission mechanism to protect the data accordingly to the UI configuration.
+
+### Fixed
+- Smart Actions - Fix form values prefill on Smart Actions having a custom endpoint.
 
 ## RELEASE 2.9.0 - 2018-05-27
 ### Added
