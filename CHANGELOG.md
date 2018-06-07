@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## RELEASE 2.10.1 - 2018-06-07
+
 ## RELEASE 2.10.0 - 2018-05-31
 ### Added
 - Permissions - Add a permission mechanism to protect the data accordingly to the UI configuration.
