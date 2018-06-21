@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- Permissions - Fix automated permission for projects having multiple teams.
 
 ## RELEASE 2.10.1 - 2018-06-07
 ### Fixed
