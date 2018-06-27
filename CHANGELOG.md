@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 2.10.3 - 2018-06-27
 ### Changed
 - Intercom Integration - Display the Intercom error in the server logs if the conversations list retrieval fails.
 
