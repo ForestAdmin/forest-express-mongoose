@@ -130,6 +130,20 @@ exports.init = function(opts) {
     }
   };
 
+  exports.Mixpanel = {
+    getUser: function (userModel, userId) {
+      if (userId) {
+        return userModel
+          .findById(userId)
+          .then(function (user) {
+            return user.toJSON();
+          });
+      }
+
+      return P.resolve();
+    },
+  };
+
   exports.Layer = {
     getUser: function (customerModel, customerField, customerId) {
       return new P(function (resolve, reject) {
