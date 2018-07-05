@@ -101,10 +101,6 @@ function HasManyGetter(model, association, opts, params) {
         }
 
         return records;
-      })
-      .then(function (records) {
-        count = records.length;
-        return _.slice(records, getSkip(), getSkip() + getLimit());
       });
   }
 
@@ -117,7 +113,17 @@ function HasManyGetter(model, association, opts, params) {
           fieldsSearched = searchBuilder.getFieldsSearched();
         }
 
-        return [records, count, fieldsSearched];
+        records = _.slice(records, getSkip(), getSkip() + getLimit());
+
+        return [records, fieldsSearched];
+      });
+  };
+
+  this.count = function () {
+    return getRecords()
+      .then(function (records) {
+        count = records.length;
+        return count;
       });
   };
 }
