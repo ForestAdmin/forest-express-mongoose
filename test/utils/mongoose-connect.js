@@ -12,7 +12,7 @@ function mongooseConnect() {
       reject(error);
     });
     db.once('open', function () {
-      resolve();
+      resolve(db);
     });
   });
 }

@@ -6,6 +6,7 @@ var Interface = require('forest-express');
 var mongooseConnect = require('../../utils/mongoose-connect');
 
 describe('Service > ResourcesGetter', function () {
+  var mongooseConnection;
   var OrderModel;
 
   var options = {
@@ -33,7 +34,8 @@ describe('Service > ResourcesGetter', function () {
     };
 
     return mongooseConnect()
-      .then(function () {
+      .then(function (db) {
+        mongooseConnection = db;
         var OrderSchema = mongoose.Schema({
           amount: { type: Number },
           comment: { type: String },
@@ -81,8 +83,27 @@ describe('Service > ResourcesGetter', function () {
       new ResourcesGetter(OrderModel, options, parameters)
         .perform()
         .then(function (result) {
-          expect(result[1]).equal(1);
+          expect(result[0].length).equal(1);
           expect(result[0][0].comment).to.match(/gift/);
+          done();
+        })
+        .catch(done);
+    });
+
+    it('should retrieve the count of the records', function (done) {
+      var params = {
+        fields: {
+          order: 'id,amount,description,giftComment'
+        },
+        page: { number: '1', size: '30' },
+        search: 'gift',
+        timezone: '+02:00'
+      };
+
+      new ResourcesGetter(OrderModel, options, params)
+        .count()
+        .then(function (count) {
+          expect(count).equal(1);
           done();
         })
         .catch(done);
