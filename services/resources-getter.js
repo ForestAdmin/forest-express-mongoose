@@ -278,8 +278,7 @@ function ResourcesGetter(model, opts, params) {
         if (hasRelationshipFilter()) {
           return exec(query)
             .then(function (records) {
-              var count = records.length;
-              return count;
+              return records.length;
             });
         }
 

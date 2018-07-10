@@ -9,7 +9,6 @@ function HasManyGetter(model, association, opts, params) {
   var OBJECTID_REGEXP = /^[0-9a-fA-F]{24}$/;
   var schema = Interface.Schemas.schemas[utils.getModelName(association)];
   var searchBuilder = new SearchBuilder(association, opts, params);
-  var count = 0;
 
   function hasPagination() {
     return params.page && params.page.number;
@@ -122,8 +121,7 @@ function HasManyGetter(model, association, opts, params) {
   this.count = function () {
     return getRecords()
       .then(function (records) {
-        count = records.length;
-        return count;
+        return records.length;
       });
   };
 }
