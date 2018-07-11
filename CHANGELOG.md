@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- Mixpanel Integration - Only retrieve events that are less than 60 days old to be compliant with the Mixpanel's API.
 
 ## RELEASE 2.11.0 - 2018-07-10
 ### Added
