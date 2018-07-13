@@ -98,9 +98,9 @@ function HasManyGetter(model, association, opts, params) {
           });
 
           return descending ? recordsSorted.reverse() : recordsSorted;
-        } else {
-          return records;
         }
+
+        return records;
       })
       .then(function (records) {
         count = records.length;
