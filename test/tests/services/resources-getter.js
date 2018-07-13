@@ -69,7 +69,7 @@ describe('Service > ResourcesGetter', function () {
 
   describe('Request on the resources getter with a search on a collection with searchFields', function () {
     it('should retrieve the record with `gift` value in `comment` field', function (done) {
-      var params = {
+      var parameters = {
         fields: {
           order: 'id,amount,description,giftComment'
         },
@@ -78,10 +78,11 @@ describe('Service > ResourcesGetter', function () {
         timezone: '+02:00'
       };
 
-      new ResourcesGetter(OrderModel, options, params)
+      new ResourcesGetter(OrderModel, options, parameters)
         .perform()
         .then(function (result) {
           expect(result[1]).equal(1);
+          expect(result[0][0].comment).to.match(/gift/);
           done();
         })
         .catch(done);
