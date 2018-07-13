@@ -89,16 +89,12 @@ describe('Service > ResourcesGetter', function () {
     });
 
     it('should retrieve the count of the records', function (done) {
-      var params = {
-        fields: {
-          order: 'id,amount,description,giftComment'
-        },
-        page: { number: '1', size: '30' },
+      var parameters = {
         search: 'gift',
         timezone: '+02:00'
       };
 
-      new ResourcesGetter(OrderModel, options, params)
+      new ResourcesGetter(OrderModel, options, parameters)
         .count()
         .then(function (count) {
           expect(count).equal(1);
