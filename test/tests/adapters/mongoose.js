@@ -21,17 +21,18 @@ describe('Adapters > SchemaAdapter', function () {
       var schema = mongoose.Schema({ foo: Date });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model, {
+      new SchemaAdapter(model, {
         mongoose: mongoose,
         connections: [mongoose]
       })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
-          expect(schema).to.have.deep.property('fields[0].field', 'foo');
-          expect(schema).to.have.deep.property('fields[0].type', 'Date');
+          expect(schema).to.have.nested.property('fields[0].field', 'foo');
+          expect(schema).to.have.nested.property('fields[0].type', 'Date');
 
-          done(null);
-        });
+          done();
+        })
+        .catch(done);
     });
   });
 
@@ -40,17 +41,18 @@ describe('Adapters > SchemaAdapter', function () {
       var schema = mongoose.Schema({ foo: String });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model, {
+      new SchemaAdapter(model, {
         mongoose: mongoose,
         connections: [mongoose]
       })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
-          expect(schema).to.have.deep.property('fields[0].field', 'foo');
-          expect(schema).to.have.deep.property('fields[0].type', 'String');
+          expect(schema).to.have.nested.property('fields[0].field', 'foo');
+          expect(schema).to.have.nested.property('fields[0].type', 'String');
 
-          done(null);
-        });
+          done();
+        })
+        .catch(done);
     });
   });
 
@@ -59,17 +61,18 @@ describe('Adapters > SchemaAdapter', function () {
       var schema = mongoose.Schema({ foo: Boolean });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model, {
+      new SchemaAdapter(model, {
         mongoose: mongoose,
         connections: [mongoose]
       })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
-          expect(schema).to.have.deep.property('fields[0].field', 'foo');
-          expect(schema).to.have.deep.property('fields[0].type', 'Boolean');
+          expect(schema).to.have.nested.property('fields[0].field', 'foo');
+          expect(schema).to.have.nested.property('fields[0].type', 'Boolean');
 
-          done(null);
-        });
+          done();
+        })
+        .catch(done);
     });
   });
 
@@ -78,17 +81,18 @@ describe('Adapters > SchemaAdapter', function () {
       var schema = mongoose.Schema({ foo: Number });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model, {
+      new SchemaAdapter(model, {
         mongoose: mongoose,
         connections: [mongoose]
       })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
-          expect(schema).to.have.deep.property('fields[0].field', 'foo');
-          expect(schema).to.have.deep.property('fields[0].type', 'Number');
+          expect(schema).to.have.nested.property('fields[0].field', 'foo');
+          expect(schema).to.have.nested.property('fields[0].type', 'Number');
 
-          done(null);
-        });
+          done();
+        })
+        .catch(done);
     });
   });
 
@@ -102,7 +106,7 @@ describe('Adapters > SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model, {
+      new SchemaAdapter(model, {
         mongoose: mongoose,
         connections: [mongoose]
       })
@@ -112,7 +116,7 @@ describe('Adapters > SchemaAdapter', function () {
             .instanceof(Object);
           expect(schema.fields[0].type).to.have.property('fields').and.to.be
             .instanceof(Object);
-          expect(schema.fields[0].type.fields).to.have.length.of(2);
+          expect(schema.fields[0].type.fields).to.have.lengthOf(2);
           expect(schema.fields[0].type.fields[0]).to.have
             .property('field', 'field1');
           expect(schema.fields[0].type.fields[0]).to.have
@@ -122,8 +126,9 @@ describe('Adapters > SchemaAdapter', function () {
           expect(schema.fields[0].type.fields[1]).to.have
             .property('type', 'Boolean');
 
-          done(null);
-        });
+          done();
+        })
+        .catch(done);
     });
   });
 
@@ -135,17 +140,18 @@ describe('Adapters > SchemaAdapter', function () {
 
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model, {
+      new SchemaAdapter(model, {
         mongoose: mongoose,
         connections: [mongoose]
       })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
-          expect(schema).to.have.deep.property('fields[0].field', 'foo');
-          expect(schema).to.have.deep.property('fields[0].type', 'String');
+          expect(schema).to.have.nested.property('fields[0].field', 'foo');
+          expect(schema).to.have.nested.property('fields[0].type', 'String');
 
-          done(null);
-        });
+          done();
+        })
+        .catch(done);
     });
   });
 
@@ -156,7 +162,7 @@ describe('Adapters > SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model, {
+      new SchemaAdapter(model, {
         mongoose: mongoose,
         connections: [mongoose]
       })
@@ -164,8 +170,9 @@ describe('Adapters > SchemaAdapter', function () {
           expect(schema).to.have.property('fields');
           expect(schema.fields[0].type).eql(null);
 
-          done(null);
-        });
+          done();
+        })
+        .catch(done);
     });
   });
 
@@ -176,7 +183,7 @@ describe('Adapters > SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model, {
+      new SchemaAdapter(model, {
         mongoose: mongoose,
         connections: [mongoose]
       })
@@ -184,8 +191,9 @@ describe('Adapters > SchemaAdapter', function () {
           expect(schema).to.have.property('fields');
           expect(schema.fields[0].type).eql([null]);
 
-          done(null);
-        });
+          done();
+        })
+        .catch(done);
     });
   });
 
@@ -196,7 +204,7 @@ describe('Adapters > SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model, {
+      new SchemaAdapter(model, {
         mongoose: mongoose,
         connections: [mongoose]
       })
@@ -205,8 +213,9 @@ describe('Adapters > SchemaAdapter', function () {
           expect(schema.fields[0].field).eql('foo');
           expect(schema.fields[0].type).eql(['Date']);
 
-          done(null);
-        });
+          done();
+        })
+        .catch(done);
     });
   });
 
@@ -217,7 +226,7 @@ describe('Adapters > SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model, {
+      new SchemaAdapter(model, {
         mongoose: mongoose,
         connections: [mongoose]
       })
@@ -226,19 +235,20 @@ describe('Adapters > SchemaAdapter', function () {
           expect(schema.fields[0].field).eql('foo');
           expect(schema.fields[0].type).eql(['String']);
 
-          done(null);
-        });
+          done();
+        })
+        .catch(done);
     });
   });
 
-  describe('Array of bools', function () {
+  describe('Array of booleans', function () {
     it('should have the type `[\'Boolean\']`', function (done) {
       var schema = mongoose.Schema({
         foo: [Boolean]
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model, {
+      new SchemaAdapter(model, {
         mongoose: mongoose,
         connections: [mongoose]
       })
@@ -247,8 +257,9 @@ describe('Adapters > SchemaAdapter', function () {
           expect(schema.fields[0].field).eql('foo');
           expect(schema.fields[0].type).eql(['Boolean']);
 
-          done(null);
-        });
+          done();
+        })
+        .catch(done);
     });
   });
 
@@ -259,7 +270,7 @@ describe('Adapters > SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model, {
+      new SchemaAdapter(model, {
         mongoose: mongoose,
         connections: [mongoose]
       })
@@ -268,8 +279,9 @@ describe('Adapters > SchemaAdapter', function () {
           expect(schema.fields[0].field).eql('foo');
           expect(schema.fields[0].type).eql(['Number']);
 
-          done(null);
-        });
+          done();
+        })
+        .catch(done);
     });
   });
 
@@ -278,18 +290,19 @@ describe('Adapters > SchemaAdapter', function () {
       var schema = mongoose.Schema({ foo: [mongoose.Schema.Types.ObjectId] });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model, {
+      new SchemaAdapter(model, {
         mongoose: mongoose,
         connections: [mongoose]
       })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
-          expect(schema).to.have.deep.property('fields[0].field', 'foo');
-          expect(schema).to.have.deep.property('fields[0].type')
+          expect(schema).to.have.nested.property('fields[0].field', 'foo');
+          expect(schema).to.have.nested.property('fields[0].type')
             .eql(['String']);
 
-          done(null);
-        });
+          done();
+        })
+        .catch(done);
     });
   });
 
@@ -301,20 +314,21 @@ describe('Adapters > SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model, {
+      new SchemaAdapter(model, {
         mongoose: mongoose,
         connections: [mongoose]
       })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
-          expect(schema).to.have.deep.property('fields[0].field', 'foo');
-          expect(schema).to.have.deep.property('fields[0].type')
+          expect(schema).to.have.nested.property('fields[0].field', 'foo');
+          expect(schema).to.have.nested.property('fields[0].type')
             .eql(['String']);
-          expect(schema).to.have.deep.property('fields[0].reference')
+          expect(schema).to.have.nested.property('fields[0].reference')
             .eql('User._id');
 
-          done(null);
-        });
+          done();
+        })
+        .catch(done);
     });
   });
 
@@ -325,7 +339,7 @@ describe('Adapters > SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model, {
+      new SchemaAdapter(model, {
         mongoose: mongoose,
         connections: [mongoose]
       })
@@ -333,8 +347,9 @@ describe('Adapters > SchemaAdapter', function () {
           expect(schema).to.have.property('fields');
           expect(schema.fields[0].type).eql([null]);
 
-          done(null);
-        });
+          done();
+        })
+        .catch(done);
     });
   });
 
@@ -348,7 +363,7 @@ describe('Adapters > SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model, {
+      new SchemaAdapter(model, {
         mongoose: mongoose,
         connections: [mongoose]
       })
@@ -356,11 +371,11 @@ describe('Adapters > SchemaAdapter', function () {
           expect(schema).to.have.property('fields');
           expect(schema.fields[0].field).eql('foo');
           expect(schema.fields[0]).to.have.property('type').and.to.be
-            .instanceof(Array).and.have.length.of(1);
+            .instanceof(Array).and.have.lengthOf(1);
           expect(schema.fields[0].type[0]).to.be.instanceof(Object).and.to
             .have.property('fields');
           expect(schema.fields[0].type[0].fields).to.be.instanceof(Array).and
-            .have.length.of(2);
+            .have.lengthOf(2);
           expect(schema.fields[0].type[0].fields[0]).to.have.property('field')
             .eql('field1');
           expect(schema.fields[0].type[0].fields[0]).to.have.property('type')
@@ -370,8 +385,9 @@ describe('Adapters > SchemaAdapter', function () {
           expect(schema.fields[0].type[0].fields[1]).to.have.property('type')
             .eql('Date');
 
-          done(null);
-        });
+          done();
+        })
+        .catch(done);
     });
 
     it('should support array of objects with syntax { type: String }', function (done) {
@@ -382,15 +398,16 @@ describe('Adapters > SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model, {
+      new SchemaAdapter(model, {
         mongoose: mongoose,
         connections: [mongoose]
       })
         .then(function (schema) {
           expect(schema.fields[0].type[0].fields[0]).to.have.property('type')
             .eql('String');
-          done(null);
-        });
+          done();
+        })
+        .catch(done);
     });
 
     it('should support array of object with sub schema', function (done) {
@@ -404,7 +421,7 @@ describe('Adapters > SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model, {
+      new SchemaAdapter(model, {
         mongoose: mongoose,
         connections: [mongoose]
       })
@@ -412,11 +429,11 @@ describe('Adapters > SchemaAdapter', function () {
           expect(schema).to.have.property('fields');
           expect(schema.fields[0].field).eql('foo');
           expect(schema.fields[0]).to.have.property('type').and.to.be
-            .instanceof(Array).and.have.length.of(1);
+            .instanceof(Array).and.have.lengthOf(1);
           expect(schema.fields[0].type[0]).to.be.instanceof(Object).and.to
             .have.property('fields');
           expect(schema.fields[0].type[0].fields).to.be.instanceof(Array).and
-            .have.length.of(3);
+            .have.lengthOf(3);
           expect(schema.fields[0].type[0].fields[0]).to.have.property('field')
             .eql('field1');
           expect(schema.fields[0].type[0].fields[0]).to.have.property('type')
@@ -426,8 +443,9 @@ describe('Adapters > SchemaAdapter', function () {
           expect(schema.fields[0].type[0].fields[1]).to.have.property('type')
             .eql('Date');
 
-          done(null);
-        });
+          done();
+        })
+        .catch(done);
     });
   });
 
@@ -445,7 +463,7 @@ describe('Adapters > SchemaAdapter', function () {
 
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model, {
+      new SchemaAdapter(model, {
         mongoose: mongoose,
         connections: [mongoose]
       })
@@ -453,7 +471,7 @@ describe('Adapters > SchemaAdapter', function () {
           expect(schema).to.have.property('fields');
           expect(schema.fields[0].field).eql('users');
           expect(schema.fields[0]).to.have.property('type').and.to.be
-            .instanceof(Array).and.have.length.of(1);
+            .instanceof(Array).and.have.lengthOf(1);
           expect(schema.fields[0].type[0]).to.be.instanceof(Object).and.to
             .have.property('fields');
 
@@ -464,8 +482,9 @@ describe('Adapters > SchemaAdapter', function () {
             { field: '_id', type: 'String' }
           ]);
 
-          done(null);
-        });
+          done();
+        })
+        .catch(done);
     });
   });
 
@@ -479,7 +498,7 @@ describe('Adapters > SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model, {
+      new SchemaAdapter(model, {
         mongoose: mongoose,
         connections: [mongoose]
       })
@@ -489,8 +508,9 @@ describe('Adapters > SchemaAdapter', function () {
             { field: 'value', type: 'String' },
           ]);
 
-          done(null);
-        });
+          done();
+        })
+        .catch(done);
     });
   });
 
@@ -506,7 +526,7 @@ describe('Adapters > SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model, {
+      new SchemaAdapter(model, {
         mongoose: mongoose,
         connections: [mongoose]
       })
@@ -514,15 +534,15 @@ describe('Adapters > SchemaAdapter', function () {
           expect(schema).to.have.property('fields');
           expect(schema.fields[0].field).eql('foo');
           expect(schema.fields[0]).to.have.property('type').and.to.be
-            .instanceof(Array).and.have.length.of(1);
+            .instanceof(Array).and.have.lengthOf(1);
           expect(schema.fields[0].type[0]).to.have.property('fields').with
-            .length.of(1);
+            .lengthOf(1);
           expect(schema.fields[0].type[0].fields[0]).to.be.instanceof(Object)
             .and.to.have.property('field').eql('field1');
           expect(schema.fields[0].type[0].fields[0]).to.be.instanceof(Object)
             .and.to.have.property('type');
           expect(schema.fields[0].type[0].fields[0].type).to.be
-            .instanceof(Array).with.length.of(1);
+            .instanceof(Array).with.lengthOf(1);
           expect(schema.fields[0].type[0].fields[0].type[0]).to.be
             .instanceof(Object).with.property('fields');
           expect(schema.fields[0].type[0].fields[0].type[0].fields).to.be
@@ -537,15 +557,16 @@ describe('Adapters > SchemaAdapter', function () {
             .instanceof(Object).with.property('type').which.is
             .instanceof(Object).with.property('fields');
           expect(schema.fields[0].type[0].fields[0].type[0].fields[1].type
-            .fields).to.be.instanceof(Array).with.length.of(1);
+            .fields).to.be.instanceof(Array).with.lengthOf(1);
           expect(schema.fields[0].type[0].fields[0].type[0].fields[1].type
             .fields[0]).to.be.instanceof(Object).with.property('field')
             .eql('field2Field1');
           expect(schema.fields[0].type[0].fields[0].type[0].fields[1].type
             .fields[0]).to.have.property('type').eql('Boolean');
 
-          done(null);
-        });
+          done();
+        })
+        .catch(done);
     });
   });
 
@@ -559,7 +580,7 @@ describe('Adapters > SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model, {
+      new SchemaAdapter(model, {
         mongoose: mongoose,
         connections: [mongoose]
       })
@@ -570,8 +591,9 @@ describe('Adapters > SchemaAdapter', function () {
             reference: 'User._id'
           });
 
-          done(null);
-        });
+          done();
+        })
+        .catch(done);
     });
   });
 
@@ -583,16 +605,17 @@ describe('Adapters > SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model, {
+      new SchemaAdapter(model, {
         mongoose: mongoose,
         connections: [mongoose]
       })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
-          expect(schema).to.have.deep.property('fields[0].reference', 'Bar._id');
+          expect(schema).to.have.nested.property('fields[0].reference', 'Bar._id');
 
-          done(null);
-        });
+          done();
+        })
+        .catch(done);
     });
   });
 
@@ -604,7 +627,7 @@ describe('Adapters > SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model, {
+      new SchemaAdapter(model, {
         mongoose: mongoose,
         connections: [mongoose]
       })
@@ -612,8 +635,9 @@ describe('Adapters > SchemaAdapter', function () {
           expect(schema).to.have.property('fields');
           expect(schema.fields[0].reference).eql('Bar._id');
 
-          done(null);
-        });
+          done();
+        })
+        .catch(done);
     });
   });
 
@@ -625,7 +649,7 @@ describe('Adapters > SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model, {
+      new SchemaAdapter(model, {
         mongoose: mongoose,
         connections: [mongoose]
       })
@@ -633,8 +657,9 @@ describe('Adapters > SchemaAdapter', function () {
           expect(schema).to.have.property('fields');
           expect(schema.fields[0].isRequired).eql(true);
 
-          done(null);
-        });
+          done();
+        })
+        .catch(done);
     });
   });
 
@@ -645,7 +670,7 @@ describe('Adapters > SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model, {
+      new SchemaAdapter(model, {
         mongoose: mongoose,
         connections: [mongoose]
       })
@@ -653,8 +678,9 @@ describe('Adapters > SchemaAdapter', function () {
           expect(schema).to.have.property('fields');
           expect(schema.fields[0].isRequired).eql(undefined);
 
-          done(null);
-        });
+          done();
+        })
+        .catch(done);
     });
   });
 
@@ -665,14 +691,15 @@ describe('Adapters > SchemaAdapter', function () {
       });
       var model = mongoose.model('Foo', schema);
 
-      return new SchemaAdapter(model, {
+      new SchemaAdapter(model, {
         mongoose: mongoose,
         connections: [mongoose]
       })
         .then(function (schema) {
           expect(schema.fields.length).equal(2);
-          done(null);
-        });
+          done();
+        })
+        .catch(done);
     });
   });
 });

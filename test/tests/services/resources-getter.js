@@ -62,6 +62,11 @@ describe('Service > ResourcesGetter', function () {
       });
   });
 
+  after(function (done) {
+    mongoose.connection.close();
+    done();
+  });
+
   describe('Request on the resources getter with a search on a collection with searchFields', function () {
     it('should retrieve the record with `gift` value in `comment` field', function (done) {
       var params = {
@@ -73,12 +78,13 @@ describe('Service > ResourcesGetter', function () {
         timezone: '+02:00'
       };
 
-      return new ResourcesGetter(OrderModel, options, params)
+      new ResourcesGetter(OrderModel, options, params)
         .perform()
         .then(function (result) {
           expect(result[1]).equal(1);
           done();
-        });
+        })
+        .catch(done);
     });
   });
 });

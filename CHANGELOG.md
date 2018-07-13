@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Changed
+- Technical - Upgrade some test dependencies to their latest version (Mocha & Chai).
 
 ## RELEASE 2.11.1 - 2018-07-11
 ### Fixed
