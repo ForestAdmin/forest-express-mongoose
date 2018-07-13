@@ -6,7 +6,6 @@ var Interface = require('forest-express');
 var mongooseConnect = require('../../utils/mongoose-connect');
 
 describe('Service > ResourcesGetter', function () {
-  var mongooseConnection;
   var OrderModel;
 
   var options = {
@@ -34,8 +33,7 @@ describe('Service > ResourcesGetter', function () {
     };
 
     return mongooseConnect()
-      .then(function (db) {
-        mongooseConnection = db;
+      .then(function () {
         var OrderSchema = mongoose.Schema({
           amount: { type: Number },
           comment: { type: String },
