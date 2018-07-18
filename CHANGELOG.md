@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 2.12.0 - 2018-07-18
 ### Changed
 - Technical - Upgrade some test dependencies to their latest version (Mocha & Chai).
 - Performance - Improve the speed of listing the records by executing their count into another request.
