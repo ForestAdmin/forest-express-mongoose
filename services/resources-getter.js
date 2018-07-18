@@ -159,7 +159,7 @@ function ResourcesGetter(model, opts, params) {
     }
   }
 
-  function getRecords() {
+  function getRecordsQuery() {
     var query = model.find();
 
     handlePopulate(query);
@@ -228,6 +228,7 @@ function ResourcesGetter(model, opts, params) {
   }
 
   function getSegmentCondition() {
+    getSegment();
     if (segment && segment.where && typeof segment.where === 'function') {
       return segment.where()
         .then(function (where) {
@@ -240,24 +241,21 @@ function ResourcesGetter(model, opts, params) {
   }
 
   this.perform = function () {
-    getSegment();
-
     return getSegmentCondition()
       .then(function () {
-        var query = getRecords();
+        var query = getRecordsQuery();
 
         if (hasRelationshipFilter()) {
-          return exec(getRecords())
+          return exec(query)
             .then(function (records) {
-              var count = records.length;
               records = records.slice(getSkip(), getSkip() + getLimit());
-              return [records, count];
+              return records;
             });
-        } else {
-          return P.all([exec(getRecords()), count(query)]);
         }
+
+        return exec(query);
       })
-      .spread(function (records, count) {
+      .then(function (records) {
         var fieldsSearched = null;
 
         if (params.search) {
@@ -268,7 +266,23 @@ function ResourcesGetter(model, opts, params) {
           }
         }
 
-        return [records, count, fieldsSearched];
+        return [records, fieldsSearched];
+      });
+  };
+
+  this.count = function () {
+    return getSegmentCondition()
+      .then(function () {
+        var query = getRecordsQuery();
+
+        if (hasRelationshipFilter()) {
+          return exec(query)
+            .then(function (records) {
+              return records.length;
+            });
+        }
+
+        return count(query);
       });
   };
 }

@@ -81,8 +81,23 @@ describe('Service > ResourcesGetter', function () {
       new ResourcesGetter(OrderModel, options, parameters)
         .perform()
         .then(function (result) {
-          expect(result[1]).equal(1);
+          expect(result[0].length).equal(1);
           expect(result[0][0].comment).to.match(/gift/);
+          done();
+        })
+        .catch(done);
+    });
+
+    it('should retrieve the count of the records', function (done) {
+      var parameters = {
+        search: 'gift',
+        timezone: '+02:00'
+      };
+
+      new ResourcesGetter(OrderModel, options, parameters)
+        .count()
+        .then(function (count) {
+          expect(count).equal(1);
           done();
         })
         .catch(done);
