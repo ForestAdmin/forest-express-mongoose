@@ -165,6 +165,10 @@ balanced-match@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
 
+base32-encode@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/base32-encode/-/base32-encode-1.1.0.tgz#e9ec64a135628d071c3c960f9a95d1aaf0ad81e9"
+
 base64url@2.0.0, base64url@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/base64url/-/base64url-2.0.0.tgz#eac16e03ea1438eff9423d69baa36262ed1f70bb"
@@ -176,6 +180,10 @@ bcryptjs@2.4.3:
 beeper@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/beeper/-/beeper-1.1.1.tgz#e6d5ea8c5dad001304a70b22638447f69cb2f809"
+
+bitwise-xor@0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/bitwise-xor/-/bitwise-xor-0.0.0.tgz#040a8172b5bb8cc562b0b7119f230b2a1a780e3d"
 
 bluebird@2.9.25:
   version "2.9.25"
@@ -869,11 +877,13 @@ for-own@^1.0.0:
   dependencies:
     for-in "^1.0.1"
 
-forest-express@2.13.1:
-  version "2.13.1"
-  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-2.13.1.tgz#ebb87887a3c3636a296c6456bb85e4606d7caf2a"
+forest-express@2.14.0:
+  version "2.14.0"
+  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-2.14.0.tgz#70e62aaa8ba7256be2bc39da459c2ad3aebbda45"
   dependencies:
+    base32-encode "1.1.0"
     bcryptjs "2.4.3"
+    bitwise-xor "0.0.0"
     bluebird "3.3.4"
     body-parser "1.18.2"
     compose-middleware "4.0.0"
@@ -887,6 +897,7 @@ forest-express@2.13.1:
     jsonwebtoken "8.1.1"
     lodash "4.10.0"
     moment "2.19.4"
+    otplib "10.0.0"
     superagent "3.7.0"
     useragent "2.1.13"
     uuid "3.0.1"
@@ -2013,6 +2024,12 @@ os-tmpdir@~1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/os-tmpdir/-/os-tmpdir-1.0.2.tgz#bbe67406c79aa85c5cfec766fe5734555dfa1274"
 
+otplib@10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/otplib/-/otplib-10.0.0.tgz#bf7f85a7552fa0440ada189f6d85f32850260120"
+  dependencies:
+    thirty-two "1.0.2"
+
 parse-filepath@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/parse-filepath/-/parse-filepath-1.0.1.tgz#159d6155d43904d16c10ef698911da1e91969b73"
@@ -2543,6 +2560,10 @@ table@4.0.2:
 text-table@~0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
+
+thirty-two@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/thirty-two/-/thirty-two-1.0.2.tgz#4ca2fffc02a51290d2744b9e3f557693ca6b627a"
 
 through2@^0.6.1:
   version "0.6.5"
