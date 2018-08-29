@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## RELEASE 2.13.1 - 2018-08-29
+
 ## RELEASE 2.13.0 - 2018-08-28
 ### Added
 - Authentication - Add two factor authentication using time-based one-time password.
