@@ -3,6 +3,8 @@
 ## [Unreleased]
 
 ## RELEASE 2.13.1 - 2018-08-29
+### Fixed
+- Technical - Add the missing babel-runtime dependency.
 
 ## RELEASE 2.13.0 - 2018-08-28
 ### Added
