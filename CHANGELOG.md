@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 2.13.2 - 2018-09-04
 ### Fixed
 - Search - Fix searches that start with the "+" character.
 
