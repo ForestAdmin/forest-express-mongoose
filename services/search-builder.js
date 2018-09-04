@@ -30,19 +30,22 @@ function SearchBuilder(model, opts, params, searchFields) {
         }
         var condition = {};
 
+        var searchValue = params.search.replace('+', '\\+');
+        var searchRegexp = new RegExp('.*' + searchValue + '.*', 'i');
+
         if (value.instance === 'ObjectID') {
           try {
             condition[key] = opts.mongoose.Types.ObjectId(params.search);
             pushCondition(condition, key);
           } catch(error) { return null; }
         } else if (value.instance === 'String') {
-          condition[key] = new RegExp('.*' + params.search + '.*', 'i');
+          condition[key] = searchRegexp;
           pushCondition(condition, key);
         } else if (value.instance === 'Array') {
           var field = _.findWhere(schema.fields, { field: key });
           if (field && _.isArray(field.type) && field.type[0] === 'String' &&
             !field.reference) {
-            condition[key] = new RegExp('.*' + params.search + '.*', 'i');
+            condition[key] = searchRegexp;
             pushCondition(condition, key);
           } else if (field && _.isArray(field.type) &&
             !field.reference && parseInt(params.searchExtended)) {
@@ -52,8 +55,7 @@ function SearchBuilder(model, opts, params, searchFields) {
               var query = {};
               if (subField.type === 'String' &&
                 !value.schema.obj[subField.field].ref) {
-                query[subField.field] = new RegExp('.*' + params.search + '.*',
-                  'i');
+                query[subField.field] = searchRegexp;
                 elemMatch.$elemMatch.$or.push(query);
               } else if (subField.type === 'Number' &&
                 parseInt(params.search)) {

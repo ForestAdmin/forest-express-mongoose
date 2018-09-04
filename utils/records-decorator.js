@@ -9,7 +9,8 @@ function decorateForSearch(records, fields, searchValue) {
     fields.forEach(function (fieldName) {
       var value = record[fieldName];
       if (value) {
-        var match = value.toString().match(new RegExp(searchValue, 'i'));
+        var searchHighlight = new RegExp(searchValue.replace('+', '\\+'), 'i');
+        var match = value.toString().match(searchHighlight);
         if (match) {
           if (!matchFields[index]) {
             matchFields[index] = {
