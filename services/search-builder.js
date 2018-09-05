@@ -30,7 +30,7 @@ function SearchBuilder(model, opts, params, searchFields) {
         }
         var condition = {};
 
-        var searchValue = params.search.replace('+', '\\+');
+        var searchValue = params.search.replace(/[-[\]{}()*+!<=:?./\\^$|#\s,]/g, '\\$&');
         var searchRegexp = new RegExp('.*' + searchValue + '.*', 'i');
 
         if (value.instance === 'ObjectID') {
