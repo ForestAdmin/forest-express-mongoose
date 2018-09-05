@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 2.13.3 - 2018-09-05
 ### Fixed
 - Search - Fix searches that contains special characters.
 
