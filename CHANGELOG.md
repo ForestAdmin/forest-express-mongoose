@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 2.14.0 - 2018-09-08
 ### Added
 - Integrations - Developers can add Smart Actions to Integration Collections.
 
