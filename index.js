@@ -116,13 +116,13 @@ exports.init = function(opts) {
       return new P(function (resolve, reject) {
         if (customerId) {
           return userModel
-          .findById(customerId)
-          .lean()
-          .exec(function (err, customer) {
-            if (err) { return reject(err); }
-            if (!customer) { return reject(); }
-            resolve(customer);
-          });
+            .findById(customerId)
+            .lean()
+            .exec(function (err, customer) {
+              if (err) { return reject(err); }
+              if (!customer) { return reject(); }
+              resolve(customer);
+            });
         } else {
           resolve();
         }
