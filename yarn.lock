@@ -888,9 +888,9 @@ for-own@^1.0.0:
   dependencies:
     for-in "^1.0.1"
 
-forest-express@2.15.0:
-  version "2.15.0"
-  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-2.15.0.tgz#3f70f52b43ca627b7467f0149cae5c2b7b0e872f"
+forest-express@2.15.1:
+  version "2.15.1"
+  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-2.15.1.tgz#5dae10db96d03641c7163efa133f0b717f9228dc"
   dependencies:
     babel-runtime "6.26.0"
     base32-encode "1.1.0"

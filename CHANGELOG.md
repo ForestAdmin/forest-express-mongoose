@@ -1,6 +1,11 @@
 # Change Log
 
 ## [Unreleased]
+### Changed
+- Authentication - Improve the log message when 2FA secret key is not set.
+
+### Fixed
+- Authentication - Fix an empty user id attribute in the JWT tokens.
 
 ## RELEASE 2.14.0 - 2018-09-08
 ### Added
