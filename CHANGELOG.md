@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- Mongoose - Handle last versions of mongoose by fixing the RangeOverflow error.
 
 ## RELEASE 2.14.1 - 2018-09-24
 ### Changed
