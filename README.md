@@ -25,6 +25,9 @@ You will then follow a 4-step process:
     mongoose: require('mongoose') // The mongoose database connection.
   }));
   ```
+
+  Note: The `modelsDir` parameter can be skipped if you initialize the liana once mongoose has already been loaded with the models you want.
+  
   ```bash
   # Setup Forest environment variables and do not version them
   FOREST_ENV_SECRET=FOREST-ENV-SECRET # This secret is provided by Forest during the project creation
