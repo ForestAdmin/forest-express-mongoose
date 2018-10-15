@@ -3,7 +3,8 @@
 ## [Unreleased]
 
 ## RELEASE 2.14.3 - 2018-10-12
-- Smart Actions - Fix a possible crash with Stripe integration.
+### Fixed
+- Server start - Fix a crash if developers add a Smart Action to a generated integration collection that does not have existing one by default.
 
 ## RELEASE 2.14.2 - 2018-10-02
 ### Fixed
