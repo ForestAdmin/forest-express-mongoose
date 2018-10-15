@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 ## RELEASE 2.14.3 - 2018-10-12
+- Smart Actions - Fix a possible crash with Stripe integration.
 
 ## RELEASE 2.14.2 - 2018-10-02
 ### Fixed
