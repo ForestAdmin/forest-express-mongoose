@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 2.14.4 - 2018-10-16
 ### Reverted
 - Mongoose - Handle last versions of mongoose by fixing the RangeOverflow error. See Issue [#113](https://github.com/ForestAdmin/forest-express-mongoose/issues/113).
 
