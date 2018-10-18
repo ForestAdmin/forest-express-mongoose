@@ -1,9 +1,15 @@
 'use strict';
 /* global afterEach, describe, it */
 
-var expect = require('chai').expect;
 var mongoose = require('mongoose');
 var SchemaAdapter = require('../../../adapters/mongoose');
+var chai = require('chai');
+var chaiSubset = require('chai-subset');
+
+var expect = chai.expect;
+var Schema = mongoose.Schema;
+
+chai.use(chaiSubset);
 
 describe('Adapters > SchemaAdapter', function () {
   afterEach(function (done) {
@@ -564,6 +570,99 @@ describe('Adapters > SchemaAdapter', function () {
           expect(schema.fields[0].type[0].fields[0].type[0].fields[1].type
             .fields[0]).to.have.property('type').eql('Boolean');
 
+          done();
+        })
+        .catch(done);
+    });
+  });
+
+  describe('Deep nested objects', function () {
+    it('should have the correct schema', function (done) {
+      var schema = mongoose.Schema({
+        depth1: {
+          field1: [Date],
+          field2: { field2Field1: Boolean },
+          depth2: {
+            field1: [Date],
+            field2: { field2Field1: Boolean },
+            depth3: {
+              field1: [Date],
+              field2: { field2Field1: Boolean },
+              depth4: {
+                field1: [Date],
+                field2: { field2Field1: Boolean },
+                depth5: {
+                  field1: [Date],
+                  field2: { field2Field1: Boolean },
+                  depth6: {
+                    field1: [Date],
+                    field2: { field2Field1: Boolean },
+                    depth7: {
+                      field1: [Date],
+                      field2: { field2Field1: Boolean },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
+      var model = mongoose.model('Foo', schema);
+
+      new SchemaAdapter(model, {
+        mongoose: mongoose,
+        connections: [mongoose]
+      })
+        .then(function (schema) {
+          expect(schema).to.containSubset(require('./expected-results/deep-nested-object'));
+          done();
+        })
+        .catch(done);
+    });
+  });
+
+  describe('Deep nested schema', function () {
+    it('should have the correct schema', function (done) {
+      var schema = new Schema({
+        field1: [Date],
+        field2: { field2Field1: Boolean },
+        depth1: new Schema({
+          depth1Field1: [Date],
+          depth1Field2: { depth1Field2Field1: Boolean },
+          depth2: [
+            new Schema({
+              depth2Field1: [Date],
+              depth2Field2: { depth2Field2Field1: Boolean },
+            }),
+          ],
+        }),
+      });
+
+      var model = mongoose.model('Foo', schema);
+
+      new SchemaAdapter(model, {
+        mongoose: mongoose,
+        connections: [mongoose]
+      })
+        .then(function (schema) {
+          expect(schema).to.containSubset(require('./expected-results/deep-nested-schema'));
+          done();
+        })
+        .catch(done);
+    });
+  });
+
+  describe('Complex schema', function () {
+    it('should have the correct schema', function (done) {
+      var complexModel = require('./schemas/complex-shema');
+
+      new SchemaAdapter(complexModel, {
+        mongoose: mongoose,
+        connections: [mongoose]
+      })
+        .then(function (schema) {
+          expect(schema).to.containSubset(require('./expected-results/real-world-schema'));
           done();
         })
         .catch(done);

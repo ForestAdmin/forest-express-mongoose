@@ -1,0 +1,179 @@
+{
+  "name": "Foo",
+  "nameOld": "foos",
+  "idField": "_id",
+  "fields": [
+    {
+      "field": "depth1",
+      "type": {
+        "fields": [
+          {
+            "field": "field1",
+            "type": [
+              "Date"
+            ]
+          },
+          {
+            "field": "field2",
+            "type": {
+              "fields": [
+                {
+                  "field": "field2Field1",
+                  "type": "Boolean"
+                }
+              ]
+            }
+          },
+          {
+            "field": "depth2",
+            "type": {
+              "fields": [
+                {
+                  "field": "field1",
+                  "type": [
+                    "Date"
+                  ]
+                },
+                {
+                  "field": "field2",
+                  "type": {
+                    "fields": [
+                      {
+                        "field": "field2Field1",
+                        "type": "Boolean"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "field": "depth3",
+                  "type": {
+                    "fields": [
+                      {
+                        "field": "field1",
+                        "type": [
+                          "Date"
+                        ]
+                      },
+                      {
+                        "field": "field2",
+                        "type": {
+                          "fields": [
+                            {
+                              "field": "field2Field1",
+                              "type": "Boolean"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "field": "depth4",
+                        "type": {
+                          "fields": [
+                            {
+                              "field": "field1",
+                              "type": [
+                                "Date"
+                              ]
+                            },
+                            {
+                              "field": "field2",
+                              "type": {
+                                "fields": [
+                                  {
+                                    "field": "field2Field1",
+                                    "type": "Boolean"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "field": "depth5",
+                              "type": {
+                                "fields": [
+                                  {
+                                    "field": "field1",
+                                    "type": [
+                                      "Date"
+                                    ]
+                                  },
+                                  {
+                                    "field": "field2",
+                                    "type": {
+                                      "fields": [
+                                        {
+                                          "field": "field2Field1",
+                                          "type": "Boolean"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "field": "depth6",
+                                    "type": {
+                                      "fields": [
+                                        {
+                                          "field": "field1",
+                                          "type": [
+                                            "Date"
+                                          ]
+                                        },
+                                        {
+                                          "field": "field2",
+                                          "type": {
+                                            "fields": [
+                                              {
+                                                "field": "field2Field1",
+                                                "type": "Boolean"
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        {
+                                          "field": "depth7",
+                                          "type": {
+                                            "fields": [
+                                              {
+                                                "field": "field1",
+                                                "type": [
+                                                  "Date"
+                                                ]
+                                              },
+                                              {
+                                                "field": "field2",
+                                                "type": {
+                                                  "fields": [
+                                                    {
+                                                      "field": "field2Field1",
+                                                      "type": "Boolean"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "field": "_id",
+      "type": "String"
+    }
+  ]
+}

@@ -1,18 +1,35 @@
 'use strict';
 var P = require('bluebird');
 var _ = require('lodash');
-var flat = require('flat');
 var utils = require('../utils/schema');
 var Interface = require('forest-express');
 var mongooseUtils = require('../services/mongoose-utils');
 
 module.exports = function (model, opts) {
   var fields = [];
-  var paths = flat.unflatten(model.schema.paths);
+  var paths = unflatten(model.schema.paths);
   var mongoose = opts.mongoose;
   // NOTICE: mongoose.base is used when opts.mongoose is not the default connection.
   var Schema = mongoose.Schema || mongoose.base.Schema;
   var schemaType;
+
+  function unflatten(data) {
+    var result = {};
+    for (var key in data) {
+      var keys = key.split('.');
+      keys.reduce(function(result, subKey, index) {
+        if (!result[subKey]) {
+          if (isNaN(Number(keys[index + 1]))) {
+            result[subKey] = keys.length - 1 === index ? data[key] : {};
+          } else {
+            result[subKey] = [];
+          }
+        }
+        return result[subKey];
+      }, result);
+    }
+    return result;
+  }
 
   function formatRef(ref) {
     var models = mongooseUtils.getModels(opts);
