@@ -23,7 +23,6 @@
   "main": "index.js",
   "dependencies": {
     "bluebird": "2.9.25",
-    "flat": "1.6.0",
     "forest-express": "2.15.2",
     "http-errors": "1.6.1",
     "lodash": "3.9.3",
