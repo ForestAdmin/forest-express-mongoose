@@ -1,0 +1,75 @@
+{
+  "name": "Foo",
+  "nameOld": "foos",
+  "idField": "_id",
+  "fields": [
+    {
+      "field": "field1",
+      "type": [
+        "Date"
+      ]
+    },
+    {
+      "field": "field2",
+      "type": {
+        "fields": [
+          {
+            "field": "field2Field1",
+            "type": "Boolean"
+          }
+        ]
+      }
+    },
+    {
+      "field": "depth1",
+      "type": {
+        "fields": [
+          {
+            "field": "depth1Field1",
+            "type": [
+              "Date"
+            ]
+          },
+          {
+            "field": "depth1Field2",
+            "type": {
+              "fields": [
+                {
+                  "field": "depth1Field2Field1",
+                  "type": "Boolean"
+                }
+              ]
+            }
+          },
+          {
+            "field": "depth2",
+            "type": [
+              {
+                "fields": [
+                  {
+                    "field": "depth2Field1",
+                    "type": [
+                      "Date"
+                    ]
+                  },
+                  {
+                    "field": "depth2Field2.depth2Field2Field1",
+                    "type": "Boolean"
+                  },
+                  {
+                    "field": "_id",
+                    "type": "String"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "field": "_id",
+      "type": "String"
+    }
+  ]
+}

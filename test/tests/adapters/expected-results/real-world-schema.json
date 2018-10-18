@@ -1,0 +1,429 @@
+{
+  "name": "Survey",
+  "nameOld": "surveys",
+  "idField": "_id",
+  "fields": [
+    {
+      "field": "name",
+      "type": "String",
+      "isRequired": true,
+      "validations": [
+        {
+          "type": "is present"
+        }
+      ]
+    },
+    {
+      "field": "introText",
+      "type": "String",
+      "isRequired": true,
+      "validations": [
+        {
+          "type": "is present"
+        }
+      ]
+    },
+    {
+      "field": "outroText",
+      "type": "String"
+    },
+    {
+      "field": "pretest",
+      "type": "Boolean",
+      "isRequired": true,
+      "defaultValue": false,
+      "validations": [
+        {
+          "type": "is present"
+        }
+      ]
+    },
+    {
+      "field": "closeAt",
+      "type": "Date",
+      "isRequired": true,
+      "validations": [
+        {
+          "type": "is present"
+        }
+      ]
+    },
+    {
+      "field": "launchAt",
+      "type": "Date",
+      "isRequired": true,
+      "validations": [
+        {
+          "type": "is present"
+        }
+      ]
+    },
+    {
+      "field": "questions",
+      "type": [
+        {
+          "fields": [
+            {
+              "field": "question_id",
+              "type": "String"
+            },
+            {
+              "field": "sortOrder",
+              "type": "Number"
+            },
+            {
+              "field": "_id",
+              "type": "String"
+            }
+          ]
+        }
+      ],
+      "isRequired": true,
+      "defaultValue": [],
+      "validations": [
+        {
+          "type": "is present"
+        }
+      ]
+    },
+    {
+      "field": "content",
+      "type": [
+        {
+          "fields": [
+            {
+              "field": "content_id",
+              "type": "String"
+            },
+            {
+              "field": "placebo",
+              "type": "Boolean"
+            },
+            {
+              "field": "attentionCheck",
+              "type": {
+                "fields": [
+                  {
+                    "field": "questionFieldName",
+                    "type": "String"
+                  },
+                  {
+                    "field": "acceptedAnswers",
+                    "type": [
+                      "String"
+                    ]
+                  },
+                  {
+                    "field": "question_id",
+                    "type": "String"
+                  }
+                ]
+              }
+            },
+            {
+              "field": "batchName",
+              "type": "String"
+            },
+            {
+              "field": "batchNum",
+              "type": "Number"
+            },
+            {
+              "field": "rctConfig",
+              "type": {
+                "fields": [
+                  {
+                    "field": "responsesNeeded",
+                    "type": "Number"
+                  },
+                  {
+                    "field": "useRandom",
+                    "type": "Boolean"
+                  }
+                ]
+              }
+            },
+            {
+              "field": "_id",
+              "type": "String"
+            }
+          ]
+        }
+      ],
+      "isRequired": true,
+      "defaultValue": [],
+      "validations": [
+        {
+          "type": "is present"
+        }
+      ]
+    },
+    {
+      "field": "indices",
+      "type": [
+        {
+          "fields": [
+            {
+              "field": "index_id",
+              "type": "String"
+            },
+            {
+              "field": "directionDependency",
+              "type": "String"
+            },
+            {
+              "field": "_id",
+              "type": "String"
+            }
+          ]
+        }
+      ],
+      "isRequired": true,
+      "defaultValue": [],
+      "validations": [
+        {
+          "type": "is present"
+        }
+      ]
+    },
+    {
+      "field": "experiments",
+      "type": [
+        {
+          "fields": [
+            {
+              "field": "name",
+              "type": "String"
+            },
+            {
+              "field": "sortOrder",
+              "type": "Number"
+            },
+            {
+              "field": "index_id",
+              "type": "String"
+            },
+            {
+              "field": "filters",
+              "type": [
+                {
+                  "fields": [
+                    {
+                      "field": "category",
+                      "type": "String"
+                    },
+                    {
+                      "field": "method",
+                      "type": "Enum"
+                    },
+                    {
+                      "field": "direction",
+                      "type": "Enum"
+                    },
+                    {
+                      "field": "limit",
+                      "type": "Number"
+                    },
+                    {
+                      "field": "allowedValues",
+                      "type": [
+                        "String"
+                      ]
+                    },
+                    {
+                      "field": "_id",
+                      "type": "String"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "field": "counts",
+              "type": null
+            },
+            {
+              "field": "results",
+              "type": [
+                null
+              ]
+            },
+            {
+              "field": "_id",
+              "type": "String"
+            }
+          ]
+        }
+      ],
+      "isRequired": true,
+      "defaultValue": [],
+      "validations": [
+        {
+          "type": "is present"
+        }
+      ]
+    },
+    {
+      "field": "acquisition",
+      "type": [
+        {
+          "fields": [
+            {
+              "field": "mode",
+              "type": "String"
+            },
+            {
+              "field": "acquisitionConfig_id",
+              "type": "String"
+            },
+            {
+              "field": "HITTypeId",
+              "type": "String"
+            },
+            {
+              "field": "uniqueWorkerQualificationTypeId",
+              "type": "String"
+            },
+            {
+              "field": "completionCode",
+              "type": "String"
+            },
+            {
+              "field": "_id",
+              "type": "String"
+            }
+          ]
+        }
+      ],
+      "isRequired": true,
+      "defaultValue": [],
+      "validations": [
+        {
+          "type": "is present"
+        }
+      ]
+    },
+    {
+      "field": "analysisConfig",
+      "type": {
+        "fields": [
+          {
+            "field": "attnCheck",
+            "type": "Boolean"
+          },
+          {
+            "field": "poststratify",
+            "type": "Boolean"
+          },
+          {
+            "field": "censusYear",
+            "type": "String"
+          },
+          {
+            "field": "allowDuplicatesAcrossBatches",
+            "type": "Boolean"
+          },
+          {
+            "field": "customSegments",
+            "type": [
+              "String"
+            ]
+          }
+        ]
+      },
+      "isRequired": true,
+      "defaultValue": {
+        "attnCheck": true,
+        "poststratify": true
+      },
+      "validations": [
+        {
+          "type": "is present"
+        }
+      ]
+    },
+    {
+      "field": "locale",
+      "type": {
+        "fields": [
+          {
+            "field": "country",
+            "type": "String"
+          },
+          {
+            "field": "state",
+            "type": {
+              "fields": [
+                {
+                  "field": "included",
+                  "type": [
+                    "String"
+                  ]
+                },
+                {
+                  "field": "excluded",
+                  "type": [
+                    "String"
+                  ]
+                },
+                {
+                  "field": "_id",
+                  "type": "String"
+                }
+              ]
+            }
+          },
+          {
+            "field": "settings",
+            "type": {
+              "fields": [
+                {
+                  "field": "politicalSpectrum",
+                  "type": [
+                    "String"
+                  ]
+                },
+                {
+                  "field": "_id",
+                  "type": "String"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "isRequired": true,
+      "defaultValue": {
+        "country": "US"
+      },
+      "validations": [
+        {
+          "type": "is present"
+        }
+      ]
+    },
+    {
+      "field": "analysisMeta",
+      "type": {
+        "fields": [
+          {
+            "field": "branch",
+            "type": "String"
+          },
+          {
+            "field": "commit",
+            "type": "String"
+          },
+          {
+            "field": "timestamp",
+            "type": "Date"
+          }
+        ]
+      }
+    },
+    {
+      "field": "_id",
+      "type": "String"
+    }
+  ]
+}
