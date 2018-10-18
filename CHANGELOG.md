@@ -3,7 +3,7 @@
 ## [Unreleased]
 ### Fixed
 - Mongoose - Re-add the patch to fix the RangeOverflow error with recent versions of mongoose.
-- Mongoose - Add tests to see that internal fields of schemas are used in the apimap.
+- Fields Detection - Do not detect internal Mongoose fields in the apimap for schemas using subschemas.
 
 ## RELEASE 2.14.4 - 2018-10-16
 ### Reverted
