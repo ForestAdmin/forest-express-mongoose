@@ -34,7 +34,7 @@
     "eslint": "4.19.1",
     "gulp": "3.9.1",
     "mocha": "5.2.0",
-    "mongoose": "5.0.16",
+    "mongoose": "5.3.4",
     "mongoose-fixture-loader": "1.0.2",
     "nsp": "2.8.1",
     "pre-commit": "1.2.2",
