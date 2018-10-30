@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 2.14.6 - 2018-10-30
 ### Fixed
 - API - Prevent Apimaps from having duplicate fields, segments and actions, if the developer call the init function multiple times.
 
