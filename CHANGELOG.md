@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 2.15.0 - 2018-10-31
 ### Fixed
 - Field Types - Improve the support/detection of Object, {}, Array and [] field types.
 
