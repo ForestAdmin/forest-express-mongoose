@@ -245,7 +245,7 @@
             {
               "field": "results",
               "type": [
-                null
+                "Json"
               ]
             },
             {

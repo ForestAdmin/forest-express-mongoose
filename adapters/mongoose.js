@@ -90,7 +90,7 @@ module.exports = function (model, opts) {
         return [getTypeFromNative(type[0].type || type[0])];
       }
     } else if (_.isPlainObject(type)) {
-      if (_.isEmpty(type)) { return null; }
+      if (_.isEmpty(type)) { return 'Json'; }
 
       if (type.type) {
         if (type.enum) {
@@ -129,6 +129,10 @@ module.exports = function (model, opts) {
         return getTypeFromMongoose(opts[fieldName]);
       });
     } else if (opts.instance === 'Array') {
+      if (_.isEmpty(opts.options.type) && !_.isUndefined(opts.options.type)) {
+        return 'Json';
+      }
+
       // Deal with Array
       if (opts.caster.instance && (opts.caster.options.ref ||
         _.keys(opts.caster.options).length === 0)) {
@@ -155,6 +159,15 @@ module.exports = function (model, opts) {
       });
     } else if (opts.instance === 'Mixed') {
       // Deal with Mixed object
+
+      // NOTICE: Object and {} are detected as Json type as they don't have schema.
+      if (_.isEmpty(opts.options.type) && !_.isUndefined(opts.options.type)) {
+        return 'Json';
+      }
+      if (_.isEmpty(opts.options) && !_.isUndefined(opts.options)) {
+        return 'Json';
+      }
+
       return null;
     } else {
       // Deal with primitive type

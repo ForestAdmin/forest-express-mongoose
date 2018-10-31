@@ -162,9 +162,10 @@ describe('Adapters > SchemaAdapter', function () {
   });
 
   describe('{}', function () {
-    it('should have the type null', function (done) {
+    it('should have the type Json', function (done) {
       var schema = mongoose.Schema({
-        foo: {}
+        foo: {},
+        foo2: { type: {} }
       });
       var model = mongoose.model('Foo', schema);
 
@@ -174,7 +175,35 @@ describe('Adapters > SchemaAdapter', function () {
       })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
-          expect(schema.fields[0].type).eql(null);
+          expect(schema.fields[0].field).eql('foo');
+          expect(schema.fields[0].type).eql('Json');
+          expect(schema.fields[1].field).eql('foo2');
+          expect(schema.fields[1].type).eql('Json');
+
+          done();
+        })
+        .catch(done);
+    });
+  });
+
+  describe('Object', function () {
+    it('should have the type Json', function (done) {
+      var schema = mongoose.Schema({
+        foo: Object,
+        foo2: { type: Object },
+      });
+      var model = mongoose.model('Foo', schema);
+
+      new SchemaAdapter(model, {
+        mongoose: mongoose,
+        connections: [mongoose]
+      })
+        .then(function (schema) {
+          expect(schema).to.have.property('fields');
+          expect(schema.fields[0].field).eql('foo');
+          expect(schema.fields[0].type).eql('Json');
+          expect(schema.fields[1].field).eql('foo2');
+          expect(schema.fields[1].type).eql('Json');
 
           done();
         })
@@ -183,9 +212,10 @@ describe('Adapters > SchemaAdapter', function () {
   });
 
   describe('[]', function () {
-    it('should have the type [null]', function (done) {
+    it('should have the type Json', function (done) {
       var schema = mongoose.Schema({
-        foo: []
+        foo: [],
+        foo2: { type: [] }
       });
       var model = mongoose.model('Foo', schema);
 
@@ -195,7 +225,10 @@ describe('Adapters > SchemaAdapter', function () {
       })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
-          expect(schema.fields[0].type).eql([null]);
+          expect(schema.fields[0].field).eql('foo');
+          expect(schema.fields[0].type).eql('Json');
+          expect(schema.fields[1].field).eql('foo2');
+          expect(schema.fields[1].type).eql('Json');
 
           done();
         })
@@ -339,9 +372,10 @@ describe('Adapters > SchemaAdapter', function () {
   });
 
   describe('Array of {}', function () {
-    it('should have the type [null]', function (done) {
+    it('should have the type [Json]', function (done) {
       var schema = mongoose.Schema({
-        foo: [{}]
+        foo: [{}],
+        foo2: { type: [{}] }
       });
       var model = mongoose.model('Foo', schema);
 
@@ -351,7 +385,10 @@ describe('Adapters > SchemaAdapter', function () {
       })
         .then(function (schema) {
           expect(schema).to.have.property('fields');
-          expect(schema.fields[0].type).eql([null]);
+          expect(schema.fields[0].field).eql('foo');
+          expect(schema.fields[0].type).eql(['Json']);
+          expect(schema.fields[1].field).eql('foo2');
+          expect(schema.fields[1].type).eql(['Json']);
 
           done();
         })
