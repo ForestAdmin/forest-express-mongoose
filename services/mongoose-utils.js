@@ -26,7 +26,8 @@ module.exports = {
           if (!_.isEmpty(opts.includedModels) &&
             _.includes(opts.includedModels, model.modelName)) {
             models[model.modelName] = model;
-          } else if (!_.includes(opts.excludedModels, model.modelName)) {
+          } else if (!_.isEmpty(opts.excludedModels) &&
+            !_.includes(opts.excludedModels, model.modelName)) {
             models[model.modelName] = model;
           }
         }
