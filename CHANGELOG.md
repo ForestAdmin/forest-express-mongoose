@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- includedModels now includes only models present in the array. Previously it did nothing.
 
 ## RELEASE 2.15.0 - 2018-10-31
 ### Fixed
