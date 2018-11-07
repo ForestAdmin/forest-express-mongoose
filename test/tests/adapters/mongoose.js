@@ -23,7 +23,7 @@ describe('Adapters > SchemaAdapter', function () {
   });
 
   describe('Date', function () {
-    it('should have the type `Date`', function (done) {
+    it('should have the type Date', function (done) {
       var schema = mongoose.Schema({ foo: Date });
       var model = mongoose.model('Foo', schema);
 
@@ -43,7 +43,7 @@ describe('Adapters > SchemaAdapter', function () {
   });
 
   describe('String', function () {
-    it('should have the type `String`', function (done) {
+    it('should have the type String', function (done) {
       var schema = mongoose.Schema({ foo: String });
       var model = mongoose.model('Foo', schema);
 
@@ -63,7 +63,7 @@ describe('Adapters > SchemaAdapter', function () {
   });
 
   describe('Boolean', function () {
-    it('should have the type `Boolean`', function (done) {
+    it('should have the type Boolean', function (done) {
       var schema = mongoose.Schema({ foo: Boolean });
       var model = mongoose.model('Foo', schema);
 
@@ -83,7 +83,7 @@ describe('Adapters > SchemaAdapter', function () {
   });
 
   describe('Number', function () {
-    it('should have the type `Number`', function (done) {
+    it('should have the type Number', function (done) {
       var schema = mongoose.Schema({ foo: Number });
       var model = mongoose.model('Foo', schema);
 
@@ -103,7 +103,7 @@ describe('Adapters > SchemaAdapter', function () {
   });
 
   describe('Object', function () {
-    it('should have the type `{ fields: [...]}`', function (done) {
+    it('should have the type { fields: [...]}', function (done) {
       var schema = mongoose.Schema({
         foo: {
           field1: String,
@@ -139,7 +139,7 @@ describe('Adapters > SchemaAdapter', function () {
   });
 
   describe('ObjectID', function () {
-    it('should have the type `String`', function (done) {
+    it('should have the type String', function (done) {
       var schema = mongoose.Schema({
         foo: mongoose.Schema.Types.ObjectId
       });
@@ -237,7 +237,7 @@ describe('Adapters > SchemaAdapter', function () {
   });
 
   describe('Array of dates', function () {
-    it('should have the type `[\'Date\']`', function (done) {
+    it('should have the type [\'Date\']', function (done) {
       var schema = mongoose.Schema({
         foo: [Date]
       });
@@ -259,7 +259,7 @@ describe('Adapters > SchemaAdapter', function () {
   });
 
   describe('Array of strings', function () {
-    it('should have the type `[\'String\']`', function (done) {
+    it('should have the type [\'String\']', function (done) {
       var schema = mongoose.Schema({
         foo: [String]
       });
@@ -281,7 +281,7 @@ describe('Adapters > SchemaAdapter', function () {
   });
 
   describe('Array of booleans', function () {
-    it('should have the type `[\'Boolean\']`', function (done) {
+    it('should have the type [\'Boolean\']', function (done) {
       var schema = mongoose.Schema({
         foo: [Boolean]
       });
@@ -303,7 +303,7 @@ describe('Adapters > SchemaAdapter', function () {
   });
 
   describe('Array of numbers', function () {
-    it('should have the type `[\'Number\']`', function (done) {
+    it('should have the type [\'Number\']', function (done) {
       var schema = mongoose.Schema({
         foo: [Number]
       });
@@ -325,7 +325,7 @@ describe('Adapters > SchemaAdapter', function () {
   });
 
   describe('Array of objectids ([ObjectId])', function () {
-    it('should have the type `[String]`', function (done) {
+    it('should have the type [String]', function (done) {
       var schema = mongoose.Schema({ foo: [mongoose.Schema.Types.ObjectId] });
       var model = mongoose.model('Foo', schema);
 
@@ -346,7 +346,7 @@ describe('Adapters > SchemaAdapter', function () {
   });
 
   describe('Array of objectids ([type: ObjectId])', function () {
-    it('should have the type `[String]`', function (done) {
+    it('should have the type [String]', function (done) {
       mongoose.model('User', mongoose.Schema());
       var schema = mongoose.Schema({
         foo: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
