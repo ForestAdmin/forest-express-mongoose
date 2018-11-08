@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 2.15.1 - 2018-11-08
 ### Changed
 - Smart Fields - Display a warning to show Smart Fields declared without a field attribute.
 
