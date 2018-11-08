@@ -1,6 +1,11 @@
 # Change Log
 
 ## [Unreleased]
+### Changed
+- Smart Fields - Display a warning to show Smart Fields declared without a field attribute.
+
+### Fixed
+- Smart Fields - Smart Fields declared without a field attribute are not sent in the Apimap anymore.
 
 ## RELEASE 2.15.0 - 2018-10-31
 ### Fixed
