@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 2.15.2 - 2018-12-04
 ### Fixed
 - Initialization - `includedModels` option now includes only models present in the array.
 
