@@ -80,9 +80,12 @@ function HasManyGetter(model, association, opts, params) {
         var query = association.find(conditions);
         handlePopulate(query);
 
-        return query;
+        return query.then(function(records) {
+          return [records, recordIds];
+        });
       })
-      .then(function(records) {
+      .then(function(recordsAndRecordIds) {
+        var records = recordsAndRecordIds[0];
         if (params.sort) {
           var fieldSort = params.sort;
           var descending = false;
@@ -98,8 +101,15 @@ function HasManyGetter(model, association, opts, params) {
 
           return descending ? recordsSorted.reverse() : recordsSorted;
         }
-
-        return records;
+        var recordIds = recordsAndRecordIds[1];
+        var recordIdStrings = recordIds.map(function(recordId) {
+          // Convert values to strings, so ObjectIds could be easily searched and compared.
+          return '' + recordId;
+        });
+        // indexOf could be improved by making a Map from record-ids to their index.
+        return _.sortBy(records, function(record) {
+          return recordIdStrings.indexOf('' + record._id);
+        });
       });
   }
 
