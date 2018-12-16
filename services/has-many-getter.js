@@ -87,6 +87,7 @@ function HasManyGetter(model, association, opts, params) {
       .then(function(recordsAndRecordIds) {
         var records = recordsAndRecordIds[0];
         if (params.sort) {
+          console.log(`params.sort is defined: ${JSON.stringify(params.sort)} for records: ${records.map(r => r._id)}`);
           var fieldSort = params.sort;
           var descending = false;
 
@@ -101,6 +102,7 @@ function HasManyGetter(model, association, opts, params) {
 
           return descending ? recordsSorted.reverse() : recordsSorted;
         }
+        console.log(`params.sort is not defined: ${JSON.stringify(params.sort)} for records: ${records.map(r => r._id)}`);
         var recordIds = recordsAndRecordIds[1];
         var recordIdStrings = recordIds.map(function(recordId) {
           // Convert values to strings, so ObjectIds could be easily searched and compared.
