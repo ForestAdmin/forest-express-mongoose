@@ -87,7 +87,7 @@ function HasManyGetter(model, association, opts, params) {
       .then(function(recordsAndRecordIds) {
         var records = recordsAndRecordIds[0];
         if (params.sort) {
-          console.log(`params.sort is defined: ${JSON.stringify(params.sort)} for records: ${records.map(r => r._id)}`);
+          console.log(`params.sort is defined: ${JSON.stringify(params)} for records: ${records.map(r => r._id)}`);
           var fieldSort = params.sort;
           var descending = false;
 
