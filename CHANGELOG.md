@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 2.16.0 - 2019-01-17
 ### Added
 - Integrations - Developers can configure the Stripe integration to retrieve the customerId in an embedded document field.
 
