@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- Integrations - Fix Stripe integration on an embedded document field.
 
 ## RELEASE 2.16.0 - 2019-01-17
 ### Added
