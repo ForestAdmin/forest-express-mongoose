@@ -14,14 +14,14 @@ gulp.task('build', function () {
   var prereleaseTag;
 
   if (process.argv) {
-    if (process.argv[2]) {
-      var option = process.argv[2].replace('--', '');
+    if (process.argv[3]) {
+      var option = process.argv[3].replace('--', '');
       if (RELEASE_OPTIONS.includes(option)) {
         releaseType = option;
       }
     }
-    if (process.argv[3]) {
-      var option = process.argv[3].replace('--', '');
+    if (process.argv[4]) {
+      var option = process.argv[4].replace('--', '');
       prereleaseTag = option;
     }
   }
@@ -29,7 +29,6 @@ gulp.task('build', function () {
   // VERSION
   var versionFile = fs.readFileSync('package.json').toString().split('\n');
   var version = versionFile[3].match(/\w*"version": "(.*)",/)[1];
-  console.log('=== ', version, releaseType, prereleaseTag);
   version = semver.inc(version, releaseType, prereleaseTag);
   versionFile[3] = '  "version": "' + version + '",';
   var newVersionFile = versionFile.join('\n');
