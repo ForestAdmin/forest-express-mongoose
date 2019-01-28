@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+## RELEASE 2.16.1 - 2019-01-21
+### Fixed
+- Integrations - Fix Stripe integration on an embedded document field.
+
+## RELEASE 2.16.0 - 2019-01-17
+### Added
+- Integrations - Developers can configure the Stripe integration to retrieve the customerId in an embedded document field.
+
 ## RELEASE 2.15.2 - 2018-12-04
 ### Fixed
 - Initialization - `includedModels` option now includes only models present in the array.
