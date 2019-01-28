@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 3.0.0-beta.0 - 2019-01-28
 ### Added
 - Build - Tag versions on git for each release.
 - Build - Developers can now create beta versions.
