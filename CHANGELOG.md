@@ -4,6 +4,9 @@
 ### Added
 - Build - Tag versions on git for each release.
 - Build - Developers can now create beta versions.
+- Developer Experience - On start, create a `.forestadmin-schema.json` file that contains the schema definition.
+- Developer Experience - On production, load `.forestadmin-schema.json` for schema update.
+- Developer Experience - Developers can deactivate the automatic schema synchronisation on server start using the `FOREST_DISABLE_AUTO_SCHEMA_APPLY` environment variable.
 
 ## RELEASE 2.16.1 - 2019-01-21
 ### Fixed
