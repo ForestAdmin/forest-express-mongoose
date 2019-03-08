@@ -3,8 +3,10 @@ const moment = require('moment');
 const fs = require('fs');
 const simpleGit = require('simple-git')();
 const semver = require('semver');
+
 const BRANCH_MASTER = 'master';
 const BRANCH_DEVEL = 'devel';
+
 let numberToIncrement = 'patch';
 if (process.argv && process.argv[3]) {
   const option = process.argv[3].replace('--', '');
@@ -12,17 +14,21 @@ if (process.argv && process.argv[3]) {
     numberToIncrement = option;
   }
 }
+
 // VERSION
 const versionFile = fs.readFileSync('package.json').toString().split('\n');
 let version = versionFile[3].match(/\w*"version": "(.*)",/)[1];
 version = semver.inc(version, numberToIncrement);
 versionFile[3] = '  "version": "' + version + '",';
 fs.writeFileSync('package.json', versionFile.join('\n'));
+
 // CHANGELOG
 const data = fs.readFileSync('CHANGELOG.md').toString().split('\n');
 const today = moment().format('YYYY-MM-DD');
+
 data.splice(3, 0, '\n## RELEASE ' + version + ' - ' + today);
 const text = data.join('\n');
+
 simpleGit
   .checkout(BRANCH_DEVEL)
   .then(function() { console.log('Starting pull on ' + BRANCH_DEVEL + '...'); })
