@@ -7,7 +7,6 @@ var Interface = require('forest-express');
 var utils = require('../utils/schema');
 var moment = require('moment');
 
-// jshint sub: true
 function PieStatGetter(model, params, opts) {
   var schema = Interface.Schemas.schemas[utils.getModelName(model)];
   var field = _.findWhere(schema.fields, { field: params['group_by_field'] });
