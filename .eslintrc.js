@@ -1,28 +1,24 @@
 module.exports = {
-    'env': {
-        'node': true
-    },
-    'extends': 'eslint:recommended',
-    'parserOptions': {
-      'ecmaVersion': 5
-    },
-    'rules': {
-        'indent': [
-            'error',
-            2,
-            { "SwitchCase": 1 }
-        ],
-        'linebreak-style': [
-            'error',
-            'unix'
-        ],
-        'quotes': [
-            'error',
-            'single'
-        ],
-        'semi': [
-            'error',
-            'always'
-        ]
-    }
+  root: true,
+  parserOptions: {
+    ecmaVersion: 2017
+  },
+  extends: 'eslint:recommended',
+  env: {
+    node: true
+  },
+  rules: {
+    'no-console': 'off',
+    'quotes': ['error', 'single'],
+    'no-trailing-spaces': 'error',
+    'no-multi-spaces': 'error',
+    'max-len': ['error', 100, {
+      'ignoreComments': true,
+      'ignoreStrings': true,
+      'ignoreRegExpLiterals': true,
+      'ignoreTemplateLiterals': true
+    }]
+  },
+  globals: {
+  }
 };

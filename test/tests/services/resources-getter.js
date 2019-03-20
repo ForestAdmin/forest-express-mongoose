@@ -1,7 +1,7 @@
 var expect = require('chai').expect;
 var mongoose = require('mongoose');
 var loadFixture = require('mongoose-fixture-loader');
-var ResourcesGetter = require('../../../services/resources-getter');
+var ResourcesGetter = require('../../../src/services/resources-getter');
 var Interface = require('forest-express');
 var mongooseConnect = require('../../utils/mongoose-connect');
 

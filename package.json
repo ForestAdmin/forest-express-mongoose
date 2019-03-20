@@ -20,8 +20,9 @@
     "type": "git",
     "url": "git://github.com/ForestAdmin/forest-express-mongoose.git"
   },
-  "main": "index.js",
+  "main": "dist/index.js",
   "dependencies": {
+    "babel-runtime": "6.26.0",
     "bluebird": "2.9.25",
     "forest-express": "3.0.0-beta.1",
     "http-errors": "1.6.1",
@@ -29,6 +30,10 @@
     "moment": "2.18.1"
   },
   "devDependencies": {
+    "babel-cli": "6.26.0",
+    "babel-core": "6.26.0",
+    "babel-plugin-transform-runtime": "6.23.0",
+    "babel-preset-env": "1.6.1",
     "chai": "4.1.2",
     "chai-subset": "1.6.0",
     "eslint": "4.19.1",
@@ -37,11 +42,15 @@
     "mongoose": "5.3.4",
     "mongoose-fixture-loader": "1.0.2",
     "nsp": "2.8.1",
+    "onchange": "4.0.0",
     "pre-commit": "1.2.2",
     "semver": "5.6.0",
     "simple-git": "1.65.0"
   },
   "scripts": {
+    "build": "./node_modules/babel-cli/bin/babel.js src --out-dir dist && echo '\n\\033[0;34m[+] \\033[0;32mBuild done\\033[0m'",
+    "build:watch": "onchange 'src/**/*.js' -i -- yarn build",
+    "deploy": "yarn build && node ./bin/deploy.js",
     "test": "./node_modules/mocha/bin/mocha test/**/* --timeout 15000",
     "test:watch": "./node_modules/mocha/bin/mocha test/**/* adapters/** services/** utils/** --timeout 15000 --watch",
     "lint": "./node_modules/eslint/bin/eslint.js test/**/* adapters/** services/** utils/**",

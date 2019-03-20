@@ -23,7 +23,7 @@ exports.init = function(opts) {
   };
 
   exports.getLianaVersion = function () {
-    var lianaVersion = require('./package.json').version.match(REGEX_VERSION);
+    var lianaVersion = require('../package.json').version.match(REGEX_VERSION);
     if (lianaVersion && lianaVersion[0]) {
       return lianaVersion[0];
     }

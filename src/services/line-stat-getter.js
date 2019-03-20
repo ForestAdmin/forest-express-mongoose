@@ -1,5 +1,4 @@
 'use strict';
-/* jshint sub: true */
 var _ = require('lodash');
 var P = require('bluebird');
 var FilterParser = require('./filter-parser');
