@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 3.0.0-beta.1 - 2019-03-27
 ### Added
 - Technical - Add babel.
 
