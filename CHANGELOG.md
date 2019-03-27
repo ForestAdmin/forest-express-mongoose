@@ -4,6 +4,9 @@
 ### Added
 - Technical - Add babel.
 
+### Changed
+- Security - Do not pass session token in query params while downloading collections records.
+
 ## RELEASE 3.0.0-beta.0 - 2019-01-28
 ### Added
 - Build - Tag versions on git for each release.
