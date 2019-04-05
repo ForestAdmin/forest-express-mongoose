@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Changes
+- Technical - Update forest-express to v3.0.5.
 
 ## RELEASE 3.0.0-beta.2 - 2019-03-29
 ### Fixed
