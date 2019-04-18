@@ -37,6 +37,10 @@
     "chai": "4.1.2",
     "chai-subset": "1.6.0",
     "eslint": "5.16.0",
+    "eslint-config-airbnb": "16.1.0",
+    "eslint-plugin-import": "2.8.0",
+    "eslint-plugin-jsx-a11y": "6.0.2",
+    "eslint-plugin-react": "7.5.1",
     "mocha": "6.1.3",
     "mongoose": "5.3.4",
     "mongoose-fixture-loader": "1.0.2",
@@ -51,9 +55,11 @@
     "deploy": "yarn build && node ./bin/deploy.js",
     "test": "./node_modules/mocha/bin/mocha test/**/* --require babel-register --timeout 15000",
     "test:watch": "./node_modules/mocha/bin/mocha test/**/* adapters/** services/** utils/** --timeout 15000 --watch",
-    "lint": "./node_modules/eslint/bin/eslint.js test/**/* src/**/*"
+    "lint": "./node_modules/eslint/bin/eslint.js test src",
+    "lint:ci": "node ./.eslint-bin/lint-registered-files.js",
+    "pre-commit": "node ./.eslint-bin/pre-commit-hook.js"
   },
   "pre-commit": [
-    "lint"
+    "pre-commit"
   ]
 }

@@ -3,6 +3,8 @@
 ## [Unreleased]
 ### Changes
 - Technical - Use the latest `onchange` dependency.
+- Technical - Change ESLint ruleset for Airbnb.
+- Technical - Add incremental linting check.
 
 ### Fixed
 - Security - Patch vulnerabilities removing the unused `nsp` dependency.
