@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 3.0.0-beta.3 - 2019-04-18
 ### Changes
 - Technical - Use the latest `onchange` dependency.
 - Technical - Change ESLint ruleset for Airbnb.
