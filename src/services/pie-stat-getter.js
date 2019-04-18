@@ -9,10 +9,10 @@ var moment = require('moment');
 
 function PieStatGetter(model, params, opts) {
   var schema = Interface.Schemas.schemas[utils.getModelName(model)];
-  var field = _.findWhere(schema.fields, { field: params['group_by_field'] });
+  var field = _.find(schema.fields, { field: params['group_by_field'] });
 
   function getReference(fieldName) {
-    var field = _.findWhere(schema.fields, { field: fieldName });
+    var field = _.find(schema.fields, { field: fieldName });
     return field.reference ? field : null;
   }
 

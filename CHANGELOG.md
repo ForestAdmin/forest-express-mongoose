@@ -11,6 +11,7 @@
 - Security - Patch vulnerabilities using the latest `babel` dependencies.
 - Security - Patch vulnerabilities using the latest `mocha` dependency.
 - Security - Patch vulnerabilities using the latest `forest-express` dependency.
+- Security - Patch a vulnerability using the latest `lodash` dependency.
 
 ## RELEASE 3.0.0-beta.2 - 2019-03-29
 ### Fixed

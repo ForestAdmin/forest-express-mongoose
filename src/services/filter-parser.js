@@ -14,7 +14,7 @@ function FilterParser(model, opts, timezone) {
     var fieldName = fieldValues[0];
     var subfieldName = fieldValues[1];
 
-    var field = _.findWhere(schema.fields, { field: fieldName });
+    var field = _.find(schema.fields, { field: fieldName });
 
     var isEmbeddedField = !!field.type.fields;
     if (subfieldName && !isEmbeddedField) { return []; }
