@@ -2,7 +2,15 @@
 
 ## [Unreleased]
 ### Changes
-- Technical - Update forest-express to v3.0.5.
+- Technical - Use the latest `onchange` dependency.
+
+### Fixed
+- Security - Patch vulnerabilities removing the unused `nsp` dependency.
+- Security - Patch vulnerabilities removing the unused `gulp` dependency.
+- Security - Patch vulnerabilities using the latest `eslint` dependency.
+- Security - Patch vulnerabilities using the latest `babel` dependencies.
+- Security - Patch vulnerabilities using the latest `mocha` dependency.
+- Security - Patch vulnerabilities using the latest `forest-express` dependency.
 
 ## RELEASE 3.0.0-beta.2 - 2019-03-29
 ### Fixed
