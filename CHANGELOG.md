@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Changes
+- Technical - Update nodejs version to v11.14.0 for travis.
 
 ## RELEASE 3.0.0-beta.3 - 2019-04-18
 ### Changes
