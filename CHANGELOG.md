@@ -4,6 +4,9 @@
 ### Changes
 - Technical - Update nodejs version to v11.14.0 for travis.
 
+### Fixed
+- Technical - Fix ci lint command.
+
 ## RELEASE 3.0.0-beta.3 - 2019-04-18
 ### Changes
 - Technical - Use the latest `onchange` dependency.
