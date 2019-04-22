@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 3.0.0 - 2019-04-22
 ### Changes
 - CI - Update NodeJS version to v11.14.0 for T$ravis.
 
