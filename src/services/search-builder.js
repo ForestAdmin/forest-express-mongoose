@@ -42,7 +42,7 @@ function SearchBuilder(model, opts, params, searchFields) {
           condition[key] = searchRegexp;
           pushCondition(condition, key);
         } else if (value.instance === 'Array') {
-          var field = _.findWhere(schema.fields, { field: key });
+          var field = _.find(schema.fields, { field: key });
           if (field && _.isArray(field.type) && field.type[0] === 'String' &&
             !field.reference) {
             condition[key] = searchRegexp;

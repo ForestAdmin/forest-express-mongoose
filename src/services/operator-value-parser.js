@@ -49,11 +49,11 @@ function OperatorValueParser(opts, timezone) {
     var subfieldName = fieldValues[1];
 
     // Mongoose Aggregate don't parse the value automatically.
-    var field = _.findWhere(schema.fields, { field: fieldName });
+    var field = _.find(schema.fields, { field: fieldName });
 
     var isEmbeddedField = !!field.type.fields;
     if (isEmbeddedField) {
-      field = _.findWhere(field.type.fields, { field: subfieldName });
+      field = _.find(field.type.fields, { field: subfieldName });
     }
 
     var offsetClient = parseInt(timezone, 10);

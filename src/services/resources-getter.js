@@ -48,7 +48,7 @@ function ResourcesGetter(model, opts, params) {
         if (key.indexOf(':') > -1) {
           var fieldName = key.split(':')[0];
 
-          var field = _.findWhere(schema.fields, { field: fieldName });
+          var field = _.find(schema.fields, { field: fieldName });
           if (field && field.reference) {
             if (_.isArray(field.type)) {
               ret = !!(ret && record[fieldName] && record[fieldName].length);
@@ -97,7 +97,7 @@ function ResourcesGetter(model, opts, params) {
         var subFieldName = splitted[1];
 
         if (fieldName === field.field) {
-          var currentField = _.findWhere(schema.fields, { field: fieldName });
+          var currentField = _.find(schema.fields, { field: fieldName });
           if (currentField && currentField.reference) {
             // NOTICE: Look for the associated model infos
             var subModel = _.find(mongooseUtils.getModels(opts),

@@ -21,8 +21,11 @@ This project has been designed with scalability in mind to fit requirements from
 
 Install Forest Admin here: [https://www.forestadmin.com](https://www.forestadmin.com)
 
+## Getting started
+[https://docs.forestadmin.com/documentation/getting-started/installation](https://docs.forestadmin.com/documentation/getting-started/installation)
+
 ## Documentation
-[https://docs.forestadmin.com/express-sequelize](https://docs.forestadmin.com/express-sequelize)
+[https://docs.forestadmin.com/documentation/](https://docs.forestadmin.com/documentation/)
 
 ## Features
 
