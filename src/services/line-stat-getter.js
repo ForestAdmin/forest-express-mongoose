@@ -1,5 +1,4 @@
 'use strict';
-/* jshint sub: true */
 var _ = require('lodash');
 var P = require('bluebird');
 var FilterParser = require('./filter-parser');
@@ -15,7 +14,7 @@ function LineStatFinder(model, params, opts) {
 
   function getReference(fieldName) {
     if (!fieldName) { return null; }
-    var field = _.findWhere(schema.fields, { field: fieldName });
+    var field = _.find(schema.fields, { field: fieldName });
     return field.reference ? field : null;
   }
 
@@ -85,7 +84,7 @@ function LineStatFinder(model, params, opts) {
     var currentDate = firstDate;
     while (currentDate <= lastDate) {
       var currentLabel = currentDate.format(getFormat(momentRange));
-      var currentRecord = _.findWhere(records, { label: currentLabel });
+      var currentRecord = _.find(records, { label: currentLabel });
       var value = currentRecord ? currentRecord.values.value : 0;
 
       newRecords.push({

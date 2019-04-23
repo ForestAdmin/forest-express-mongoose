@@ -2,7 +2,7 @@
 /* global afterEach, describe, it */
 
 var mongoose = require('mongoose');
-var SchemaAdapter = require('../../../adapters/mongoose');
+var SchemaAdapter = require('../../../src/adapters/mongoose');
 var chai = require('chai');
 var chaiSubset = require('chai-subset');
 

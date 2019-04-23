@@ -26,7 +26,6 @@ function ValueStatGetter(model, params, opts) {
       }
 
       var sum = 1;
-      // jshint sub: true
       if (params['aggregate_field']) {
         sum = '$' + params['aggregate_field'];
       }

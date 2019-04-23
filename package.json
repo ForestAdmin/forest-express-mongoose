@@ -1,7 +1,7 @@
 {
   "name": "forest-express-mongoose",
   "description": "Official Express/Mongoose Liana for Forest",
-  "version": "2.15.2",
+  "version": "3.1.0",
   "author": "Sandro Munda <sandro@munda.me>",
   "contributors": [
     "Arnaud Besnier <arnaudibesnier@gmail.com>",
@@ -20,34 +20,46 @@
     "type": "git",
     "url": "git://github.com/ForestAdmin/forest-express-mongoose.git"
   },
-  "main": "index.js",
+  "main": "dist/index.js",
   "dependencies": {
+    "babel-runtime": "7.0.0-beta.3",
     "bluebird": "2.9.25",
-    "forest-express": "2.15.4",
-    "http-errors": "1.6.1",
-    "lodash": "3.9.3",
-    "moment": "2.18.1"
+    "forest-express": "3.1.0",
+    "http-errors": "1.7.2",
+    "lodash": "4.17.11",
+    "moment": "2.24.0"
   },
   "devDependencies": {
-    "chai": "4.1.2",
+    "babel-cli": "7.0.0-beta.3",
+    "babel-plugin-transform-runtime": "7.0.0-beta.3",
+    "babel-preset-env": "7.0.0-beta.3",
+    "babel-register": "7.0.0-beta.3",
+    "chai": "4.2.0",
     "chai-subset": "1.6.0",
-    "eslint": "4.19.1",
-    "gulp": "3.9.1",
-    "mocha": "5.2.0",
+    "eslint": "5.16.0",
+    "eslint-config-airbnb": "16.1.0",
+    "eslint-plugin-import": "2.17.2",
+    "eslint-plugin-jsx-a11y": "6.0.2",
+    "eslint-plugin-react": "7.5.1",
+    "mocha": "6.1.4",
     "mongoose": "5.3.4",
     "mongoose-fixture-loader": "1.0.2",
-    "nsp": "2.8.1",
+    "onchange": "5.2.0",
     "pre-commit": "1.2.2",
-    "semver": "5.4.1",
+    "semver": "5.6.0",
     "simple-git": "1.65.0"
   },
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha test/**/* --timeout 15000",
+    "build": "./node_modules/babel-cli/bin/babel.js src --out-dir dist && echo '\n\\033[0;34m[+] \\033[0;32mBuild done\\033[0m'",
+    "build:watch": "onchange 'src/**/*.js' -i -- yarn build",
+    "deploy": "yarn build && node ./bin/deploy.js",
+    "test": "./node_modules/mocha/bin/mocha test/**/* --require babel-register --timeout 15000",
     "test:watch": "./node_modules/mocha/bin/mocha test/**/* adapters/** services/** utils/** --timeout 15000 --watch",
-    "lint": "./node_modules/eslint/bin/eslint.js test/**/* adapters/** services/** utils/**",
-    "detect-vulnerabilities": "./node_modules/nsp/bin/nsp check --output summary"
+    "lint": "./node_modules/eslint/bin/eslint.js test src",
+    "lint:ci": "node ./.eslint-bin/lint-registered-files.js",
+    "pre-commit": "node ./.eslint-bin/pre-commit-hook.js"
   },
   "pre-commit": [
-    "lint"
+    "pre-commit"
   ]
 }

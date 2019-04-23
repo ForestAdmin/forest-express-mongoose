@@ -2,6 +2,60 @@
 
 ## [Unreleased]
 
+## RELEASE 3.1.0 - 2019-04-23
+### Changed
+- Dependency - Upgrade the forest-express dependency for onlyCrudModule option.
+
+## RELEASE 3.0.0 - 2019-04-22
+### Changes
+- CI - Update NodeJS version to v11.14.0 for T$ravis.
+
+### Fixed
+- CI - Fix CI linting.
+
+## RELEASE 3.0.0-beta.3 - 2019-04-18
+### Changes
+- Technical - Use the latest `onchange` dependency.
+- Technical - Change ESLint ruleset for Airbnb.
+- Technical - Add incremental linting check.
+
+### Fixed
+- Security - Patch vulnerabilities removing the unused `nsp` dependency.
+- Security - Patch vulnerabilities removing the unused `gulp` dependency.
+- Security - Patch vulnerabilities using the latest `eslint` dependency.
+- Security - Patch vulnerabilities using the latest `babel` dependencies.
+- Security - Patch vulnerabilities using the latest `mocha` dependency.
+- Security - Patch vulnerabilities using the latest `forest-express` dependency.
+- Security - Patch a vulnerability using the latest `lodash` dependency.
+- Security - Patch a vulnerability using the latest `moment` dependency.
+
+## RELEASE 3.0.0-beta.2 - 2019-03-29
+### Fixed
+- Security - Fix implementation of session token passed in headers while downloading collections records.
+
+## RELEASE 3.0.0-beta.1 - 2019-03-27
+### Added
+- Technical - Add babel.
+
+### Changed
+- Security - Do not pass session token in query params while downloading collections records.
+
+## RELEASE 3.0.0-beta.0 - 2019-01-28
+### Added
+- Build - Tag versions on git for each release.
+- Build - Developers can now create beta versions.
+- Developer Experience - On start, create a `.forestadmin-schema.json` file that contains the schema definition.
+- Developer Experience - On production, load `.forestadmin-schema.json` for schema update.
+- Developer Experience - Developers can deactivate the automatic schema synchronisation on server start using the `FOREST_DISABLE_AUTO_SCHEMA_APPLY` environment variable.
+
+## RELEASE 2.16.1 - 2019-01-21
+### Fixed
+- Integrations - Fix Stripe integration on an embedded document field.
+
+## RELEASE 2.16.0 - 2019-01-17
+### Added
+- Integrations - Developers can configure the Stripe integration to retrieve the customerId in an embedded document field.
+
 ## RELEASE 2.15.2 - 2018-12-04
 ### Fixed
 - Initialization - `includedModels` option now includes only models present in the array.

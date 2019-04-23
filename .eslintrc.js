@@ -1,28 +1,30 @@
 module.exports = {
-    'env': {
-        'node': true
-    },
-    'extends': 'eslint:recommended',
-    'parserOptions': {
-      'ecmaVersion': 5
-    },
-    'rules': {
-        'indent': [
-            'error',
-            2,
-            { "SwitchCase": 1 }
-        ],
-        'linebreak-style': [
-            'error',
-            'unix'
-        ],
-        'quotes': [
-            'error',
-            'single'
-        ],
-        'semi': [
-            'error',
-            'always'
-        ]
-    }
+  root: true,
+  'extends': [
+    'airbnb-base',
+  ],
+  plugins: [],
+  env: {
+    node: true,
+  },
+  rules: {
+    'no-console': 0,
+    'no-param-reassign': 0,
+    'prefer-destructuring': [
+      'error',
+      {
+        VariableDeclarator: {
+          array: false,
+          object: true,
+        },
+        AssignmentExpression: {
+          array: false,
+          object: false,
+        },
+      },
+      {
+        enforceForRenamedProperties: false,
+      },
+    ],
+  },
 };
