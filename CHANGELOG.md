@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Changed
+- Dependency - Upgrade the forest-express dependency for onlyCrudModule option.
 
 ## RELEASE 3.0.0 - 2019-04-22
 ### Changes
