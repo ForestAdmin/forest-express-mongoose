@@ -771,10 +771,6 @@ bitwise-xor@0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/bitwise-xor/-/bitwise-xor-0.0.0.tgz#040a8172b5bb8cc562b0b7119f230b2a1a780e3d"
 
-bluebird@2.9.25:
-  version "2.9.25"
-  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-2.9.25.tgz#6e36bd04064d9534c07160b9f7f26c5a738fe16a"
-
 bluebird@3.3.4:
   version "3.3.4"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.3.4.tgz#f780fe43e1a7a6510f67abd7d0d79533a40ddde6"
@@ -782,6 +778,11 @@ bluebird@3.3.4:
 bluebird@3.5.1:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.1.tgz#d9551f9de98f1fcda1e683d17ee91a0602ee2eb9"
+
+bluebird@3.5.4:
+  version "3.5.4"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.4.tgz#d6cc661595de30d5b3af5fcedd3c0b3ef6ec5714"
+  integrity sha512-FG+nFEZChJrbQ9tIccIfZJBz3J7mLrAhxakAbnrJWn8d7aKOC+LWifa0G+p4ZqKp4y13T7juYvdhq9NzKdsrjw==
 
 body-parser@1.18.2:
   version "1.18.2"
