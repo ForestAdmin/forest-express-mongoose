@@ -94,7 +94,7 @@ function HasManyGetter(model, association, opts, params) {
           descending = true;
         }
 
-        if (params.sort && (params.sort !== 'parentsReferencingOrder') && (params.sort !== '-parentsReferencingOrder')) {
+        if (fieldSort && (fieldSort !== 'parentsReferencingOrder')) {
           var recordsSorted = _.sortBy(records, function(record) {
             return record[fieldSort];
           });
