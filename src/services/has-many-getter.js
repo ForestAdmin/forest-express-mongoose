@@ -86,16 +86,15 @@ function HasManyGetter(model, association, opts, params) {
       })
       .then(function(recordsAndRecordIds) {
         var records = recordsAndRecordIds[0];
+        var fieldSort = params.sort;
+        var descending = false;
+
+        if (params.sort && (params.sort[0] === '-')) {
+          fieldSort = params.sort.substring(1);
+          descending = true;
+        }
+
         if (params.sort && (params.sort !== 'parentsReferencingOrder') && (params.sort !== '-parentsReferencingOrder')) {
-          // console.log(`params.sort is defined: ${JSON.stringify(params)} for records: ${records.map(r => r._id)}`);
-          var fieldSort = params.sort;
-          var descending = false;
-
-          if (params.sort[0] === '-') {
-            fieldSort = params.sort.substring(1);
-            descending = true;
-          }
-
           var recordsSorted = _.sortBy(records, function(record) {
             return record[fieldSort];
           });
@@ -109,9 +108,10 @@ function HasManyGetter(model, association, opts, params) {
           return '' + recordId;
         });
         // indexOf could be improved by making a Map from record-ids to their index.
-        return _.sortBy(records, function(record) {
+        var recordsSortedByReferencingOrder = _.sortBy(records, function(record) {
           return recordIdStrings.indexOf('' + record._id);
         });
+        return descending ? recordsSortedByReferencingOrder.reverse() : recordsSortedByReferencingOrder;
       });
   }
 
