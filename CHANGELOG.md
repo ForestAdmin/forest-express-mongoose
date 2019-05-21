@@ -1,6 +1,7 @@
 # Change Log
 
 ## [Unreleased]
+- Related Data - Sort populated arrays of references by the order of the references in the arrays, unless a specific ordering-key was specified.
 
 ## RELEASE 3.1.0 - 2019-04-23
 ### Changed

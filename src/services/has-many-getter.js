@@ -94,24 +94,23 @@ function HasManyGetter(model, association, opts, params) {
           descending = true;
         }
 
+        var recordsSorted;
         if (fieldSort && (fieldSort !== 'parentsReferencingOrder')) {
-          var recordsSorted = _.sortBy(records, function(record) {
+          recordsSorted = _.sortBy(records, function(record) {
             return record[fieldSort];
           });
-
-          return descending ? recordsSorted.reverse() : recordsSorted;
+        } else {
+          var recordIds = recordsAndRecordIds[1];
+          var recordIdStrings = recordIds.map(function(recordId) {
+            // Convert values to strings, so ObjectIds could be easily searched and compared.
+            return String(recordId);
+          });
+          // indexOf could be improved by making a Map from record-ids to their index.
+          recordsSorted = _.sortBy(records, function(record) {
+            return recordIdStrings.indexOf(String(record._id));
+          });
         }
-        // console.log(`params.sort is not defined: ${JSON.stringify(params.sort)} for records: ${records.map(r => r._id)}`);
-        var recordIds = recordsAndRecordIds[1];
-        var recordIdStrings = recordIds.map(function(recordId) {
-          // Convert values to strings, so ObjectIds could be easily searched and compared.
-          return '' + recordId;
-        });
-        // indexOf could be improved by making a Map from record-ids to their index.
-        var recordsSortedByReferencingOrder = _.sortBy(records, function(record) {
-          return recordIdStrings.indexOf('' + record._id);
-        });
-        return descending ? recordsSortedByReferencingOrder.reverse() : recordsSortedByReferencingOrder;
+        return descending ? recordsSorted.reverse() : recordsSorted;
       });
   }
 
