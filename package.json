@@ -47,7 +47,7 @@
     "onchange": "5.2.0",
     "pre-commit": "1.2.2",
     "semver": "5.6.0",
-    "simple-git": "1.65.0"
+    "simple-git": "1.115.0"
   },
   "scripts": {
     "build": "./node_modules/babel-cli/bin/babel.js src --out-dir dist && echo '\n\\033[0;34m[+] \\033[0;32mBuild done\\033[0m'",
