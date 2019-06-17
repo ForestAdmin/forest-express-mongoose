@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Changed
+- Build - Reduce package size removing Docker data folder from it.
 
 ## RELEASE 3.1.1 - 2019-05-15
 ### Fixed
