@@ -46,7 +46,7 @@
     "mongoose-fixture-loader": "1.0.2",
     "onchange": "5.2.0",
     "pre-commit": "1.2.2",
-    "semver": "5.6.0",
+    "semver": "6.1.2",
     "simple-git": "1.65.0"
   },
   "scripts": {
