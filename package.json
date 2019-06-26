@@ -1,7 +1,7 @@
 {
   "name": "forest-express-mongoose",
   "description": "Official Express/Mongoose Liana for Forest",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "author": "Sandro Munda <sandro@munda.me>",
   "contributors": [
     "Arnaud Besnier <arnaudibesnier@gmail.com>",
@@ -24,7 +24,7 @@
   "dependencies": {
     "babel-runtime": "7.0.0-beta.3",
     "bluebird": "2.9.25",
-    "forest-express": "3.1.0",
+    "forest-express": "3.2.0",
     "http-errors": "1.7.2",
     "lodash": "4.17.11",
     "moment": "2.24.0"
@@ -42,7 +42,7 @@
     "eslint-plugin-jsx-a11y": "6.0.2",
     "eslint-plugin-react": "7.5.1",
     "mocha": "6.1.4",
-    "mongoose": "5.3.4",
+    "mongoose": "5.5.9",
     "mongoose-fixture-loader": "1.0.2",
     "onchange": "5.2.0",
     "pre-commit": "1.2.2",

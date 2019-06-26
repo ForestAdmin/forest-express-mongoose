@@ -3,6 +3,18 @@
 ## [Unreleased]
 - Related Data - Sort populated arrays of references by the order of the references in the arrays, unless a specific ordering-key was specified.
 
+## RELEASE 3.2.0 - 2019-06-17
+### Added
+- Configuration - The liana now requires recursively model files in `modelsDir` and customization files in `configDir`.
+
+## RELEASE 3.1.2 - 2019-06-17
+### Changed
+- Build - Reduce package size removing Docker data folder from it.
+
+## RELEASE 3.1.1 - 2019-05-15
+### Fixed
+- Exports - Fix broken exports if users restart a new browser session (ie quit/restart browser).
+
 ## RELEASE 3.1.0 - 2019-04-23
 ### Changed
 - Dependency - Upgrade the forest-express dependency for onlyCrudModule option.
