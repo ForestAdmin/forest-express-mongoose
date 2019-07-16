@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Fixed
 - Security - Upgrade `lodash` dependency for security patch.
+- Security - Upgrade `onchange` dependency for security patch.
 
 ## RELEASE 3.2.0 - 2019-06-17
 ### Added
