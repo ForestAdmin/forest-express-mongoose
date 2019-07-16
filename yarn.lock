@@ -1730,10 +1730,10 @@ for-own@^0.1.4:
   dependencies:
     for-in "^1.0.1"
 
-forest-express@3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-3.2.0.tgz#47563baf61e83e3d8bf69b95e95a623a35a37033"
-  integrity sha512-xwrLw1aX4VqX1cpSk37TyLp38L5L4nvm7h27spctjEN6l0Uvic5TTgHtvWk1+AUv+jcc3AvB0bjBxeX1Ff07wA==
+forest-express@3.2.2:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-3.2.2.tgz#95c44247e6df6ebf1109615d12cdb18b20f10024"
+  integrity sha512-uf8pA2b4YC9g/SNbZWRwDxl0KNgrRbZ6InLDAFA1H4DSm8Ld3PkMutpBKUFXN3zNxKugkVNT0ryrR/c8X5KFog==
   dependencies:
     babel-runtime "7.0.0-beta.3"
     base32-encode "1.1.0"
@@ -1751,7 +1751,7 @@ forest-express@3.2.0:
     inflected "2.0.4"
     jsonapi-serializer "3.6.4"
     jsonwebtoken "8.5.1"
-    lodash "4.17.11"
+    lodash "4.17.13"
     moment "2.19.4"
     otplib "10.0.0"
     require-all "3.0.0"
@@ -2512,10 +2512,6 @@ lodash.repeat@^4.1.0:
 lodash.set@^4.0.0:
   version "4.3.2"
   resolved "https://registry.yarnpkg.com/lodash.set/-/lodash.set-4.3.2.tgz#d8757b1da807dde24816b0d6a84bea1a76230b23"
-
-lodash@4.17.11:
-  version "4.17.11"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
 
 lodash@4.17.13, lodash@^4.16.3, lodash@^4.17.11, lodash@^4.17.4, lodash@^4.2.0:
   version "4.17.13"
