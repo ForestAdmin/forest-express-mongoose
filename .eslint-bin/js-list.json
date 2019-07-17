@@ -2,5 +2,11 @@
   ".eslint-bin/lint-registered-files.js",
   ".eslint-bin/pre-commit-hook.js",
   ".eslintrc.js",
+  "src/services/filter-parser.js",
+  "src/services/line-stat-getter.js",
+  "src/services/operator-value-parser.js",
+  "src/services/pie-stat-getter.js",
+  "src/services/resources-getter.js",
+  "src/services/value-stat-getter.js",
   "test/.eslintrc.js"
 ]

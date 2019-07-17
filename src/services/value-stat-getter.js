@@ -1,48 +1,42 @@
-'use strict';
-var _ = require('lodash');
-var P = require('bluebird');
-var FilterParser = require('./filter-parser');
+import _ from 'lodash';
+import P from 'bluebird';
+import FilterParser from './filter-parser';
 
 function ValueStatGetter(model, params, opts) {
+  this.perform = () => new P((resolve, reject) => {
+    const query = model.aggregate();
 
-  this.perform = function () {
-    return new P(function (resolve, reject) {
-      var query = model.aggregate();
+    if (params.filterType && params.filters) {
+      const operator = `$${params.filterType}`;
+      const queryFilters = {};
+      queryFilters[operator] = [];
 
-      if (params.filterType && params.filters) {
-        var operator = '$' + params.filterType;
-        var queryFilters = {};
-        queryFilters[operator] = [];
+      _.each(params.filters, (filter) => {
+        const conditions = new FilterParser(model, opts, params.timezone)
+          .perform(filter.field, filter.value);
+        _.each(conditions, condition => queryFilters[operator].push(condition));
+      });
 
-        _.each(params.filters, function (filter) {
-          var conditions = new FilterParser(model, opts, params.timezone)
-            .perform(filter.field, filter.value);
-          _.each(conditions, function (condition) {
-            queryFilters[operator].push(condition);
-          });
-        });
+      query.match(queryFilters);
+    }
 
-        query.match(queryFilters);
-      }
+    let sum = 1;
+    if (params.aggregate_field) {
+      sum = `$${params.aggregate_field}`;
+    }
 
-      var sum = 1;
-      if (params['aggregate_field']) {
-        sum = '$' + params['aggregate_field'];
-      }
+    query
+      .group({
+        _id: null,
+        total: { $sum: sum },
+      })
+      .exec((err, records) => {
+        if (err) { return reject(err); }
+        if (!records || !records.length) { return resolve({ value: 0 }); }
 
-      query
-        .group({
-          _id: null,
-          total: { $sum: sum }
-        })
-        .exec(function (err, records) {
-          if (err) { return reject(err); }
-          if (!records || !records.length) { return resolve({ value: 0 }); }
-
-          resolve({ value: records[0].total });
-        });
-    });
-  };
+        return resolve({ value: records[0].total });
+      });
+  });
 }
 
 module.exports = ValueStatGetter;

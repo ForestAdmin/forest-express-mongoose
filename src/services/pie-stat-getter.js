@@ -1,91 +1,79 @@
-'use strict';
-var _ = require('lodash');
-var P = require('bluebird');
-var FilterParser = require('./filter-parser');
-var SchemaUtils = require('../utils/schema');
-var Interface = require('forest-express');
-var utils = require('../utils/schema');
-var moment = require('moment');
+import _ from 'lodash';
+import P from 'bluebird';
+import Interface from 'forest-express';
+import moment from 'moment';
+import FilterParser from './filter-parser';
+import utils from '../utils/schema';
 
 function PieStatGetter(model, params, opts) {
-  var schema = Interface.Schemas.schemas[utils.getModelName(model)];
-  var field = _.find(schema.fields, { field: params['group_by_field'] });
+  const schema = Interface.Schemas.schemas[utils.getModelName(model)];
+  const field = _.find(schema.fields, { field: params.group_by_field });
 
   function getReference(fieldName) {
-    var field = _.find(schema.fields, { field: fieldName });
-    return field.reference ? field : null;
+    const currentField = _.find(schema.fields, { field: fieldName });
+    return currentField.reference ? currentField : null;
   }
 
   function handlePopulate(records, referenceField) {
-    return new P(function (resolve, reject) {
-      var referenceModel = SchemaUtils.getReferenceModel(opts,
-        referenceField.reference);
+    return new P((resolve, reject) => {
+      const referenceModel = utils.getReferenceModel(opts, referenceField.reference);
 
-      referenceModel.populate(records.value, {
-        path: 'key'
-      }, function (err, records) {
+      referenceModel.populate(records.value, { path: 'key' }, (err, currentRecords) => {
         if (err) { return reject(err); }
-        resolve({ value: records });
+        return resolve({ value: currentRecords });
       });
     });
   }
 
-  this.perform = function () {
-    var populateGroupByField = getReference(params['group_by_field']);
+  this.perform = () => {
+    const populateGroupByField = getReference(params.group_by_field);
 
-    return new P(function (resolve, reject) {
-      var groupBy = {};
-      groupBy[params['group_by_field']] = '$' + params['group_by_field'];
+    return new P((resolve, reject) => {
+      const groupBy = {};
+      groupBy[params.group_by_field] = `$${params.group_by_field}`;
 
-      var query = model.aggregate();
+      const query = model.aggregate();
 
       if (params.filterType && params.filters) {
-        var operator = '$' + params.filterType;
-        var queryFilters = {};
+        const operator = `$${params.filterType}`;
+        const queryFilters = {};
         queryFilters[operator] = [];
 
-        _.each(params.filters, function (filter) {
-          var conditions = new FilterParser(model, opts, params.timezone)
+        _.each(params.filters, (filter) => {
+          const conditions = new FilterParser(model, opts, params.timezone)
             .perform(filter.field, filter.value);
-          _.each(conditions, function (condition) {
-            queryFilters[operator].push(condition);
-          });
+          _.each(conditions, condition => queryFilters[operator].push(condition));
         });
 
         query.match(queryFilters);
       }
 
-      var sum = 1;
-      if (params['aggregate_field']) {
-        sum = '$' + params['aggregate_field'];
+      let sum = 1;
+      if (params.aggregate_field) {
+        sum = `$${params.aggregate_field}`;
       }
 
       query
         .group({
           _id: groupBy,
-          count: { $sum: sum }
+          count: { $sum: sum },
         })
         .project({
-          key: '$_id.' + params['group_by_field'],
+          key: `$_id.${params.group_by_field}`,
           value: '$count',
-          _id: false
+          _id: false,
         })
         .sort({ value: -1 })
-        .exec(function (err, records) {
-          if (err) { return reject(err); }
-          resolve( {value: records });
-        });
-    }).then(function (records) {
+        .exec((err, records) => (err ? reject(err) : resolve({ value: records })));
+    }).then((records) => {
       if (populateGroupByField) {
         return handlePopulate(records, populateGroupByField);
-      } else {
-        if (field.type === 'Date') {
-          _.each(records.value, function (record) {
-            record.key = moment(record.key).format('DD/MM/YYYY HH:mm:ss');
-          });
-        }
-        return records;
+      } else if (field.type === 'Date') {
+        _.each(records.value, (record) => {
+          record.key = moment(record.key).format('DD/MM/YYYY HH:mm:ss');
+        });
       }
+      return records;
     });
   };
 }
