@@ -3,6 +3,11 @@
 ## [Unreleased]
 - Related Data - Sort populated arrays of references by the order of the references in the arrays, unless a specific ordering-key was specified.
 
+## RELEASE 3.2.1 - 2019-07-16
+### Fixed
+- Security - Upgrade `lodash` dependency for security patch.
+- Security - Upgrade `onchange` dependency for security patch.
+
 ## RELEASE 3.2.0 - 2019-06-17
 ### Added
 - Configuration - The liana now requires recursively model files in `modelsDir` and customization files in `configDir`.
