@@ -1,14 +1,13 @@
-'use strict';
-var _ = require('lodash');
-var P = require('bluebird');
-var SearchBuilder = require('./search-builder');
-var Interface = require('forest-express');
-var utils = require('../utils/schema');
+const _ = require('lodash');
+const P = require('bluebird');
+const SearchBuilder = require('./search-builder');
+const Interface = require('forest-express');
+const utils = require('../utils/schema');
 
 function HasManyGetter(model, association, opts, params) {
-  var OBJECTID_REGEXP = /^[0-9a-fA-F]{24}$/;
-  var schema = Interface.Schemas.schemas[utils.getModelName(association)];
-  var searchBuilder = new SearchBuilder(association, opts, params);
+  const OBJECTID_REGEXP = /^[0-9a-fA-F]{24}$/;
+  const schema = Interface.Schemas.schemas[utils.getModelName(association)];
+  const searchBuilder = new SearchBuilder(association, opts, params);
 
   function hasPagination() {
     return params.page && params.page.number;
@@ -16,41 +15,39 @@ function HasManyGetter(model, association, opts, params) {
 
   function getLimit() {
     if (hasPagination()) {
-      return parseInt(params.page.number) * params.page.size;
-    } else {
-      return 5;
+      return parseInt(params.page.number, 10) * params.page.size;
     }
+    return 5;
   }
 
   function getSkip() {
     if (hasPagination()) {
-      return (parseInt(params.page.number) - 1) * params.page.size;
-    } else {
-      return 0;
+      return (parseInt(params.page.number, 10) - 1) * params.page.size;
     }
+    return 0;
   }
 
   function getProjection() {
-    var projection = {};
+    const projection = {};
     projection[params.associationName] = 1;
-    projection._id = 0;
+    projection._id = 0; // eslint-disable-line
 
     return projection;
   }
 
   function handlePopulate(query) {
-    _.each(schema.fields, function (field) {
+    _.each(schema.fields, (field) => {
       if (field.reference) {
         query.populate({
-          path: field.field
+          path: field.field,
         });
       }
     });
   }
 
   function getRecords() {
-    return new P(function (resolve, reject) {
-      var id = params.recordId;
+    return new P((resolve, reject) => {
+      let id = params.recordId;
       if (OBJECTID_REGEXP.test(params.recordId)) {
         id = opts.mongoose.Types.ObjectId(id);
       }
@@ -60,64 +57,56 @@ function HasManyGetter(model, association, opts, params) {
         .match({ _id: id })
         .unwind(params.associationName)
         .project(getProjection())
-        .exec(function (error, records) {
+        .exec((error, records) => {
           if (error) { return reject(error); }
-          resolve(_.map(records, function (record) {
-            return record[params.associationName];
-          }));
+          return resolve(_.map(records, record => record[params.associationName]));
         });
     })
-      .then(function (recordIds) {
-        var conditions = {
-          $and: [{ _id: { $in: recordIds }}]
+      .then((recordIds) => {
+        const conditions = {
+          $and: [{ _id: { $in: recordIds } }],
         };
 
         if (params.search) {
-          var conditionsSearch = searchBuilder.getConditions();
+          const conditionsSearch = searchBuilder.getConditions();
           conditions.$and.push(conditionsSearch);
         }
 
-        var query = association.find(conditions);
+        const query = association.find(conditions);
         handlePopulate(query);
 
-        return query.then(function(records) {
-          return [records, recordIds];
-        });
+        return query.then(records => [records, recordIds]);
       })
-      .then(function(recordsAndRecordIds) {
-        var records = recordsAndRecordIds[0];
-        var fieldSort = params.sort;
-        var descending = false;
+      .then((recordsAndRecordIds) => {
+        const records = recordsAndRecordIds[0];
+        let fieldSort = params.sort;
+        let descending = false;
 
         if (params.sort && (params.sort[0] === '-')) {
           fieldSort = params.sort.substring(1);
           descending = true;
         }
 
-        var recordsSorted;
+        let recordsSorted;
         if (fieldSort) {
-          recordsSorted = _.sortBy(records, function(record) {
-            return record[fieldSort];
-          });
+          recordsSorted = _.sortBy(records, record => record[fieldSort]);
         } else {
-          var recordIds = recordsAndRecordIds[1];
-          var recordIdStrings = recordIds.map(function(recordId) {
+          const recordIds = recordsAndRecordIds[1];
+          const recordIdStrings = recordIds.map(recordId =>
             // Convert values to strings, so ObjectIds could be easily searched and compared.
-            return String(recordId);
-          });
+            String(recordId));
           // indexOf could be improved by making a Map from record-ids to their index.
-          recordsSorted = _.sortBy(records, function(record) {
-            return recordIdStrings.indexOf(String(record._id));
-          });
+          recordsSorted = _.sortBy(records, record =>
+            recordIdStrings.indexOf(String(record._id))); // eslint-disable-line
         }
         return descending ? recordsSorted.reverse() : recordsSorted;
       });
   }
 
-  this.perform = function () {
-    return getRecords()
-      .then(function (records) {
-        var fieldsSearched = null;
+  this.perform = () =>
+    getRecords()
+      .then((records) => {
+        let fieldsSearched = null;
 
         if (params.search) {
           fieldsSearched = searchBuilder.getFieldsSearched();
@@ -127,14 +116,10 @@ function HasManyGetter(model, association, opts, params) {
 
         return [records, fieldsSearched];
       });
-  };
 
-  this.count = function () {
-    return getRecords()
-      .then(function (records) {
-        return records.length;
-      });
-  };
+  this.count = () =>
+    getRecords()
+      .then(records => records.length);
 }
 
 module.exports = HasManyGetter;
