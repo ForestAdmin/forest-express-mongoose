@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 3.2.3 - 2019-07-24
 ### Fixed
 - Smart Actions - Automatically add the "/" character if missing at the beginning at a Smart Action custom endpoint declaration.
 
