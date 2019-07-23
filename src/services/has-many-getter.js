@@ -45,7 +45,7 @@ function HasManyGetter(model, association, opts, params) {
     });
   }
 
-  function getRecords() {
+  function getRecordsAndRecordIds() {
     return new P((resolve, reject) => {
       let id = params.recordId;
       if (OBJECTID_REGEXP.test(params.recordId)) {
@@ -76,7 +76,11 @@ function HasManyGetter(model, association, opts, params) {
         handlePopulate(query);
 
         return query.then(records => [records, recordIds]);
-      })
+      });
+  }
+
+  this.perform = () =>
+    getRecordsAndRecordIds()
       .then((recordsAndRecordIds) => {
         const records = recordsAndRecordIds[0];
         let fieldSort = params.sort;
@@ -92,19 +96,13 @@ function HasManyGetter(model, association, opts, params) {
           recordsSorted = _.sortBy(records, record => record[fieldSort]);
         } else {
           const recordIds = recordsAndRecordIds[1];
-          const recordIdStrings = recordIds.map(recordId =>
-            // Convert values to strings, so ObjectIds could be easily searched and compared.
-            String(recordId));
-          // indexOf could be improved by making a Map from record-ids to their index.
-          recordsSorted = _.sortBy(records, record =>
-            recordIdStrings.indexOf(String(record._id))); // eslint-disable-line
+          // NOTICE: Convert values to strings, so ObjectIds could be easily searched and compared.
+          const recordIdStrings = recordIds.map(recordId => String(recordId));
+          // NOTICE: indexOf could be improved by making a Map from record-ids to their index.
+          recordsSorted = _.sortBy(records, record => recordIdStrings.indexOf(String(record._id))); // eslint-disable-line
         }
         return descending ? recordsSorted.reverse() : recordsSorted;
-      });
-  }
-
-  this.perform = () =>
-    getRecords()
+      })
       .then((records) => {
         let fieldsSearched = null;
 
@@ -118,8 +116,8 @@ function HasManyGetter(model, association, opts, params) {
       });
 
   this.count = () =>
-    getRecords()
-      .then(records => records.length);
+    getRecordsAndRecordIds()
+      .then(recordsAndRecordIds => recordsAndRecordIds[0].length);
 }
 
 module.exports = HasManyGetter;

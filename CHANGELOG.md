@@ -5,6 +5,7 @@
 - Linter - Fix linter issues on chart stat getters
 - Related Data - Sort populated arrays of references by the reference id order unless a specific ordering-key was specified.
 - Code Style - Apply ESLint rules.
+- Performances - Speed up the `hasMany#count` service removing a useless sorting.
 
 ## RELEASE 3.2.1 - 2019-07-16
 ### Fixed
