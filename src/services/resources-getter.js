@@ -1,54 +1,41 @@
-'use strict';
-var P = require('bluebird');
-var _ = require('lodash');
-var OperatorValueParser = require('./operator-value-parser');
-var SearchBuilder = require('./search-builder');
-var FilterParser = require('./filter-parser');
-var Interface = require('forest-express');
-var utils = require('../utils/schema');
-var mongooseUtils = require('./mongoose-utils');
+import P from 'bluebird';
+import _ from 'lodash';
+import Interface from 'forest-express';
+import OperatorValueParser from './operator-value-parser';
+import SearchBuilder from './search-builder';
+import FilterParser from './filter-parser';
+import utils from '../utils/schema';
+import mongooseUtils from './mongoose-utils';
 
 function ResourcesGetter(model, opts, params) {
-  var schema = Interface.Schemas.schemas[utils.getModelName(model)];
-  var segment;
+  const schema = Interface.Schemas.schemas[utils.getModelName(model)];
+  let segment;
 
-  var searchBuilder = new SearchBuilder(model, opts, params, schema.searchFields);
-  var hasSmartFieldSearch = false;
+  const searchBuilder = new SearchBuilder(model, opts, params, schema.searchFields);
+  let hasSmartFieldSearch = false;
 
   function hasPagination() {
     return params.page && params.page.number;
   }
 
   function getLimit() {
-    if (hasPagination()) {
-      if (params.page.size) {
-        return parseInt(params.page.size);
-      } else {
-        return 10;
-      }
-    } else {
-      return 10;
-    }
+    return hasPagination() && params.page.size ? parseInt(params.page.size, 10) : 10;
   }
 
   function getSkip() {
-    if (hasPagination()) {
-      return (parseInt(params.page.number) - 1) * getLimit();
-    } else {
-      return 0;
-    }
+    return hasPagination() ? (parseInt(params.page.number, 10) - 1) * getLimit() : 0;
   }
 
   function refilterBasedOnFilters(records) {
-    return P.filter(records, function (record) {
-      var ret = true;
+    return P.filter(records, (record) => {
+      let ret = true;
 
       // Refilter record based on the populated match.
-      _.each(params.filter, function (value, key) {
+      _.each(params.filter, (value, key) => {
         if (key.indexOf(':') > -1) {
-          var fieldName = key.split(':')[0];
+          const fieldName = key.split(':')[0];
 
-          var field = _.find(schema.fields, { field: fieldName });
+          const field = _.find(schema.fields, { field: fieldName });
           if (field && field.reference) {
             if (_.isArray(field.type)) {
               ret = !!(ret && record[fieldName] && record[fieldName].length);
@@ -66,9 +53,9 @@ function ResourcesGetter(model, opts, params) {
   }
 
   function hasRelationshipFilter() {
-    var ret = false;
+    let ret = false;
 
-    _.each(params.filter, function (value, key) {
+    _.each(params.filter, (value, key) => {
       if (key.indexOf(':') > -1) {
         ret = true;
       }
@@ -77,38 +64,33 @@ function ResourcesGetter(model, opts, params) {
     return ret;
   }
 
-  function count (query) {
-    return new P(function (resolve, reject) {
-      query.count(function (err, count) {
-        if (err) { return reject(err); }
-        resolve(count);
-      });
+  function count(query) {
+    return new P((resolve, reject) => {
+      query.count((err, currentCount) => (err ? reject(err) : resolve(currentCount)));
     });
   }
 
   function populateWhere(field) {
-    var filter = {};
-    var conditions = [];
+    const filter = {};
+    const conditions = [];
 
-    _.each(params.filter, function (values, key) {
+    _.each(params.filter, (values, key) => {
       if (key.indexOf(':') > -1) {
-        var splitted = key.split(':');
-        var fieldName = splitted[0];
-        var subFieldName = splitted[1];
+        const splitted = key.split(':');
+        const fieldName = splitted[0];
+        const subFieldName = splitted[1];
 
         if (fieldName === field.field) {
-          var currentField = _.find(schema.fields, { field: fieldName });
+          const currentField = _.find(schema.fields, { field: fieldName });
           if (currentField && currentField.reference) {
             // NOTICE: Look for the associated model infos
-            var subModel = _.find(mongooseUtils.getModels(opts),
-              function(model) {
-                return utils.getModelName(model) === currentField.reference.split('.')[0];
-              });
+            const subModel = _.find(mongooseUtils.getModels(opts), currentModel =>
+              utils.getModelName(currentModel) === currentField.reference.split('.')[0]);
 
-            values.split(',').forEach(function (value) {
-              var condition = {};
-              condition[subFieldName] = new OperatorValueParser(opts,
-                params.timezone).perform(subModel, subFieldName, value);
+            values.split(',').forEach((value) => {
+              const condition = {};
+              condition[subFieldName] = new OperatorValueParser(opts, params.timezone)
+                .perform(subModel, subFieldName, value);
               conditions.push(condition);
             });
           }
@@ -117,33 +99,30 @@ function ResourcesGetter(model, opts, params) {
     });
 
     if (params.filterType && conditions.length > 0) {
-      filter['$' + params.filterType] = conditions;
+      filter[`$${params.filterType}`] = conditions;
     }
     return filter;
   }
 
   function handlePopulate(query) {
-    _.each(schema.fields, function (field) {
+    _.each(schema.fields, (field) => {
       if (field.reference) {
         query.populate({
           path: field.field,
-          match: populateWhere(field)
+          match: populateWhere(field),
         });
       }
     });
   }
 
   function handleFilterParams(query) {
-    var operator = '$' + params.filterType;
-    var queryFilters = {};
+    const operator = `$${params.filterType}`;
+    const queryFilters = {};
     queryFilters[operator] = [];
 
-    _.each(params.filter, function (values, key) {
-      var conditions = new FilterParser(model, opts, params.timezone)
-        .perform(key, values);
-      _.each(conditions, function (condition) {
-        queryFilters[operator].push(condition);
-      });
+    _.each(params.filter, (values, key) => {
+      const conditions = new FilterParser(model, opts, params.timezone).perform(key, values);
+      _.each(conditions, condition => queryFilters[operator].push(condition));
     });
 
     if (queryFilters[operator].length) {
@@ -160,7 +139,7 @@ function ResourcesGetter(model, opts, params) {
   }
 
   function getRecordsQuery() {
-    var query = model.find();
+    const query = model.find();
 
     handlePopulate(query);
 
@@ -177,14 +156,13 @@ function ResourcesGetter(model, opts, params) {
     }
 
     if (params.search) {
-      _.each(schema.fields, function (field) {
+      _.each(schema.fields, (field) => {
         if (field.search) {
           try {
             field.search(query, params.search);
             hasSmartFieldSearch = true;
-          } catch(error) {
-            Interface.logger.error('Cannot search properly on Smart Field ' +
-              field.field, error);
+          } catch (error) {
+            Interface.logger.error(`Cannot search properly on Smart Field ${field.field}`, error);
           }
         }
       });
@@ -194,7 +172,7 @@ function ResourcesGetter(model, opts, params) {
   }
 
   function exec(query) {
-    return new P(function (resolve, reject) {
+    return new P((resolve, reject) => {
       if (params.sort) {
         handleSortParam(query);
       }
@@ -205,25 +183,13 @@ function ResourcesGetter(model, opts, params) {
           .skip(getSkip());
       }
 
-      query
-        .exec(function (err, records) {
-          if (err) { return reject(err); }
-          resolve(records);
-        });
-    }).then(function (records) {
-      if (hasRelationshipFilter()) {
-        return refilterBasedOnFilters(records);
-      } else {
-        return records;
-      }
-    });
+      query.exec((err, records) => (err ? reject(err) : resolve(records)));
+    }).then(records => (hasRelationshipFilter() ? refilterBasedOnFilters(records) : records));
   }
 
   function getSegment() {
     if (schema.segments && params.segment) {
-      segment = _.find(schema.segments, function (segment) {
-        return segment.name === params.segment;
-      });
+      segment = _.find(schema.segments, currentSegment => currentSegment.name === params.segment);
     }
   }
 
@@ -231,60 +197,48 @@ function ResourcesGetter(model, opts, params) {
     getSegment();
     if (segment && segment.where && typeof segment.where === 'function') {
       return segment.where()
-        .then(function (where) {
+        .then((where) => {
           segment.where = where;
-          return;
         });
-    } else {
-      return new P(function (resolve) { return resolve(); });
     }
+    return new P(resolve => resolve());
   }
 
-  this.perform = function () {
-    return getSegmentCondition()
-      .then(function () {
-        var query = getRecordsQuery();
+  this.perform = () => getSegmentCondition()
+    .then(() => {
+      const query = getRecordsQuery();
 
-        if (hasRelationshipFilter()) {
-          return exec(query)
-            .then(function (records) {
-              records = records.slice(getSkip(), getSkip() + getLimit());
-              return records;
-            });
+      if (hasRelationshipFilter()) {
+        return exec(query)
+          .then((records) => {
+            records = records.slice(getSkip(), getSkip() + getLimit());
+            return records;
+          });
+      }
+
+      return exec(query);
+    })
+    .then((records) => {
+      let fieldsSearched = null;
+
+      if (params.search) {
+        fieldsSearched = searchBuilder.getFieldsSearched();
+        if (fieldsSearched.length === 0 && !hasSmartFieldSearch) {
+          // NOTICE: No search condition has been set for the current search,
+          //         no record can be found.
+          return [[], 0];
         }
+      }
 
-        return exec(query);
-      })
-      .then(function (records) {
-        var fieldsSearched = null;
+      return [records, fieldsSearched];
+    });
 
-        if (params.search) {
-          fieldsSearched = searchBuilder.getFieldsSearched();
-          if (fieldsSearched.length === 0 && !hasSmartFieldSearch) {
-            // NOTICE: No search condition has been set for the current search, no record can be found.
-            return [[], 0];
-          }
-        }
+  this.count = () => getSegmentCondition()
+    .then(() => {
+      const query = getRecordsQuery();
 
-        return [records, fieldsSearched];
-      });
-  };
-
-  this.count = function () {
-    return getSegmentCondition()
-      .then(function () {
-        var query = getRecordsQuery();
-
-        if (hasRelationshipFilter()) {
-          return exec(query)
-            .then(function (records) {
-              return records.length;
-            });
-        }
-
-        return count(query);
-      });
-  };
+      return hasRelationshipFilter() ? exec(query).then(records => records.length) : count(query);
+    });
 }
 
 module.exports = ResourcesGetter;
