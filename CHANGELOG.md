@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Changed
 - Linter - Fix linter issues on chart stat getters
+- Related Data - Sort populated arrays of references by the order of the references in the arrays, unless a specific ordering-key was specified.
 
 ## RELEASE 3.2.1 - 2019-07-16
 ### Fixed
