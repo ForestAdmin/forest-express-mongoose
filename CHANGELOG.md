@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- Technical - Fix pre-commit hook to avoid renamed file and add new lina at the end of the file.
 
 ## RELEASE 3.2.4 - 2019-07-24
 ### Fixed
