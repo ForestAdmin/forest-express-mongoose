@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 3.2.4 - 2019-07-24
 ### Fixed
 - Schema - Schemas having fields with descriptions containing "\n" are now properly sent in remote environments.
 
