@@ -1,19 +1,19 @@
-var expect = require('chai').expect;
-var mongoose = require('mongoose');
-var loadFixture = require('mongoose-fixture-loader');
-var ResourcesGetter = require('../../../src/services/resources-getter');
-var Interface = require('forest-express');
-var mongooseConnect = require('../../utils/mongoose-connect');
+import { expect } from 'chai';
+import mongoose from 'mongoose';
+import loadFixture from 'mongoose-fixture-loader';
+import Interface from 'forest-express';
+import ResourcesGetter from '../../../src/services/resources-getter';
+import mongooseConnect from '../../utils/mongoose-connect';
 
-describe('Service > ResourcesGetter', function () {
-  var OrderModel;
+describe('Service > ResourcesGetter', () => {
+  let OrderModel;
 
-  var options = {
-    mongoose: mongoose,
+  const options = {
+    mongoose,
     connections: [mongoose],
   };
 
-  before(function () {
+  before(() => {
     Interface.Schemas = {
       schemas: {
         Order: {
@@ -26,15 +26,15 @@ describe('Service > ResourcesGetter', function () {
             { field: 'id', type: 'Number' },
             { field: 'amount', type: 'Number' },
             { field: 'comment', type: 'String' },
-            { field: 'giftMessage', type: 'String' }
-          ]
+            { field: 'giftMessage', type: 'String' },
+          ],
         },
-      }
+      },
     };
 
     return mongooseConnect()
-      .then(function () {
-        var OrderSchema = mongoose.Schema({
+      .then(() => {
+        const OrderSchema = mongoose.Schema({
           amount: { type: Number },
           comment: { type: String },
           giftMessage: { type: String },
@@ -44,7 +44,7 @@ describe('Service > ResourcesGetter', function () {
 
         return OrderModel.remove({});
       })
-      .then(function () {
+      .then(() => {
         return loadFixture(OrderModel, [
           {
             // id: 100,
@@ -57,30 +57,30 @@ describe('Service > ResourcesGetter', function () {
             amount: 1399,
             comment: 'this is a gift',
             giftMessage: 'Thank you',
-          }
+          },
         ]);
       });
   });
 
-  after(function (done) {
+  after((done) => {
     mongoose.connection.close();
     done();
   });
 
-  describe('Request on the resources getter with a search on a collection with searchFields', function () {
-    it('should retrieve the record with `gift` value in `comment` field', function (done) {
-      var parameters = {
+  describe('Request on the resources getter with a search on a collection with searchFields', () => {
+    it('should retrieve the record with `gift` value in `comment` field', (done) => {
+      const parameters = {
         fields: {
-          order: 'id,amount,description,giftComment'
+          order: 'id,amount,description,giftComment',
         },
         page: { number: '1', size: '30' },
         search: 'gift',
-        timezone: '+02:00'
+        timezone: '+02:00',
       };
 
       new ResourcesGetter(OrderModel, options, parameters)
         .perform()
-        .then(function (result) {
+        .then((result) => {
           expect(result[0].length).equal(1);
           expect(result[0][0].comment).to.match(/gift/);
           done();
@@ -88,15 +88,15 @@ describe('Service > ResourcesGetter', function () {
         .catch(done);
     });
 
-    it('should retrieve the count of the records', function (done) {
-      var parameters = {
+    it('should retrieve the count of the records', (done) => {
+      const parameters = {
         search: 'gift',
-        timezone: '+02:00'
+        timezone: '+02:00',
       };
 
       new ResourcesGetter(OrderModel, options, parameters)
         .count()
-        .then(function (count) {
+        .then((count) => {
           expect(count).equal(1);
           done();
         })
