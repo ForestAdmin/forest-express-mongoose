@@ -2,7 +2,7 @@ import _ from 'lodash';
 import P from 'bluebird';
 import Interface from 'forest-express';
 import moment from 'moment';
-import FilterParser from './filter-parser';
+import FiltersParser from './filters-parser';
 import utils from '../utils/schema';
 
 function PieStatGetter(model, params, opts) {
@@ -34,18 +34,8 @@ function PieStatGetter(model, params, opts) {
 
       const query = model.aggregate();
 
-      if (params.filterType && params.filters) {
-        const operator = `$${params.filterType}`;
-        const queryFilters = {};
-        queryFilters[operator] = [];
-
-        _.each(params.filters, (filter) => {
-          const conditions = new FilterParser(model, opts, params.timezone)
-            .perform(filter.field, filter.value);
-          _.each(conditions, condition => queryFilters[operator].push(condition));
-        });
-
-        query.match(queryFilters);
+      if (params.filters) {
+        query.match(new FiltersParser(model, params.timezone, opts).perform(params.filters));
       }
 
       let sum = 1;

@@ -3,7 +3,7 @@ import _ from 'lodash';
 import P from 'bluebird';
 import moment from 'moment';
 import Interface from 'forest-express';
-import FilterParser from './filter-parser';
+import FiltersParser from './filters-parser';
 import utils from '../utils/schema';
 
 function LineStatFinder(model, params, opts) {
@@ -176,21 +176,10 @@ function LineStatFinder(model, params, opts) {
         sum = `$${params.aggregate_field}`;
       }
 
-      let query = model
-        .aggregate();
+      let query = model.aggregate();
 
-      if (params.filterType && params.filters) {
-        const operator = `$${params.filterType}`;
-        const queryFilters = {};
-        queryFilters[operator] = [];
-
-        _.each(params.filters, (filter) => {
-          const conditions = new FilterParser(model, opts, params.timezone)
-            .perform(filter.field, filter.value);
-          _.each(conditions, condition => queryFilters[operator].push(condition));
-        });
-
-        query.match(queryFilters);
+      if (params.filters) {
+        query.where(new FiltersParser(model, params.timezone, opts).perform(params.filters));
       }
 
       if (params.group_by_date_field) {

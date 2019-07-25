@@ -242,6 +242,7 @@ function OperatorValueParser(opts, timezone) {
           .add(offsetHours, 'h')
           .toDate();
         break;
+
       case PERIODS_WEEK_TO_DATE:
         from = moment()
           .startOf('week')

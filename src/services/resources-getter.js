@@ -3,7 +3,7 @@ import _ from 'lodash';
 import Interface from 'forest-express';
 import OperatorValueParser from './operator-value-parser';
 import SearchBuilder from './search-builder';
-import FilterParser from './filter-parser';
+import FiltersParser from './filters-parser';
 import utils from '../utils/schema';
 import mongooseUtils from './mongoose-utils';
 
@@ -80,29 +80,6 @@ function ResourcesGetter(model, opts, params) {
     });
   }
 
-  function handleFilterParams(jsonQuery) {
-    const operator = `$${params.filterType}`;
-    const conditions = [];
-
-    _.each(params.filter, (values, key) => {
-      const filterConditions = new FilterParser(model, opts, params.timezone).perform(key, values);
-      _.each(filterConditions, condition => conditions.push(condition));
-    });
-
-    _.each(schema.fields, (field) => {
-      if (field.reference) {
-        const condition = populateWhere(field);
-        if (condition) {
-          conditions.push(condition);
-        }
-      }
-    });
-
-    if (conditions.length) {
-      jsonQuery.push({ [operator]: conditions });
-    }
-  }
-
   function handleSortParam(jsonQuery) {
     const order = params.sort.startsWith('-') ? -1 : 1;
     let sortParam = order > 0 ? params.sort : params.sort.substring(1);
@@ -116,18 +93,20 @@ function ResourcesGetter(model, opts, params) {
     const jsonQuery = [];
     handlePopulate(jsonQuery);
 
-    const conditions = [];
+    let conditions = [];
     if (params.search) {
       searchBuilder.getWhere(conditions);
     }
 
-    if (params.filter) {
-      handleFilterParams(conditions);
+    if (params.filters) {
+      conditions = conditions.concat(new FiltersParser(model, params.timezone, opts)
+        .perform(params.filters));
     }
 
     if (segment) {
       conditions.push(segment.where);
     }
+
     if (conditions.length) {
       jsonQuery.push({
         $match: {
@@ -200,7 +179,7 @@ function ResourcesGetter(model, opts, params) {
       jsonQuery.push({ $group: { _id: null, count: { $sum: 1 } } });
       jsonQuery.push({ $project: { _id: 0 } });
       return model.aggregate(jsonQuery)
-        .then(result => result[0].count);
+        .then(result => (result[0] ? result[0].count : 0));
     });
 }
 
