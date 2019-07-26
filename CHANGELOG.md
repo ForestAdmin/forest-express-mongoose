@@ -4,6 +4,7 @@
 ### Fixed
 - Technical - Fix pre-commit hook to avoid renamed file and add new lina at the end of the file.
 - ESLint - Fix `search-builder` according to eslint rules.
+- ESLint - Fix eslintrc to allow dangle underscore.
 
 ## RELEASE 3.2.4 - 2019-07-24
 ### Fixed
