@@ -197,7 +197,8 @@ function ResourcesGetter(model, opts, params) {
   this.count = () => getSegmentCondition()
     .then(() => {
       const jsonQuery = getRecordsQuery();
-      jsonQuery.push({ $count: 'count' });
+      jsonQuery.push({ $group: { _id: null, count: { $sum: 1 } } });
+      jsonQuery.push({ $project: { _id: 0 } });
       return model.aggregate(jsonQuery)
         .then(result => result[0].count);
     });
