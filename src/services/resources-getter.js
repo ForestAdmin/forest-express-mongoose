@@ -26,52 +26,7 @@ function ResourcesGetter(model, opts, params) {
     return hasPagination() ? (parseInt(params.page.number, 10) - 1) * getLimit() : 0;
   }
 
-  function refilterBasedOnFilters(records) {
-    return P.filter(records, (record) => {
-      let ret = true;
-
-      // Refilter record based on the populated match.
-      _.each(params.filter, (value, key) => {
-        if (key.indexOf(':') > -1) {
-          const fieldName = key.split(':')[0];
-
-          const field = _.find(schema.fields, { field: fieldName });
-          if (field && field.reference) {
-            if (_.isArray(field.type)) {
-              ret = !!(ret && record[fieldName] && record[fieldName].length);
-            } else {
-              ret = !!(ret && record[fieldName]);
-            }
-          } else {
-            ret = true;
-          }
-        }
-      });
-
-      return ret;
-    });
-  }
-
-  function hasRelationshipFilter() {
-    let ret = false;
-
-    _.each(params.filter, (value, key) => {
-      if (key.indexOf(':') > -1) {
-        ret = true;
-      }
-    });
-
-    return ret;
-  }
-
-  function count(query) {
-    return new P((resolve, reject) => {
-      query.count((err, currentCount) => (err ? reject(err) : resolve(currentCount)));
-    });
-  }
-
   function populateWhere(field) {
-    const filter = {};
     const conditions = [];
 
     _.each(params.filter, (values, key) => {
@@ -80,86 +35,113 @@ function ResourcesGetter(model, opts, params) {
         const fieldName = splitted[0];
         const subFieldName = splitted[1];
 
-        if (fieldName === field.field) {
-          const currentField = _.find(schema.fields, { field: fieldName });
-          if (currentField && currentField.reference) {
-            // NOTICE: Look for the associated model infos
-            const subModel = _.find(mongooseUtils.getModels(opts), currentModel =>
-              utils.getModelName(currentModel) === currentField.reference.split('.')[0]);
+        if (fieldName === field.field && field.reference) {
+          // NOTICE: Look for the associated model infos
+          const subModel = _.find(mongooseUtils.getModels(opts), currentModel =>
+            utils.getModelName(currentModel) === field.reference.split('.')[0]);
 
-            values.split(',').forEach((value) => {
-              const condition = {};
-              condition[subFieldName] = new OperatorValueParser(opts, params.timezone)
-                .perform(subModel, subFieldName, value);
-              conditions.push(condition);
-            });
-          }
+          values.split(',').forEach((value) => {
+            const condition = {};
+            condition[`${field.field}.${subFieldName}`] = new OperatorValueParser(opts, params.timezone)
+              .perform(subModel, subFieldName, value);
+            conditions.push(condition);
+          });
         }
       }
     });
 
     if (params.filterType && conditions.length > 0) {
-      filter[`$${params.filterType}`] = conditions;
+      return { [`$${params.filterType}`]: conditions };
     }
-    return filter;
+    return null;
   }
 
-  function handlePopulate(query) {
+  function handlePopulate(jsonQuery) {
     _.each(schema.fields, (field) => {
       if (field.reference) {
-        query.populate({
-          path: field.field,
-          match: populateWhere(field),
+        const [collectionName, referencedKey] = field.reference.split('.');
+        const subModel = _.find(mongooseUtils.getModels(opts), currentModel =>
+          utils.getModelName(currentModel) === collectionName);
+        jsonQuery.push({
+          $lookup: {
+            from: subModel.collection.name,
+            localField: field.field,
+            foreignField: referencedKey,
+            as: field.field,
+          },
         });
+
+        if (model.schema.path(field.field).instance !== 'Array') {
+          jsonQuery.push({
+            $unwind: `$${field.field}`,
+          });
+        }
       }
     });
   }
 
-  function handleFilterParams(query) {
+  function handleFilterParams(jsonQuery) {
     const operator = `$${params.filterType}`;
-    const queryFilters = {};
-    queryFilters[operator] = [];
+    const conditions = [];
 
     _.each(params.filter, (values, key) => {
-      const conditions = new FilterParser(model, opts, params.timezone).perform(key, values);
-      _.each(conditions, condition => queryFilters[operator].push(condition));
+      const filterConditions = new FilterParser(model, opts, params.timezone).perform(key, values);
+      _.each(filterConditions, condition => conditions.push(condition));
     });
 
-    if (queryFilters[operator].length) {
-      query.where(queryFilters);
+    _.each(schema.fields, (field) => {
+      if (field.reference) {
+        const condition = populateWhere(field);
+        if (condition) {
+          conditions.push(condition);
+        }
+      }
+    });
+
+    if (conditions.length) {
+      jsonQuery.push({ [operator]: conditions });
     }
   }
 
-  function handleSortParam(query) {
+  function handleSortParam(jsonQuery) {
+    const order = params.sort.startsWith('-') ? -1 : 1;
+    let sortParam = order > 0 ? params.sort : params.sort.substring(1);
     if (params.sort.split('.').length > 1) {
-      query.sort(params.sort.split('.')[0]);
-    } else {
-      query.sort(params.sort);
+      sortParam = params.sort.split('.')[0];
     }
+    jsonQuery.push({ $sort: { [sortParam]: order } });
   }
 
   function getRecordsQuery() {
-    const query = model.find();
+    const jsonQuery = [];
+    handlePopulate(jsonQuery);
 
-    handlePopulate(query);
-
+    const conditions = [];
     if (params.search) {
-      searchBuilder.getWhere(query);
+      searchBuilder.getWhere(conditions);
     }
 
     if (params.filter) {
-      handleFilterParams(query);
+      handleFilterParams(conditions);
     }
 
     if (segment) {
-      query.where(segment.where);
+      conditions.push(segment.where);
+    }
+    if (conditions.length) {
+      jsonQuery.push({
+        $match: {
+          $and: conditions,
+        },
+      });
     }
 
+    const where = condition => jsonQuery.push({ $match: condition });
     if (params.search) {
       _.each(schema.fields, (field) => {
         if (field.search) {
           try {
-            field.search(query, params.search);
+            field.search({ where }, params.search);
             hasSmartFieldSearch = true;
           } catch (error) {
             Interface.logger.error(`Cannot search properly on Smart Field ${field.field}`, error);
@@ -168,23 +150,14 @@ function ResourcesGetter(model, opts, params) {
       });
     }
 
-    return query;
-  }
+    if (params.sort) {
+      handleSortParam(jsonQuery);
+    }
 
-  function exec(query) {
-    return new P((resolve, reject) => {
-      if (params.sort) {
-        handleSortParam(query);
-      }
+    jsonQuery.push({ $skip: getSkip() });
+    jsonQuery.push({ $limit: getLimit() });
 
-      if (!hasRelationshipFilter()) {
-        query
-          .limit(getLimit())
-          .skip(getSkip());
-      }
-
-      query.exec((err, records) => (err ? reject(err) : resolve(records)));
-    }).then(records => (hasRelationshipFilter() ? refilterBasedOnFilters(records) : records));
+    return jsonQuery;
   }
 
   function getSegment() {
@@ -205,19 +178,7 @@ function ResourcesGetter(model, opts, params) {
   }
 
   this.perform = () => getSegmentCondition()
-    .then(() => {
-      const query = getRecordsQuery();
-
-      if (hasRelationshipFilter()) {
-        return exec(query)
-          .then((records) => {
-            records = records.slice(getSkip(), getSkip() + getLimit());
-            return records;
-          });
-      }
-
-      return exec(query);
-    })
+    .then(() => model.aggregate(getRecordsQuery()))
     .then((records) => {
       let fieldsSearched = null;
 
@@ -235,9 +196,10 @@ function ResourcesGetter(model, opts, params) {
 
   this.count = () => getSegmentCondition()
     .then(() => {
-      const query = getRecordsQuery();
-
-      return hasRelationshipFilter() ? exec(query).then(records => records.length) : count(query);
+      const jsonQuery = getRecordsQuery();
+      jsonQuery.push({ $count: 'count' });
+      return model.aggregate(jsonQuery)
+        .then(result => result[0].count);
     });
 }
 

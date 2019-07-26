@@ -69,8 +69,8 @@ function SearchBuilder(model, opts, params, searchFields) {
     return orQuery.$or.length ? orQuery : {};
   };
 
-  this.getWhere = (query) => {
-    query.where(this.getConditions());
+  this.getWhere = (jsonQuery) => {
+    jsonQuery.push(this.getConditions());
   };
 }
 

@@ -6,6 +6,7 @@
 - ESLint - Fix `search-builder` according to eslint rules.
 - ESLint - Fix eslintrc to allow dangle underscore.
 - ESLint - Fix `records-decorator` according to eslint rules.
+- Filter - Fix or filter when filtering on a belongsTo with another simple attribute.
 
 ## RELEASE 3.2.4 - 2019-07-24
 ### Fixed
