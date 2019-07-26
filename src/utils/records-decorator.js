@@ -1,17 +1,15 @@
-'use strict';
-
-var _ = require('lodash');
+const _ = require('lodash');
 
 function decorateForSearch(records, fields, searchValue) {
-  var matchFields = {};
-  records.forEach(function (record, index) {
+  const matchFields = {};
+  records.forEach((record, index) => {
     record = record.toObject();
-    fields.forEach(function (fieldName) {
-      var value = record[fieldName];
+    fields.forEach((fieldName) => {
+      const value = record[fieldName];
       if (value) {
-        var searchEscaped = searchValue.replace(/[-[\]{}()*+!<=:?./\\^$|#\s,]/g, '\\$&');
-        var searchHighlight = new RegExp(searchEscaped, 'i');
-        var match = value.toString().match(searchHighlight);
+        const searchEscaped = searchValue.replace(/[-[\]{}()*+!<=:?./\\^$|#\s,]/g, '\\$&');
+        const searchHighlight = new RegExp(searchEscaped, 'i');
+        const match = value.toString().match(searchHighlight);
         if (match) {
           if (!matchFields[index]) {
             matchFields[index] = {
@@ -25,11 +23,7 @@ function decorateForSearch(records, fields, searchValue) {
     });
   });
 
-  if (_.isEmpty(matchFields)) {
-    matchFields = null;
-  }
-
-  return matchFields;
+  return _.isEmpty(matchFields) ? null : matchFields;
 }
 
 exports.decorateForSearch = decorateForSearch;
