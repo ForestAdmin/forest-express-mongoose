@@ -150,13 +150,6 @@ function ResourcesGetter(model, opts, params) {
       });
     }
 
-    if (params.sort) {
-      handleSortParam(jsonQuery);
-    }
-
-    jsonQuery.push({ $skip: getSkip() });
-    jsonQuery.push({ $limit: getLimit() });
-
     return jsonQuery;
   }
 
@@ -178,7 +171,17 @@ function ResourcesGetter(model, opts, params) {
   }
 
   this.perform = () => getSegmentCondition()
-    .then(() => model.aggregate(getRecordsQuery()))
+    .then(() => {
+      const jsonQuery = getRecordsQuery();
+      if (params.sort) {
+        handleSortParam(jsonQuery);
+      }
+
+      jsonQuery.push({ $skip: getSkip() });
+      jsonQuery.push({ $limit: getLimit() });
+
+      return model.aggregate(jsonQuery);
+    })
     .then((records) => {
       let fieldsSearched = null;
 
