@@ -73,7 +73,10 @@ function ResourcesGetter(model, opts, params) {
 
         if (model.schema.path(field.field).instance !== 'Array') {
           jsonQuery.push({
-            $unwind: `$${field.field}`,
+            $unwind: {
+              path: `$${field.field}`,
+              preserveNullAndEmptyArrays: true,
+            },
           });
         }
       }
