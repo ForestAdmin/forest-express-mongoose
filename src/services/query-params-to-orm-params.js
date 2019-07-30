@@ -2,7 +2,6 @@ import _ from 'lodash';
 import Interface from 'forest-express';
 import utils from '../utils/schema';
 import Orm from '../utils/orm';
-import mongooseUtils from './mongoose-utils';
 import OperatorValueParser from './operator-value-parser';
 import SearchBuilder from './search-builder';
 import FilterParser from './filter-parser';
@@ -11,10 +10,46 @@ function QueryParamsToOrmParams(model, params, opts) {
   const schema = Interface.Schemas.schemas[utils.getModelName(model)];
   const searchBuilder = new SearchBuilder(model, opts, params, schema.searchFields);
 
+  let { filter } = params;
+  if (params.filters && params.filters.length) {
+    filter = {};
+    params.filters.forEach((condition) => {
+      if (filter[condition.field]) {
+        filter[condition.field] += `,${condition.value}`;
+      } else {
+        filter[condition.field] = `${condition.value}`;
+      }
+    });
+  }
+
+  this.addJoinToQuery = (field, joinQuery) => {
+    if (field.reference) {
+      const referencedKey = field.reference.split('.')[1];
+      const subModel = utils.getReferenceModel(opts, field.reference);
+      joinQuery.push({
+        $lookup: {
+          from: subModel.collection.name,
+          localField: field.field,
+          foreignField: referencedKey,
+          as: field.field,
+        },
+      });
+
+      if (model.schema.path(field.field).instance !== 'Array') {
+        joinQuery.push({
+          $unwind: {
+            path: `$${field.field}`,
+            preserveNullAndEmptyArrays: true,
+          },
+        });
+      }
+    }
+  };
+
   this.getWhereForReferenceField = (field) => {
     const conditions = [];
 
-    _.each(params.filter, (values, key) => {
+    _.each(filter, (values, key) => {
       if (key.indexOf(':') > -1) {
         const splitted = key.split(':');
         const fieldName = splitted[0];
@@ -22,8 +57,7 @@ function QueryParamsToOrmParams(model, params, opts) {
 
         if (fieldName === field.field && field.reference) {
           // NOTICE: Look for the associated model infos
-          const subModel = _.find(mongooseUtils.getModels(opts), currentModel =>
-            utils.getModelName(currentModel) === field.reference.split('.')[0]);
+          const subModel = utils.getReferenceModel(opts, field.reference);
 
           values.split(',').forEach((value) => {
             const condition = {};
@@ -41,38 +75,16 @@ function QueryParamsToOrmParams(model, params, opts) {
     return null;
   };
 
-  this.joinNeededReferences = (jsonQuery) => {
-    _.each(schema.fields, (field) => {
-      if (field.reference) {
-        const [collectionName, referencedKey] = field.reference.split('.');
-        const subModel = _.find(mongooseUtils.getModels(opts), currentModel =>
-          utils.getModelName(currentModel) === collectionName);
-        jsonQuery.push({
-          $lookup: {
-            from: subModel.collection.name,
-            localField: field.field,
-            foreignField: referencedKey,
-            as: field.field,
-          },
-        });
-
-        if (model.schema.path(field.field).instance !== 'Array') {
-          jsonQuery.push({
-            $unwind: {
-              path: `$${field.field}`,
-              preserveNullAndEmptyArrays: true,
-            },
-          });
-        }
-      }
-    });
+  this.joinAllReferences = (jsonQuery) => {
+    schema.fields.forEach(field => this.addJoinToQuery(field, jsonQuery));
+    return this;
   };
 
-  this.addFiltersToQuery = (jsonQuery) => {
+  this.addFiltersToQuery = (jsonQuery, joinQuery) => {
     const operator = `$${params.filterType}`;
     const conditions = [];
 
-    _.each(params.filter, (values, key) => {
+    _.each(filter, (values, key) => {
       const filterConditions = new FilterParser(model, opts, params.timezone).perform(key, values);
       _.each(filterConditions, condition => conditions.push(condition));
     });
@@ -82,6 +94,10 @@ function QueryParamsToOrmParams(model, params, opts) {
         const condition = this.getWhereForReferenceField(field);
         if (condition) {
           conditions.push(condition);
+
+          if (joinQuery) {
+            this.addJoinToQuery(field, joinQuery);
+          }
         }
       }
     });
@@ -89,6 +105,8 @@ function QueryParamsToOrmParams(model, params, opts) {
     if (conditions.length) {
       jsonQuery.push({ [operator]: conditions });
     }
+
+    return this;
   };
 
   this.addSortToQuery = (jsonQuery) => {
@@ -98,11 +116,25 @@ function QueryParamsToOrmParams(model, params, opts) {
       sortParam = params.sort.split('.')[0];
     }
     jsonQuery.push({ $sort: { [sortParam]: order } });
+
+    return this;
   };
 
   this.addSkipAndLimitToQuery = (jsonQuery) => {
     jsonQuery.push({ $skip: this.getSkip() });
     jsonQuery.push({ $limit: this.getLimit() });
+
+    return this;
+  };
+
+  this.addCountToQuery = (jsonQuery) => {
+    if (Orm.hasRequiredVersion(opts.mongoose, '3.4')) {
+      jsonQuery.push({ $count: 'count' });
+    } else {
+      jsonQuery.push({ $group: { _id: null, count: { $sum: 1 } } });
+    }
+
+    return this;
   };
 
   this.hasPagination = () => params.page && params.page.number;
@@ -115,22 +147,31 @@ function QueryParamsToOrmParams(model, params, opts) {
 
   this.getFieldsSearched = () => searchBuilder.getFieldsSearched();
 
-  this.getQueryWithFiltersAndJoin = (segment) => {
+  this.getQueryWithFiltersAndJoin = (segment, joinFromFilter) => {
+    const joinQuery = [];
     const jsonQuery = [];
-    this.joinNeededReferences(jsonQuery);
+
+    if (!joinFromFilter) {
+      this.joinAllReferences(joinQuery);
+    }
 
     const conditions = [];
     if (params.search) {
       searchBuilder.getWhere(conditions);
     }
 
-    if (params.filter) {
-      this.addFiltersToQuery(conditions);
+    if (filter) {
+      this.addFiltersToQuery(conditions, joinFromFilter ? joinQuery : null);
     }
 
     if (segment) {
       conditions.push(segment.where);
     }
+
+    if (joinQuery.length) {
+      joinQuery.forEach(join => jsonQuery.push(join));
+    }
+
     if (conditions.length) {
       jsonQuery.push({
         $match: {
@@ -140,14 +181,6 @@ function QueryParamsToOrmParams(model, params, opts) {
     }
 
     return jsonQuery;
-  };
-
-  this.addCountToQuery = (jsonQuery) => {
-    if (Orm.hasRequiredVersion(opts.mongoose, '3.4')) {
-      jsonQuery.push({ $count: 'count' });
-    } else {
-      jsonQuery.push({ $group: { _id: null, count: { $sum: 1 } } });
-    }
   };
 }
 

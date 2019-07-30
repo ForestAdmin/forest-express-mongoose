@@ -2,51 +2,32 @@ import _ from 'lodash';
 import P from 'bluebird';
 import Interface from 'forest-express';
 import moment from 'moment';
-import FilterParser from './filter-parser';
+import QueryParamsToOrmParams from './query-params-to-orm-params';
 import utils from '../utils/schema';
 
 function PieStatGetter(model, params, opts) {
   const schema = Interface.Schemas.schemas[utils.getModelName(model)];
   const field = _.find(schema.fields, { field: params.group_by_field });
+  const queryParamsToOrmParams = new QueryParamsToOrmParams(model, params, opts);
 
   function getReference(fieldName) {
-    const currentField = _.find(schema.fields, { field: fieldName });
+    const fieldNameWithoutSubField = fieldName.includes(':') ? fieldName.split(':')[0] : fieldName;
+    const currentField = _.find(schema.fields, { field: fieldNameWithoutSubField });
     return currentField.reference ? currentField : null;
-  }
-
-  function handlePopulate(records, referenceField) {
-    return new P((resolve, reject) => {
-      const referenceModel = utils.getReferenceModel(opts, referenceField.reference);
-
-      referenceModel.populate(records.value, { path: 'key' }, (err, currentRecords) => {
-        if (err) { return reject(err); }
-        return resolve({ value: currentRecords });
-      });
-    });
   }
 
   this.perform = () => {
     const populateGroupByField = getReference(params.group_by_field);
+    const groupByFieldName = populateGroupByField
+      ? params.group_by_field.replace(':', '.') : params.group_by_field;
 
     return new P((resolve, reject) => {
-      const groupBy = {};
-      groupBy[params.group_by_field] = `$${params.group_by_field}`;
-
-      const query = model.aggregate();
-
-      if (params.filterType && params.filters) {
-        const operator = `$${params.filterType}`;
-        const queryFilters = {};
-        queryFilters[operator] = [];
-
-        _.each(params.filters, (filter) => {
-          const conditions = new FilterParser(model, opts, params.timezone)
-            .perform(filter.field, filter.value);
-          _.each(conditions, condition => queryFilters[operator].push(condition));
-        });
-
-        query.match(queryFilters);
+      const jsonQuery = queryParamsToOrmParams.getQueryWithFiltersAndJoin(null, true);
+      if (populateGroupByField) {
+        queryParamsToOrmParams.addJoinToQuery(populateGroupByField, jsonQuery);
       }
+
+      const query = model.aggregate(jsonQuery);
 
       let sum = 1;
       if (params.aggregate_field) {
@@ -55,20 +36,18 @@ function PieStatGetter(model, params, opts) {
 
       query
         .group({
-          _id: groupBy,
+          _id: `$${groupByFieldName}`,
           count: { $sum: sum },
         })
         .project({
-          key: `$_id.${params.group_by_field}`,
+          key: '$_id',
           value: '$count',
           _id: false,
         })
         .sort({ value: -1 })
         .exec((err, records) => (err ? reject(err) : resolve({ value: records })));
     }).then((records) => {
-      if (populateGroupByField) {
-        return handlePopulate(records, populateGroupByField);
-      } else if (field.type === 'Date') {
+      if (field && field.type === 'Date') {
         _.each(records.value, (record) => {
           record.key = moment(record.key).format('DD/MM/YYYY HH:mm:ss');
         });
