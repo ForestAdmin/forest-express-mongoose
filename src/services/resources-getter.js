@@ -6,11 +6,12 @@ import utils from '../utils/schema';
 
 function ResourcesGetter(model, opts, params) {
   const schema = Interface.Schemas.schemas[utils.getModelName(model)];
+  const queryParamsToOrmParams = new QueryParamsToOrmParams(model, params, opts);
+
+  let hasSmartFieldSearch = false;
   let fieldsSearched = null;
   let segment;
 
-  const queryParamsToOrmParams = new QueryParamsToOrmParams(model, params, opts);
-  let hasSmartFieldSearch = false;
 
   function getRecordsQuery() {
     const jsonQuery = queryParamsToOrmParams.getQueryWithFiltersAndJoin(segment);
