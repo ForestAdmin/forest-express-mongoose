@@ -24,6 +24,10 @@ function QueryParamsToOrmParams(model, params, opts) {
 
   this.addJoinToQuery = (field, joinQuery) => {
     if (field.reference) {
+      if (_.find(joinQuery, join => join && join.$lookup && join.$lookup.as === field.field)) {
+        return this;
+      }
+
       const referencedKey = field.reference.split('.')[1];
       const subModel = utils.getReferenceModel(opts, field.reference);
       joinQuery.push({
@@ -44,6 +48,8 @@ function QueryParamsToOrmParams(model, params, opts) {
         });
       }
     }
+
+    return this;
   };
 
   this.getWhereForReferenceField = (field) => {
