@@ -8,30 +8,8 @@ function ResourcesGetter(model, opts, params) {
   const schema = Interface.Schemas.schemas[utils.getModelName(model)];
   const queryParamsToOrmParams = new QueryParamsToOrmParams(model, params, opts);
 
-  let hasSmartFieldSearch = false;
   let fieldsSearched = null;
   let segment;
-
-
-  function getRecordsQuery() {
-    const jsonQuery = queryParamsToOrmParams.getQueryWithFiltersAndJoin(segment);
-
-    const where = condition => jsonQuery.push({ $match: condition });
-    if (params.search) {
-      _.each(schema.fields, (field) => {
-        if (field.search) {
-          try {
-            field.search({ where }, params.search);
-            hasSmartFieldSearch = true;
-          } catch (error) {
-            Interface.logger.error(`Cannot search properly on Smart Field ${field.field}`, error);
-          }
-        }
-      });
-    }
-
-    return jsonQuery;
-  }
 
   function getSegment() {
     if (schema.segments && params.segment) {
@@ -52,11 +30,11 @@ function ResourcesGetter(model, opts, params) {
 
   this.perform = () => getSegmentCondition()
     .then(() => {
-      const jsonQuery = getRecordsQuery();
+      const jsonQuery = queryParamsToOrmParams.getQueryWithFiltersAndJoin(segment);
 
       if (params.search) {
         fieldsSearched = queryParamsToOrmParams.getFieldsSearched();
-        if (fieldsSearched.length === 0 && !hasSmartFieldSearch) {
+        if (fieldsSearched.length === 0 && !queryParamsToOrmParams.hasSmartFieldSearch()) {
           // NOTICE: No search condition has been set for the current search,
           //         no record can be found.
           return [];
@@ -75,7 +53,7 @@ function ResourcesGetter(model, opts, params) {
 
   this.count = () => getSegmentCondition()
     .then(() => {
-      const jsonQuery = getRecordsQuery();
+      const jsonQuery = queryParamsToOrmParams.getQueryWithFiltersAndJoin(segment);
       queryParamsToOrmParams.addCountToQuery(jsonQuery);
       return model.aggregate(jsonQuery)
         .then(result => result[0].count);

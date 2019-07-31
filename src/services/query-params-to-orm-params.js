@@ -151,6 +151,8 @@ function QueryParamsToOrmParams(model, params, opts) {
   this.getSkip = () => (this.hasPagination()
     ? (Number.parseInt(params.page.number, 10) - 1) * this.getLimit() : 0);
 
+  this.hasSmartFieldSearch = () => searchBuilder.hasSmartFieldSearch;
+
   this.getFieldsSearched = () => searchBuilder.getFieldsSearched();
 
   this.getQueryWithFiltersAndJoin = (segment, joinFromFilter) => {
