@@ -1,11 +1,11 @@
 import P from 'bluebird';
-import QueryParamsToOrmParams from './query-params-to-orm-params';
+import QueryBuilder from './query-builder';
 
 function ValueStatGetter(model, params, opts) {
-  const queryParamsToOrmParams = new QueryParamsToOrmParams(model, params, opts);
+  const queryBuilder = new QueryBuilder(model, params, opts);
 
   this.perform = () => new P((resolve, reject) => {
-    const jsonQuery = queryParamsToOrmParams.getQueryWithFiltersAndJoin(null, true);
+    const jsonQuery = queryBuilder.getQueryWithFiltersAndJoins(null, true);
     const query = model.aggregate(jsonQuery);
 
     let sum = 1;

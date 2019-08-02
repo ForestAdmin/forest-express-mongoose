@@ -2,13 +2,13 @@ import _ from 'lodash';
 import P from 'bluebird';
 import Interface from 'forest-express';
 import moment from 'moment';
-import QueryParamsToOrmParams from './query-params-to-orm-params';
+import QueryBuilder from './query-builder';
 import utils from '../utils/schema';
 
 function PieStatGetter(model, params, opts) {
   const schema = Interface.Schemas.schemas[utils.getModelName(model)];
   const field = _.find(schema.fields, { field: params.group_by_field });
-  const queryParamsToOrmParams = new QueryParamsToOrmParams(model, params, opts);
+  const queryBuilder = new QueryBuilder(model, params, opts);
 
   function getReference(fieldName) {
     const fieldNameWithoutSubField = fieldName.includes(':') ? fieldName.split(':')[0] : fieldName;
@@ -22,9 +22,9 @@ function PieStatGetter(model, params, opts) {
       ? params.group_by_field.replace(':', '.') : params.group_by_field;
 
     return new P((resolve, reject) => {
-      const jsonQuery = queryParamsToOrmParams.getQueryWithFiltersAndJoin(null, true);
+      const jsonQuery = queryBuilder.getQueryWithFiltersAndJoins(null, true);
       if (populateGroupByField) {
-        queryParamsToOrmParams.addJoinToQuery(populateGroupByField, jsonQuery);
+        queryBuilder.addJoinToQuery(populateGroupByField, jsonQuery);
       }
 
       const query = model.aggregate(jsonQuery);

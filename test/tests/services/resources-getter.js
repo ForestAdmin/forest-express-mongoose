@@ -134,8 +134,8 @@ describe('Service > ResourcesGetter', () => {
     });
   });
 
-  describe('with filters', () => {
-    it('should filter correctly with a basic flat filter', (done) => {
+  describe('with a basic flat filter', () => {
+    it('should filter correctly', (done) => {
       const parameters = {
         fields: {
           order: '_id,amount,description,giftMessage',
@@ -155,8 +155,10 @@ describe('Service > ResourcesGetter', () => {
         })
         .catch(done);
     });
+  });
 
-    it("should filter correctly with basic 'and' aggregator", (done) => {
+  describe('with basic \'and\' aggregator', () => {
+    it('should filter correctly', (done) => {
       const parameters = {
         fields: {
           order: '_id,amount,description,giftMessage',
@@ -177,26 +179,28 @@ describe('Service > ResourcesGetter', () => {
         .catch(done);
     });
 
-    describe('should filter correctly with belongsTo filter', () => {
-      it('works with flat condition', (done) => {
-        const parameters = {
-          fields: {
-            order: '_id,amount,description,giftMessage',
-          },
-          page: { number: '1', size: '30' },
-          filterType: 'and',
-          filter: { 'orderer:name': '*Cohle*' },
-          timezone: '+02:00',
-        };
+    describe('with belongsTo filter', () => {
+      describe('works with flat condition', () => {
+        it('should filter correctly', (done) => {
+          const parameters = {
+            fields: {
+              order: '_id,amount,description,giftMessage',
+            },
+            page: { number: '1', size: '30' },
+            filterType: 'and',
+            filter: { 'orderer:name': '*Cohle*' },
+            timezone: '+02:00',
+          };
 
-        new ResourcesGetter(OrderModel, options, parameters)
-          .perform()
-          .then((result) => {
-            expect(result[0].length).equal(1);
-            expect(result[0][0].comment).to.match(/gift/);
-            done();
-          })
-          .catch(done);
+          new ResourcesGetter(OrderModel, options, parameters)
+            .perform()
+            .then((result) => {
+              expect(result[0].length).equal(1);
+              expect(result[0][0].comment).to.match(/gift/);
+              done();
+            })
+            .catch(done);
+        });
       });
     });
   });

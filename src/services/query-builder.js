@@ -6,7 +6,7 @@ import OperatorValueParser from './operator-value-parser';
 import SearchBuilder from './search-builder';
 import FilterParser from './filter-parser';
 
-function QueryParamsToOrmParams(model, params, opts) {
+function QueryBuilder(model, params, opts) {
   const schema = Interface.Schemas.schemas[utils.getModelName(model)];
   const searchBuilder = new SearchBuilder(model, opts, params, schema.searchFields);
 
@@ -155,7 +155,7 @@ function QueryParamsToOrmParams(model, params, opts) {
 
   this.getFieldsSearched = () => searchBuilder.getFieldsSearched();
 
-  this.getQueryWithFiltersAndJoin = (segment, joinFromFilter) => {
+  this.getQueryWithFiltersAndJoins = (segment, joinFromFilter) => {
     const joinQuery = [];
     const jsonQuery = [];
 
@@ -192,4 +192,4 @@ function QueryParamsToOrmParams(model, params, opts) {
   };
 }
 
-module.exports = QueryParamsToOrmParams;
+module.exports = QueryBuilder;

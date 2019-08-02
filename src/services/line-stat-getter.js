@@ -3,14 +3,14 @@ import _ from 'lodash';
 import P from 'bluebird';
 import moment from 'moment';
 import Interface from 'forest-express';
-import QueryParamsToOrmParams from './query-params-to-orm-params';
+import QueryBuilder from './query-builder';
 import utils from '../utils/schema';
 
 function LineStatFinder(model, params, opts) {
   const schema = Interface.Schemas.schemas[utils.getModelName(model)];
   const timezone = (-parseInt(params.timezone, 10)).toString();
   const timezoneOffset = timezone * 60 * 60 * 1000;
-  const queryParamsToOrmParams = new QueryParamsToOrmParams(model, params, opts);
+  const queryBuilder = new QueryBuilder(model, params, opts);
 
   function getReference(fieldName) {
     if (!fieldName) { return null; }
@@ -103,9 +103,9 @@ function LineStatFinder(model, params, opts) {
       ? params.group_by_field.replace(':', '.') : params.group_by_field;
 
     return new P((resolve, reject) => {
-      const jsonQuery = queryParamsToOrmParams.getQueryWithFiltersAndJoin(null, true);
+      const jsonQuery = queryBuilder.getQueryWithFiltersAndJoins(null, true);
       if (populateGroupByField) {
-        queryParamsToOrmParams.addJoinToQuery(populateGroupByField, jsonQuery);
+        queryBuilder.addJoinToQuery(populateGroupByField, jsonQuery);
       }
 
       const groupBy = {};
