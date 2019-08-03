@@ -143,9 +143,7 @@ module.exports = function (model, opts) {
           return [schemaType(opts.options.type[0])];
         } else {
           // Object
-          return [objectType(opts.options.type[0], function (key) {
-            return getTypeFromNative(opts.options.type[0][key]);
-          })];
+          return [getTypeFromNative(opts.options.type[0])];
         }
       }
     } else if (opts.enumValues && opts.enumValues.length) {
