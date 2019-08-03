@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const P = require('bluebird');
-var mongooseTypes = require('mongoose').Types;
+const mongooseTypes = require('mongoose').Types;
 const SearchBuilder = require('./search-builder');
 const Interface = require('forest-express');
 const utils = require('../utils/schema');
