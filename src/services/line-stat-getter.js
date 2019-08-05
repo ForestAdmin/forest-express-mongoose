@@ -3,30 +3,20 @@ import _ from 'lodash';
 import P from 'bluebird';
 import moment from 'moment';
 import Interface from 'forest-express';
-import FilterParser from './filter-parser';
+import QueryBuilder from './query-builder';
 import utils from '../utils/schema';
 
 function LineStatFinder(model, params, opts) {
   const schema = Interface.Schemas.schemas[utils.getModelName(model)];
   const timezone = (-parseInt(params.timezone, 10)).toString();
   const timezoneOffset = timezone * 60 * 60 * 1000;
+  const queryBuilder = new QueryBuilder(model, params, opts);
 
   function getReference(fieldName) {
     if (!fieldName) { return null; }
-    const field = _.find(schema.fields, { field: fieldName });
+    const fieldNameWithoutSubField = fieldName.includes(':') ? fieldName.split(':')[0] : fieldName;
+    const field = _.find(schema.fields, { field: fieldNameWithoutSubField });
     return field.reference ? field : null;
-  }
-
-  function handlePopulate(records, referenceField) {
-    return new P((resolve, reject) => {
-      const referenceModel = utils.getReferenceModel(opts, referenceField.reference);
-
-      referenceModel.populate(
-        records.value,
-        { path: 'values.key' },
-        (err, currentRecords) => (err ? reject(err) : resolve({ value: currentRecords })),
-      );
-    });
   }
 
   function getFormat(momentRange) {
@@ -109,13 +99,20 @@ function LineStatFinder(model, params, opts) {
 
   this.perform = () => {
     const populateGroupByField = getReference(params.group_by_field);
+    const groupByFieldName = populateGroupByField
+      ? params.group_by_field.replace(':', '.') : params.group_by_field;
 
     return new P((resolve, reject) => {
+      const jsonQuery = queryBuilder.getQueryWithFiltersAndJoins(null, true);
+      if (populateGroupByField) {
+        queryBuilder.addJoinToQuery(populateGroupByField, jsonQuery);
+      }
+
       const groupBy = {};
       const sort = {};
 
-      if (params.group_by_field) {
-        groupBy[params.group_by_field] = `$${params.group_by_field}`;
+      if (groupByFieldName) {
+        groupBy._id = `$${groupByFieldName}`;
       }
 
       if (params.group_by_date_field) {
@@ -176,39 +173,28 @@ function LineStatFinder(model, params, opts) {
         sum = `$${params.aggregate_field}`;
       }
 
-      let query = model
-        .aggregate();
-
-      if (params.filterType && params.filters) {
-        const operator = `$${params.filterType}`;
-        const queryFilters = {};
-        queryFilters[operator] = [];
-
-        _.each(params.filters, (filter) => {
-          const conditions = new FilterParser(model, opts, params.timezone)
-            .perform(filter.field, filter.value);
-          _.each(conditions, condition => queryFilters[operator].push(condition));
-        });
-
-        query.match(queryFilters);
-      }
-
       if (params.group_by_date_field) {
-        const q = {};
-        q[params.group_by_date_field] = { $ne: null };
-        query = query.match(q);
+        jsonQuery.push({
+          $match: {
+            [params.group_by_date_field]: { $ne: null },
+          },
+        });
       }
 
       if (groupBy) {
-        const group = { _id: groupBy, count: { $sum: sum } };
-
-        group[params.group_by_date_field] = { $first: `$${params.group_by_date_field}` };
-
-        query = query.group(group);
+        jsonQuery.push({
+          $group: {
+            _id: groupBy,
+            [params.group_by_date_field]: { $first: `$${params.group_by_date_field}` },
+            count: { $sum: sum },
+          },
+        });
       }
 
+      const query = model.aggregate(jsonQuery);
+
       query.sort(sort)
-        .project({ values: { key: `$_id.${params.group_by_field}`, value: '$count' } })
+        .project({ values: { key: '$_id', value: '$count' } })
         .exec((error, records) => (error ? reject(error) : resolve(records)));
     })
       .then((records) => {
@@ -223,9 +209,7 @@ function LineStatFinder(model, params, opts) {
         }));
 
         return { value: fillEmptyIntervals(records, momentRange, firstDate, lastDate) };
-      })
-      .then(records =>
-        (populateGroupByField ? handlePopulate(records, populateGroupByField) : records));
+      });
   };
 }
 

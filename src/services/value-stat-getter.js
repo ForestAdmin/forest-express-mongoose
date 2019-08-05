@@ -1,24 +1,12 @@
-import _ from 'lodash';
 import P from 'bluebird';
-import FilterParser from './filter-parser';
+import QueryBuilder from './query-builder';
 
 function ValueStatGetter(model, params, opts) {
+  const queryBuilder = new QueryBuilder(model, params, opts);
+
   this.perform = () => new P((resolve, reject) => {
-    const query = model.aggregate();
-
-    if (params.filterType && params.filters) {
-      const operator = `$${params.filterType}`;
-      const queryFilters = {};
-      queryFilters[operator] = [];
-
-      _.each(params.filters, (filter) => {
-        const conditions = new FilterParser(model, opts, params.timezone)
-          .perform(filter.field, filter.value);
-        _.each(conditions, condition => queryFilters[operator].push(condition));
-      });
-
-      query.match(queryFilters);
-    }
+    const jsonQuery = queryBuilder.getQueryWithFiltersAndJoins(null, true);
+    const query = model.aggregate(jsonQuery);
 
     let sum = 1;
     if (params.aggregate_field) {

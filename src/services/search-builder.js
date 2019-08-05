@@ -6,9 +6,12 @@ function SearchBuilder(model, opts, params, searchFields) {
   const schema = Interface.Schemas.schemas[utils.getModelName(model)];
   const fieldsSearched = [];
 
+  this.hasSmartFieldSearch = false;
+
   this.getFieldsSearched = () => fieldsSearched;
 
   this.getConditions = () => {
+    this.hasSmartFieldSearch = false;
     const orQuery = { $or: [] };
 
     function pushCondition(condition, fieldName) {
@@ -66,11 +69,25 @@ function SearchBuilder(model, opts, params, searchFields) {
       }
     });
 
+    _.each(schema.fields, (field) => {
+      if (field.search) {
+        try {
+          const condition = field.search(params.search);
+          if (condition) {
+            pushCondition(condition, field.field);
+          }
+          this.hasSmartFieldSearch = true;
+        } catch (error) {
+          Interface.logger.error(`Cannot search properly on Smart Field ${field.field}`, error);
+        }
+      }
+    });
+
     return orQuery.$or.length ? orQuery : {};
   };
 
-  this.getWhere = (query) => {
-    query.where(this.getConditions());
+  this.getWhere = (jsonQuery) => {
+    jsonQuery.push(this.getConditions());
   };
 }
 

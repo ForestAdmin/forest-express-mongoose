@@ -6,6 +6,7 @@
 - ESLint - Fix `search-builder` according to eslint rules.
 - ESLint - Fix eslintrc to allow dangle underscore.
 - ESLint - Fix `records-decorator` according to eslint rules.
+- Filters - Fix "OR" filter when filtering on a reference field along with another simple attribute condition.
 
 ## RELEASE 3.2.4 - 2019-07-24
 ### Fixed

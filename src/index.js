@@ -1,16 +1,18 @@
-'use strict';
-var P = require('bluebird');
-var Interface = require('forest-express');
-var utils = require('./utils/schema');
-var mongooseUtils = require('./services/mongoose-utils');
-var REGEX_VERSION = /(\d+\.)?(\d+\.)?(\*|\d+)/;
+/* eslint global-require: 0 */
+const P = require('bluebird');
+const Interface = require('forest-express');
+const utils = require('./utils/schema');
+const orm = require('./utils/orm');
+const mongooseUtils = require('./services/mongoose-utils');
+
+const REGEX_VERSION = /(\d+\.)?(\d+\.)?(\*|\d+)/;
 
 exports.collection = Interface.collection;
 exports.ensureAuthenticated = Interface.ensureAuthenticated;
 exports.StatSerializer = Interface.StatSerializer;
 exports.ResourceSerializer = Interface.ResourceSerializer;
 
-exports.init = function(opts) {
+exports.init = (opts) => {
   exports.opts = opts;
 
   // NOTICE: Ensure compatibility with the old middleware configuration.
@@ -18,39 +20,26 @@ exports.init = function(opts) {
     opts.connections = [opts.mongoose];
   }
 
-  exports.getLianaName = function () {
-    return 'forest-express-mongoose';
-  };
+  exports.getLianaName = () => 'forest-express-mongoose';
 
-  exports.getLianaVersion = function () {
-    var lianaVersion = require('../package.json').version.match(REGEX_VERSION);
+  exports.getLianaVersion = () => {
+    const lianaVersion = require('../package.json').version.match(REGEX_VERSION);
     if (lianaVersion && lianaVersion[0]) {
       return lianaVersion[0];
     }
+    return null;
   };
 
-  exports.getOrmVersion = function () {
+  exports.getOrmVersion = () => {
     if (!opts.mongoose) { return null; }
-
-    try {
-      var ormVersion = opts.mongoose.version.match(REGEX_VERSION);
-      if (ormVersion && ormVersion[0]) {
-        return ormVersion[0];
-      }
-    } catch (error) {
-      return null;
-    }
+    return orm.getVersion(opts.mongoose);
   };
 
-  exports.getDatabaseType = function () {
-    return 'MongoDB';
-  };
+  exports.getDatabaseType = () => 'MongoDB';
 
   exports.SchemaAdapter = require('./adapters/mongoose');
 
-  exports.getModels = function () {
-    return mongooseUtils.getModels(opts);
-  };
+  exports.getModels = () => mongooseUtils.getModels(opts);
 
   exports.getModelName = utils.getModelName;
   // TODO: Remove nameOld attribute once the lianas versions older than 2.0.0 are minority
@@ -76,68 +65,64 @@ exports.init = function(opts) {
   exports.RecordsDecorator = require('./utils/records-decorator');
 
   exports.Stripe = {
-    getCustomer: function (customerModel, customerField, customerId) {
-      return new P(function (resolve, reject) {
+    getCustomer(customerModel, customerField, customerId) {
+      return new P((resolve, reject) => {
         if (customerId) {
           return customerModel
             .findById(customerId)
             .lean()
-            .exec(function (err, customer) {
+            .exec((err, customer) => {
               if (err) { return reject(err); }
               if (!customer || !customer[customerField]) { return reject(); }
 
-              resolve(customer);
+              return resolve(customer);
             });
-        } else {
-          resolve();
         }
+        return resolve();
       });
     },
-    getCustomerByUserField: function (customerModel, customerField, userField) {
-      return new P(function (resolve, reject) {
+    getCustomerByUserField(customerModel, customerField, userField) {
+      return new P((resolve, reject) => {
         if (!customerModel) { return resolve(null); }
 
-        var query = {};
+        const query = {};
         query[customerField] = userField;
 
-        customerModel
+        return customerModel
           .findOne(query)
           .lean()
-          .exec(function (err, customer) {
+          .exec((err, customer) => {
             if (err) { return reject(err); }
-            resolve(customer);
+            return resolve(customer);
           });
       });
-    }
+    },
   };
 
   exports.Intercom = {
-    getCustomer: function (userModel, customerId) {
-      return new P(function (resolve, reject) {
+    getCustomer(userModel, customerId) {
+      return new P((resolve, reject) => {
         if (customerId) {
           return userModel
             .findById(customerId)
             .lean()
-            .exec(function (err, customer) {
+            .exec((err, customer) => {
               if (err) { return reject(err); }
               if (!customer) { return reject(); }
-              resolve(customer);
+              return resolve(customer);
             });
-        } else {
-          resolve();
         }
+        return resolve();
       });
-    }
+    },
   };
 
   exports.Mixpanel = {
-    getUser: function (userModel, userId) {
+    getUser(userModel, userId) {
       if (userId) {
         return userModel
           .findById(userId)
-          .then(function (user) {
-            return user.toJSON();
-          });
+          .then(user => user.toJSON());
       }
 
       return P.resolve();
@@ -145,23 +130,22 @@ exports.init = function(opts) {
   };
 
   exports.Layer = {
-    getUser: function (customerModel, customerField, customerId) {
-      return new P(function (resolve, reject) {
+    getUser(customerModel, customerField, customerId) {
+      return new P((resolve, reject) => {
         if (customerId) {
           return customerModel
             .findById(customerId)
             .lean()
-            .exec(function (err, customer) {
+            .exec((err, customer) => {
               if (err) { return reject(err); }
               if (!customer || !customer[customerField]) { return reject(); }
 
-              resolve(customer);
+              return resolve(customer);
             });
-        } else {
-          resolve();
         }
+        return resolve();
       });
-    }
+    },
   };
 
   return Interface.init(exports);

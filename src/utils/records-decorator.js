@@ -3,7 +3,6 @@ const _ = require('lodash');
 function decorateForSearch(records, fields, searchValue) {
   const matchFields = {};
   records.forEach((record, index) => {
-    record = record.toObject();
     fields.forEach((fieldName) => {
       const value = record[fieldName];
       if (value) {
