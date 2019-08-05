@@ -2,6 +2,7 @@
 const P = require('bluebird');
 const Interface = require('forest-express');
 const utils = require('./utils/schema');
+const orm = require('./utils/orm');
 const mongooseUtils = require('./services/mongoose-utils');
 
 const REGEX_VERSION = /(\d+\.)?(\d+\.)?(\*|\d+)/;
@@ -31,16 +32,7 @@ exports.init = (opts) => {
 
   exports.getOrmVersion = () => {
     if (!opts.mongoose) { return null; }
-
-    try {
-      const ormVersion = opts.mongoose.version.match(REGEX_VERSION);
-      if (ormVersion && ormVersion[0]) {
-        return ormVersion[0];
-      }
-      return null;
-    } catch (error) {
-      return null;
-    }
+    return orm.getVersion(opts.mongoose);
   };
 
   exports.getDatabaseType = () => 'MongoDB';

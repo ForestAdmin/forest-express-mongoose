@@ -3,11 +3,15 @@ const semver = require('semver');
 const REGEX_VERSION = /(\d+\.)?(\d+\.)?(\*|\d+)/;
 
 const getVersion = (mongoose) => {
-  const version = mongoose.version.match(REGEX_VERSION);
-  if (version && version[0]) {
-    return version[0];
+  try {
+    const version = mongoose.version.match(REGEX_VERSION);
+    if (version && version[0]) {
+      return version[0];
+    }
+    return null;
+  } catch (error) {
+    return null;
   }
-  return null;
 };
 
 const hasRequiredVersion = (mongoose, version) => {
