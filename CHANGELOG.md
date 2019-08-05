@@ -7,6 +7,8 @@
 - ESLint - Fix eslintrc to allow dangle underscore.
 - ESLint - Fix `records-decorator` according to eslint rules.
 - Filters - Fix "OR" filter when filtering on a reference field along with another simple attribute condition.
+- ESLint - Fix import rules.
+- Technical - Fix deploy script.
 
 ## RELEASE 3.2.4 - 2019-07-24
 ### Fixed
