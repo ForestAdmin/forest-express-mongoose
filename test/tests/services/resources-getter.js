@@ -29,6 +29,7 @@ describe('Service > ResourcesGetter', () => {
             { field: 'comment', type: 'String' },
             { field: 'giftMessage', type: 'String' },
             { field: 'orderer', type: 'ObjectId', reference: 'User._id' },
+            { field: 'receiver', type: 'ObjectId', reference: 'User._id' },
           ],
         },
         User: {
@@ -53,6 +54,7 @@ describe('Service > ResourcesGetter', () => {
           comment: { type: String },
           giftMessage: { type: String },
           orderer: { type: 'ObjectId' },
+          receiver: { type: 'ObjectId' },
         });
         const UserSchema = mongoose.Schema({
           _id: { type: 'ObjectId' },
@@ -72,6 +74,7 @@ describe('Service > ResourcesGetter', () => {
             amount: 199,
             comment: 'no comment!',
             giftMessage: 'Here is your gift',
+            receiver: '41224d776a326fb40f000002',
           },
           {
             // _id: 101,
@@ -87,6 +90,11 @@ describe('Service > ResourcesGetter', () => {
             _id: '41224d776a326fb40f000001',
             age: 49,
             name: 'Rust Cohle',
+          },
+          {
+            _id: '41224d776a326fb40f000002',
+            age: 30,
+            name: 'Jacco Gardner',
           },
         ]);
       });
@@ -142,7 +150,6 @@ describe('Service > ResourcesGetter', () => {
         },
         page: { number: '1', size: '30' },
         filters: JSON.stringify({ field: 'giftMessage', operator: 'starts_with', value: 'Here' }),
-        filterType: 'and',
         timezone: '+02:00',
       };
 
@@ -185,27 +192,112 @@ describe('Service > ResourcesGetter', () => {
     });
 
     describe('with belongsTo filter', () => {
-      describe('works with flat condition', () => {
-        it('should filter correctly', (done) => {
-          const parameters = {
-            fields: {
-              order: '_id,amount,description,giftMessage',
-            },
-            page: { number: '1', size: '30' },
-            filterType: 'and',
-            filters: JSON.stringify({ field: 'orderer:name', operator: 'contains', value: 'Cohle' }),
-            timezone: '+02:00',
-          };
+      it('works with flat condition', (done) => {
+        const parameters = {
+          fields: {
+            order: '_id,amount,description,giftMessage',
+          },
+          page: { number: '1', size: '30' },
+          filters: JSON.stringify({ field: 'orderer:name', operator: 'contains', value: 'Cohle' }),
+          timezone: '+02:00',
+        };
 
-          new ResourcesGetter(OrderModel, options, parameters)
-            .perform()
-            .then((result) => {
-              expect(result[0].length).equal(1);
-              expect(result[0][0].comment).to.match(/gift/);
-              done();
-            })
-            .catch(done);
-        });
+        new ResourcesGetter(OrderModel, options, parameters)
+          .perform()
+          .then((result) => {
+            expect(result[0].length).equal(1);
+            expect(result[0][0].comment).to.match(/gift/);
+            done();
+          })
+          .catch(done);
+      });
+
+      it('works with \'and\' aggregator on two belongsTo on the same model', (done) => {
+        const parameters = {
+          fields: {
+            order: '_id,amount,description,giftMessage',
+          },
+          page: { number: '1', size: '30' },
+          filters: JSON.stringify({
+            aggregator: 'and',
+            conditions: [
+              { field: 'orderer:name', operator: 'contains', value: 'Cohle' },
+              { field: 'orderer:name', operator: 'ends_with', value: 'Gardner' },
+            ],
+          }),
+          timezone: '+02:00',
+        };
+
+        new ResourcesGetter(OrderModel, options, parameters)
+          .perform()
+          .then((result) => {
+            expect(result[0].length).equal(0);
+            done();
+          })
+          .catch(done);
+      });
+
+      it('works with \'or\' aggregator on two belongsTo on the same model', (done) => {
+        const parameters = {
+          fields: {
+            order: '_id,amount,description,giftMessage',
+          },
+          page: { number: '1', size: '30' },
+          filters: JSON.stringify({
+            aggregator: 'or',
+            conditions: [
+              { field: 'orderer:name', operator: 'contains', value: 'Cohle' },
+              { field: 'receiver:name', operator: 'ends_with', value: 'Gardner' },
+            ],
+          }),
+          timezone: '+02:00',
+        };
+
+        new ResourcesGetter(OrderModel, options, parameters)
+          .perform()
+          .then((result) => {
+            expect(result[0].length).equal(2);
+            done();
+          })
+          .catch(done);
+      });
+
+      it('works with complex nested filters', (done) => {
+        const parameters = {
+          fields: {
+            order: '_id,amount,description,giftMessage',
+          },
+          page: { number: '1', size: '30' },
+          filters: JSON.stringify({
+            aggregator: 'or',
+            conditions: [
+              { field: 'orderer:name', operator: 'contains', value: 'elsewhere' },
+              {
+                aggregator: 'and',
+                conditions: [
+                  { field: 'giftMessage', operator: 'contains', value: 'you' },
+                  {
+                    aggregator: 'and',
+                    conditions: [
+                      { field: 'orderer:age', operator: 'blank', value: null },
+                      { field: 'receiver:name', operator: 'ends_with', value: 'Gardner' },
+                    ],
+                  },
+                  { field: 'amount', operator: 'less_than', value: '200' },
+                ],
+              },
+            ],
+          }),
+          timezone: '+02:00',
+        };
+
+        new ResourcesGetter(OrderModel, options, parameters)
+          .perform()
+          .then((result) => {
+            expect(result[0].length).equal(1);
+            done();
+          })
+          .catch(done);
       });
     });
   });
