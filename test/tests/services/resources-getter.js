@@ -65,37 +65,37 @@ describe('Service > ResourcesGetter', () => {
         OrderModel = mongoose.model('Order', OrderSchema);
         UserModel = mongoose.model('User', UserSchema);
 
-        return OrderModel.remove({});
+        return Promise.all([OrderModel.remove({}), UserModel.remove({})]);
       })
       .then(() => {
-        loadFixture(OrderModel, [
-          {
-            // _id: 100,
-            amount: 199,
-            comment: 'no comment!',
-            giftMessage: 'Here is your gift',
-            receiver: '41224d776a326fb40f000002',
-          },
-          {
-            // _id: 101,
-            amount: 1399,
-            comment: 'this is a gift',
-            giftMessage: 'Thank you',
-            orderer: '41224d776a326fb40f000001',
-          },
-        ]);
-
-        loadFixture(UserModel, [
-          {
-            _id: '41224d776a326fb40f000001',
-            age: 49,
-            name: 'Rust Cohle',
-          },
-          {
-            _id: '41224d776a326fb40f000002',
-            age: 30,
-            name: 'Jacco Gardner',
-          },
+        return Promise.all([
+          loadFixture(OrderModel, [
+            {
+              // _id: 100,
+              amount: 199,
+              comment: 'no comment!',
+              giftMessage: 'Here is your gift',
+              receiver: '41224d776a326fb40f000002',
+            },
+            {
+              // _id: 101,
+              amount: 1399,
+              comment: 'this is a gift',
+              giftMessage: 'Thank you',
+              orderer: '41224d776a326fb40f000001',
+            },
+          ]), loadFixture(UserModel, [
+            {
+              _id: '41224d776a326fb40f000001',
+              age: 49,
+              name: 'Rust Cohle',
+            },
+            {
+              _id: '41224d776a326fb40f000002',
+              age: 30,
+              name: 'Jacco Gardner',
+            },
+          ]),
         ]);
       });
   });
