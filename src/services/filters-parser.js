@@ -19,6 +19,9 @@ function FiltersParser(model, timezone, options) {
   };
 
   this.formatCondition = (condition) => {
+    if (!condition) { throw new InvalidFiltersFormatError('No conditions provided'); }
+    if (!condition.field) { throw new InvalidFiltersFormatError('No field provided'); }
+
     const formatedField = this.formatField(condition.field);
 
     return {

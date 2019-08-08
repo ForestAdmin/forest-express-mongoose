@@ -6,7 +6,7 @@ import FiltersParser from '../../../src/services/filters-parser';
 import mongooseConnect from '../../utils/mongoose-connect';
 import { InvalidFiltersFormatError, NoMatchingOperatorError } from '../../../src/services/errors';
 
-describe('Service > ResourcesGetter', () => {
+describe('Service > FiltersParser', () => {
   let IslandModel;
   let defaultParser;
   const timezone = 'Europe/Paris';
@@ -77,46 +77,24 @@ describe('Service > ResourcesGetter', () => {
   });
 
   describe('formatAggregation function', () => {
-    it('should format correctly flat condition', () => {
-      expect(defaultParser.formatAggregation({ field: 'name', operator: 'contains', value: 'y' })).to.deep.equal({ name: new RegExp('.*y.*') });
-    });
-
     it('should format correctly aggregated conditions', () => {
-      expect(defaultParser.formatAggregation({
-        aggregator: 'and',
-        conditions: [
-          { field: 'name', operator: 'contains', value: 'y' },
-          { field: 'size', operator: 'less_than', value: 455 },
-        ],
-      })).to.deep.equal({ $and: [{ name: new RegExp('.*y.*') }, { size: { $lt: 455 } }] });
+      expect(defaultParser.formatAggregation('and', [
+        { name: new RegExp('.*y.*') },
+        { size: { $lt: 455 } },
+      ])).to.deep.equal({ $and: [{ name: new RegExp('.*y.*') }, { size: { $lt: 455 } }] });
     });
 
     it('should format correctly nested conditions', () => {
-      const nestedCondition = {
-        aggregator: 'and',
-        conditions: [
-          { field: 'size', operator: 'greater_than', value: '56' },
-          {
-            aggregator: 'or',
-            conditions: [
-              { field: 'name', operator: 'starts_with', value: 'P' },
-              { field: 'isBig', operator: 'equal', value: 'true' },
-            ],
-          },
-        ],
-      };
-      const expectedResult = {
-        $and: [
-          { size: { $gt: 56 } },
-          { $or: [{ name: new RegExp('^P.*') }, { isBig: true }] },
-        ],
-      };
-      expect(defaultParser.formatAggregation(nestedCondition)).to.deep.equal(expectedResult);
+      const formattedConditions = [
+        { size: { $gt: 56 } },
+        { $or: [{ name: new RegExp('^P.*') }, { isBig: true }] },
+      ];
+      expect(defaultParser.formatAggregation('and', formattedConditions)).to.deep.equal({ $and: formattedConditions });
     });
 
     it('should throw an error on empty condition', () => {
-      expect(() => defaultParser.formatAggregation()).to.throw(InvalidFiltersFormatError);
-      expect(() => defaultParser.formatAggregation({})).to.throw(InvalidFiltersFormatError);
+      expect(() => defaultParser.formatAggregation()).to.throw(NoMatchingOperatorError);
+      expect(() => defaultParser.formatAggregation({})).to.throw(NoMatchingOperatorError);
     });
   });
 

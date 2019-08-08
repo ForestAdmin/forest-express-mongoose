@@ -141,7 +141,7 @@ describe('Service > ResourcesGetter', () => {
           order: '_id,amount,description,giftMessage',
         },
         page: { number: '1', size: '30' },
-        filter: { giftMessage: 'Here*' },
+        filters: JSON.stringify({ field: 'giftMessage', operator: 'starts_with', value: 'Here' }),
         filterType: 'and',
         timezone: '+02:00',
       };
@@ -164,8 +164,13 @@ describe('Service > ResourcesGetter', () => {
           order: '_id,amount,description,giftMessage',
         },
         page: { number: '1', size: '30' },
-        filter: { giftMessage: '*you*', amount: '>1000' },
-        filterType: 'and',
+        filters: JSON.stringify({
+          aggregator: 'and',
+          conditions: [
+            { field: 'giftMessage', operator: 'contains', value: 'you' },
+            { field: 'amount', operator: 'greater_than', value: '1000' },
+          ],
+        }),
         timezone: '+02:00',
       };
 
@@ -188,7 +193,7 @@ describe('Service > ResourcesGetter', () => {
             },
             page: { number: '1', size: '30' },
             filterType: 'and',
-            filter: { 'orderer:name': '*Cohle*' },
+            filters: JSON.stringify({ field: 'orderer:name', operator: 'contains', value: 'Cohle' }),
             timezone: '+02:00',
           };
 
