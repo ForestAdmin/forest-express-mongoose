@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 4.0.0-beta.1 - 2019-08-12
 ### Changed
 - Filters - Add support for complex/generic conditions chaining. 🛡
 
