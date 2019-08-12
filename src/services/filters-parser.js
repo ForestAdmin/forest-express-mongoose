@@ -7,9 +7,11 @@ const AGGREGATOR_OPERATORS = ['and', 'or'];
 
 function FiltersParser(model, timezone, options) {
   const schema = Interface.Schemas.schemas[utils.getModelName(model)];
-  const dateOperatorParserOptions = { operators: { GTE: '$gte', LTE: '$lte' }, timezone };
 
-  this.operatorDateParser = new BaseOperatorDateParser(dateOperatorParserOptions);
+  this.operatorDateParser = new BaseOperatorDateParser({
+    operators: { GTE: '$gte', LTE: '$lte' },
+    timezone,
+  });
 
   this.perform = filtersString => BaseFiltersParser
     .perform(filtersString, this.formatAggregation, this.formatCondition);
@@ -29,8 +31,9 @@ function FiltersParser(model, timezone, options) {
     if (_.isArray(condition)) {
       throw new InvalidFiltersFormatError('Filters cannot be a raw array');
     }
-    if (!_.isString(condition.field) || !_.isString(condition.operator)
-        || _.isUndefined(condition.value)) {
+    if (!_.isString(condition.field) ||
+        !_.isString(condition.operator) ||
+        _.isUndefined(condition.value)) {
       throw new InvalidFiltersFormatError('Invalid condition format');
     }
     const formatedField = this.formatField(condition.field);
@@ -51,8 +54,7 @@ function FiltersParser(model, timezone, options) {
     let field = _.find(schema.fields, { field: fieldName });
 
     if (!field) {
-      throw new InvalidFiltersFormatError(`Field '${fieldName}' not found \
-on collection '${schema.name}'`);
+      throw new InvalidFiltersFormatError(`Field '${fieldName}' not found on collection '${schema.name}'`);
     }
 
     const isEmbeddedField = !!field.type.fields;

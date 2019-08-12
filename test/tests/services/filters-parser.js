@@ -77,24 +77,31 @@ describe('Service > FiltersParser', () => {
   });
 
   describe('formatAggregation function', () => {
-    it('should format correctly aggregated conditions', () => {
-      expect(defaultParser.formatAggregation('and', [
-        { name: new RegExp('.*y.*') },
-        { size: { $lt: 455 } },
-      ])).to.deep.equal({ $and: [{ name: new RegExp('.*y.*') }, { size: { $lt: 455 } }] });
+    context('on aggregated conditions', () => {
+      it('should format correctly', () => {
+        expect(defaultParser.formatAggregation('and', [
+          { name: new RegExp('.*y.*') },
+          { size: { $lt: 455 } },
+        ])).to.deep.equal({ $and: [{ name: new RegExp('.*y.*') }, { size: { $lt: 455 } }] });
+      });
     });
 
-    it('should format correctly nested conditions', () => {
-      const formattedConditions = [
-        { size: { $gt: 56 } },
-        { $or: [{ name: new RegExp('^P.*') }, { isBig: true }] },
-      ];
-      expect(defaultParser.formatAggregation('and', formattedConditions)).to.deep.equal({ $and: formattedConditions });
+    context('on nested conditions', () => {
+      it('should format correctly', () => {
+        const formattedConditions = [
+          { size: { $gt: 56 } },
+          { $or: [{ name: new RegExp('^P.*') }, { isBig: true }] },
+        ];
+        expect(defaultParser.formatAggregation('and', formattedConditions)).to.deep.equal({ $and: formattedConditions });
+      });
     });
 
-    it('should throw an error on empty condition', () => {
-      expect(() => defaultParser.formatAggregation()).to.throw(NoMatchingOperatorError);
-      expect(() => defaultParser.formatAggregation({})).to.throw(NoMatchingOperatorError);
+    context('on empty condition', () => {
+      it('should throw an error', () => {
+        expect(() => defaultParser.formatAggregation()).to.throw(NoMatchingOperatorError);
+        expect(() => defaultParser.formatAggregation({})).to.throw(NoMatchingOperatorError);
+        expect(() => defaultParser.formatAggregation({ aggregator: 'unknown' })).to.throw(NoMatchingOperatorError);
+      });
     });
   });
 

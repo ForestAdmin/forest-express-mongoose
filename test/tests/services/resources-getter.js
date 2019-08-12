@@ -268,7 +268,7 @@ describe('Service > ResourcesGetter', () => {
         });
       });
 
-      describe('works with complex nested filters', () => {
+      describe('with complex nested filters', () => {
         it('should filter correctly', (done) => {
           const parameters = {
             fields: {
