@@ -61,8 +61,8 @@ function FiltersParser(model, timezone, options) {
     if (isEmbeddedField) {
       field = _.find(field.type.fields, { field: subfieldName });
     } else if (field.reference) {
-      const subModel = utils.getReferenceModel(options, field.reference);
-      field = _.find(subModel.fields, { field: fieldName });
+      const subModel = Interface.Schemas.schemas[field.reference.split('.')[0]];
+      field = _.find(subModel.fields, { field: subfieldName });
     }
 
     if (!field) return val => val;
