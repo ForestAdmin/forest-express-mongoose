@@ -192,112 +192,120 @@ describe('Service > ResourcesGetter', () => {
     });
 
     describe('with belongsTo filter', () => {
-      it('works with flat condition', (done) => {
-        const parameters = {
-          fields: {
-            order: '_id,amount,description,giftMessage',
-          },
-          page: { number: '1', size: '30' },
-          filters: JSON.stringify({ field: 'orderer:name', operator: 'contains', value: 'Cohle' }),
-          timezone: '+02:00',
-        };
+      describe('with flat condition', () => {
+        it('should filter correctly', (done) => {
+          const parameters = {
+            fields: {
+              order: '_id,amount,description,giftMessage',
+            },
+            page: { number: '1', size: '30' },
+            filters: JSON.stringify({ field: 'orderer:name', operator: 'contains', value: 'Cohle' }),
+            timezone: '+02:00',
+          };
 
-        new ResourcesGetter(OrderModel, options, parameters)
-          .perform()
-          .then((result) => {
-            expect(result[0].length).equal(1);
-            expect(result[0][0].comment).to.match(/gift/);
-            done();
-          })
-          .catch(done);
+          new ResourcesGetter(OrderModel, options, parameters)
+            .perform()
+            .then((result) => {
+              expect(result[0].length).equal(1);
+              expect(result[0][0].comment).to.match(/gift/);
+              done();
+            })
+            .catch(done);
+        });
       });
 
-      it('works with \'and\' aggregator on two belongsTo on the same model', (done) => {
-        const parameters = {
-          fields: {
-            order: '_id,amount,description,giftMessage',
-          },
-          page: { number: '1', size: '30' },
-          filters: JSON.stringify({
-            aggregator: 'and',
-            conditions: [
-              { field: 'orderer:name', operator: 'contains', value: 'Cohle' },
-              { field: 'orderer:name', operator: 'ends_with', value: 'Gardner' },
-            ],
-          }),
-          timezone: '+02:00',
-        };
+      describe('with \'and\' aggregator on two belongsTo on the same model', () => {
+        it('should filter correctly', (done) => {
+          const parameters = {
+            fields: {
+              order: '_id,amount,description,giftMessage',
+            },
+            page: { number: '1', size: '30' },
+            filters: JSON.stringify({
+              aggregator: 'and',
+              conditions: [
+                { field: 'orderer:name', operator: 'contains', value: 'Cohle' },
+                { field: 'orderer:name', operator: 'ends_with', value: 'Gardner' },
+              ],
+            }),
+            timezone: '+02:00',
+          };
 
-        new ResourcesGetter(OrderModel, options, parameters)
-          .perform()
-          .then((result) => {
-            expect(result[0].length).equal(0);
-            done();
-          })
-          .catch(done);
+          new ResourcesGetter(OrderModel, options, parameters)
+            .perform()
+            .then((result) => {
+              expect(result[0].length).equal(0);
+              done();
+            })
+            .catch(done);
+        });
       });
 
-      it('works with \'or\' aggregator on two belongsTo on the same model', (done) => {
-        const parameters = {
-          fields: {
-            order: '_id,amount,description,giftMessage',
-          },
-          page: { number: '1', size: '30' },
-          filters: JSON.stringify({
-            aggregator: 'or',
-            conditions: [
-              { field: 'orderer:name', operator: 'contains', value: 'Cohle' },
-              { field: 'receiver:name', operator: 'ends_with', value: 'Gardner' },
-            ],
-          }),
-          timezone: '+02:00',
-        };
+      describe('with \'or\' aggregator on two belongsTo on the same model', () => {
+        it('should filter correctly', (done) => {
+          const parameters = {
+            fields: {
+              order: '_id,amount,description,giftMessage',
+            },
+            page: { number: '1', size: '30' },
+            filters: JSON.stringify({
+              aggregator: 'or',
+              conditions: [
+                { field: 'orderer:name', operator: 'contains', value: 'Cohle' },
+                { field: 'receiver:name', operator: 'ends_with', value: 'Gardner' },
+              ],
+            }),
+            timezone: '+02:00',
+          };
 
-        new ResourcesGetter(OrderModel, options, parameters)
-          .perform()
-          .then((result) => {
-            expect(result[0].length).equal(2);
-            done();
-          })
-          .catch(done);
+          new ResourcesGetter(OrderModel, options, parameters)
+            .perform()
+            .then((result) => {
+              expect(result[0].length).equal(2);
+              done();
+            })
+            .catch(done);
+        });
       });
 
-      it('works with complex nested filters', (done) => {
-        const parameters = {
-          fields: {
-            order: '_id,amount,description,giftMessage',
-          },
-          page: { number: '1', size: '30' },
-          filters: JSON.stringify({
-            aggregator: 'or',
-            conditions: [
-              { field: 'orderer:name', operator: 'contains', value: 'elsewhere' },
-              {
-                aggregator: 'and',
-                conditions: [
-                  { field: 'giftMessage', operator: 'contains', value: 'you' },
-                  {
-                    aggregator: 'and',
-                    conditions: [
-                      { field: 'orderer:age', operator: 'blank', value: null },
-                      { field: 'receiver:name', operator: 'ends_with', value: 'Gardner' },
-                    ],
-                  },
-                  { field: 'amount', operator: 'less_than', value: '200' },
-                ],
-              },
-            ],
-          }),
-          timezone: '+02:00',
-        };
+      describe('works with complex nested filters', () => {
+        it('should filter correctly', (done) => {
+          const parameters = {
+            fields: {
+              order: '_id,amount,description,giftMessage',
+            },
+            page: { number: '1', size: '30' },
+            filters: JSON.stringify({
+              aggregator: 'or',
+              conditions: [
+                { field: 'orderer:name', operator: 'contains', value: 'elsewhere' },
+                {
+                  aggregator: 'and',
+                  conditions: [
+                    { field: 'giftMessage', operator: 'contains', value: 'you' },
+                    {
+                      aggregator: 'and',
+                      conditions: [
+                        { field: 'orderer:age', operator: 'blank', value: null },
+                        { field: 'receiver:name', operator: 'ends_with', value: 'Gardner' },
+                      ],
+                    },
+                    { field: 'amount', operator: 'less_than', value: '200' },
+                  ],
+                },
+              ],
+            }),
+            timezone: '+02:00',
+          };
 
-        new ResourcesGetter(OrderModel, options, parameters)
-          .perform()
-          .then((result) => {
-            expect(result[0].length).equal(1);
-            done();
-          })
-          .catch(done);
+          new ResourcesGetter(OrderModel, options, parameters)
+            .perform()
+            .then((result) => {
+              expect(result[0].length).equal(1);
+              done();
+            })
+            .catch(done);
+        });
       });
     });
   });

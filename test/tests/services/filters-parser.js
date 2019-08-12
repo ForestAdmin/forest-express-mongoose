@@ -112,7 +112,13 @@ describe('Service > FiltersParser', () => {
     });
 
     it('should throw an error on badly formated condition', () => {
-      expect(() => defaultParser.formatCondition({ operator: 'contains' })).to.throw(InvalidFiltersFormatError);
+      expect(() => defaultParser.formatCondition({ operator: 'contains', value: 'it' })).to.throw(InvalidFiltersFormatError);
+      expect(() => defaultParser.formatCondition({ field: 'name', operator: 'contains' })).to.throw(InvalidFiltersFormatError);
+      expect(() => defaultParser.formatCondition({ field: 'name', value: 'it' })).to.throw(InvalidFiltersFormatError);
+      expect(() => defaultParser.formatCondition({ field: 'name', operator: 'con', value: 'it' })).to.throw(NoMatchingOperatorError);
+      expect(() => defaultParser.formatCondition('toto')).to.throw(InvalidFiltersFormatError);
+      expect(() => defaultParser.formatCondition(['toto'])).to.throw(InvalidFiltersFormatError);
+      expect(() => defaultParser.formatCondition({ field: 'toto', operator: 'contains', value: 'it' })).to.throw(InvalidFiltersFormatError);
     });
   });
 
