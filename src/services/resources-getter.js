@@ -56,7 +56,7 @@ function ResourcesGetter(model, opts, params) {
       const jsonQuery = queryBuilder.getQueryWithFiltersAndJoins(segment);
       queryBuilder.addCountToQuery(jsonQuery);
       return model.aggregate(jsonQuery)
-        .then(result => result[0].count);
+        .then(result => (result[0] ? result[0].count : 0));
     });
 }
 

@@ -1,26 +1,15 @@
 import _ from 'lodash';
-import Interface from 'forest-express';
+import Interface, { BaseFiltersParser } from 'forest-express';
 import utils from '../utils/schema';
 import Orm from '../utils/orm';
-import OperatorValueParser from './operator-value-parser';
 import SearchBuilder from './search-builder';
-import FilterParser from './filter-parser';
+import FiltersParser from './filters-parser';
 
 function QueryBuilder(model, params, opts) {
   const schema = Interface.Schemas.schemas[utils.getModelName(model)];
   const searchBuilder = new SearchBuilder(model, opts, params, schema.searchFields);
 
-  let { filter } = params;
-  if (params.filters && params.filters.length) {
-    filter = {};
-    params.filters.forEach((condition) => {
-      if (filter[condition.field]) {
-        filter[condition.field] += `,${condition.value}`;
-      } else {
-        filter[condition.field] = `${condition.value}`;
-      }
-    });
-  }
+  const { filters } = params;
 
   this.addJoinToQuery = (field, joinQuery) => {
     if (field.reference) {
@@ -52,67 +41,20 @@ function QueryBuilder(model, params, opts) {
     return this;
   };
 
-  this.getWhereForReferenceField = (field) => {
-    const conditions = [];
-
-    _.each(filter, (values, key) => {
-      if (key.indexOf(':') > -1) {
-        const splitted = key.split(':');
-        const fieldName = splitted[0];
-        const subFieldName = splitted[1];
-
-        if (fieldName === field.field && field.reference) {
-          // NOTICE: Look for the associated model infos
-          const subModel = utils.getReferenceModel(opts, field.reference);
-
-          values.split(',').forEach((value) => {
-            const condition = {};
-            condition[`${field.field}.${subFieldName}`] = new OperatorValueParser(opts, params.timezone)
-              .perform(subModel, subFieldName, value);
-            conditions.push(condition);
-          });
-        }
-      }
-    });
-
-    if (params.filterType && conditions.length > 0) {
-      return { [`$${params.filterType}`]: conditions };
-    }
-    return null;
-  };
-
   this.joinAllReferences = (jsonQuery) => {
     schema.fields.forEach(field => this.addJoinToQuery(field, jsonQuery));
     return this;
   };
 
   this.addFiltersToQuery = (jsonQuery, joinQuery) => {
-    const operator = `$${params.filterType}`;
-    const conditions = [];
-
-    _.each(filter, (values, key) => {
-      const filterConditions = new FilterParser(model, opts, params.timezone).perform(key, values);
-      _.each(filterConditions, condition => conditions.push(condition));
-    });
-
-    _.each(schema.fields, (field) => {
-      if (field.reference) {
-        const condition = this.getWhereForReferenceField(field);
-        if (condition) {
-          conditions.push(condition);
-
-          if (joinQuery) {
-            this.addJoinToQuery(field, joinQuery);
-          }
-        }
-      }
-    });
-
-    if (conditions.length) {
-      jsonQuery.push({ [operator]: conditions });
+    jsonQuery.push(new FiltersParser(model, params.timezone, opts).perform(filters));
+    if (joinQuery) {
+      BaseFiltersParser.getAssociations(filters).forEach((associationString) => {
+        const field = _.find(schema.fields, currentField =>
+          currentField.field === associationString && currentField.reference);
+        this.addJoinToQuery(field, joinQuery);
+      });
     }
-
-    return this;
   };
 
   this.addSortToQuery = (jsonQuery) => {
@@ -168,7 +110,7 @@ function QueryBuilder(model, params, opts) {
       searchBuilder.getWhere(conditions);
     }
 
-    if (filter) {
+    if (filters) {
       this.addFiltersToQuery(conditions, joinFromFilter ? joinQuery : null);
     }
 
