@@ -1,14 +1,15 @@
 import _ from 'lodash';
-import Interface, { BaseFiltersParser } from 'forest-express';
-import OperatorDateParser from './operator-date-parser';
+import Interface, { BaseFiltersParser, BaseOperatorDateParser } from 'forest-express';
 import { NoMatchingOperatorError, InvalidFiltersFormatError } from './errors';
 import utils from '../utils/schema';
 
 const AGGREGATOR_OPERATORS = ['and', 'or'];
 
 function FiltersParser(model, timezone, options) {
-  this.operatorDateParser = new OperatorDateParser(timezone);
   const schema = Interface.Schemas.schemas[utils.getModelName(model)];
+  const dateOperatorParserOptions = { ops: { GTE: '$gte', LTE: '$lte' }, timezone };
+
+  this.operatorDateParser = new BaseOperatorDateParser(dateOperatorParserOptions);
 
   this.perform = filtersString => BaseFiltersParser
     .perform(filtersString, this.formatAggregation, this.formatCondition);
