@@ -7,7 +7,7 @@ const AGGREGATOR_OPERATORS = ['and', 'or'];
 
 function FiltersParser(model, timezone, options) {
   const schema = Interface.Schemas.schemas[utils.getModelName(model)];
-  const dateOperatorParserOptions = { ops: { GTE: '$gte', LTE: '$lte' }, timezone };
+  const dateOperatorParserOptions = { operators: { GTE: '$gte', LTE: '$lte' }, timezone };
 
   this.operatorDateParser = new BaseOperatorDateParser(dateOperatorParserOptions);
 
