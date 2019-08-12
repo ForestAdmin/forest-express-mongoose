@@ -1,13 +1,13 @@
 import _ from 'lodash';
 import Interface, { BaseFiltersParser } from 'forest-express';
-import OperatorDateIntervalParser from './operator-date-interval-parser';
+import OperatorDateParser from './operator-date-parser';
 import { NoMatchingOperatorError, InvalidFiltersFormatError } from './errors';
 import utils from '../utils/schema';
 
 const AGGREGATOR_OPERATORS = ['and', 'or'];
 
 function FiltersParser(model, timezone, options) {
-  this.operatorDateIntervalParser = new OperatorDateIntervalParser(timezone);
+  this.operatorDateParser = new OperatorDateParser(timezone);
   const schema = Interface.Schemas.schemas[utils.getModelName(model)];
 
   this.perform = filtersString => BaseFiltersParser
@@ -19,9 +19,19 @@ function FiltersParser(model, timezone, options) {
   };
 
   this.formatCondition = (condition) => {
-    if (!condition) { throw new InvalidFiltersFormatError('No conditions provided'); }
-    if (!condition.field) { throw new InvalidFiltersFormatError('No field provided'); }
-
+    if (_.isEmpty(condition)) {
+      throw new InvalidFiltersFormatError('Empty condition in filter');
+    }
+    if (!_.isObject(condition)) {
+      throw new InvalidFiltersFormatError('Condition cannot be a raw value');
+    }
+    if (_.isArray(condition)) {
+      throw new InvalidFiltersFormatError('Filters cannot be a raw array');
+    }
+    if (!_.isString(condition.field) || !_.isString(condition.operator)
+        || _.isUndefined(condition.value)) {
+      throw new InvalidFiltersFormatError('Invalid condition format');
+    }
     const formatedField = this.formatField(condition.field);
 
     return {
@@ -34,19 +44,20 @@ function FiltersParser(model, timezone, options) {
   };
 
   this.parseFunction = (key) => {
-    const fieldValues = key.split(':');
-    const fieldName = fieldValues[0];
-    const subfieldName = fieldValues[1];
+    const [fieldName, subfieldName] = key.split(':');
 
     // Mongoose Aggregate don't parse the value automatically.
     let field = _.find(schema.fields, { field: fieldName });
 
-    if (!field) throw new InvalidFiltersFormatError(`Field '${fieldName}' not found`);
+    if (!field) {
+      throw new InvalidFiltersFormatError(`Field '${fieldName}' not found \
+on collection '${schema.name}'`);
+    }
 
     const isEmbeddedField = !!field.type.fields;
     if (isEmbeddedField) {
       field = _.find(field.type.fields, { field: subfieldName });
-    } else if (key.includes(':')) {
+    } else if (field.reference) {
       const subModel = utils.getReferenceModel(options, field.reference);
       field = _.find(subModel.fields, { field: fieldName });
     }
@@ -88,8 +99,8 @@ function FiltersParser(model, timezone, options) {
   };
 
   this.formatOperatorValue = (field, operator, value) => {
-    if (this.operatorDateIntervalParser.isDateIntervalOperator(operator)) {
-      return this.operatorDateIntervalParser.getDateIntervalFilter(operator, value);
+    if (this.operatorDateParser.isDateOperator(operator)) {
+      return this.operatorDateParser.getDateFilter(operator, value);
     }
 
     const parseFct = this.parseFunction(field);
@@ -123,7 +134,7 @@ function FiltersParser(model, timezone, options) {
     }
   };
 
-  this.formatField = field => (field.includes(':') ? `${field.replace(':', '.')}` : field);
+  this.formatField = field => field.replace(':', '.');
 
   this.getAssociations = filtersString => BaseFiltersParser.getAssociations(filtersString);
 }

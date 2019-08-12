@@ -40,64 +40,66 @@ const DATE_OPERATORS = [
   'after_x_hours_ago',
 ];
 
-function OperatorDateIntervalParser(timezone) {
-  const offsetClient = parseInt(timezone, 10);
+function OperatorDateParser(timezone) {
+  const offsetClient = Number.parseInt(timezone, 10);
   const offsetServer = moment().utcOffset() / 60;
 
   this.offsetHours = offsetServer - offsetClient;
 
-  this.toDateWithTimezone = customMoment => customMoment.add(this.offsetHours, 'h').toDate();
+  this.toDateWithTimezone = date => date.add(this.offsetHours, 'h').toDate();
 
-  this.isDateIntervalOperator = operator => DATE_OPERATORS.includes(operator);
+  this.isDateOperator = operator => DATE_OPERATORS.includes(operator);
 
-  this.getDateIntervalFilter = (operator, value) => {
+  this.getDateFilter = (operator, value) => {
+    const now = moment();
     switch (operator) {
       case 'today':
         return {
-          $gte: moment().startOf('day').add(this.offsetHours, 'h').toDate(),
-          $lte: moment().endOf('day').add(this.offsetHours, 'h').toDate(),
+          $gte: now.startOf('day').add(this.offsetHours, 'h').toDate(),
+          $lte: now.endOf('day').add(this.offsetHours, 'h').toDate(),
         };
       case 'past':
-        return { $lte: moment().toDate() };
+        return { $lte: now.toDate() };
       case 'future':
-        return { $gte: moment().toDate() };
+        return { $gte: now.toDate() };
       case 'yesterday':
       case 'previous_week':
       case 'previous_month':
       case 'previous_quarter':
-      case 'previous_year':
+      case 'previous_year': {
+        const previousPeriod = now.subtract(1, PERIODS[operator]);
+
         return {
-          $gte: this.toDateWithTimezone(moment().subtract(1, PERIODS[operator])
-            .startOf(PERIODS_VALUES[PERIODS[operator]])),
-          $lte: this.toDateWithTimezone(moment().subtract(1, PERIODS[operator])
-            .endOf(PERIODS_VALUES[PERIODS[operator]])),
+          $gte: this.toDateWithTimezone(previousPeriod.startOf(PERIODS_VALUES[PERIODS[operator]])),
+          $lte: this.toDateWithTimezone(previousPeriod.endOf(PERIODS_VALUES[PERIODS[operator]])),
         };
+      }
       case 'previous_week_to_date':
       case 'previous_month_to_date':
       case 'previous_quarter_to_date':
       case 'previous_year_to_date':
         return {
-          $gte: this.toDateWithTimezone(moment().startOf(PERIODS_VALUES[PERIODS[operator]])),
-          $lte: moment().toDate(),
+          $gte: this.toDateWithTimezone(now.startOf(PERIODS_VALUES[PERIODS[operator]])),
+          $lte: now.toDate(),
         };
       case 'previous_x_days':
         return {
-          $gte: this.toDateWithTimezone(moment().subtract(value, 'days').startOf('day')),
-          $lte: this.toDateWithTimezone(moment().subtract(1, 'days').endOf('day')),
+          $gte: this.toDateWithTimezone(now.subtract(value, 'days').startOf('day')),
+          $lte: this.toDateWithTimezone(now.subtract(1, 'days').endOf('day')),
         };
       case 'previous_x_days_to_date':
         return {
-          $gte: this.toDateWithTimezone(moment().subtract(value - 1, 'days').startOf('day')),
-          $lte: moment().toDate(),
+          $gte: this.toDateWithTimezone(now.subtract(value - 1, 'days').startOf('day')),
+          $lte: now.toDate(),
         };
       case 'before_x_hours_ago':
-        return { $lte: moment().subtract(value, 'hours').toDate() };
+        return { $lte: now.subtract(value, 'hours').toDate() };
       case 'after_x_hours_ago':
-        return { $gte: moment().subtract(value, 'hours').toDate() };
+        return { $gte: now.subtract(value, 'hours').toDate() };
       default:
         throw new NoMatchingOperatorError();
     }
   };
 }
 
-module.exports = OperatorDateIntervalParser;
+module.exports = OperatorDateParser;
