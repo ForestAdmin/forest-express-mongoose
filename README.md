@@ -124,6 +124,8 @@ user and your application data through the Admin API.
   <img width="100%" src="https://www.forestadmin.com/public/img/illustrations-dev/schema-1.svg" alt="Howitworks">
 </p>
 
-## Licence
+## Community
 
-[GPL v3](https://github.com/ForestAdmin/forest-express-sequelize/blob/master/LICENSE)
+👇 Join our Slack community of +1000 developers
+
+[![Slack Status](http://community.forestadmin.com/badge.svg)](https://community.forestadmin.com)
