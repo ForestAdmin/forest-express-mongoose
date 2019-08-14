@@ -1,6 +1,9 @@
 # Change Log
 
 ## [Unreleased]
+### Added
+- Readme - Add a badge for the NPM package version.
+
 ### Changed
 - Readme - Add a community section.
 - Readme - Remove the Licence section as it is already accessible in the Github page header.

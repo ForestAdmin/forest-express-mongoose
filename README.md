@@ -1,4 +1,6 @@
-# Forest Admin in Nodejs (Express.js & Mongoose) [![Build Status](https://travis-ci.org/ForestAdmin/forest-express-mongoose.svg?branch=master)](https://travis-ci.org/ForestAdmin/forest-express-mongoose)
+# Forest Admin in Nodejs (Express.js & Mongoose)
+[![npm package](https://badge.fury.io/js/forest-express-mongoose.svg)](https://badge.fury.io/js/forest-express-mongoose) [![CI status](https://travis-ci.org/ForestAdmin/forest-express-mongoose.svg?branch=devel)](https://travis-ci.org/ForestAdmin/forest-express-mongoose)
+
 
 Forest Admin provides an off-the-shelf administration panel based on a highly-extensible API plugged into your application.
 
