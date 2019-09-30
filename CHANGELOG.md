@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Added
 - Readme - Add a badge for the NPM package version.
+- Schema - Add detection of enum values for Enums in array schema
 
 ### Changed
 - Readme - Add a community section.
