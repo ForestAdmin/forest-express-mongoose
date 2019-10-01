@@ -4,13 +4,14 @@
 ### Added
 - Readme - Add a badge for the NPM package version.
 - Schema - Detect enum values for Enums in array schema.
+- Technical - A Release now also automatically publish the release note to Slack.
 
 ### Changed
 - Readme - Add a community section.
 - Readme - Remove the Licence section as it is already accessible in the Github page header.
 
 ### Fixed
-- Technical - Fix pre-commit hook to avoid renamed file and add new lina at the end of the file.
+- Technical - Fix pre-commit hook to avoid renamed file and add new line at the end of the file.
 - ESLint - Fix `search-builder` according to eslint rules.
 - ESLint - Fix eslintrc to allow dangle underscore.
 - ESLint - Fix `records-decorator` according to eslint rules.
