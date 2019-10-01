@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 4.0.0-beta.2 - 2019-10-01
 ### Added
 - Readme - Add a badge for the NPM package version.
 - Schema - Detect enum values for Enums in array schema.
