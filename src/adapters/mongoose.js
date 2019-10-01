@@ -181,7 +181,7 @@ module.exports = function (model, opts) {
       fields: _.map(type.paths, function (type, fieldName) {
         const field = {
           field: fieldName,
-          type: getTypeFromMongoose(type)
+          type: getTypeFromMongoose(type),
         };
 
         if (type.enumValues && type.enumValues.length) {
