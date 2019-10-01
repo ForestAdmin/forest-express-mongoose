@@ -1,6 +1,14 @@
 # Change Log
 
 ## [Unreleased]
+### Added
+- Readme - Add a badge for the NPM package version.
+- Schema - Detect enum values for Enums in array schema.
+- Technical - A Release now also automatically publish the release note to Slack.
+
+### Changed
+- Readme - Add a community section.
+- Readme - Remove the Licence section as it is already accessible in the Github page header.
 
 ## RELEASE 4.0.0-beta.1 - 2019-08-12
 ### Changed
@@ -8,13 +16,23 @@
 
 ## RELEASE 4.0.0-beta.0 - 2019-08-05
 ### Fixed
-- Technical - Fix pre-commit hook to avoid renamed file and add new lina at the end of the file.
+- Technical - Fix pre-commit hook to avoid renamed file and add new line at the end of the file.
 - ESLint - Fix `search-builder` according to eslint rules.
 - ESLint - Fix eslintrc to allow dangle underscore.
 - ESLint - Fix `records-decorator` according to eslint rules.
 - Filters - Fix "OR" filter when filtering on a reference field along with another simple attribute condition.
 - ESLint - Fix import rules.
 - Technical - Fix deploy script.
+
+## RELEASE 3.2.5 - 2019-10-01
+### Added
+- Readme - Add a badge for the NPM package version.
+- Schema - Detect enum values for Enums in array schema.
+- Technical - A Release now also automatically publish the release note to Slack.
+
+### Changed
+- Readme - Add a community section.
+- Readme - Remove the Licence section as it is already accessible in the Github page header.
 
 ## RELEASE 3.2.4 - 2019-07-24
 ### Fixed
