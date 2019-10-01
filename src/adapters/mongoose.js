@@ -178,8 +178,17 @@ module.exports = function (model, opts) {
 
   schemaType = function (type) {
     return {
-      fields: _.map(type.paths, function (type, field) {
-        return { field: field, type: getTypeFromMongoose(type) };
+      fields: _.map(type.paths, function (type, fieldName) {
+        const field = {
+          field: fieldName,
+          type: getTypeFromMongoose(type)
+        };
+
+        if (type.enumValues && type.enumValues.length) {
+          field.enums = type.enumValues;
+        }
+
+        return field;
       })
     };
   };
