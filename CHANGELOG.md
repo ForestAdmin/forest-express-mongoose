@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 4.0.0 - 2019-10-04
 ### Changed
 - Technical - Upgrade to the `forest-express` v4 public dependency.
 
