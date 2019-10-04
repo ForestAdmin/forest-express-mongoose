@@ -1879,10 +1879,10 @@ for-own@^0.1.4:
   dependencies:
     for-in "^1.0.1"
 
-forest-express@4.0.0-beta.5:
-  version "4.0.0-beta.5"
-  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-4.0.0-beta.5.tgz#4271008bb094bfc06942071271ab30ad740e7624"
-  integrity sha512-Z31CmU1B6a3FwNC2BaOIvqnbQlD/VdqyK7g1nba/r8XmzirKGo1bXzjK/bWv7TelxYyTKGrk5PQhbRyq7ySrag==
+forest-express@4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-4.0.0.tgz#19aa48398e1a5fe447208e3689eec84d5ebeafed"
+  integrity sha512-U4Q5hr0g7xEBKyr3Z3/JEDFur3xtDqEVRjxI6dvHAKp7fgV7kj0ISKxk6zfxscflF2A9M+lRMdE9fW477+cq7Q==
   dependencies:
     babel-runtime "7.0.0-beta.3"
     base32-encode "1.1.0"
@@ -1905,6 +1905,7 @@ forest-express@4.0.0-beta.5:
     moment-timezone "0.5.26"
     otplib "10.0.0"
     require-all "3.0.0"
+    semver "5.6.0"
     superagent "3.7.0"
     useragent "2.1.13"
     uuid "3.0.1"
@@ -3724,6 +3725,11 @@ sax@^1.2.4:
 "semver@2 || 3 || 4 || 5", semver@^5.1.0, semver@^5.3.0, semver@^5.5.0, semver@^5.5.1, semver@^5.6.0, semver@^5.7.0:
   version "5.7.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.7.0.tgz#790a7cf6fea5459bac96110b29b60412dc8ff96b"
+
+semver@5.6.0:
+  version "5.6.0"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-5.6.0.tgz#7e74256fbaa49c75aa7c7a205cc22799cac80004"
+  integrity sha512-RS9R6R35NYgQn++fkDWaOmqGoj4Ek9gGs+DPxNUZKuwE183xjJroKvyo1IzVFeXvUrvmALy6FWD5xrdJT25gMg==
 
 semver@6.3.0:
   version "6.3.0"
