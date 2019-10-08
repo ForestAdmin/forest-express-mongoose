@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 4.0.1 - 2019-10-08
 ### Fixed
 - Records list - Add defensive programming against unexpected internal error on resources display.
 
