@@ -28,7 +28,8 @@ function QueryBuilder(model, params, opts) {
         },
       });
 
-      if (model.schema.path(field.field).instance !== 'Array') {
+      const fieldPath = field.field && model.schema.path(field.field);
+      if (fieldPath && fieldPath.instance !== 'Array') {
         joinQuery.push({
           $unwind: {
             path: `$${field.field}`,
