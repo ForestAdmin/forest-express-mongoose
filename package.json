@@ -47,7 +47,7 @@
     "eslint-plugin-jsx-a11y": "6.0.2",
     "eslint-plugin-react": "7.5.1",
     "mocha": "6.1.4",
-    "mongoose": "5.5.9",
+    "mongoose": "5.7.3",
     "mongoose-fixture-loader": "1.0.2",
     "onchange": "6.0.0",
     "pre-commit": "1.2.2",
