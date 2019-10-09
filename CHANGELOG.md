@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 4.0.2 - 2019-10-09
 ### Fixed
 - Records List - Fix filter on boolean field.
 
