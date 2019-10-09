@@ -75,7 +75,7 @@ function FiltersParser(model, timezone, options) {
         return (val) => {
           if (val === 'true') { return true; }
           if (val === 'false') { return false; }
-          return null;
+          return typeof val === 'boolean' ? val : null;
         };
       case 'String':
         return (val) => {
