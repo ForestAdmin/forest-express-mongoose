@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 4.0.3 - 2019-10-10
 ### Fixed
 - Initialization - Fix a bad behaviour that removes all admin API routes if the liana init is called more than once.
 
