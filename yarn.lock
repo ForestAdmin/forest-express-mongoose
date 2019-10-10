@@ -1879,10 +1879,10 @@ for-own@^0.1.4:
   dependencies:
     for-in "^1.0.1"
 
-forest-express@4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-4.0.0.tgz#19aa48398e1a5fe447208e3689eec84d5ebeafed"
-  integrity sha512-U4Q5hr0g7xEBKyr3Z3/JEDFur3xtDqEVRjxI6dvHAKp7fgV7kj0ISKxk6zfxscflF2A9M+lRMdE9fW477+cq7Q==
+forest-express@4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-4.0.1.tgz#c7120cc019fded932acc98c374ce4b222dce0012"
+  integrity sha512-uT0LAFSNzU+j+XPex6zY7GJqc5QZ9ldOCiSJ7ViZ11TCyjjPcT7ASxAe9VcOluZbgoEllqCroBo7la95/ZQ8iw==
   dependencies:
     babel-runtime "7.0.0-beta.3"
     base32-encode "1.1.0"
