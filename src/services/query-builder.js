@@ -12,7 +12,8 @@ function QueryBuilder(model, params, opts) {
   const { filters } = params;
 
   this.addJoinToQuery = (field, joinQuery) => {
-    if (field.reference) {
+    // NOTICE: Never join on integrations.
+    if (field.reference && !field.integration) {
       if (_.find(joinQuery, join => join && join.$lookup && join.$lookup.as === field.field)) {
         return this;
       }
