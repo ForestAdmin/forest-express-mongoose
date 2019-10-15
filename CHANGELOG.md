@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 4.0.4 - 2019-10-15
 ### Fixed
 - Query Builder - Fix broken queries on collection having integrations.
 
