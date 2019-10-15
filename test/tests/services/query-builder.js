@@ -98,8 +98,8 @@ describe('Service > QueryBuilder', () => {
   });
 
   describe('addJoinToQuery function', () => {
-    context('on correct inputs', () => {
-      it('should format correctly', () => {
+    context('on basic field', () => {
+      it('should add the join correctly', () => {
         const queryBuilder = new QueryBuilder(TreeModel, {}, options);
         const field = {
           field: 'owner',
@@ -122,7 +122,7 @@ describe('Service > QueryBuilder', () => {
     });
 
     context('on integration field', () => {
-      it('should not contains the join', () => {
+      it('the join should be ignored', () => {
         const queryBuilder = new QueryBuilder(TreeModel, {}, options);
         const field = {
           field: 'owner',
