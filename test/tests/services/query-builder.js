@@ -121,7 +121,7 @@ describe('Service > QueryBuilder', () => {
       });
     });
 
-    context('on integration field', () => {
+    context('on virtual field', () => {
       it('the join should be ignored', () => {
         const queryBuilder = new QueryBuilder(TreeModel, {}, options);
         const field = {
@@ -129,7 +129,7 @@ describe('Service > QueryBuilder', () => {
           displayName: 'owner',
           type: 'String',
           reference: 'LumberJack._id',
-          integration: 'stripe',
+          isVirtual: true,
         };
         const joins = [];
         queryBuilder.addJoinToQuery(field, joins);
