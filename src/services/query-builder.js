@@ -13,7 +13,7 @@ function QueryBuilder(model, params, opts) {
 
   this.addJoinToQuery = (field, joinQuery) => {
     // NOTICE: Never join on integrations.
-    if (field.reference && !field.integration) {
+    if (field.reference && !field.isVirtual) {
       if (_.find(joinQuery, join => join && join.$lookup && join.$lookup.as === field.field)) {
         return this;
       }
