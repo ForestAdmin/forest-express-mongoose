@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- Query Builder - Fix broken queries on virtual smart relationships.
 
 ## RELEASE 4.0.4 - 2019-10-15
 ### Fixed
