@@ -136,5 +136,22 @@ describe('Service > QueryBuilder', () => {
         expect(joins).to.be.empty;
       });
     });
+
+    context('on a field with integration', () => {
+      it('the join should be ignored', () => {
+        const queryBuilder = new QueryBuilder(TreeModel, {}, options);
+        const field = {
+          field: 'owner',
+          displayName: 'owner',
+          type: 'String',
+          reference: 'LumberJack._id',
+          isVirtual: false,
+          integration: 'stripe',
+        };
+        const joins = [];
+        queryBuilder.addJoinToQuery(field, joins);
+        expect(joins).to.be.empty;
+      });
+    });
   });
 });

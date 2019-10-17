@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- Query Builder - Fix again broken queries on collection having integrations [Regression introduced in 4.0.5].
 
 ## RELEASE 4.0.5 - 2019-10-16
 ### Fixed
