@@ -27,7 +27,6 @@ function SearchBuilder(model, opts, params, searchFields) {
       const condition = {};
       const searchValue = params.search.replace(/[-[\]{}()*+!<=:?./\\^$|#\s,]/g, '\\$&');
       const searchRegexp = new RegExp(`.*${searchValue}.*`, 'i');
-      const searchNumber = Number(params.search);
 
       if (value.instance === 'ObjectID') {
         if (new RegExp('^[0-9a-fA-F]{24}$').test(params.search)) {
@@ -35,6 +34,7 @@ function SearchBuilder(model, opts, params, searchFields) {
           pushCondition(condition, key);
         }
       } else if (value.instance === 'Number') {
+        const searchNumber = Number(params.search);
         if (!Number.isNaN(searchNumber)) {
           condition[key] = Number(params.search);
           pushCondition(condition, key);
