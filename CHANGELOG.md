@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- Search Builder - Fix broken queries on ObjectIDs and Numbers.
 
 ## RELEASE 4.0.5 - 2019-10-16
 ### Fixed
