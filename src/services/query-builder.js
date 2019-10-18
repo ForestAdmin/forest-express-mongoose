@@ -12,8 +12,7 @@ function QueryBuilder(model, params, opts) {
   const { filters } = params;
 
   this.addJoinToQuery = (field, joinQuery) => {
-    // NOTICE: Never join on virtual fields (which includes integrations).
-    if (field.reference && !field.isVirtual) {
+    if (field.reference && !field.isVirtual && !field.integration) {
       if (_.find(joinQuery, join => join && join.$lookup && join.$lookup.as === field.field)) {
         return this;
       }
