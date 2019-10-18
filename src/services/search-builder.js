@@ -36,7 +36,7 @@ function SearchBuilder(model, opts, params, searchFields) {
       } else if (value.instance === 'Number') {
         const searchNumber = Number(params.search);
         if (!Number.isNaN(searchNumber)) {
-          condition[key] = Number(params.search);
+          condition[key] = searchNumber;
           pushCondition(condition, key);
         }
       } else if (value.instance === 'String') {

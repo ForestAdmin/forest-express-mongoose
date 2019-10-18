@@ -1,8 +1,9 @@
 # Change Log
 
 ## [Unreleased]
-### Fixed
-- Search Builder - Fix broken queries on ObjectIDs and Numbers.
+### Added
+- Search - Add the search on ObjectID fields (exact match only).
+- Search - Add the search on Number fields (exact match only).
 
 ## RELEASE 4.0.5 - 2019-10-16
 ### Fixed
