@@ -19,9 +19,6 @@ function SearchBuilder(model, opts, params, searchFields) {
       fieldsSearched.push(fieldName);
     }
 
-    if (new RegExp('^[0-9a-fA-F]{24}$').test(params.search)) {
-      return { _id: params.search };
-    }
     _.each(model.schema.paths, (value, key) => {
       if (searchFields && searchFields.indexOf(value.path) === -1) {
         return;
@@ -32,11 +29,15 @@ function SearchBuilder(model, opts, params, searchFields) {
       const searchRegexp = new RegExp(`.*${searchValue}.*`, 'i');
 
       if (value.instance === 'ObjectID') {
-        try {
+        if (new RegExp('^[0-9a-fA-F]{24}$').test(params.search)) {
           condition[key] = opts.mongoose.Types.ObjectId(params.search);
           pushCondition(condition, key);
-        } catch (error) {
-          console.error(error);
+        }
+      } else if (value.instance === 'Number') {
+        const searchNumber = Number(params.search);
+        if (!Number.isNaN(searchNumber)) {
+          condition[key] = searchNumber;
+          pushCondition(condition, key);
         }
       } else if (value.instance === 'String') {
         condition[key] = searchRegexp;
