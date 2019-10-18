@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 4.1.0 - 2019-10-18
 ### Added
 - Search - Add the search on ObjectID fields (exact match only).
 - Search - Add the search on Number fields (exact match only).
