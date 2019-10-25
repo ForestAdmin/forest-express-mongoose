@@ -1,6 +1,10 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- NPM Publish - Do not send local environment variables on package publish.
+- NPM Publish - Remove Github templates from the published packages.
+- NPM Publish - Remove yarn errors log file from the published packages.
 
 ## RELEASE 4.1.1 - 2019-10-18
 ### Fixed
