@@ -1,4 +1,8 @@
 src
+.env
+.env-example
+.github
+.yarn-error.log
 
 # Docker data
 data
