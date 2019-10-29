@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Changed
+- Technical - Apply ESLint rules to the resource getter code.
 
 ## RELEASE 4.1.2 - 2019-10-29
 ### Fixed
