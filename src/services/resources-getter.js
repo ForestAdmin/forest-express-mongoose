@@ -9,27 +9,24 @@ function ResourcesGetter(model, opts, params) {
   const queryBuilder = new QueryBuilder(model, params, opts);
 
   let fieldsSearched = null;
-  let segment;
 
   function getSegment() {
     if (schema.segments && params.segment) {
-      segment = _.find(schema.segments, currentSegment => currentSegment.name === params.segment);
+      return _.find(schema.segments, currentSegment => currentSegment.name === params.segment);
     }
+    return null;
   }
 
   function getSegmentCondition() {
-    getSegment();
+    const segment = getSegment();
     if (segment && segment.where && typeof segment.where === 'function') {
-      return segment.where()
-        .then((where) => {
-          segment.where = where;
-        });
+      return segment.where().then(where => ({ where }));
     }
-    return new P(resolve => resolve());
+    return new P(resolve => resolve(segment));
   }
 
   this.perform = () => getSegmentCondition()
-    .then(() => {
+    .then((segment) => {
       const jsonQuery = queryBuilder.getQueryWithFiltersAndJoins(segment);
 
       if (params.search) {
@@ -52,7 +49,7 @@ function ResourcesGetter(model, opts, params) {
     .then(records => [records, fieldsSearched]);
 
   this.count = () => getSegmentCondition()
-    .then(() => {
+    .then((segment) => {
       const jsonQuery = queryBuilder.getQueryWithFiltersAndJoins(segment);
       queryBuilder.addCountToQuery(jsonQuery);
       return model.aggregate(jsonQuery)
