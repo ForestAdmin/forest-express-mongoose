@@ -9,7 +9,7 @@
 - NPM Publish - Do not send local environment variables on package publish.
 - NPM Publish - Remove Github templates from the published packages.
 - NPM Publish - Remove yarn errors log file from the published packages.
-- Smart Segment - Fix bad segment computation is called more than once.
+- Smart Segment - Fix bad segment computation if called more than once.
 
 ## RELEASE 4.1.1 - 2019-10-18
 ### Fixed
