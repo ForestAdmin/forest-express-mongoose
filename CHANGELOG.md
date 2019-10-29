@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 4.1.2 - 2019-10-29
 ### Fixed
 - NPM Publish - Do not send local environment variables on package publish.
 - NPM Publish - Remove Github templates from the published packages.
