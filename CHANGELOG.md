@@ -4,6 +4,9 @@
 ### Changed
 - Technical - Apply ESLint rules to the resource getter code.
 
+### Fixed
+- Routes - Ensure that admin middlewares are configured for admin API routes only and does not interfere with other project routes.
+
 ## RELEASE 4.1.2 - 2019-10-29
 ### Fixed
 - NPM Publish - Do not send local environment variables on package publish.
