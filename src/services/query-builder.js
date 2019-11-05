@@ -8,10 +8,31 @@ import FiltersParser from './filters-parser';
 function QueryBuilder(model, params, opts) {
   const schema = Interface.Schemas.schemas[utils.getModelName(model)];
   const searchBuilder = new SearchBuilder(model, opts, params, schema.searchFields);
+  const filterParser = new FiltersParser(model, params.timezone, opts);
 
   const { filters } = params;
 
-  this.joinAlreadyExists = (field, joinQuery) => !!_.find(joinQuery, join => join && join.$lookup && join.$lookup.as === field.field)
+  this.joinAlreadyExists = (field, joinQuery) => !!_.find(joinQuery, join => join && join.$lookup && join.$lookup.as === field.field);
+
+  this.getFieldNamesRequested = () => {
+    if (!params.fields || !params.fields[model.collection.name]) { return null; }
+
+    // NOTICE: Populate the necessary associations for filters
+    const associations = params.filters ? filterParser.getAssociations(params.filters) : [];
+
+    if (params.sort && params.sort.includes('.')) {
+      let [associationFromSorting] = params.sort.split('.');
+      if (associationFromSorting[0] === '-') {
+        associationFromSorting = associationFromSorting.substring(1);
+      }
+      associations.push(associationFromSorting);
+    }
+
+    return _.union(
+      params.fields[model.collection.name].split(','),
+      associations,
+    );
+  };
 
   this.addJoinToQuery = (field, joinQuery) => {
     if (field.reference && !field.isVirtual && !field.integration) {
@@ -45,15 +66,18 @@ function QueryBuilder(model, params, opts) {
   };
 
   this.joinAllReferences = (jsonQuery, alreadyJoinedQuery) => {
+    const fieldNames = this.getFieldNamesRequested();
     schema.fields.forEach(field => {
-      if (this.joinAlreadyExists(field, alreadyJoinedQuery)) { return; }
+      if ((fieldNames && !fieldNames.includes(field.field)) || this.joinAlreadyExists(field, alreadyJoinedQuery)) {
+        return;
+      }
       this.addJoinToQuery(field, jsonQuery);
     });
     return this;
   };
 
   this.addFiltersToQuery = (jsonQuery, joinQuery) => {
-    jsonQuery.push(new FiltersParser(model, params.timezone, opts).perform(filters));
+    jsonQuery.push(filterParser.perform(filters));
     if (joinQuery) {
       BaseFiltersParser.getAssociations(filters).forEach((associationString) => {
         const field = _.find(schema.fields, currentField =>

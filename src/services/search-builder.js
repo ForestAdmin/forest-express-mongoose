@@ -20,7 +20,7 @@ function SearchBuilder(model, opts, params, searchFields) {
     }
 
     _.each(model.schema.paths, (value, key) => {
-      if (searchFields && searchFields.indexOf(value.path) === -1) {
+      if (searchFields && !searchFields.includes(value.path)) {
         return;
       }
 
