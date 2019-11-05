@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- Records Lists - Improve performance (Regression introduced on v4.0.0).
 
 ## RELEASE 5.0.0 - 2019-10-31
 ### Changed

@@ -11,9 +11,11 @@ function QueryBuilder(model, params, opts) {
 
   const { filters } = params;
 
+  this.joinAlreadyExists = (field, joinQuery) => !!_.find(joinQuery, join => join && join.$lookup && join.$lookup.as === field.field)
+
   this.addJoinToQuery = (field, joinQuery) => {
     if (field.reference && !field.isVirtual && !field.integration) {
-      if (_.find(joinQuery, join => join && join.$lookup && join.$lookup.as === field.field)) {
+      if (this.joinAlreadyExists(field, joinQuery)) {
         return this;
       }
 
@@ -42,8 +44,11 @@ function QueryBuilder(model, params, opts) {
     return this;
   };
 
-  this.joinAllReferences = (jsonQuery) => {
-    schema.fields.forEach(field => this.addJoinToQuery(field, jsonQuery));
+  this.joinAllReferences = (jsonQuery, alreadyJoinedQuery) => {
+    schema.fields.forEach(field => {
+      if (this.joinAlreadyExists(field, alreadyJoinedQuery)) { return; }
+      this.addJoinToQuery(field, jsonQuery);
+    });
     return this;
   };
 
@@ -98,29 +103,25 @@ function QueryBuilder(model, params, opts) {
 
   this.getFieldsSearched = () => searchBuilder.getFieldsSearched();
 
-  this.getQueryWithFiltersAndJoins = (segment, joinFromFilter) => {
-    const joinQuery = [];
+  this.getQueryWithFiltersAndJoins = (segment) => {
+    const requiredJoinQuery = [];
     const jsonQuery = [];
-
-    if (!joinFromFilter) {
-      this.joinAllReferences(joinQuery);
-    }
-
     const conditions = [];
-    if (params.search) {
-      searchBuilder.getWhere(conditions);
-    }
 
     if (filters) {
-      this.addFiltersToQuery(conditions, joinFromFilter ? joinQuery : null);
+      this.addFiltersToQuery(conditions, requiredJoinQuery);
+    }
+
+    if (params.search) {
+      searchBuilder.getWhere(conditions);
     }
 
     if (segment) {
       conditions.push(segment.where);
     }
 
-    if (joinQuery.length) {
-      joinQuery.forEach(join => jsonQuery.push(join));
+    if (requiredJoinQuery.length) {
+      requiredJoinQuery.forEach(join => jsonQuery.push(join));
     }
 
     if (conditions.length) {

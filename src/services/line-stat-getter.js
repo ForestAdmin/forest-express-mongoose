@@ -103,7 +103,7 @@ function LineStatFinder(model, params, opts) {
       ? params.group_by_field.replace(':', '.') : params.group_by_field;
 
     return new P((resolve, reject) => {
-      const jsonQuery = queryBuilder.getQueryWithFiltersAndJoins(null, true);
+      const jsonQuery = queryBuilder.getQueryWithFiltersAndJoins(null);
       if (populateGroupByField) {
         queryBuilder.addJoinToQuery(populateGroupByField, jsonQuery);
       }

@@ -5,7 +5,7 @@ function ValueStatGetter(model, params, opts) {
   const queryBuilder = new QueryBuilder(model, params, opts);
 
   this.perform = () => new P((resolve, reject) => {
-    const jsonQuery = queryBuilder.getQueryWithFiltersAndJoins(null, true);
+    const jsonQuery = queryBuilder.getQueryWithFiltersAndJoins(null);
     const query = model.aggregate(jsonQuery);
 
     let sum = 1;
