@@ -12,7 +12,8 @@ function QueryBuilder(model, params, opts) {
 
   const { filters } = params;
 
-  this.joinAlreadyExists = (field, joinQuery) => !!_.find(joinQuery, join => join && join.$lookup && join.$lookup.as === field.field);
+  this.joinAlreadyExists = (field, joinQuery) =>
+    !!_.find(joinQuery, join => join && join.$lookup && join.$lookup.as === field.field);
 
   this.getFieldNamesRequested = () => {
     if (!params.fields || !params.fields[model.collection.name]) { return null; }
@@ -67,8 +68,9 @@ function QueryBuilder(model, params, opts) {
 
   this.joinAllReferences = (jsonQuery, alreadyJoinedQuery) => {
     const fieldNames = this.getFieldNamesRequested();
-    schema.fields.forEach(field => {
-      if ((fieldNames && !fieldNames.includes(field.field)) || this.joinAlreadyExists(field, alreadyJoinedQuery)) {
+    schema.fields.forEach((field) => {
+      if ((fieldNames && !fieldNames.includes(field.field))
+        || this.joinAlreadyExists(field, alreadyJoinedQuery)) {
         return;
       }
       this.addJoinToQuery(field, jsonQuery);
@@ -92,6 +94,8 @@ function QueryBuilder(model, params, opts) {
     let sortParam = order > 0 ? params.sort : params.sort.substring(1);
     if (params.sort.split('.').length > 1) {
       sortParam = params.sort.split('.')[0];
+      const [association] = params.sort.split('.');
+      this.addJoinToQuery(association, jsonQuery);
     }
     jsonQuery.push({ $sort: { [sortParam]: order } });
 
@@ -127,7 +131,7 @@ function QueryBuilder(model, params, opts) {
 
   this.getFieldsSearched = () => searchBuilder.getFieldsSearched();
 
-  this.getQueryWithFiltersAndJoins = (segment) => {
+  this.getQueryWithFiltersAndJoins = async (segment) => {
     const requiredJoinQuery = [];
     const jsonQuery = [];
     const conditions = [];
@@ -137,7 +141,7 @@ function QueryBuilder(model, params, opts) {
     }
 
     if (params.search) {
-      searchBuilder.getWhere(conditions);
+      await searchBuilder.getWhere(conditions);
     }
 
     if (segment) {

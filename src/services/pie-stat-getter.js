@@ -21,8 +21,8 @@ function PieStatGetter(model, params, opts) {
     const groupByFieldName = populateGroupByField
       ? params.group_by_field.replace(':', '.') : params.group_by_field;
 
-    return new P((resolve, reject) => {
-      const jsonQuery = queryBuilder.getQueryWithFiltersAndJoins(null);
+    return new P(async (resolve, reject) => {
+      const jsonQuery = await queryBuilder.getQueryWithFiltersAndJoins(null);
       if (populateGroupByField) {
         queryBuilder.addJoinToQuery(populateGroupByField, jsonQuery);
       }
