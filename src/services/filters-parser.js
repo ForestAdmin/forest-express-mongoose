@@ -189,11 +189,23 @@ function FiltersParser(model, timezone, options) {
     const subModelIds = await subModel.find(query)
       .then(records => records.map(record => record[referencedKey]));
 
-    return {
+    const resultCondition = {
       field: fieldName,
       operator: 'in',
       value: subModelIds,
     };
+    if (condition.operator === 'blank') {
+      return {
+        aggregator: 'or',
+        conditions: [{
+          field: fieldName,
+          operator: 'blank',
+          value: null,
+        }, resultCondition],
+      };
+    }
+
+    return resultCondition;
   };
 
   this.replaceAllReferences = async filtersString => BaseFiltersParser

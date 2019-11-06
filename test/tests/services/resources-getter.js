@@ -24,12 +24,12 @@ describe('Service > ResourcesGetter', () => {
           isCompositePrimary: false,
           searchFields: ['amount', 'comment'],
           fields: [
-            { field: '_id', type: 'ObjectId' },
+            { field: '_id', type: 'String' },
             { field: 'amount', type: 'Number' },
             { field: 'comment', type: 'String' },
             { field: 'giftMessage', type: 'String' },
-            { field: 'orderer', type: 'ObjectId', reference: 'User._id' },
-            { field: 'receiver', type: 'ObjectId', reference: 'User._id' },
+            { field: 'orderer', type: 'String', reference: 'User._id' },
+            { field: 'receiver', type: 'String', reference: 'User._id' },
           ],
         },
         User: {
@@ -39,7 +39,7 @@ describe('Service > ResourcesGetter', () => {
           isCompositePrimary: false,
           searchFields: ['name'],
           fields: [
-            { field: '_id', type: 'ObjectId' },
+            { field: '_id', type: 'String' },
             { field: 'name', type: 'String' },
             { field: 'age', type: 'Number' },
           ],
@@ -100,13 +100,12 @@ describe('Service > ResourcesGetter', () => {
       });
   });
 
-  after((done) => {
+  after(() => {
     mongoose.connection.close();
-    done();
   });
 
   describe('with a search on a collection with searchFields', () => {
-    it('should retrieve the record with `gift` value in `comment` field', (done) => {
+    it('should retrieve the record with `gift` value in `comment` field', () => {
       const parameters = {
         fields: {
           order: '_id,amount,description,giftMessage',
@@ -116,34 +115,30 @@ describe('Service > ResourcesGetter', () => {
         timezone: '+02:00',
       };
 
-      new ResourcesGetter(OrderModel, options, parameters)
+      return new ResourcesGetter(OrderModel, options, parameters)
         .perform()
         .then((result) => {
           expect(result[0].length).equal(1);
           expect(result[0][0].comment).to.match(/gift/);
-          done();
-        })
-        .catch(done);
+        });
     });
 
-    it('should retrieve the count of the records', (done) => {
+    it('should retrieve the count of the records', () => {
       const parameters = {
         search: 'gift',
         timezone: '+02:00',
       };
 
-      new ResourcesGetter(OrderModel, options, parameters)
+      return new ResourcesGetter(OrderModel, options, parameters)
         .count()
         .then((count) => {
           expect(count).equal(1);
-          done();
-        })
-        .catch(done);
+        });
     });
   });
 
   describe('with a basic flat filter', () => {
-    it('should filter correctly', (done) => {
+    it('should filter correctly', () => {
       const parameters = {
         fields: {
           order: '_id,amount,description,giftMessage',
@@ -153,19 +148,17 @@ describe('Service > ResourcesGetter', () => {
         timezone: '+02:00',
       };
 
-      new ResourcesGetter(OrderModel, options, parameters)
+      return new ResourcesGetter(OrderModel, options, parameters)
         .perform()
         .then((result) => {
           expect(result[0].length).equal(1);
           expect(result[0][0].comment).to.match(/comment/);
-          done();
-        })
-        .catch(done);
+        });
     });
   });
 
   describe('with basic \'and\' aggregator', () => {
-    it('should filter correctly', (done) => {
+    it('should filter correctly', () => {
       const parameters = {
         fields: {
           order: '_id,amount,description,giftMessage',
@@ -181,19 +174,17 @@ describe('Service > ResourcesGetter', () => {
         timezone: '+02:00',
       };
 
-      new ResourcesGetter(OrderModel, options, parameters)
+      return new ResourcesGetter(OrderModel, options, parameters)
         .perform()
         .then((result) => {
           expect(result[0].length).equal(1);
           expect(result[0][0].comment).to.match(/gift/);
-          done();
-        })
-        .catch(done);
+        });
     });
 
     describe('with belongsTo filter', () => {
       describe('with flat condition', () => {
-        it('should filter correctly', (done) => {
+        it('should filter correctly', () => {
           const parameters = {
             fields: {
               order: '_id,amount,description,giftMessage',
@@ -203,19 +194,17 @@ describe('Service > ResourcesGetter', () => {
             timezone: '+02:00',
           };
 
-          new ResourcesGetter(OrderModel, options, parameters)
+          return new ResourcesGetter(OrderModel, options, parameters)
             .perform()
             .then((result) => {
               expect(result[0].length).equal(1);
               expect(result[0][0].comment).to.match(/gift/);
-              done();
-            })
-            .catch(done);
+            });
         });
       });
 
       describe('with \'and\' aggregator on two belongsTo on the same model', () => {
-        it('should filter correctly', (done) => {
+        it('should filter correctly', () => {
           const parameters = {
             fields: {
               order: '_id,amount,description,giftMessage',
@@ -231,18 +220,16 @@ describe('Service > ResourcesGetter', () => {
             timezone: '+02:00',
           };
 
-          new ResourcesGetter(OrderModel, options, parameters)
+          return new ResourcesGetter(OrderModel, options, parameters)
             .perform()
             .then((result) => {
               expect(result[0].length).equal(0);
-              done();
-            })
-            .catch(done);
+            });
         });
       });
 
       describe('with \'or\' aggregator on two belongsTo on the same model', () => {
-        it('should filter correctly', (done) => {
+        it('should filter correctly', () => {
           const parameters = {
             fields: {
               order: '_id,amount,description,giftMessage',
@@ -258,18 +245,16 @@ describe('Service > ResourcesGetter', () => {
             timezone: '+02:00',
           };
 
-          new ResourcesGetter(OrderModel, options, parameters)
+          return new ResourcesGetter(OrderModel, options, parameters)
             .perform()
             .then((result) => {
               expect(result[0].length).equal(2);
-              done();
-            })
-            .catch(done);
+            });
         });
       });
 
       describe('with complex nested filters', () => {
-        it('should filter correctly', (done) => {
+        it('should filter correctly', () => {
           const parameters = {
             fields: {
               order: '_id,amount,description,giftMessage',
@@ -298,13 +283,11 @@ describe('Service > ResourcesGetter', () => {
             timezone: '+02:00',
           };
 
-          new ResourcesGetter(OrderModel, options, parameters)
+          return new ResourcesGetter(OrderModel, options, parameters)
             .perform()
             .then((result) => {
               expect(result[0].length).equal(1);
-              done();
-            })
-            .catch(done);
+            });
         });
       });
     });
