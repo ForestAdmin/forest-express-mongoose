@@ -100,7 +100,7 @@ describe('Service > QueryBuilder', () => {
   describe('addJoinToQuery function', () => {
     context('on basic field', () => {
       it('should add the join correctly', () => {
-        const queryBuilder = new QueryBuilder(TreeModel, {}, options);
+        const queryBuilder = new QueryBuilder(TreeModel, { timezone: '+02:00' }, options);
         const field = {
           field: 'owner',
           displayName: 'owner',
@@ -123,7 +123,7 @@ describe('Service > QueryBuilder', () => {
 
     context('on virtual field', () => {
       it('the join should be ignored', () => {
-        const queryBuilder = new QueryBuilder(TreeModel, {}, options);
+        const queryBuilder = new QueryBuilder(TreeModel, { timezone: '+02:00' }, options);
         const field = {
           field: 'owner',
           displayName: 'owner',
@@ -139,7 +139,7 @@ describe('Service > QueryBuilder', () => {
 
     context('on a field with integration', () => {
       it('the join should be ignored', () => {
-        const queryBuilder = new QueryBuilder(TreeModel, {}, options);
+        const queryBuilder = new QueryBuilder(TreeModel, { timezone: '+02:00' }, options);
         const field = {
           field: 'owner',
           displayName: 'owner',
