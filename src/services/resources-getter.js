@@ -44,7 +44,7 @@ function ResourcesGetter(model, opts, params) {
 
       queryBuilder.addSkipAndLimitToQuery(jsonQuery);
 
-      queryBuilder.joinAllReferences(jsonQuery);
+      await queryBuilder.joinAllReferences(jsonQuery);
 
       return model.aggregate(jsonQuery);
     })

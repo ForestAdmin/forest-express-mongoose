@@ -13,15 +13,15 @@ function FiltersParser(model, timezone, options) {
     timezone,
   });
 
-  this.perform = filtersString => BaseFiltersParser
+  this.perform = async filtersString => BaseFiltersParser
     .perform(filtersString, this.formatAggregation, this.formatCondition);
 
-  this.formatAggregation = (aggregator, formatedConditions) => {
+  this.formatAggregation = async (aggregator, formatedConditions) => {
     const aggregatorOperator = this.formatAggregatorOperator(aggregator);
     return { [aggregatorOperator]: formatedConditions };
   };
 
-  this.formatCondition = (condition) => {
+  this.formatCondition = async (condition) => {
     if (_.isEmpty(condition)) {
       throw new InvalidFiltersFormatError('Empty condition in filter');
     }
@@ -39,7 +39,7 @@ function FiltersParser(model, timezone, options) {
     const formatedField = this.formatField(condition.field);
 
     return {
-      [formatedField]: this.formatOperatorValue(
+      [formatedField]: await this.formatOperatorValue(
         condition.field,
         condition.operator,
         condition.value,
@@ -47,7 +47,7 @@ function FiltersParser(model, timezone, options) {
     };
   };
 
-  this.parseFunction = (key) => {
+  this.parseFunction = async (key) => {
     const [fieldName, subfieldName] = key.split(':');
 
     // Mongoose Aggregate don't parse the value automatically.
@@ -60,9 +60,6 @@ function FiltersParser(model, timezone, options) {
     const isEmbeddedField = !!field.type.fields;
     if (isEmbeddedField) {
       field = _.find(field.type.fields, { field: subfieldName });
-    } else if (field.reference) {
-      const subModel = Interface.Schemas.schemas[field.reference.split('.')[0]];
-      field = _.find(subModel.fields, { field: subfieldName });
     }
 
     if (!field) return val => val;
@@ -82,9 +79,12 @@ function FiltersParser(model, timezone, options) {
           // NOTICE: Check if the value is a real ObjectID. By default, the
           // isValid method returns true for a random string with length 12.
           // Example: 'Black Friday'.
-          if (options.mongoose.Types.ObjectId.isValid(val) &&
-            options.mongoose.Types.ObjectId(val).toString() === val) {
-            return options.mongoose.Types.ObjectId(val);
+          const { ObjectId } = options.mongoose.Types;
+          if (ObjectId.isValid(val) && ObjectId(val).toString() === val) {
+            return ObjectId(val);
+          }
+          if (_.isArray(val)) {
+            return val.map(value => (ObjectId.isValid(value) ? ObjectId(value) : value));
           }
           return val;
         };
@@ -101,12 +101,12 @@ function FiltersParser(model, timezone, options) {
     throw new NoMatchingOperatorError();
   };
 
-  this.formatOperatorValue = (field, operator, value) => {
+  this.formatOperatorValue = async (field, operator, value) => {
     if (this.operatorDateParser.isDateOperator(operator)) {
       return this.operatorDateParser.getDateFilter(operator, value);
     }
 
-    const parseFct = this.parseFunction(field);
+    const parseFct = await this.parseFunction(field);
 
     switch (operator) {
       case 'not':
@@ -132,6 +132,8 @@ function FiltersParser(model, timezone, options) {
         return { $exists: false };
       case 'equal':
         return parseFct(value);
+      case 'in':
+        return { $in: parseFct(value) };
       default:
         throw new NoMatchingOperatorError();
     }
@@ -139,7 +141,63 @@ function FiltersParser(model, timezone, options) {
 
   this.formatField = field => field.replace(':', '.');
 
-  this.getAssociations = filtersString => BaseFiltersParser.getAssociations(filtersString);
+  this.getAssociations = async filtersString => BaseFiltersParser.getAssociations(filtersString);
+
+  this.formatAggregationForReferences = (aggregator, conditions) => ({ aggregator, conditions });
+
+  this.formatConditionForReferences = async (condition) => {
+    if (_.isEmpty(condition)) {
+      throw new InvalidFiltersFormatError('Empty condition in filter');
+    }
+    if (!_.isObject(condition)) {
+      throw new InvalidFiltersFormatError('Condition cannot be a raw value');
+    }
+    if (_.isArray(condition)) {
+      throw new InvalidFiltersFormatError('Filters cannot be a raw array');
+    }
+    if (!_.isString(condition.field) ||
+        !_.isString(condition.operator) ||
+        _.isUndefined(condition.value)) {
+      throw new InvalidFiltersFormatError('Invalid condition format');
+    }
+
+    const [fieldName, subFieldName] = this.formatField(condition.field).split('.');
+    if (!subFieldName) {
+      return condition;
+    }
+
+    // Mongoose Aggregate don't parse the value automatically.
+    const field = _.find(schema.fields, { field: fieldName });
+
+    if (!field) {
+      throw new InvalidFiltersFormatError(`Field '${fieldName}' not found on collection '${schema.name}'`);
+    }
+
+    if (!field.reference) {
+      return condition;
+    }
+
+    const subModel = utils.getReferenceModel(options, field.reference);
+    const subModelFilterParser = new FiltersParser(subModel, timezone, options);
+    const newCondition = {
+      operator: condition.operator,
+      value: condition.value,
+      field: subFieldName,
+    };
+    const query = await subModelFilterParser.perform(JSON.stringify(newCondition));
+    const [, referencedKey] = field.reference.split('.');
+    const subModelIds = await subModel.find(query)
+      .then(records => records.map(record => record[referencedKey]));
+
+    return {
+      field: fieldName,
+      operator: 'in',
+      value: subModelIds,
+    };
+  };
+
+  this.replaceAllReferences = async filtersString => BaseFiltersParser
+    .perform(filtersString, this.formatAggregationForReferences, this.formatConditionForReferences);
 }
 
 module.exports = FiltersParser;
