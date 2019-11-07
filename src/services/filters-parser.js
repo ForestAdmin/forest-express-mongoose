@@ -22,6 +22,7 @@ function FiltersParser(model, timezone, options) {
   };
 
   this.formatCondition = async (condition) => {
+    console.log('Condition', condition);
     if (_.isEmpty(condition)) {
       throw new InvalidFiltersFormatError('Empty condition in filter');
     }
@@ -146,6 +147,7 @@ function FiltersParser(model, timezone, options) {
   this.formatAggregationForReferences = (aggregator, conditions) => ({ aggregator, conditions });
 
   this.formatConditionForReferences = async (condition) => {
+    console.log('Condition 2', condition);
     if (_.isEmpty(condition)) {
       throw new InvalidFiltersFormatError('Empty condition in filter');
     }
