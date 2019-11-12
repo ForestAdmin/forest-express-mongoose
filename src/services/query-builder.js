@@ -8,12 +8,36 @@ import FiltersParser from './filters-parser';
 function QueryBuilder(model, params, opts) {
   const schema = Interface.Schemas.schemas[utils.getModelName(model)];
   const searchBuilder = new SearchBuilder(model, opts, params, schema.searchFields);
+  const filterParser = new FiltersParser(model, params.timezone, opts);
 
   const { filters } = params;
 
+  this.joinAlreadyExists = (field, joinQuery) =>
+    !!_.find(joinQuery, join => join && join.$lookup && join.$lookup.as === field.field);
+
+  this.getFieldNamesRequested = () => {
+    if (!params.fields || !params.fields[model.collection.name]) { return null; }
+
+    // NOTICE: Populate the necessary associations for filters
+    const associations = params.filters ? filterParser.getAssociations(params.filters) : [];
+
+    if (params.sort && params.sort.includes('.')) {
+      let [associationFromSorting] = params.sort.split('.');
+      if (associationFromSorting[0] === '-') {
+        associationFromSorting = associationFromSorting.substring(1);
+      }
+      associations.push(associationFromSorting);
+    }
+
+    return _.union(
+      params.fields[model.collection.name].split(','),
+      associations,
+    );
+  };
+
   this.addJoinToQuery = (field, joinQuery) => {
     if (field.reference && !field.isVirtual && !field.integration) {
-      if (_.find(joinQuery, join => join && join.$lookup && join.$lookup.as === field.field)) {
+      if (this.joinAlreadyExists(field, joinQuery)) {
         return this;
       }
 
@@ -42,13 +66,20 @@ function QueryBuilder(model, params, opts) {
     return this;
   };
 
-  this.joinAllReferences = (jsonQuery) => {
-    schema.fields.forEach(field => this.addJoinToQuery(field, jsonQuery));
+  this.joinAllReferences = (jsonQuery, alreadyJoinedQuery) => {
+    const fieldNames = this.getFieldNamesRequested();
+    schema.fields.forEach((field) => {
+      if ((fieldNames && !fieldNames.includes(field.field))
+        || this.joinAlreadyExists(field, alreadyJoinedQuery)) {
+        return;
+      }
+      this.addJoinToQuery(field, jsonQuery);
+    });
     return this;
   };
 
   this.addFiltersToQuery = (jsonQuery, joinQuery) => {
-    jsonQuery.push(new FiltersParser(model, params.timezone, opts).perform(filters));
+    jsonQuery.push(filterParser.perform(filters));
     if (joinQuery) {
       BaseFiltersParser.getAssociations(filters).forEach((associationString) => {
         const field = _.find(schema.fields, currentField =>
@@ -63,6 +94,8 @@ function QueryBuilder(model, params, opts) {
     let sortParam = order > 0 ? params.sort : params.sort.substring(1);
     if (params.sort.split('.').length > 1) {
       sortParam = params.sort.split('.')[0];
+      const [association] = params.sort.split('.');
+      this.addJoinToQuery(association, jsonQuery);
     }
     jsonQuery.push({ $sort: { [sortParam]: order } });
 
@@ -98,29 +131,25 @@ function QueryBuilder(model, params, opts) {
 
   this.getFieldsSearched = () => searchBuilder.getFieldsSearched();
 
-  this.getQueryWithFiltersAndJoins = (segment, joinFromFilter) => {
-    const joinQuery = [];
+  this.getQueryWithFiltersAndJoins = async (segment) => {
+    const requiredJoinQuery = [];
     const jsonQuery = [];
-
-    if (!joinFromFilter) {
-      this.joinAllReferences(joinQuery);
-    }
-
     const conditions = [];
-    if (params.search) {
-      searchBuilder.getWhere(conditions);
-    }
 
     if (filters) {
-      this.addFiltersToQuery(conditions, joinFromFilter ? joinQuery : null);
+      this.addFiltersToQuery(conditions, requiredJoinQuery);
+    }
+
+    if (params.search) {
+      await searchBuilder.getWhere(conditions);
     }
 
     if (segment) {
       conditions.push(segment.where);
     }
 
-    if (joinQuery.length) {
-      joinQuery.forEach(join => jsonQuery.push(join));
+    if (requiredJoinQuery.length) {
+      requiredJoinQuery.forEach(join => jsonQuery.push(join));
     }
 
     if (conditions.length) {

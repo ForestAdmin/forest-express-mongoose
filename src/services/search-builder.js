@@ -10,7 +10,7 @@ function SearchBuilder(model, opts, params, searchFields) {
 
   this.getFieldsSearched = () => fieldsSearched;
 
-  this.getConditions = () => {
+  this.getConditions = async () => {
     this.hasSmartFieldSearch = false;
     const orQuery = { $or: [] };
 
@@ -20,7 +20,7 @@ function SearchBuilder(model, opts, params, searchFields) {
     }
 
     _.each(model.schema.paths, (value, key) => {
-      if (searchFields && searchFields.indexOf(value.path) === -1) {
+      if (searchFields && !searchFields.includes(value.path)) {
         return;
       }
 
@@ -70,25 +70,33 @@ function SearchBuilder(model, opts, params, searchFields) {
       }
     });
 
+    const promises = [];
     _.each(schema.fields, (field) => {
       if (field.search) {
-        try {
-          const condition = field.search(params.search);
-          if (condition) {
-            pushCondition(condition, field.field);
+        const promise = new Promise(async (resolve) => {
+          try {
+            const condition = await Promise.resolve(field.search(params.search));
+            if (condition) {
+              pushCondition(condition, field.field);
+            }
+            this.hasSmartFieldSearch = true;
+          } catch (error) {
+            Interface.logger.error(`Cannot search properly on Smart Field ${field.field}`, error);
           }
-          this.hasSmartFieldSearch = true;
-        } catch (error) {
-          Interface.logger.error(`Cannot search properly on Smart Field ${field.field}`, error);
-        }
+
+          resolve();
+        });
+        promises.push(promise);
       }
     });
+
+    await Promise.all(promises);
 
     return orQuery.$or.length ? orQuery : {};
   };
 
-  this.getWhere = (jsonQuery) => {
-    jsonQuery.push(this.getConditions());
+  this.getWhere = async (jsonQuery) => {
+    jsonQuery.push(await this.getConditions());
   };
 }
 

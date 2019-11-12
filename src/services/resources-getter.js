@@ -26,8 +26,8 @@ function ResourcesGetter(model, opts, params) {
   }
 
   this.perform = () => getSegmentCondition()
-    .then((segment) => {
-      const jsonQuery = queryBuilder.getQueryWithFiltersAndJoins(segment);
+    .then(async (segment) => {
+      const jsonQuery = await queryBuilder.getQueryWithFiltersAndJoins(segment);
 
       if (params.search) {
         fieldsSearched = queryBuilder.getFieldsSearched();
@@ -44,13 +44,15 @@ function ResourcesGetter(model, opts, params) {
 
       queryBuilder.addSkipAndLimitToQuery(jsonQuery);
 
+      queryBuilder.joinAllReferences(jsonQuery);
+
       return model.aggregate(jsonQuery);
     })
     .then(records => [records, fieldsSearched]);
 
   this.count = () => getSegmentCondition()
-    .then((segment) => {
-      const jsonQuery = queryBuilder.getQueryWithFiltersAndJoins(segment);
+    .then(async (segment) => {
+      const jsonQuery = await queryBuilder.getQueryWithFiltersAndJoins(segment);
       queryBuilder.addCountToQuery(jsonQuery);
       return model.aggregate(jsonQuery)
         .then(result => (result[0] ? result[0].count : 0));

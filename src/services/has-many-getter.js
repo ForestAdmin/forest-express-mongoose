@@ -62,13 +62,13 @@ function HasManyGetter(model, association, opts, params) {
           return resolve(_.map(records, record => record[params.associationName]));
         });
     })
-      .then((recordIds) => {
+      .then(async (recordIds) => {
         const conditions = {
           $and: [{ _id: { $in: recordIds } }],
         };
 
         if (params.search) {
-          const conditionsSearch = searchBuilder.getConditions();
+          const conditionsSearch = await searchBuilder.getConditions();
           conditions.$and.push(conditionsSearch);
         }
 
