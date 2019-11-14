@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import Interface, { BaseFiltersParser } from 'forest-express';
+import Interface from 'forest-express';
 import utils from '../utils/schema';
 import Orm from '../utils/orm';
 import SearchBuilder from './search-builder';
@@ -15,11 +15,11 @@ function QueryBuilder(model, params, opts) {
   this.joinAlreadyExists = (field, joinQuery) =>
     !!_.find(joinQuery, join => join && join.$lookup && join.$lookup.as === field.field);
 
-  this.getFieldNamesRequested = () => {
+  this.getFieldNamesRequested = async () => {
     if (!params.fields || !params.fields[model.collection.name]) { return null; }
 
     // NOTICE: Populate the necessary associations for filters
-    const associations = params.filters ? filterParser.getAssociations(params.filters) : [];
+    const associations = params.filters ? await filterParser.getAssociations(params.filters) : [];
 
     if (params.sort && params.sort.includes('.')) {
       let [associationFromSorting] = params.sort.split('.');
@@ -66,8 +66,8 @@ function QueryBuilder(model, params, opts) {
     return this;
   };
 
-  this.joinAllReferences = (jsonQuery, alreadyJoinedQuery) => {
-    const fieldNames = this.getFieldNamesRequested();
+  this.joinAllReferences = async (jsonQuery, alreadyJoinedQuery) => {
+    const fieldNames = await this.getFieldNamesRequested();
     schema.fields.forEach((field) => {
       if ((fieldNames && !fieldNames.includes(field.field))
         || this.joinAlreadyExists(field, alreadyJoinedQuery)) {
@@ -78,15 +78,10 @@ function QueryBuilder(model, params, opts) {
     return this;
   };
 
-  this.addFiltersToQuery = (jsonQuery, joinQuery) => {
-    jsonQuery.push(filterParser.perform(filters));
-    if (joinQuery) {
-      BaseFiltersParser.getAssociations(filters).forEach((associationString) => {
-        const field = _.find(schema.fields, currentField =>
-          currentField.field === associationString && currentField.reference);
-        this.addJoinToQuery(field, joinQuery);
-      });
-    }
+  this.addFiltersToQuery = async (jsonQuery) => {
+    const newFilters = await filterParser.replaceAllReferences(filters);
+    const newFiltersString = JSON.stringify(newFilters);
+    jsonQuery.push(await filterParser.perform(newFiltersString));
   };
 
   this.addSortToQuery = (jsonQuery) => {
@@ -132,12 +127,11 @@ function QueryBuilder(model, params, opts) {
   this.getFieldsSearched = () => searchBuilder.getFieldsSearched();
 
   this.getQueryWithFiltersAndJoins = async (segment) => {
-    const requiredJoinQuery = [];
     const jsonQuery = [];
     const conditions = [];
 
     if (filters) {
-      this.addFiltersToQuery(conditions, requiredJoinQuery);
+      await this.addFiltersToQuery(conditions);
     }
 
     if (params.search) {
@@ -146,10 +140,6 @@ function QueryBuilder(model, params, opts) {
 
     if (segment) {
       conditions.push(segment.where);
-    }
-
-    if (requiredJoinQuery.length) {
-      requiredJoinQuery.forEach(join => jsonQuery.push(join));
     }
 
     if (conditions.length) {
