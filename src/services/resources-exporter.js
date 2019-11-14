@@ -1,9 +1,8 @@
-'use strict';
-var ResourcesGetter = require('./resources-getter');
-var HasManyGetter = require('./has-many-getter');
+const ResourcesGetter = require('./resources-getter');
+const HasManyGetter = require('./has-many-getter');
 
-var BATCH_INITIAL_PAGE = 1;
-var BATCH_SIZE = 1000;
+const BATCH_INITIAL_PAGE = 1;
+const BATCH_SIZE = 1000;
 
 function RecordsExporter(model, options, params, association) {
   params.sort = '_id';
@@ -12,32 +11,28 @@ function RecordsExporter(model, options, params, association) {
   function getter() {
     if (association) {
       return new HasManyGetter(model, association, options, params);
-    } else {
-      return new ResourcesGetter(model, options, params);
     }
+    return new ResourcesGetter(model, options, params);
   }
 
   function retrieveBatch(dataSender, pageNumber) {
     params.page.number = pageNumber;
     return getter()
       .perform()
-      .then(function (results) {
-        var records = results[0];
+      .then((results) => {
+        const records = results[0];
 
         return dataSender(records)
-          .then(function () {
+          .then(() => {
             if (records.length === BATCH_SIZE) {
               return retrieveBatch(dataSender, pageNumber + 1);
-            } else {
-              return;
             }
+            return null;
           });
       });
   }
 
-  this.perform = function (dataSender) {
-    return retrieveBatch(dataSender, BATCH_INITIAL_PAGE);
-  };
+  this.perform = dataSender => retrieveBatch(dataSender, BATCH_INITIAL_PAGE);
 }
 
 module.exports = RecordsExporter;

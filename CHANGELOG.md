@@ -3,6 +3,8 @@
 ## [Unreleased]
 ### Fixed
 - Records Lists - Improve performance (Regression introduced on v4.0.0).
+- Technical - Rename RecordsExporter to ResourceExporter to be consistent.
+- Technical - Apply eslint rules to `resources-exporter`.
 
 ## RELEASE 5.0.0 - 2019-10-31
 ### Changed

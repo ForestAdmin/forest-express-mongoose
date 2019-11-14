@@ -50,7 +50,7 @@ exports.init = (opts) => {
   exports.ResourceCreator = require('./services/resource-creator');
   exports.ResourceUpdater = require('./services/resource-updater');
   exports.ResourceRemover = require('./services/resource-remover');
-  exports.RecordsExporter = require('./services/records-exporter');
+  exports.RecordsExporter = require('./services/resources-exporter');
   exports.EmbeddedDocumentUpdater = require('./services/embedded-document-updater');
 
   exports.HasManyGetter = require('./services/has-many-getter');
