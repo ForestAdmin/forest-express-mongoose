@@ -12,6 +12,15 @@ exports.ensureAuthenticated = Interface.ensureAuthenticated;
 exports.StatSerializer = Interface.StatSerializer;
 exports.ResourceSerializer = Interface.ResourceSerializer;
 
+exports.PermissionMiddlewareCreator = Interface.PermissionMiddlewareCreator;
+exports.RecordsCounter = Interface.RecordsCounter;
+exports.RecordsExporter = Interface.RecordsExporter;
+exports.RecordsGetter = Interface.RecordsGetter;
+exports.RecordGetter = Interface.RecordGetter;
+exports.RecordUpdater = Interface.RecordUpdater;
+exports.RecordCreator = Interface.RecordCreator;
+exports.RecordRemover = Interface.RecordRemover;
+
 exports.init = (opts) => {
   exports.opts = opts;
 
