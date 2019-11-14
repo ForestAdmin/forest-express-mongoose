@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 5.1.0 - 2019-11-14
 ### Fixed
 - Records Lists - Improve performance (Regression introduced on v4.0.0).
 - Technical - Rename RecordsExporter to ResourceExporter to be consistent.
