@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 5.1.1 - 2019-11-18
 ### Changed
 - Technical - Change functions of filter parser to async.
 - Technical - Upgrade to the `forest-express` v5.1.1.
