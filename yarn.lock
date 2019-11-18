@@ -16,6 +16,13 @@
     esutils "^2.0.2"
     js-tokens "^4.0.0"
 
+"@babel/runtime@7.7.2":
+  version "7.7.2"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.7.2.tgz#111a78002a5c25fc8e3361bedc9529c696b85a6a"
+  integrity sha512-JONRbXbTXc9WQE2mAZd1p0Z3DZ/6vaQIkgYMSTP3KjRCyd7rCZCcfhCyX+YjwcKxcZ82UrxbRD358bpExNgrjw==
+  dependencies:
+    regenerator-runtime "^0.13.2"
+
 "@blakeembrey/deque@^1.0.3":
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/@blakeembrey/deque/-/deque-1.0.5.tgz#f4fa17fc5ee18317ec01a763d355782c7b395eaf"
@@ -1886,12 +1893,12 @@ for-own@^0.1.4:
   dependencies:
     for-in "^1.0.1"
 
-forest-express@5.1.1:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-5.1.1.tgz#066f176223dd3efed8c81046c2ea3781e8b27564"
-  integrity sha512-25vdQySM4KlS6f7ltKZGfg36iYjzAEEE3vi3K4DH5NGif6CHabo3TDL0mUW2iAOjpAzVyZcCKUVre68ahzohLA==
+forest-express@5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-5.2.0.tgz#51c1d9f16b6d79153471a6e410ac8ca57ef23c93"
+  integrity sha512-/9aIDEFev8K8Ac85e/tZarCl7FrPe1q7SSSAgXEpGUHHsmVaynUkLyV1+WCdZ07myEny1Zy0H8/qkX/njxhYKA==
   dependencies:
-    babel-runtime "7.0.0-beta.3"
+    "@babel/runtime" "7.7.2"
     base32-encode "1.1.0"
     bcryptjs "2.4.3"
     bitwise-xor "0.0.0"
@@ -3563,6 +3570,11 @@ regenerate@^1.4.0:
 regenerator-runtime@^0.11.0:
   version "0.11.1"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.11.1.tgz#be05ad7f9bf7d22e056f9726cee5017fbf19e2e9"
+
+regenerator-runtime@^0.13.2:
+  version "0.13.3"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.3.tgz#7cf6a77d8f5c6f60eb73c5fc1955b2ceb01e6bf5"
+  integrity sha512-naKIZz2GQ8JWh///G7L3X6LaQUAMp2lvb1rvwwsURe/VXwD6VMfr+/1NuNw3ag8v2kY1aQ/go5SNn79O9JU7yw==
 
 regenerator-transform@^0.11.0:
   version "0.11.1"
