@@ -214,11 +214,20 @@
                     },
                     {
                       "field": "method",
-                      "type": "Enum"
+                      "type": "Enum",
+                      "enums": [
+                         "number",
+                         "percentile",
+                         "list"
+                       ]
                     },
                     {
                       "field": "direction",
-                      "type": "Enum"
+                      "type": "Enum",
+                      "enums": [
+                         "gt",
+                         "lt"
+                       ]
                     },
                     {
                       "field": "limit",

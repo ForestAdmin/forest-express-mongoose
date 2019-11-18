@@ -1,6 +1,11 @@
 # Change Log
 
 ## [Unreleased]
+### Added
+- Readme - Add the test coverage badge.
+
+### Changed
+- Technical - Use Jest instead of Mocha for the test base.
 
 ## RELEASE 5.2.0 - 2019-11-18
 ### Added
@@ -12,6 +17,8 @@
 ## RELEASE 5.1.1 - 2019-11-18
 ### Changed
 - Technical - Change functions of filter parser to async.
+- Technical - Change functions of filter parser to async.
+- Technical - Upgrade to the `forest-express` v5.1.1.
 
 ### Fixed
 - Smart Relationships - Smart Relationships returns referenced Smart Fields values.
