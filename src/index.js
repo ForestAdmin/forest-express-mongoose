@@ -12,6 +12,17 @@ exports.ensureAuthenticated = Interface.ensureAuthenticated;
 exports.StatSerializer = Interface.StatSerializer;
 exports.ResourceSerializer = Interface.ResourceSerializer;
 
+exports.PermissionMiddlewareCreator = Interface.PermissionMiddlewareCreator;
+exports.RecordsCounter = Interface.RecordsCounter;
+exports.RecordsExporter = Interface.RecordsExporter;
+exports.RecordsGetter = Interface.RecordsGetter;
+exports.RecordGetter = Interface.RecordGetter;
+exports.RecordUpdater = Interface.RecordUpdater;
+exports.RecordCreator = Interface.RecordCreator;
+exports.RecordRemover = Interface.RecordRemover;
+
+exports.PUBLIC_ROUTES = Interface.PUBLIC_ROUTES;
+
 exports.init = (opts) => {
   exports.opts = opts;
 
@@ -50,7 +61,7 @@ exports.init = (opts) => {
   exports.ResourceCreator = require('./services/resource-creator');
   exports.ResourceUpdater = require('./services/resource-updater');
   exports.ResourceRemover = require('./services/resource-remover');
-  exports.RecordsExporter = require('./services/resources-exporter');
+  exports.ResourcesExporter = require('./services/resources-exporter');
   exports.EmbeddedDocumentUpdater = require('./services/embedded-document-updater');
 
   exports.HasManyGetter = require('./services/has-many-getter');

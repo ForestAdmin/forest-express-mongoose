@@ -1,6 +1,11 @@
 # Change Log
 
 ## [Unreleased]
+### Added
+- Routes - Expose the record services and the permissions middleware.
+
+### Changed
+- Technical - Rename RecordsExporter to ResourcesExporter in export.
 
 ## RELEASE 5.1.1 - 2019-11-18
 ### Changed

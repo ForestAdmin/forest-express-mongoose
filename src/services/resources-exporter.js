@@ -4,7 +4,7 @@ const HasManyGetter = require('./has-many-getter');
 const BATCH_INITIAL_PAGE = 1;
 const BATCH_SIZE = 1000;
 
-function RecordsExporter(model, options, params, association) {
+function ResourcesExporter(model, options, params, association) {
   params.sort = '_id';
   params.page = { size: BATCH_SIZE };
 
@@ -35,4 +35,4 @@ function RecordsExporter(model, options, params, association) {
   this.perform = dataSender => retrieveBatch(dataSender, BATCH_INITIAL_PAGE);
 }
 
-module.exports = RecordsExporter;
+module.exports = ResourcesExporter;
