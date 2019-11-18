@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 5.2.0 - 2019-11-18
 ### Added
 - Routes - Expose the record services and the permissions middleware.
 
