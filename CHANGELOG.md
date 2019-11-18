@@ -12,11 +12,10 @@
 ## RELEASE 5.1.1 - 2019-11-18
 ### Changed
 - Technical - Change functions of filter parser to async.
-- Technical - Upgrade to the `forest-express` v5.1.1.
 
 ### Fixed
-- Smart Relationships - Smart Relashionships returns referenced Smart Fields values.
-- Error Handling - Fix error message when configDir does not exist.
+- Smart Relationships - Smart Relationships returns referenced Smart Fields values.
+- Error Handling - Fix error message when `configDir` does not exist.
 - Error Handling - Prevent server to crash when Forest Admin API does not respond.
 
 ## RELEASE 5.1.0 - 2019-11-14
