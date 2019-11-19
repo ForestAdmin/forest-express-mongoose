@@ -7,5 +7,8 @@
   "src/services/pie-stat-getter.js",
   "src/services/resources-getter.js",
   "src/services/value-stat-getter.js",
-  "test/.eslintrc.js"
+  "test/tests/adapters/mongoose.test.js",
+  "test/tests/services/filters-parser.test.js",
+  "test/tests/services/query-builder.test.js",
+  "test/tests/services/resources-getter.test.js"
 ]

@@ -1,11 +1,10 @@
-import { expect } from 'chai';
 import mongoose from 'mongoose';
 import loadFixture from 'mongoose-fixture-loader';
 import Interface from 'forest-express';
 import ResourcesGetter from '../../../src/services/resources-getter';
 import mongooseConnect from '../../utils/mongoose-connect';
 
-describe('Service > ResourcesGetter', () => {
+describe('service > resources-getter', () => {
   let OrderModel;
   let UserModel;
 
@@ -14,7 +13,7 @@ describe('Service > ResourcesGetter', () => {
     connections: [mongoose],
   };
 
-  before(() => {
+  beforeAll(() => {
     Interface.Schemas = {
       schemas: {
         Order: {
@@ -67,8 +66,8 @@ describe('Service > ResourcesGetter', () => {
 
         return Promise.all([OrderModel.remove({}), UserModel.remove({})]);
       })
-      .then(() => {
-        return Promise.all([
+      .then(() =>
+        Promise.all([
           loadFixture(OrderModel, [
             {
               // _id: 100,
@@ -96,16 +95,14 @@ describe('Service > ResourcesGetter', () => {
               name: 'Jacco Gardner',
             },
           ]),
-        ]);
-      });
+        ]));
   });
 
-  after(() => {
-    mongoose.connection.close();
-  });
+  afterAll(() => mongoose.connection.close());
 
   describe('with a search on a collection with searchFields', () => {
-    it('should retrieve the record with `gift` value in `comment` field', () => {
+    it('should retrieve the record with `gift` value in `comment` field', async () => {
+      expect.assertions(2);
       const parameters = {
         fields: {
           order: '_id,amount,description,giftMessage',
@@ -115,30 +112,26 @@ describe('Service > ResourcesGetter', () => {
         timezone: '+02:00',
       };
 
-      return new ResourcesGetter(OrderModel, options, parameters)
-        .perform()
-        .then((result) => {
-          expect(result[0].length).equal(1);
-          expect(result[0][0].comment).to.match(/gift/);
-        });
+      const result = await new ResourcesGetter(OrderModel, options, parameters).perform();
+      expect(result[0]).toHaveLength(1);
+      expect(result[0][0].comment).toMatch(/gift/);
     });
 
-    it('should retrieve the count of the records', () => {
+    it('should retrieve the count of the records', async () => {
+      expect.assertions(1);
       const parameters = {
         search: 'gift',
         timezone: '+02:00',
       };
 
-      return new ResourcesGetter(OrderModel, options, parameters)
-        .count()
-        .then((count) => {
-          expect(count).equal(1);
-        });
+      const count = await new ResourcesGetter(OrderModel, options, parameters).count();
+      expect(count).toStrictEqual(1);
     });
   });
 
   describe('with a basic flat filter', () => {
-    it('should filter correctly', () => {
+    it('should filter correctly', async () => {
+      expect.assertions(2);
       const parameters = {
         fields: {
           order: '_id,amount,description,giftMessage',
@@ -148,17 +141,15 @@ describe('Service > ResourcesGetter', () => {
         timezone: '+02:00',
       };
 
-      return new ResourcesGetter(OrderModel, options, parameters)
-        .perform()
-        .then((result) => {
-          expect(result[0].length).equal(1);
-          expect(result[0][0].comment).to.match(/comment/);
-        });
+      const result = await new ResourcesGetter(OrderModel, options, parameters).perform();
+      expect(result[0]).toHaveLength(1);
+      expect(result[0][0].comment).toMatch(/comment/);
     });
   });
 
   describe('with basic \'and\' aggregator', () => {
-    it('should filter correctly', () => {
+    it('should filter correctly', async () => {
+      expect.assertions(2);
       const parameters = {
         fields: {
           order: '_id,amount,description,giftMessage',
@@ -174,17 +165,15 @@ describe('Service > ResourcesGetter', () => {
         timezone: '+02:00',
       };
 
-      return new ResourcesGetter(OrderModel, options, parameters)
-        .perform()
-        .then((result) => {
-          expect(result[0].length).equal(1);
-          expect(result[0][0].comment).to.match(/gift/);
-        });
+      const result = await new ResourcesGetter(OrderModel, options, parameters).perform();
+      expect(result[0]).toHaveLength(1);
+      expect(result[0][0].comment).toMatch(/gift/);
     });
 
     describe('with belongsTo filter', () => {
       describe('with flat condition', () => {
-        it('should filter correctly', () => {
+        it('should filter correctly', async () => {
+          expect.assertions(2);
           const parameters = {
             fields: {
               order: '_id,amount,description,giftMessage',
@@ -194,17 +183,16 @@ describe('Service > ResourcesGetter', () => {
             timezone: '+02:00',
           };
 
-          return new ResourcesGetter(OrderModel, options, parameters)
-            .perform()
-            .then((result) => {
-              expect(result[0].length).equal(1);
-              expect(result[0][0].comment).to.match(/gift/);
-            });
+
+          const result = await new ResourcesGetter(OrderModel, options, parameters).perform();
+          expect(result[0]).toHaveLength(1);
+          expect(result[0][0].comment).toMatch(/gift/);
         });
       });
 
       describe('with \'and\' aggregator on two belongsTo on the same model', () => {
-        it('should filter correctly', () => {
+        it('should filter correctly', async () => {
+          expect.assertions(1);
           const parameters = {
             fields: {
               order: '_id,amount,description,giftMessage',
@@ -220,16 +208,14 @@ describe('Service > ResourcesGetter', () => {
             timezone: '+02:00',
           };
 
-          return new ResourcesGetter(OrderModel, options, parameters)
-            .perform()
-            .then((result) => {
-              expect(result[0].length).equal(0);
-            });
+          const result = await new ResourcesGetter(OrderModel, options, parameters).perform();
+          expect(result[0]).toHaveLength(0);
         });
       });
 
       describe('with \'or\' aggregator on two belongsTo on the same model', () => {
-        it('should filter correctly', () => {
+        it('should filter correctly', async () => {
+          expect.assertions(1);
           const parameters = {
             fields: {
               order: '_id,amount,description,giftMessage',
@@ -245,16 +231,14 @@ describe('Service > ResourcesGetter', () => {
             timezone: '+02:00',
           };
 
-          return new ResourcesGetter(OrderModel, options, parameters)
-            .perform()
-            .then((result) => {
-              expect(result[0].length).equal(2);
-            });
+          const result = await new ResourcesGetter(OrderModel, options, parameters).perform();
+          expect(result[0]).toHaveLength(2);
         });
       });
 
       describe('with complex nested filters', () => {
-        it('should filter correctly', () => {
+        it('should filter correctly', async () => {
+          expect.assertions(1);
           const parameters = {
             fields: {
               order: '_id,amount,description,giftMessage',
@@ -283,11 +267,8 @@ describe('Service > ResourcesGetter', () => {
             timezone: '+02:00',
           };
 
-          return new ResourcesGetter(OrderModel, options, parameters)
-            .perform()
-            .then((result) => {
-              expect(result[0].length).equal(1);
-            });
+          const result = await new ResourcesGetter(OrderModel, options, parameters).perform();
+          expect(result[0]).toHaveLength(1);
         });
       });
     });

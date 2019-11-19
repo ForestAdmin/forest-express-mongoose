@@ -1,11 +1,10 @@
-import { expect } from 'chai';
 import mongoose from 'mongoose';
 import loadFixture from 'mongoose-fixture-loader';
 import Interface from 'forest-express';
 import mongooseConnect from '../../utils/mongoose-connect';
 import QueryBuilder from '../../../src/services/query-builder';
 
-describe('Service > QueryBuilder', () => {
+describe('service > query-builder', () => {
   let TreeModel;
   let LumberJackModel;
 
@@ -14,7 +13,7 @@ describe('Service > QueryBuilder', () => {
     connections: [mongoose],
   };
 
-  before(() => {
+  beforeAll(() => {
     Interface.Schemas = {
       schemas: {
         LumberJack: {
@@ -63,8 +62,8 @@ describe('Service > QueryBuilder', () => {
 
         return Promise.all([LumberJackModel.remove({}), TreeModel.remove({})]);
       })
-      .then(() => {
-        return Promise.all([
+      .then(() =>
+        Promise.all([
           loadFixture(LumberJackModel, [
             {
               _id: '41224d776a326fb40f000001',
@@ -88,18 +87,15 @@ describe('Service > QueryBuilder', () => {
               owner: '41224d776a326fb40f000002',
             },
           ]),
-        ]);
-      });
+        ]));
   });
 
-  after((done) => {
-    mongoose.connection.close();
-    done();
-  });
+  afterAll(() => mongoose.connection.close());
 
   describe('addJoinToQuery function', () => {
-    context('on basic field', () => {
+    describe('on basic field', () => {
       it('should add the join correctly', () => {
+        expect.assertions(1);
         const queryBuilder = new QueryBuilder(TreeModel, { timezone: '+02:00' }, options);
         const field = {
           field: 'owner',
@@ -117,12 +113,13 @@ describe('Service > QueryBuilder', () => {
         };
         const joins = [];
         queryBuilder.addJoinToQuery(field, joins);
-        expect(joins).to.deep.include(expectedJoin);
+        expect(joins[0]).toStrictEqual(expectedJoin);
       });
     });
 
-    context('on virtual field', () => {
+    describe('on virtual field', () => {
       it('the join should be ignored', () => {
+        expect.assertions(1);
         const queryBuilder = new QueryBuilder(TreeModel, { timezone: '+02:00' }, options);
         const field = {
           field: 'owner',
@@ -133,12 +130,13 @@ describe('Service > QueryBuilder', () => {
         };
         const joins = [];
         queryBuilder.addJoinToQuery(field, joins);
-        expect(joins).to.be.empty;
+        expect(joins).toHaveLength(0);
       });
     });
 
-    context('on a field with integration', () => {
+    describe('on a field with integration', () => {
       it('the join should be ignored', () => {
+        expect.assertions(1);
         const queryBuilder = new QueryBuilder(TreeModel, { timezone: '+02:00' }, options);
         const field = {
           field: 'owner',
@@ -150,7 +148,7 @@ describe('Service > QueryBuilder', () => {
         };
         const joins = [];
         queryBuilder.addJoinToQuery(field, joins);
-        expect(joins).to.be.empty;
+        expect(joins).toHaveLength(0);
       });
     });
   });
