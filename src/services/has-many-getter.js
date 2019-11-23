@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const P = require('bluebird');
+const mongooseTypes = require('mongoose').Types;
 const SearchBuilder = require('./search-builder');
 const Interface = require('forest-express');
 const utils = require('../utils/schema');
@@ -49,7 +50,7 @@ function HasManyGetter(model, association, opts, params) {
     return new P((resolve, reject) => {
       let id = params.recordId;
       if (OBJECTID_REGEXP.test(params.recordId)) {
-        id = opts.mongoose.Types.ObjectId(id);
+        id = mongooseTypes.ObjectId(id);
       }
 
       return model
