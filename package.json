@@ -41,7 +41,7 @@
     "dotenv": "6.2.0",
     "eslint": "5.16.0",
     "eslint-config-airbnb": "16.1.0",
-    "eslint-plugin-import": "2.17.2",
+    "eslint-plugin-import": "2.18.2",
     "eslint-plugin-jest": "23.0.4",
     "eslint-plugin-jsx-a11y": "6.0.2",
     "eslint-plugin-react": "7.5.1",
