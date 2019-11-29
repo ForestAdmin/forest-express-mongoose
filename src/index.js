@@ -20,6 +20,7 @@ exports.RecordGetter = Interface.RecordGetter;
 exports.RecordUpdater = Interface.RecordUpdater;
 exports.RecordCreator = Interface.RecordCreator;
 exports.RecordRemover = Interface.RecordRemover;
+exports.RecordSerializer = Interface.RecordSerializer;
 
 exports.PUBLIC_ROUTES = Interface.PUBLIC_ROUTES;
 
