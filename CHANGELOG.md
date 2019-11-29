@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 5.4.0 - 2019-11-29
 ### Added
 - Smart Relationship/Collection - Expose a serializer to simplify the serialization.
 
