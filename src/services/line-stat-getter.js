@@ -203,7 +203,7 @@ function LineStatFinder(model, params, opts) {
         const firstDate = setDate(records[0], momentRange);
         const lastDate = setDate(records[records.length - 1], momentRange);
 
-        records = records.map(record => ({
+        records = records.map((record) => ({
           label: formatLabel(record, momentRange),
           values: record.values,
         }));

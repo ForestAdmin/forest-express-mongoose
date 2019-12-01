@@ -1,15 +1,13 @@
-'use strict';
-var P = require('bluebird');
+const P = require('bluebird');
 
 function ResourceRemover(Model, params) {
-  this.perform = function () {
-    return new P(function (resolve, reject) {
-      Model.remove({ _id: params.recordId }, function (err) {
+  this.perform = () =>
+    new P((resolve, reject) => {
+      Model.remove({ _id: params.recordId }, (err) => {
         if (err) { return reject(err); }
-        resolve();
+        return resolve();
       });
     });
-  };
 }
 
 module.exports = ResourceRemover;

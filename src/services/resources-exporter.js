@@ -32,7 +32,7 @@ function ResourcesExporter(model, options, params, association) {
       });
   }
 
-  this.perform = dataSender => retrieveBatch(dataSender, BATCH_INITIAL_PAGE);
+  this.perform = (dataSender) => retrieveBatch(dataSender, BATCH_INITIAL_PAGE);
 }
 
 module.exports = ResourcesExporter;

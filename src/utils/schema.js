@@ -1,24 +1,15 @@
-'use strict';
-var mongooseUtils = require('../services/mongoose-utils');
+const mongooseUtils = require('../services/mongoose-utils');
 
-exports.getReferenceModel = function (options, reference) {
-  var models = mongooseUtils.getModels(options);
+exports.getReferenceModel = (options, reference) => {
+  const models = mongooseUtils.getModels(options);
   return models[exports.getReferenceCollectionName(reference)];
 };
 
-exports.getReferenceField = function (reference) {
-  return reference.split('.')[1];
-};
+exports.getReferenceField = (reference) => reference.split('.')[1];
 
-exports.getReferenceCollectionName = function (reference) {
-  return reference.split('.')[0];
-};
+exports.getReferenceCollectionName = (reference) => reference.split('.')[0];
 
-exports.getModelName = function (model) {
-  return model.modelName;
-};
+exports.getModelName = (model) => model.modelName;
 
 // TODO: Remove nameOld attribute once the lianas versions older than 2.0.0 are minority
-exports.getModelNameOld = function (model) {
-  return model.collection.name.replace(' ', '');
-};
+exports.getModelNameOld = (model) => model.collection.name.replace(' ', '');

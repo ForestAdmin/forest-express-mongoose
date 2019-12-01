@@ -1,7 +1,8 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
 
-var SurveyContentSchema = new Schema({
+const { Schema } = mongoose;
+
+const SurveyContentSchema = new Schema({
   content_id: { type: Schema.Types.ObjectId, required: true, ref: 'Content' },
   placebo: { type: Boolean, required: true, default: false },
   attentionCheck: {
@@ -38,19 +39,19 @@ var SurveyContentSchema = new Schema({
   },
 }, { sub: true, array: true });
 
-var SurveyIndexSchema = new Schema({
+const SurveyIndexSchema = new Schema({
   index_id: { type: Schema.Types.ObjectId, required: true, ref: 'Index' },
   directionDependency: { type: Schema.Types.ObjectId, required: false, ref: 'Index' },
 }, { sub: true, array: true });
 
-var SurveyQuestionSchema = new Schema({
+const SurveyQuestionSchema = new Schema({
   question_id: { type: Schema.Types.ObjectId, required: true, ref: 'Question' },
   sortOrder: {
     type: Number, required: false, min: 0, max: 100,
   },
 }, { sub: true, array: true });
 
-var SurveyExperimentFilterSchema = new Schema({
+const SurveyExperimentFilterSchema = new Schema({
   category: {
     type: String, required: false, minlength: 3, maxlength: 128,
   },
@@ -62,7 +63,7 @@ var SurveyExperimentFilterSchema = new Schema({
   allowedValues: { type: [String], required: false },
 }, { sub: true, array: true });
 
-var SurveyExperimentSchema = new Schema({
+const SurveyExperimentSchema = new Schema({
   name: {
     type: String, required: true, minlength: 3, maxlength: 128,
   },
@@ -75,7 +76,7 @@ var SurveyExperimentSchema = new Schema({
   results: { type: [Schema.Types.Mixed], required: false },
 }, { sub: true, array: true });
 
-var SurveyAcquisitionSchema = new Schema({
+const SurveyAcquisitionSchema = new Schema({
   mode: {
     type: String,
     required: true,
@@ -94,7 +95,7 @@ var SurveyAcquisitionSchema = new Schema({
   },
 }, { sub: true, array: true });
 
-var SurveyAnalysisConfigSchema = new Schema({
+const SurveyAnalysisConfigSchema = new Schema({
   attnCheck: { type: Boolean, required: true, default: true },
   poststratify: { type: Boolean, required: true, default: true },
   censusYear: {
@@ -109,14 +110,14 @@ var SurveyAnalysisConfigSchema = new Schema({
   politicalBins: { type: Schema.Types.Mixed, required: false },
 }, { sub: true });
 
-var DEFAULT_ANALYSIS_CONFIG = {
+const DEFAULT_ANALYSIS_CONFIG = {
   attnCheck: true,
   poststratify: true,
 };
 
-var SurveyLocaleSchema = new Schema({
+const SurveyLocaleSchema = new Schema({
   country: {
-    type: String, required: true, //enum: LOCALE_COUNTRIES, default: 'US',
+    type: String, required: true, // enum: LOCALE_COUNTRIES, default: 'US',
   },
   state: {
     type: new Schema({
@@ -133,15 +134,15 @@ var SurveyLocaleSchema = new Schema({
   },
 }, { sub: true });
 
-var DEFAULT_LOCALE = { country: 'US' };
+const DEFAULT_LOCALE = { country: 'US' };
 
-var SurveyAnalysisMetaSchema = new Schema({
+const SurveyAnalysisMetaSchema = new Schema({
   branch: { type: String, required: true },
   commit: { type: String, required: true },
   timestamp: { type: Date, required: true },
 }, { sub: true });
 
-var SurveySchema = new Schema({
+const SurveySchema = new Schema({
   name: { type: String, required: true },
 
   introText: { type: String, required: true },
@@ -172,7 +173,6 @@ var SurveySchema = new Schema({
   collection: 'surveys',
 });
 
-SurveySchema.methods.duplicationErrors = function () {
-};
+SurveySchema.methods.duplicationErrors = () => {};
 
 module.exports = mongoose.model('Survey', SurveySchema);

@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const P = require('bluebird');
-const SearchBuilder = require('./search-builder');
 const Interface = require('forest-express');
+const SearchBuilder = require('./search-builder');
 const utils = require('../utils/schema');
 
 function HasManyGetter(model, association, opts, params) {
@@ -59,7 +59,7 @@ function HasManyGetter(model, association, opts, params) {
         .project(getProjection())
         .exec((error, records) => {
           if (error) { return reject(error); }
-          return resolve(_.map(records, record => record[params.associationName]));
+          return resolve(_.map(records, (record) => record[params.associationName]));
         });
     })
       .then(async (recordIds) => {
@@ -75,7 +75,7 @@ function HasManyGetter(model, association, opts, params) {
         const query = association.find(conditions);
         handlePopulate(query);
 
-        return query.then(records => [records, recordIds]);
+        return query.then((records) => [records, recordIds]);
       });
   }
 
@@ -93,11 +93,11 @@ function HasManyGetter(model, association, opts, params) {
 
         let recordsSorted;
         if (fieldSort) {
-          recordsSorted = _.sortBy(records, record => record[fieldSort]);
+          recordsSorted = _.sortBy(records, (record) => record[fieldSort]);
         } else {
           const recordIds = recordsAndRecordIds[1];
           // NOTICE: Convert values to strings, so ObjectIds could be easily searched and compared.
-          const recordIdStrings = recordIds.map(recordId => String(recordId));
+          const recordIdStrings = recordIds.map((recordId) => String(recordId));
           // NOTICE: indexOf could be improved by making a Map from record-ids to their index.
           recordsSorted = _.sortBy(records, record => recordIdStrings.indexOf(String(record._id))); // eslint-disable-line
         }
@@ -117,7 +117,7 @@ function HasManyGetter(model, association, opts, params) {
 
   this.count = () =>
     getRecordsAndRecordIds()
-      .then(recordsAndRecordIds => recordsAndRecordIds[0].length);
+      .then((recordsAndRecordIds) => recordsAndRecordIds[0].length);
 }
 
 module.exports = HasManyGetter;

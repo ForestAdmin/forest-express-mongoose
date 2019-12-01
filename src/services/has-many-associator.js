@@ -1,27 +1,25 @@
-'use strict';
-var P = require('bluebird');
+const P = require('bluebird');
 
 function HasManyAssociator(model, association, opts, params, data) {
-  this.perform = function () {
-    return new P(function (resolve, reject) {
-      var updateParams = {};
+  this.perform = () =>
+    new P(((resolve, reject) => {
+      const updateParams = {};
       updateParams[params.associationName] = {
-        $each: data.data.map(function (document) { return document.id; }),
+        $each: data.data.map((document) => document.id),
       };
 
       model
         .findByIdAndUpdate(params.recordId, {
           $push: updateParams,
         }, {
-          new: true
+          new: true,
         })
         .lean()
-        .exec(function (err, record) {
+        .exec((err, record) => {
           if (err) { return reject(err); }
-          resolve(record);
+          return resolve(record);
         });
-    });
-  };
+    }));
 }
 
 module.exports = HasManyAssociator;

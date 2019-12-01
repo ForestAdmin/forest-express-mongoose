@@ -13,7 +13,7 @@ function FiltersParser(model, timezone, options) {
     timezone,
   });
 
-  this.perform = async filtersString => BaseFiltersParser
+  this.perform = async (filtersString) => BaseFiltersParser
     .perform(filtersString, this.formatAggregation, this.formatCondition);
 
   this.formatAggregation = async (aggregator, formatedConditions) => {
@@ -31,9 +31,9 @@ function FiltersParser(model, timezone, options) {
     if (_.isArray(condition)) {
       throw new InvalidFiltersFormatError('Filters cannot be a raw array');
     }
-    if (!_.isString(condition.field) ||
-        !_.isString(condition.operator) ||
-        _.isUndefined(condition.value)) {
+    if (!_.isString(condition.field)
+        || !_.isString(condition.operator)
+        || _.isUndefined(condition.value)) {
       throw new InvalidFiltersFormatError('Invalid condition format');
     }
     const formatedField = this.formatField(condition.field);
@@ -62,12 +62,12 @@ function FiltersParser(model, timezone, options) {
       field = _.find(field.type.fields, { field: subfieldName });
     }
 
-    if (!field) return val => val;
+    if (!field) return (val) => val;
     switch (field.type) {
       case 'Number':
         return parseInt;
       case 'Date':
-        return val => new Date(val);
+        return (val) => new Date(val);
       case 'Boolean':
         return (val) => {
           if (val === 'true') { return true; }
@@ -84,15 +84,15 @@ function FiltersParser(model, timezone, options) {
             return ObjectId(val);
           }
           if (_.isArray(val)) {
-            return val.map(value => (ObjectId.isValid(value) ? ObjectId(value) : value));
+            return val.map((value) => (ObjectId.isValid(value) ? ObjectId(value) : value));
           }
           return val;
         };
       default:
         if (_.isArray(field.type)) {
-          return val => ({ $size: val });
+          return (val) => ({ $size: val });
         }
-        return val => val;
+        return (val) => val;
     }
   };
 
@@ -139,9 +139,9 @@ function FiltersParser(model, timezone, options) {
     }
   };
 
-  this.formatField = field => field.replace(':', '.');
+  this.formatField = (field) => field.replace(':', '.');
 
-  this.getAssociations = async filtersString => BaseFiltersParser.getAssociations(filtersString);
+  this.getAssociations = async (filtersString) => BaseFiltersParser.getAssociations(filtersString);
 
   this.formatAggregationForReferences = (aggregator, conditions) => ({ aggregator, conditions });
 
@@ -155,9 +155,9 @@ function FiltersParser(model, timezone, options) {
     if (_.isArray(condition)) {
       throw new InvalidFiltersFormatError('Filters cannot be a raw array');
     }
-    if (!_.isString(condition.field) ||
-        !_.isString(condition.operator) ||
-        _.isUndefined(condition.value)) {
+    if (!_.isString(condition.field)
+        || !_.isString(condition.operator)
+        || _.isUndefined(condition.value)) {
       throw new InvalidFiltersFormatError('Invalid condition format');
     }
 
@@ -187,7 +187,7 @@ function FiltersParser(model, timezone, options) {
     const query = await subModelFilterParser.perform(JSON.stringify(newCondition));
     const [, referencedKey] = field.reference.split('.');
     const subModelIds = await subModel.find(query)
-      .then(records => records.map(record => record[referencedKey]));
+      .then((records) => records.map((record) => record[referencedKey]));
 
     const resultCondition = {
       field: fieldName,
@@ -208,7 +208,7 @@ function FiltersParser(model, timezone, options) {
     return resultCondition;
   };
 
-  this.replaceAllReferences = async filtersString => BaseFiltersParser
+  this.replaceAllReferences = async (filtersString) => BaseFiltersParser
     .perform(filtersString, this.formatAggregationForReferences, this.formatConditionForReferences);
 }
 

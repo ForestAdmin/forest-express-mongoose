@@ -1,47 +1,43 @@
-'use strict';
-var P = require('bluebird');
-var _ = require('lodash');
-var Interface = require('forest-express');
-var utils = require('../utils/schema');
+const P = require('bluebird');
+const _ = require('lodash');
+const Interface = require('forest-express');
+const utils = require('../utils/schema');
 
 function ResourceCreator(Model, params) {
-  var schema = Interface.Schemas.schemas[utils.getModelName(Model)];
+  const schema = Interface.Schemas.schemas[utils.getModelName(Model)];
 
   function create() {
-    return new P(function (resolve, reject) {
+    return new P((resolve, reject) => {
       if ('_id' in params) { delete params._id; }
 
       new Model(params)
-        .save(function (err, record) {
+        .save((err, record) => {
           if (err) { return reject(err); }
-          resolve(record);
+          return resolve(record);
         });
     });
   }
 
   function fetch(record) {
-    return new P(function (resolve, reject) {
-      var query = Model.findById(record.id);
+    return new P((resolve, reject) => {
+      const query = Model.findById(record.id);
 
-      _.each(schema.fields, function (field) {
+      _.each(schema.fields, (field) => {
         if (field.reference) { query.populate(field.field); }
       });
 
       query
         .lean()
-        .exec(function (err, record) {
+        .exec((err, recordCreated) => {
           if (err) { return reject(err); }
-          resolve(record);
+          return resolve(recordCreated);
         });
     });
   }
 
-  this.perform = function () {
-    return create()
-      .then(function (record) {
-        return fetch(record);
-      });
-  };
+  this.perform = () =>
+    create()
+      .then((record) => fetch(record));
 }
 
 module.exports = ResourceCreator;

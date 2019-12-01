@@ -1,17 +1,17 @@
-var mongoose = require('mongoose');
-var P = require('bluebird');
+const mongoose = require('mongoose');
+const P = require('bluebird');
 
 mongoose.Promise = P;
 
 function mongooseConnect() {
-  return new P(function (resolve, reject) {
+  return new P((resolve, reject) => {
     mongoose.connect('mongodb://localhost:27017/forest-test');
 
-    var db = mongoose.connection;
-    db.on('error', function (error) {
+    const db = mongoose.connection;
+    db.on('error', (error) => {
       reject(error);
     });
-    db.once('open', function () {
+    db.once('open', () => {
       resolve();
     });
   });
