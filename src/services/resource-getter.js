@@ -1,8 +1,8 @@
 const P = require('bluebird');
 const _ = require('lodash');
 const Interface = require('forest-express');
-const utils = require('../utils/schema');
 const createError = require('http-errors');
+const utils = require('../utils/schema');
 
 function ResourceGetter(model, params) {
   const schema = Interface.Schemas.schemas[utils.getModelName(model)];

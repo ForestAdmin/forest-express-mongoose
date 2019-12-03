@@ -13,7 +13,7 @@ function QueryBuilder(model, params, opts) {
   const { filters } = params;
 
   this.joinAlreadyExists = (field, joinQuery) =>
-    !!_.find(joinQuery, join => join && join.$lookup && join.$lookup.as === field.field);
+    !!_.find(joinQuery, (join) => join && join.$lookup && join.$lookup.as === field.field);
 
   this.getFieldNamesRequested = async () => {
     if (!params.fields || !params.fields[model.collection.name]) { return null; }
@@ -88,7 +88,7 @@ function QueryBuilder(model, params, opts) {
     const order = params.sort.startsWith('-') ? -1 : 1;
     let sortParam = order > 0 ? params.sort : params.sort.substring(1);
     if (params.sort.split('.').length > 1) {
-      sortParam = params.sort.split('.')[0];
+      [sortParam] = params.sort.split('.');
       const [association] = params.sort.split('.');
       this.addJoinToQuery(association, jsonQuery);
     }

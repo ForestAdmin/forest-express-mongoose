@@ -12,7 +12,7 @@ function ResourcesGetter(model, opts, params) {
 
   function getSegment() {
     if (schema.segments && params.segment) {
-      return _.find(schema.segments, currentSegment => currentSegment.name === params.segment);
+      return _.find(schema.segments, (currentSegment) => currentSegment.name === params.segment);
     }
     return null;
   }
@@ -20,9 +20,9 @@ function ResourcesGetter(model, opts, params) {
   function getSegmentCondition() {
     const segment = getSegment();
     if (segment && segment.where && typeof segment.where === 'function') {
-      return segment.where().then(where => ({ where }));
+      return segment.where().then((where) => ({ where }));
     }
-    return new P(resolve => resolve(segment));
+    return new P((resolve) => resolve(segment));
   }
 
   this.perform = () => getSegmentCondition()
@@ -48,14 +48,14 @@ function ResourcesGetter(model, opts, params) {
 
       return model.aggregate(jsonQuery);
     })
-    .then(records => [records, fieldsSearched]);
+    .then((records) => [records, fieldsSearched]);
 
   this.count = () => getSegmentCondition()
     .then(async (segment) => {
       const jsonQuery = await queryBuilder.getQueryWithFiltersAndJoins(segment);
       queryBuilder.addCountToQuery(jsonQuery);
       return model.aggregate(jsonQuery)
-        .then(result => (result[0] ? result[0].count : 0));
+        .then((result) => (result[0] ? result[0].count : 0));
     });
 }
 

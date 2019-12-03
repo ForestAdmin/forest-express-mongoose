@@ -44,22 +44,22 @@ function SearchBuilder(model, opts, params, searchFields) {
         pushCondition(condition, key);
       } else if (value.instance === 'Array') {
         const field = _.find(schema.fields, { field: key });
-        if (field && _.isArray(field.type) && field.type[0] === 'String' &&
-          !field.reference) {
+        if (field && _.isArray(field.type) && field.type[0] === 'String'
+          && !field.reference) {
           condition[key] = searchRegexp;
           pushCondition(condition, key);
-        } else if (field && _.isArray(field.type) &&
-          !field.reference && Number.parseInt(params.searchExtended, 10)) {
+        } else if (field && _.isArray(field.type)
+          && !field.reference && Number.parseInt(params.searchExtended, 10)) {
           const elemMatch = { $elemMatch: { $or: [] } };
 
           field.type[0].fields.forEach((subField) => {
             const query = {};
-            if (subField.type === 'String' &&
-              !value.schema.obj[subField.field].ref) {
+            if (subField.type === 'String'
+              && !value.schema.obj[subField.field].ref) {
               query[subField.field] = searchRegexp;
               elemMatch.$elemMatch.$or.push(query);
-            } else if (subField.type === 'Number' &&
-              Number.parseInt(params.search, 10)) {
+            } else if (subField.type === 'Number'
+              && Number.parseInt(params.search, 10)) {
               query[subField.field] = Number.parseInt(params.search, 10);
               elemMatch.$elemMatch.$or.push(query);
             }
@@ -73,6 +73,7 @@ function SearchBuilder(model, opts, params, searchFields) {
     const promises = [];
     _.each(schema.fields, (field) => {
       if (field.search) {
+        // eslint-disable-next-line no-async-promise-executor
         const promise = new Promise(async (resolve) => {
           try {
             const condition = await Promise.resolve(field.search(params.search));

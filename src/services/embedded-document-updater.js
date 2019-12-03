@@ -1,14 +1,12 @@
-'use strict';
-
 function EmbeddedDocumentUpdater(model, params, association, record) {
-  this.perform = function () {
-    var recordId = params.recordId;
-    var recordIndex = parseInt(params.recordIndex, 10);
+  this.perform = () => {
+    const { recordId } = params;
+    const recordIndex = parseInt(params.recordIndex, 10);
 
     delete record._id;
 
-    var update = Object.keys(record).reduce(function (acc, value) {
-      acc.$set[association + '.' + recordIndex + '.' + value] = record[value];
+    const update = Object.keys(record).reduce((acc, value) => {
+      acc.$set[`${association}.${recordIndex}.${value}`] = record[value];
       return acc;
     }, { $set: {} });
 

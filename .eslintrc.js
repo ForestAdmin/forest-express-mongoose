@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  'extends': [
+  extends: [
     'airbnb-base',
     'plugin:jest/all'
   ],
@@ -9,26 +9,10 @@ module.exports = {
     node: true,
   },
   rules: {
+    'implicit-arrow-linebreak': 0,
     'jest/no-hooks': 0,
-    'no-console': 0,
     'no-param-reassign': 0,
     'no-underscore-dangle': 0,
-    'prefer-destructuring': [
-      'error',
-      {
-        VariableDeclarator: {
-          array: false,
-          object: true,
-        },
-        AssignmentExpression: {
-          array: false,
-          object: false,
-        },
-      },
-      {
-        enforceForRenamedProperties: false,
-      },
-    ],
     'import/no-extraneous-dependencies': [
       'error',
       {

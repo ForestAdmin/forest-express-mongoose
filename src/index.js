@@ -134,7 +134,7 @@ exports.init = (opts) => {
       if (userId) {
         return userModel
           .findById(userId)
-          .then(user => user.toJSON());
+          .then((user) => user.toJSON());
       }
 
       return P.resolve();
