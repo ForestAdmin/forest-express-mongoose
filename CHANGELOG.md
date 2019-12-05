@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 ### Changed
+- Technical - Jest node configuration.
 - Technical - Rename `.env.example` file.
 - Technical - Upgrade ESLint rules.
 - Technical - Ensure that all files follow the ESLint rules.
