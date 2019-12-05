@@ -1,6 +1,9 @@
 # Change Log
 
 ## [Unreleased]
+### Added
+- Search Route - Do not return fields hidden from UI.
+
 ### Changed
 - Technical - Rename `.env.example` file.
 - Technical - Upgrade ESLint rules.
