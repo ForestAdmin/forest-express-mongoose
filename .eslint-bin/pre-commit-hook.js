@@ -3,10 +3,10 @@ const simpleGit = require('simple-git')(`${__dirname}/..`);
 
 let listFilesModified = [];
 
-function excludeNonCommitedFiles(file){
+function excludeNonCommitedFiles(file) {
   return file.index !== 'D' // deleted
   && file.index !== ' ' // not staged for commit
-  && file.index !== '?' // untracked
+  && file.index !== '?'; // untracked
 }
 
 function getFilesModified(callback) {
