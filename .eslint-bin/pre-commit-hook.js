@@ -5,8 +5,8 @@ let listFilesModified = [];
 
 function excludeNonCommitedFiles(file) {
   return file.index !== 'D' // deleted
-  && file.index !== ' ' // not staged for commit
-  && file.index !== '?'; // untracked
+    && file.index !== ' ' // not staged for commit
+    && file.index !== '?'; // untracked
 }
 
 function getFilesModified(callback) {
