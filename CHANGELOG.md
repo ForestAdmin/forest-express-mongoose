@@ -1,6 +1,10 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- Technical - Exclude from pre-commit-hook linter files that are not committed.
+
+## RELEASE 5.4.1 - 2019-12-11
 ### Changed
 - Technical - Jest node configuration.
 - Technical - Rename `.env.example` file.
@@ -8,7 +12,9 @@
 - Technical - Ensure that all files follow the ESLint rules.
 
 ### Fixed
-- Technical - Exclude from pre-commit-hook linter files that are not committed.
+- Logger - Improve formatting, add stack if present, do not display error messages twice.
+- Smart actions - Ignore smart actions that do not have a name (display a warning).
+- Export - Fix export on related data.
 
 ## RELEASE 5.4.0 - 2019-11-29
 ### Added
