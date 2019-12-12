@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- Technical - Exclude from pre-commit-hook linter files that are not committed.
 
 ## RELEASE 5.4.1 - 2019-12-11
 ### Changed
