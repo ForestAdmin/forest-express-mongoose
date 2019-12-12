@@ -8,7 +8,7 @@
 - Technical - Ensure that all files follow the ESLint rules.
 
 ### Fixed
-- Technical - Exclude from pre-commit-hook linter files that are not commited.
+- Technical - Exclude from pre-commit-hook linter files that are not committed.
 
 ## RELEASE 5.4.0 - 2019-11-29
 ### Added
