@@ -98,7 +98,14 @@ function FiltersParser(model, timezone, options) {
 
     if (!field) return (val) => val;
 
-    return this.getParserForType(field.type);
+    const parse = this.getParserForType(field.type);
+
+    return (val) => {
+      if (val && _.isArray(val)) {
+        return val.map(parse);
+      }
+      return parse(val);
+    };
   };
 
   this.formatAggregatorOperator = (aggregatorOperator) => {
