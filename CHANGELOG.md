@@ -1,6 +1,9 @@
 # Change Log
 
 ## [Unreleased]
+### Added
+- Search - In a request with no smart fields, do not return fields that are hidden from the UI.
+
 ### Changed
 - Technical - Jest node configuration.
 - Technical - Rename `.env.example` file.

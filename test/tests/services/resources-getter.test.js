@@ -7,6 +7,7 @@ import mongooseConnect from '../../utils/mongoose-connect';
 describe('service > resources-getter', () => {
   let OrderModel;
   let UserModel;
+  let FilmModel;
 
   const options = {
     mongoose,
@@ -43,6 +44,19 @@ describe('service > resources-getter', () => {
             { field: 'age', type: 'Number' },
           ],
         },
+        Film: {
+          name: 'Film',
+          fields: [
+            { field: '_id', type: 'String' },
+            { field: 'title', type: 'String' },
+            { field: 'duration', type: 'Number' },
+            {
+              field: 'description',
+              type: 'String',
+              get: (film) => `${film.title} ${film.duration}`,
+            },
+          ],
+        },
       },
     };
 
@@ -60,11 +74,17 @@ describe('service > resources-getter', () => {
           name: { type: String },
           age: { type: Number },
         });
+        const FilmSchema = mongoose.Schema({
+          _id: { type: 'ObjectId' },
+          title: { type: String },
+          duration: { type: Number },
+        });
 
         OrderModel = mongoose.model('Order', OrderSchema);
         UserModel = mongoose.model('User', UserSchema);
+        FilmModel = mongoose.model('Film', FilmSchema);
 
-        return Promise.all([OrderModel.remove({}), UserModel.remove({})]);
+        return Promise.all([OrderModel.remove({}), UserModel.remove({}), FilmModel.remove({})]);
       })
       .then(() =>
         Promise.all([
@@ -93,6 +113,23 @@ describe('service > resources-getter', () => {
               _id: '41224d776a326fb40f000002',
               age: 30,
               name: 'Jacco Gardner',
+            },
+          ]),
+          loadFixture(FilmModel, [
+            {
+              _id: '41224d776a326fb40f000011',
+              duration: 149,
+              title: 'Terminator',
+            },
+            {
+              _id: '41224d776a326fb40f000012',
+              duration: 360,
+              title: 'Titanic',
+            },
+            {
+              _id: '41224d776a326fb40f000013',
+              duration: 125,
+              title: 'Matrix',
             },
           ]),
         ]));
@@ -270,6 +307,46 @@ describe('service > resources-getter', () => {
           const result = await new ResourcesGetter(OrderModel, options, parameters).perform();
           expect(result[0]).toHaveLength(1);
         });
+      });
+    });
+  });
+
+  describe('projection feature', () => {
+    describe('with selected smartfield', () => {
+      it('should return all fields', async () => {
+        expect.assertions(3);
+        const parameters = {
+          fields: { films: 'description' },
+          page: { number: '1', size: '15' },
+          searchExtended: '0',
+          timezone: '+01:00',
+        };
+
+        const result = await new ResourcesGetter(FilmModel, options, parameters).perform();
+        expect(result[0]).toHaveLength(3);
+        const titles = result[0].filter(film => !!film.title);
+        expect(titles).toHaveLength(3);
+        const durations = result[0].filter(film => !!film.duration);
+        expect(durations).toHaveLength(3);
+      });
+    });
+
+    describe('without selected smartfield', () => {
+      it('should return only selected fields', async () => {
+        expect.assertions(3);
+        const parameters = {
+          fields: { films: 'title' },
+          page: { number: '1', size: '15' },
+          searchExtended: '0',
+          timezone: '+01:00',
+        };
+
+        const result = await new ResourcesGetter(FilmModel, options, parameters).perform();
+        expect(result[0]).toHaveLength(3);
+        const titles = result[0].filter(film => !!film.title);
+        expect(titles).toHaveLength(3);
+        const durations = result[0].filter(film => !!film.duration);
+        expect(durations).toHaveLength(0);
       });
     });
   });
