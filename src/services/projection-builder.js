@@ -2,7 +2,7 @@ class ProjectionBuilder {
   constructor(schema) {
     this.schemaSmartFields = schema
       && schema.fields
-      && schema.fields.filter(field => field.get).map(field => field.field);
+      && schema.fields.filter((field) => field.get).map((field) => field.field);
   }
 
   // NOTICE: Convert a list of field names into a mongo $project structure

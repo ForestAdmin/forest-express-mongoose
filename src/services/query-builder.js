@@ -38,8 +38,8 @@ function QueryBuilder(model, params, opts) {
   };
 
   this.addProjection = (jsonQuery) => this.getFieldNamesRequested()
-    .then(fieldNames => projectionBuilder.getProjection(fieldNames))
-    .then(projection => projection && jsonQuery.push(projection));
+    .then((fieldNames) => projectionBuilder.getProjection(fieldNames))
+    .then((projection) => projection && jsonQuery.push(projection));
 
   this.addJoinToQuery = (field, joinQuery) => {
     if (field.reference && !field.isVirtual && !field.integration) {
