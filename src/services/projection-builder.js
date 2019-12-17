@@ -1,8 +1,8 @@
+const paramMatcher = /(?:.*?)\((.*?)\)/;
+
 class ProjectionBuilder {
   constructor(schema) {
-    this.schemaSmartFields = schema
-      && schema.fields
-      && schema.fields.filter((field) => field.get).map((field) => field.field);
+    this.smartFieldDependancies = ProjectionBuilder.getSmartFieldDependancies(schema);
   }
 
   // NOTICE: Convert a list of field names into a mongo $project structure
@@ -17,10 +17,15 @@ class ProjectionBuilder {
     return null;
   }
 
-  static getReferredFields(smartFieldFunction) {
-    const text = smartFieldFunction.toString();
-    // eslint-disable-next-line
-    console.log(text);
+  static getReferencedFields(smartFieldFunction) {
+    const text = Function.prototype.toString.call(smartFieldFunction);
+    const paramMatch = text.match(paramMatcher);
+    const paramName = paramMatch[1];
+    if (paramName) {
+      const referencedFieldMatcher = new RegExp(`${paramName}.([a-zA-Z_$][0-9a-zA-Z_$]*)`, 'g');
+      const propertiesMatches = [...text.matchAll(referencedFieldMatcher)];
+      return propertiesMatches.map((property) => property[1]);
+    }
     return null;
   }
 
@@ -29,7 +34,7 @@ class ProjectionBuilder {
     if (schema && schema.fields) {
       schema.fields.forEach((field) => {
         if (field.get) {
-          const referredFields = ProjectionBuilder.getReferredFields(field.get);
+          const referredFields = ProjectionBuilder.getReferencedFields(field.get);
           if (referredFields) {
             smartFieldDependancies[field.field] = referredFields;
           }
@@ -39,10 +44,11 @@ class ProjectionBuilder {
     return smartFieldDependancies;
   }
 
+  // NOTICE: return a new array replacing smartfields by their dependancies.
   expandSmartFields(fieldsNames) {
     const expandedFields = [];
     fieldsNames.forEach((field) => {
-      const referencedFields = this.smartFieldMap[field];
+      const referencedFields = this.smartFieldDependancies[field];
       const fieldIsSmart = !!referencedFields;
       if (fieldIsSmart) {
         expandedFields.push(...referencedFields);
@@ -53,19 +59,9 @@ class ProjectionBuilder {
     return expandedFields;
   }
 
-  // NOTICE: Perform the intersection between schema and request smart fields.
-  findRequestSmartField(requestFieldsNames) {
-    if (this.schemaSmartFields && requestFieldsNames) {
-      return this.schemaSmartFields
-        .filter((fieldName) => requestFieldsNames.indexOf(fieldName) > -1);
-    }
-    return [];
-  }
-
   getProjection(fieldNames) {
-    const requestSmartFields = this.findRequestSmartField(fieldNames);
-    if (requestSmartFields.length) return null;
-    return ProjectionBuilder.convertToProjection(fieldNames);
+    const expandedFieldNames = this.expandSmartFields(fieldNames);
+    return ProjectionBuilder.convertToProjection(expandedFieldNames);
   }
 }
 
