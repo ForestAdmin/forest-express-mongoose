@@ -17,6 +17,42 @@ class ProjectionBuilder {
     return null;
   }
 
+  static getReferredFields(smartFieldFunction) {
+    const text = smartFieldFunction.toString();
+    // eslint-disable-next-line
+    console.log(text);
+    return null;
+  }
+
+  static getSmartFieldDependancies(schema) {
+    const smartFieldDependancies = {};
+    if (schema && schema.fields) {
+      schema.fields.forEach((field) => {
+        if (field.get) {
+          const referredFields = ProjectionBuilder.getReferredFields(field.get);
+          if (referredFields) {
+            smartFieldDependancies[field.field] = referredFields;
+          }
+        }
+      });
+    }
+    return smartFieldDependancies;
+  }
+
+  expandSmartFields(fieldsNames) {
+    const expandedFields = [];
+    fieldsNames.forEach((field) => {
+      const referencedFields = this.smartFieldMap[field];
+      const fieldIsSmart = !!referencedFields;
+      if (fieldIsSmart) {
+        expandedFields.push(...referencedFields);
+      } else {
+        expandedFields.push(field);
+      }
+    });
+    return expandedFields;
+  }
+
   // NOTICE: Perform the intersection between schema and request smart fields.
   findRequestSmartField(requestFieldsNames) {
     if (this.schemaSmartFields && requestFieldsNames) {
