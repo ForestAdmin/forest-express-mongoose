@@ -322,11 +322,11 @@ describe('service > resources-getter', () => {
           timezone: '+01:00',
         };
 
-        const result = await new ResourcesGetter(FilmModel, options, parameters).perform();
-        expect(result[0]).toHaveLength(3);
-        const titles = result[0].filter((film) => !!film.title);
+        const [result] = await new ResourcesGetter(FilmModel, options, parameters).perform();
+        expect(result).toHaveLength(3);
+        const titles = result.filter((film) => !!film.title);
         expect(titles).toHaveLength(3);
-        const durations = result[0].filter((film) => !!film.duration);
+        const durations = result.filter((film) => !!film.duration);
         expect(durations).toHaveLength(3);
       });
     });
@@ -341,11 +341,11 @@ describe('service > resources-getter', () => {
           timezone: '+01:00',
         };
 
-        const result = await new ResourcesGetter(FilmModel, options, parameters).perform();
-        expect(result[0]).toHaveLength(3);
-        const titles = result[0].filter((film) => !!film.title);
+        const [result] = await new ResourcesGetter(FilmModel, options, parameters).perform();
+        expect(result).toHaveLength(3);
+        const titles = result.filter((film) => !!film.title);
         expect(titles).toHaveLength(3);
-        const durations = result[0].filter((film) => !!film.duration);
+        const durations = result.filter((film) => !!film.duration);
         expect(durations).toHaveLength(0);
       });
     });
