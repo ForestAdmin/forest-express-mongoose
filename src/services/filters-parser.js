@@ -133,7 +133,7 @@ function FiltersParser(model, timezone, options) {
       case 'equal':
         return parseFct(value);
       case 'in':
-        return { $in: parseFct(value) };
+        return { $in: [_.isArray(value) ? parseFct(value[0]) : parseFct(value)] };
       default:
         throw new NoMatchingOperatorError();
     }
