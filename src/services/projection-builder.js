@@ -5,7 +5,7 @@ class ProjectionBuilder {
       && schema.fields.filter((field) => field.get).map((field) => field.field);
   }
 
-  // NOTICE: Convert a list of field names into a mongo $project structure
+  // NOTICE: Convert a list of field names into a mongo $project structure.
   static convertToProjection(fieldsNames) {
     if (fieldsNames) {
       const fieldsObject = fieldsNames.reduce((fields, fieldName) => {
