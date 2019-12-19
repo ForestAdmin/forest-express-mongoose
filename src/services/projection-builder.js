@@ -21,7 +21,7 @@ class ProjectionBuilder {
   findRequestSmartField(requestFieldsNames) {
     if (this.schemaSmartFields && requestFieldsNames) {
       return this.schemaSmartFields
-        .filter((fieldName) => requestFieldsNames.indexOf(fieldName) > -1);
+        .filter((fieldName) => requestFieldsNames.includes(fieldName));
     }
     return [];
   }
