@@ -1,6 +1,9 @@
 # Change Log
 
 ## [Unreleased]
+### Changed
+- Technical - Upgrade `mongoose` devDependency to the latest version.
+
 ### Fixed
 - Technical - Exclude from pre-commit-hook linter files that are not committed.
 
