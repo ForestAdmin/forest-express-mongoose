@@ -2,7 +2,7 @@
 
 ## [Unreleased]
 ### Changed
-- Search - In a request with no smart fields, do not return fields that are hidden from the UI.
+- Performance optimization - In a request with no smart fields, do not return fields that are hidden from the UI.
 
 ### Fixed
 - Technical - Exclude from pre-commit-hook linter files that are not committed.
