@@ -4,11 +4,13 @@ import utils from '../utils/schema';
 import Orm from '../utils/orm';
 import SearchBuilder from './search-builder';
 import FiltersParser from './filters-parser';
+import ProjectionBuilder from './projection-builder';
 
 function QueryBuilder(model, params, opts) {
   const schema = Interface.Schemas.schemas[utils.getModelName(model)];
   const searchBuilder = new SearchBuilder(model, opts, params, schema.searchFields);
   const filterParser = new FiltersParser(model, params.timezone, opts);
+  const projectionBuilder = new ProjectionBuilder(schema);
 
   const { filters } = params;
 
@@ -34,6 +36,10 @@ function QueryBuilder(model, params, opts) {
       associations,
     );
   };
+
+  this.addProjection = (jsonQuery) => this.getFieldNamesRequested()
+    .then((fieldNames) => projectionBuilder.getProjection(fieldNames))
+    .then((projection) => projection && jsonQuery.push(projection));
 
   this.addJoinToQuery = (field, joinQuery) => {
     if (field.reference && !field.isVirtual && !field.integration) {
@@ -128,6 +134,11 @@ function QueryBuilder(model, params, opts) {
 
   this.getQueryWithFiltersAndJoins = async (segment) => {
     const jsonQuery = [];
+    await this.addFiltersAndJoins(jsonQuery, segment);
+    return jsonQuery;
+  };
+
+  this.addFiltersAndJoins = async (jsonQuery, segment) => {
     const conditions = [];
 
     if (filters) {
@@ -150,7 +161,7 @@ function QueryBuilder(model, params, opts) {
       });
     }
 
-    return jsonQuery;
+    return this;
   };
 }
 
