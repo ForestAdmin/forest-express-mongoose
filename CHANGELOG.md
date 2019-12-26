@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Changed
 - Performance optimization - In a request with no smart fields, do not return fields that are hidden from the UI.
+- Technical - Upgrade `mongoose` devDependency to the latest version.
 
 ### Fixed
 - Technical - Exclude from pre-commit-hook linter files that are not committed.
