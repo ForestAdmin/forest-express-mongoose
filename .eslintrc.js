@@ -12,6 +12,8 @@ module.exports = {
     node: true,
   },
   rules: {
+    'sonarjs/cognitive-complexity': 1,
+    'sonarjs/no-duplicated-branches': 1,
     'sonarjs/no-identical-functions': 0,
     'sonarjs/no-duplicate-string': 0,
     'sonarjs/no-same-line-conditional': 0,
