@@ -2,13 +2,19 @@ module.exports = {
   root: true,
   extends: [
     'airbnb-base',
-    'plugin:jest/all'
+    'plugin:jest/all',
+    'plugin:sonarjs/recommended',
   ],
-  plugins: [],
+  plugins: [
+    'sonarjs',
+  ],
   env: {
     node: true,
   },
   rules: {
+    'sonarjs/no-identical-functions': 0,
+    'sonarjs/no-duplicate-string': 0,
+    'sonarjs/no-same-line-conditional': 0,
     'implicit-arrow-linebreak': 0,
     'jest/no-hooks': 0,
     'no-param-reassign': 0,

@@ -1,6 +1,9 @@
 # Change Log
 
 ## [Unreleased]
+### Added
+- Technical - Add SonarJS linter for complexity issues.
+
 ### Changed
 - Performance optimization - In a request with no smart fields, do not return fields that are hidden from the UI.
 - Technical - Upgrade `mongoose` devDependency to the latest version.
