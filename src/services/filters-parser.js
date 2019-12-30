@@ -22,10 +22,6 @@ function FiltersParser(model, timezone, options) {
     if (ObjectId.isValid(value) && ObjectId(value).toString() === value) {
       return ObjectId(value);
     }
-    if (_.isArray(value)) {
-      return value
-        .map((arrayValue) => (ObjectId.isValid(arrayValue) ? ObjectId(arrayValue) : arrayValue));
-    }
     return value;
   };
   const parseArray = (value) => ({ $size: value });
@@ -100,11 +96,11 @@ function FiltersParser(model, timezone, options) {
 
     const parse = this.getParserForType(field.type);
 
-    return (val) => {
-      if (val && _.isArray(val)) {
-        return val.map(parse);
+    return (value) => {
+      if (value && _.isArray(value)) {
+        return value.map(parse);
       }
-      return parse(val);
+      return parse(value);
     };
   };
 
