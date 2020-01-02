@@ -22,10 +22,6 @@ function FiltersParser(model, timezone, options) {
     if (ObjectId.isValid(value) && ObjectId(value).toString() === value) {
       return ObjectId(value);
     }
-    if (_.isArray(value)) {
-      return value
-        .map((arrayValue) => (ObjectId.isValid(arrayValue) ? ObjectId(arrayValue) : arrayValue));
-    }
     return value;
   };
   const parseArray = (value) => ({ $size: value });
@@ -98,7 +94,14 @@ function FiltersParser(model, timezone, options) {
 
     if (!field) return (val) => val;
 
-    return this.getParserForType(field.type);
+    const parse = this.getParserForType(field.type);
+
+    return (value) => {
+      if (value && _.isArray(value)) {
+        return value.map(parse);
+      }
+      return parse(value);
+    };
   };
 
   this.formatAggregatorOperator = (aggregatorOperator) => {

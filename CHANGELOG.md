@@ -12,6 +12,7 @@
 ### Fixed
 - Technical - Exclude from pre-commit-hook linter files that are not committed.
 - Security - Patch vulnerabilities upgrading the `mixin-deep` dependency.
+- Record List - Fix record listing on table which reference table with id not string.
 
 ## RELEASE 5.4.1 - 2019-12-11
 ### Changed
