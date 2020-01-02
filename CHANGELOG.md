@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 5.5.0 - 2020-01-02
 ### Added
 - Technical - Add SonarJS linter for complexity issues.
 
