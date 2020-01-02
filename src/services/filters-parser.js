@@ -10,26 +10,26 @@ function FiltersParser(model, timezone, options) {
 
   const parseInteger = (value) => Number.parseInt(value, 10);
   const parseDate = (value) => new Date(value);
-  const parseBoolean = (val) => {
-    if (val === 'true') { return true; }
-    if (val === 'false') { return false; }
-    return typeof val === 'boolean' ? val : null;
+  const parseBoolean = (value) => {
+    if (value === 'true') { return true; }
+    if (value === 'false') { return false; }
+    return typeof value === 'boolean' ? value : null;
   };
-  const parseString = (val) => {
-    // NOTICE: Check if the value is a real ObjectID. By default, the
-    //         isValid method returns true for a random string with length 12.
-    // Example: 'Black Friday'.
+  const parseString = (value) => {
+    // NOTICE: Check if the value is a real ObjectID. By default, the isValid method returns true
+    //         for a random string with length 12 (example: 'Black Friday').
     const { ObjectId } = options.mongoose.Types;
-    if (ObjectId.isValid(val) && ObjectId(val).toString() === val) {
-      return ObjectId(val);
+    if (ObjectId.isValid(value) && ObjectId(value).toString() === value) {
+      return ObjectId(value);
     }
-    if (_.isArray(val)) {
-      return val.map((value) => (ObjectId.isValid(value) ? ObjectId(value) : value));
+    if (_.isArray(value)) {
+      return value
+        .map((arrayValue) => (ObjectId.isValid(arrayValue) ? ObjectId(arrayValue) : arrayValue));
     }
-    return val;
+    return value;
   };
-  const parseArray = (val) => ({ $size: val });
-  const parseOther = (val) => val;
+  const parseArray = (value) => ({ $size: value });
+  const parseOther = (value) => value;
 
   this.operatorDateParser = new BaseOperatorDateParser({
     operators: { GTE: '$gte', LTE: '$lte' },
