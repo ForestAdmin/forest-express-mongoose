@@ -8,6 +8,29 @@ const AGGREGATOR_OPERATORS = ['and', 'or'];
 function FiltersParser(model, timezone, options) {
   const schema = Interface.Schemas.schemas[utils.getModelName(model)];
 
+  const parseInteger = (value) => Number.parseInt(value, 10);
+  const parseDate = (value) => new Date(value);
+  const parseBoolean = (val) => {
+    if (val === 'true') { return true; }
+    if (val === 'false') { return false; }
+    return typeof val === 'boolean' ? val : null;
+  };
+  const parseString = (val) => {
+    // NOTICE: Check if the value is a real ObjectID. By default, the
+    //         isValid method returns true for a random string with length 12.
+    // Example: 'Black Friday'.
+    const { ObjectId } = options.mongoose.Types;
+    if (ObjectId.isValid(val) && ObjectId(val).toString() === val) {
+      return ObjectId(val);
+    }
+    if (_.isArray(val)) {
+      return val.map((value) => (ObjectId.isValid(value) ? ObjectId(value) : value));
+    }
+    return val;
+  };
+  const parseArray = (val) => ({ $size: val });
+  const parseOther = (val) => val;
+
   this.operatorDateParser = new BaseOperatorDateParser({
     operators: { GTE: '$gte', LTE: '$lte' },
     timezone,
@@ -47,10 +70,27 @@ function FiltersParser(model, timezone, options) {
     };
   };
 
-  this.parseFunction = async (key) => {
+  this.getParserForType = (type) => {
+    switch (type) {
+      case 'Number':
+        return parseInteger;
+      case 'Date':
+        return parseDate;
+      case 'Boolean':
+        return parseBoolean;
+      case 'String':
+        return parseString;
+      case _.isArray(type):
+        return parseArray;
+      default:
+        return parseOther;
+    }
+  };
+
+  this.getParserForField = async (key) => {
     const [fieldName, subfieldName] = key.split(':');
 
-    // Mongoose Aggregate don't parse the value automatically.
+    // NOTICE: Mongoose Aggregate don't parse the value automatically.
     let field = _.find(schema.fields, { field: fieldName });
 
     if (!field) {
@@ -63,37 +103,8 @@ function FiltersParser(model, timezone, options) {
     }
 
     if (!field) return (val) => val;
-    switch (field.type) {
-      case 'Number':
-        return parseInt;
-      case 'Date':
-        return (val) => new Date(val);
-      case 'Boolean':
-        return (val) => {
-          if (val === 'true') { return true; }
-          if (val === 'false') { return false; }
-          return typeof val === 'boolean' ? val : null;
-        };
-      case 'String':
-        return (val) => {
-          // NOTICE: Check if the value is a real ObjectID. By default, the
-          // isValid method returns true for a random string with length 12.
-          // Example: 'Black Friday'.
-          const { ObjectId } = options.mongoose.Types;
-          if (ObjectId.isValid(val) && ObjectId(val).toString() === val) {
-            return ObjectId(val);
-          }
-          if (_.isArray(val)) {
-            return val.map((value) => (ObjectId.isValid(value) ? ObjectId(value) : value));
-          }
-          return val;
-        };
-      default:
-        if (_.isArray(field.type)) {
-          return (val) => ({ $size: val });
-        }
-        return (val) => val;
-    }
+
+    return this.getParserForType(field.type);
   };
 
   this.formatAggregatorOperator = (aggregatorOperator) => {
@@ -106,7 +117,7 @@ function FiltersParser(model, timezone, options) {
       return this.operatorDateParser.getDateFilter(operator, value);
     }
 
-    const parseFct = await this.parseFunction(field);
+    const parseFct = await this.getParserForField(field);
 
     switch (operator) {
       case 'not':
