@@ -72,18 +72,12 @@ function FiltersParser(model, timezone, options) {
 
   this.getParserForType = (type) => {
     switch (type) {
-      case 'Number':
-        return parseInteger;
-      case 'Date':
-        return parseDate;
-      case 'Boolean':
-        return parseBoolean;
-      case 'String':
-        return parseString;
-      case _.isArray(type):
-        return parseArray;
-      default:
-        return parseOther;
+      case 'Number': return parseInteger;
+      case 'Date': return parseDate;
+      case 'Boolean': return parseBoolean;
+      case 'String': return parseString;
+      case _.isArray(type): return parseArray;
+      default: return parseOther;
     }
   };
 
