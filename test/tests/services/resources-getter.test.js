@@ -146,7 +146,7 @@ describe('service > resources-getter', () => {
         },
         page: { number: '1', size: '30' },
         search: 'gift',
-        timezone: '+02:00',
+        timezone: 'Europe/Paris',
       };
 
       const result = await new ResourcesGetter(OrderModel, options, parameters).perform();
@@ -158,7 +158,7 @@ describe('service > resources-getter', () => {
       expect.assertions(1);
       const parameters = {
         search: 'gift',
-        timezone: '+02:00',
+        timezone: 'Europe/Paris',
       };
 
       const count = await new ResourcesGetter(OrderModel, options, parameters).count();
@@ -175,7 +175,7 @@ describe('service > resources-getter', () => {
         },
         page: { number: '1', size: '30' },
         filters: JSON.stringify({ field: 'giftMessage', operator: 'starts_with', value: 'Here' }),
-        timezone: '+02:00',
+        timezone: 'Europe/Paris',
       };
 
       const result = await new ResourcesGetter(OrderModel, options, parameters).perform();
@@ -199,7 +199,7 @@ describe('service > resources-getter', () => {
             { field: 'amount', operator: 'greater_than', value: '1000' },
           ],
         }),
-        timezone: '+02:00',
+        timezone: 'Europe/Paris',
       };
 
       const result = await new ResourcesGetter(OrderModel, options, parameters).perform();
@@ -217,7 +217,7 @@ describe('service > resources-getter', () => {
             },
             page: { number: '1', size: '30' },
             filters: JSON.stringify({ field: 'orderer:name', operator: 'contains', value: 'Cohle' }),
-            timezone: '+02:00',
+            timezone: 'Europe/Paris',
           };
 
 
@@ -242,7 +242,7 @@ describe('service > resources-getter', () => {
                 { field: 'orderer:name', operator: 'ends_with', value: 'Gardner' },
               ],
             }),
-            timezone: '+02:00',
+            timezone: 'Europe/Paris',
           };
 
           const result = await new ResourcesGetter(OrderModel, options, parameters).perform();
@@ -265,7 +265,7 @@ describe('service > resources-getter', () => {
                 { field: 'receiver:name', operator: 'ends_with', value: 'Gardner' },
               ],
             }),
-            timezone: '+02:00',
+            timezone: 'Europe/Paris',
           };
 
           const result = await new ResourcesGetter(OrderModel, options, parameters).perform();
@@ -301,7 +301,7 @@ describe('service > resources-getter', () => {
                 },
               ],
             }),
-            timezone: '+02:00',
+            timezone: 'Europe/Paris',
           };
 
           const result = await new ResourcesGetter(OrderModel, options, parameters).perform();
@@ -319,7 +319,7 @@ describe('service > resources-getter', () => {
           fields: { films: 'description' },
           page: { number: '1', size: '15' },
           searchExtended: '0',
-          timezone: '+01:00',
+          timezone: 'Europe/Paris',
         };
 
         const [result] = await new ResourcesGetter(FilmModel, options, parameters).perform();
@@ -338,7 +338,7 @@ describe('service > resources-getter', () => {
           fields: { films: 'title' },
           page: { number: '1', size: '15' },
           searchExtended: '0',
-          timezone: '+01:00',
+          timezone: 'Europe/Paris',
         };
 
         const [result] = await new ResourcesGetter(FilmModel, options, parameters).perform();

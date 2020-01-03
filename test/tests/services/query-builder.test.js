@@ -96,7 +96,7 @@ describe('service > query-builder', () => {
     describe('on basic field', () => {
       it('should add the join correctly', () => {
         expect.assertions(1);
-        const queryBuilder = new QueryBuilder(TreeModel, { timezone: '+02:00' }, options);
+        const queryBuilder = new QueryBuilder(TreeModel, { timezone: 'Europe/Paris' }, options);
         const field = {
           field: 'owner',
           displayName: 'owner',
@@ -120,7 +120,7 @@ describe('service > query-builder', () => {
     describe('on virtual field', () => {
       it('the join should be ignored', () => {
         expect.assertions(1);
-        const queryBuilder = new QueryBuilder(TreeModel, { timezone: '+02:00' }, options);
+        const queryBuilder = new QueryBuilder(TreeModel, { timezone: 'Europe/Paris' }, options);
         const field = {
           field: 'owner',
           displayName: 'owner',
@@ -137,7 +137,7 @@ describe('service > query-builder', () => {
     describe('on a field with integration', () => {
       it('the join should be ignored', () => {
         expect.assertions(1);
-        const queryBuilder = new QueryBuilder(TreeModel, { timezone: '+02:00' }, options);
+        const queryBuilder = new QueryBuilder(TreeModel, { timezone: 'Europe/Paris' }, options);
         const field = {
           field: 'owner',
           displayName: 'owner',
