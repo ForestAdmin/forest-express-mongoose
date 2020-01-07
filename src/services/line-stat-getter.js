@@ -2,13 +2,16 @@
 import _ from 'lodash';
 import P from 'bluebird';
 import moment from 'moment';
+// NOTICE: moment-timezone extends moment itself,
+//         Importing it will automatically add functions to moment.
+import 'moment-timezone';
 import Interface from 'forest-express';
 import QueryBuilder from './query-builder';
 import utils from '../utils/schema';
 
 function LineStatFinder(model, params, opts) {
   const schema = Interface.Schemas.schemas[utils.getModelName(model)];
-  const timezone = (-parseInt(params.timezone, 10)).toString();
+  const timezone = -parseInt(moment().tz(params.timezone).format('Z'), 10);
   const timezoneOffset = timezone * 60 * 60 * 1000;
   const queryBuilder = new QueryBuilder(model, params, opts);
 
