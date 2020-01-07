@@ -170,7 +170,7 @@ describe('service > filters-parser', () => {
           expect(await defaultParser.formatOperatorValue('name', 'not_equal', value)).toStrictEqual({ $ne: value });
           expect(await defaultParser.formatOperatorValue('name', 'present', value)).toStrictEqual({ $exists: true });
           expect(await defaultParser.formatOperatorValue('name', 'equal', value)).toStrictEqual(value);
-          expect(await defaultParser.formatOperatorValue('name', 'blank', value)).toStrictEqual({ $exists: false });
+          expect(await defaultParser.formatOperatorValue('name', 'blank', value)).toBeNull();
         });
 
         it('should raise an error on unknown operator', async () => {
