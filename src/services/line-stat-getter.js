@@ -3,7 +3,7 @@ import _ from 'lodash';
 import P from 'bluebird';
 import moment from 'moment';
 // NOTICE: moment-timezone extends moment itself,
-//         Importing it will automatically ad functions to moment.
+//         Importing it will automatically add functions to moment.
 import 'moment-timezone';
 import Interface from 'forest-express';
 import QueryBuilder from './query-builder';
