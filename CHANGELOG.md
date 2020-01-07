@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 5.6.0 - 2020-01-07
 ### Changed
 - Technical - Use true timezone data ('Europe/Paris') instead of offset.
 
