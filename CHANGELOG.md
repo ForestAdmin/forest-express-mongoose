@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- Record List - Fix filter is blank to also take into account null value.
 
 ## RELEASE 5.6.0 - 2020-01-07
 ### Changed
