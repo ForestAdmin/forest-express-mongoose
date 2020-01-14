@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 5.7.0 - 2020-01-14
 ### Added
 - Sessions - Distinguish "CORS configuration issue" and "Server down" scenarios in case of liana login error.
 
