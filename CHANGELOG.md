@@ -1,8 +1,16 @@
 # Change Log
 
 ## [Unreleased]
+### Added
+- Sessions - Distinguish "CORS configuration issue" and "Server down" scenarios in case of liana login error.
+
+### Changed
+- Smart Collections - Do not insert Smart Collections unless they contain at least one declared field.
+
 ### Fixed
 - Record List - Fix filter is blank to also take into account null value.
+- Intercom Integration - Better handling of automated messages.
+- Initialization - Filter out test files when requiring models (`__tests__/*`, `*.spec.js`, `*.spec.ts`, `*.test.js` or `*.test.ts`).
 
 ## RELEASE 5.6.0 - 2020-01-07
 ### Changed
