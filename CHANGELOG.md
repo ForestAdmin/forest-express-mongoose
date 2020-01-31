@@ -1,6 +1,11 @@
 # Change Log
 
 ## [Unreleased]
+### Added
+- Technical - Add optional chaining plugin to babel.
+
+### Changed
+- Technical - Upgrade to babel 7 stable.
 
 ## RELEASE 5.7.0 - 2020-01-14
 ### Added

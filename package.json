@@ -24,7 +24,7 @@
   },
   "main": "dist/index.js",
   "dependencies": {
-    "babel-runtime": "7.0.0-beta.3",
+    "@babel/runtime": "7.8.3",
     "bluebird": "2.9.25",
     "forest-express": "5.6.0",
     "http-errors": "1.7.2",
@@ -34,11 +34,14 @@
     "semver": "5.6.0"
   },
   "devDependencies": {
+    "@babel/cli": "7.8.3",
+    "@babel/core": "7.8.3",
+    "@babel/plugin-proposal-optional-chaining": "7.8.3",
+    "@babel/plugin-transform-runtime": "7.8.3",
+    "@babel/preset-env": "7.8.3",
+    "@babel/register": "7.8.3",
     "@forestadmin/devops": "2.0.0",
-    "babel-cli": "7.0.0-beta.3",
-    "babel-plugin-transform-runtime": "7.0.0-beta.3",
-    "babel-preset-env": "7.0.0-beta.3",
-    "babel-register": "7.0.0-beta.3",
+    "babel-eslint": "10.0.3",
     "dotenv": "6.2.0",
     "eslint": "6.7.2",
     "eslint-config-airbnb-base": "14.0.0",
@@ -53,7 +56,7 @@
     "simple-git": "1.65.0"
   },
   "scripts": {
-    "build": "./node_modules/babel-cli/bin/babel.js src --out-dir dist && echo '\n\\033[0;34m[+] \\033[0;32mBuild done\\033[0m'",
+    "build": "./node_modules/.bin/babel src --out-dir dist && echo '\n\\033[0;34m[+] \\033[0;32mBuild done\\033[0m'",
     "build:watch": "onchange 'src/**/*.js' -i -- yarn build",
     "lint": "./node_modules/eslint/bin/eslint.js .eslint-bin scripts src test",
     "pre-commit": "node ./.eslint-bin/pre-commit-hook.js",
