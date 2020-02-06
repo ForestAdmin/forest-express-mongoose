@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Added
 - Technical - Add optional chaining plugin to babel.
+- Resources Remover - Add resources remover (bulk destroy).
 
 ### Changed
 - Technical - Upgrade to babel 7 stable.

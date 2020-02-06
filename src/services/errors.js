@@ -12,5 +12,14 @@ function InvalidFiltersFormatError(message) {
 }
 InvalidFiltersFormatError.prototype = new Error();
 
+function InvalidParameterError(message) {
+  this.name = 'InvalidParameterError';
+  this.message = message || 'The given parameter is invalid.';
+  this.status = 422;
+  this.stack = (new Error()).stack;
+}
+InvalidParameterError.prototype = new Error();
+
 exports.NoMatchingOperatorError = NoMatchingOperatorError;
 exports.InvalidFiltersFormatError = InvalidFiltersFormatError;
+exports.InvalidParameterError = InvalidParameterError;
