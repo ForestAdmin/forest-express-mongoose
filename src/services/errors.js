@@ -15,7 +15,6 @@ InvalidFiltersFormatError.prototype = new Error();
 function InvalidParameterError(message) {
   this.name = 'InvalidParameterError';
   this.message = message || 'The given parameter is invalid.';
-  this.status = 422;
   this.stack = (new Error()).stack;
 }
 InvalidParameterError.prototype = new Error();
