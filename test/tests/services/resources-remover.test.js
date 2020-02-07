@@ -5,7 +5,7 @@ import ResourcesRemover from '../../../src/services/resources-remover';
 import mongooseConnect from '../../utils/mongoose-connect';
 import { InvalidParameterError } from '../../../src/services/errors';
 
-describe('service > filters-parser', () => {
+describe('service > resources-remover', () => {
   let IslandModel;
 
   beforeAll(() => {
