@@ -4,6 +4,8 @@
 ### Added
 - Technical - Add optional chaining plugin to babel.
 - Resources Remover - Add resources remover (bulk destroy).
+- Initialisation - Make `Liana.init` return a promise resolving when all is up.
+- Smart Actions - Add a method to `RecordsGetter` to get all models IDs given a query or an ID list.
 
 ### Changed
 - Technical - Upgrade to babel 7 stable.
