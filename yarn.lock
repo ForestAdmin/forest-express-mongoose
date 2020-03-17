@@ -712,13 +712,6 @@
     pirates "^4.0.0"
     source-map-support "^0.5.16"
 
-"@babel/runtime@7.7.2":
-  version "7.7.2"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.7.2.tgz#111a78002a5c25fc8e3361bedc9529c696b85a6a"
-  integrity sha512-JONRbXbTXc9WQE2mAZd1p0Z3DZ/6vaQIkgYMSTP3KjRCyd7rCZCcfhCyX+YjwcKxcZ82UrxbRD358bpExNgrjw==
-  dependencies:
-    regenerator-runtime "^0.13.2"
-
 "@babel/runtime@7.8.3":
   version "7.8.3"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.8.3.tgz#0811944f73a6c926bb2ad35e918dcc1bfab279f1"
@@ -2654,12 +2647,12 @@ for-in@^1.0.2:
   resolved "https://registry.yarnpkg.com/for-in/-/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
   integrity sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=
 
-forest-express@5.6.0:
-  version "5.6.0"
-  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-5.6.0.tgz#3279d4522ca9448482f46292d05568f3ac70e460"
-  integrity sha512-T6L0tFfy1jLkTXfW/H785LVlaW6rkVHM0YjCrklkIoOnu8cJbXdVuPy00b3q9p/aerrz6/PgGNDjmpG/JSB6pg==
+forest-express@7.0.1:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-7.0.1.tgz#9deee488a1923b8f1d84dcf1d08f1eeee0e385b2"
+  integrity sha512-il+CC2KgE5hz9kni2E/T6DSCuv7zsRmEc0hgt66N3TdxVwu/k0ApWNKdBwXNZ8sDZt3EGjGscnS9dlyrObPtwg==
   dependencies:
-    "@babel/runtime" "7.7.2"
+    "@babel/runtime" "7.8.3"
     base32-encode "1.1.1"
     bitwise-xor "0.0.0"
     bluebird "3.7.1"
