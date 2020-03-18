@@ -3,6 +3,8 @@
 ## [Unreleased]
 
 ## RELEASE 6.0.0 - 2020-03-17
+
+## RELEASE 6.0.0-beta.0 - 2020-02-18
 ### Added
 - Technical - Add optional chaining plugin to babel.
 - Resource Deletion - Users can now bulk delete records.
