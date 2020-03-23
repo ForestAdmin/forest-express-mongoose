@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- Security - Fix potential vulnerability upgrading `acorn` dependency.
 
 ## RELEASE 6.0.0 - 2020-03-17
 
