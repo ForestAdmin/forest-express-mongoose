@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Fixed
 - Security - Fix potential vulnerability upgrading `acorn` dependency.
+- Integrations - Fix intercom conversations display with API v2.
 
 ## RELEASE 6.0.0 - 2020-03-17
 
