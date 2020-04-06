@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 6.0.1 - 2020-04-06
 ### Fixed
 - Security - Fix potential vulnerability upgrading `acorn` dependency.
 - Integrations - Fix intercom conversations display with API v2.
