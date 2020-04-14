@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Changed
+- Technical - Adapt release manager to conventional commits.
 
 ## RELEASE 6.0.3 - 2020-04-14
 ### Added
