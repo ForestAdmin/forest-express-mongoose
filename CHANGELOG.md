@@ -1,6 +1,9 @@
 # Change Log
 
 ## [Unreleased]
+### Added
+- Integrations - Allow user to choose custom mapping values for intercom integration.
+
 ### Changed
 - Technical - Introduce conventional commits.
 
