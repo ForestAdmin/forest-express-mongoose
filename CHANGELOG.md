@@ -10,6 +10,7 @@
 
 ### Changed
 - Technical - Introduce conventional commits.
+- Technical - Make the CI lint the commit messages.
 
 ## RELEASE 6.0.1 - 2020-04-06
 ### Fixed
