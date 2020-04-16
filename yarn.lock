@@ -3015,10 +3015,10 @@ for-in@^1.0.2:
   resolved "https://registry.yarnpkg.com/for-in/-/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
   integrity sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=
 
-forest-express@7.1.0:
-  version "7.1.0"
-  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-7.1.0.tgz#c6b542ebf59ad69dac13c7610d1c185239b212b3"
-  integrity sha512-th2fkO0GyrDdvuEHIsPmeUNXg03JEg+eXdVaB2hCCxkq8cHjVyegPy9AGbfrUzQaC/n44IzlM21RFW+j0w25vA==
+forest-express@7.2.0:
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-7.2.0.tgz#9f626c8ca40b3237b3cace524d8a35433adc9a33"
+  integrity sha512-G7ZOEmJCw6ft7FSNxgcd1VH2D28955kflDxwFC+Tn+Z9mGMtIOeJr+JoOIkyTtUYllg7PG1v9a67BMYkWL4bVw==
   dependencies:
     "@babel/runtime" "7.8.3"
     base32-encode "1.1.1"
