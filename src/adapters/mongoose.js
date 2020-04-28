@@ -143,6 +143,18 @@ module.exports = (model, opts) => {
         // Schema
         return [schemaType(fieldInfo.options.type[0])];
       }
+
+      // NOTICE: Object with `type` reserved keyword.
+      //         See: https://mongoosejs.com/docs/schematypes.html#type-key
+      if (fieldInfo.options.type[0] instanceof Object
+        && fieldInfo.options.type[0].type
+        // NOTICE: Bypass for schemas like `[{ type: {type: String}, ... }]` where "type" is used
+        //         as property, and thus we are in the case of an array of embedded documents.
+        //         See: https://mongoosejs.com/docs/faq.html#type-key
+        && !fieldInfo.options.type[0].type.type) {
+        return [getTypeFromNative(fieldInfo.options.type[0])];
+      }
+
       // Object
       return [objectType(fieldInfo.options.type[0], (key) =>
         getTypeFromNative(fieldInfo.options.type[0][key]))];
@@ -250,6 +262,11 @@ module.exports = (model, opts) => {
 
     if (fieldInfo.enumValues && fieldInfo.enumValues.length) {
       schema.enums = fieldInfo.enumValues;
+    }
+
+    // NOTICE: Create enums from caster (for ['Enum'] type).
+    if (fieldInfo.caster && fieldInfo.caster.enumValues && fieldInfo.caster.enumValues.length) {
+      schema.enums = fieldInfo.caster.enumValues;
     }
 
     const isRequired = getRequired(fieldInfo);
