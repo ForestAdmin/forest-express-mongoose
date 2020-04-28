@@ -470,7 +470,6 @@ describe('adapters > schema-adapter', () => {
         mongoose,
         connections: [mongoose],
       });
-      console.log(result.fields);
       expect(result.fields[0].type[0].fields).toStrictEqual([
         { field: 'type', type: 'String' },
         { field: 'value', type: 'String' },
