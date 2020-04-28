@@ -145,7 +145,7 @@ module.exports = (model, opts) => {
       }
 
       // NOTICE: Object with `type` reserved keyword.
-      //         See: https://mongoosejs.com/docs/schematypes.html#type-key).
+      //         See: https://mongoosejs.com/docs/schematypes.html#type-key
       if (fieldInfo.options.type[0] instanceof Object
         && fieldInfo.options.type[0].type
         // NOTICE: In case there is `[{type:{type:String}}]` which means "type" is used as property.
