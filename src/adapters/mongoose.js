@@ -148,7 +148,8 @@ module.exports = (model, opts) => {
       //         See: https://mongoosejs.com/docs/schematypes.html#type-key
       if (fieldInfo.options.type[0] instanceof Object
         && fieldInfo.options.type[0].type
-        // NOTICE: Bypass for schemas like `[{ type: {type: String}, ... }]` where "type" is used as property, and thus we are in the case of an array of embedded documents.
+        // NOTICE: Bypass for schemas like `[{ type: {type: String}, ... }]` where "type" is used
+        //         as property, and thus we are in the case of an array of embedded documents.
         //         See: https://mongoosejs.com/docs/faq.html#type-key
         && !fieldInfo.options.type[0].type.type) {
         return [getTypeFromNative(fieldInfo.options.type[0])];
