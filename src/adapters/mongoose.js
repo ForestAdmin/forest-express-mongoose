@@ -144,8 +144,13 @@ module.exports = (model, opts) => {
         return [schemaType(fieldInfo.options.type[0])];
       }
 
-      // NOTICE: Object with `type` property keyword (https://mongoosejs.com/docs/schematypes.html#type-key)
-      if (fieldInfo.options.type[0] instanceof Object && fieldInfo.options.type[0].type) {
+      // NOTICE: Object with `type` reserved keyword.
+      //         See: https://mongoosejs.com/docs/schematypes.html#type-key).
+      if (fieldInfo.options.type[0] instanceof Object
+        && fieldInfo.options.type[0].type
+        // NOTICE: In case there is `[{type:{type:String}}]` which means "type" is used as property.
+        //         See: https://mongoosejs.com/docs/faq.html#type-key).
+        && !fieldInfo.options.type[0].type.type) {
         return [getTypeFromNative(fieldInfo.options.type[0])];
       }
 

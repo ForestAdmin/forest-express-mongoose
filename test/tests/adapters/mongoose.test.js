@@ -278,6 +278,28 @@ describe('adapters > schema-adapter', () => {
     });
   });
 
+  describe('array of string with enum values', () => {
+    it('should have the type [Enum]', async () => {
+      expect.assertions(4);
+      const schema = mongoose.Schema({
+        permissions: [{
+          type: String,
+          enum: ['user:read', 'user:write'],
+        }],
+      });
+      const model = mongoose.model('User', schema);
+
+      const result = await new SchemaAdapter(model, {
+        mongoose,
+        connections: [mongoose],
+      });
+      expect(result).toHaveProperty('fields');
+      expect(result.fields[0]).toHaveProperty('field', 'permissions');
+      expect(result.fields[0]).toHaveProperty('type', ['Enum']);
+      expect(result.fields[0]).toHaveProperty('enums', ['user:read', 'user:write']);
+    });
+  });
+
   describe('array of objectids ([type: ObjectId])', () => {
     it('should have the type [String]', async () => {
       expect.assertions(4);
@@ -438,7 +460,7 @@ describe('adapters > schema-adapter', () => {
       expect.assertions(1);
       const schema = mongoose.Schema({
         action: [{
-          type: String,
+          type: { type: String },
           value: String,
         }],
       });
@@ -448,6 +470,7 @@ describe('adapters > schema-adapter', () => {
         mongoose,
         connections: [mongoose],
       });
+      console.log(result.fields);
       expect(result.fields[0].type[0].fields).toStrictEqual([
         { field: 'type', type: 'String' },
         { field: 'value', type: 'String' },
