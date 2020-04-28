@@ -143,6 +143,12 @@ module.exports = (model, opts) => {
         // Schema
         return [schemaType(fieldInfo.options.type[0])];
       }
+
+      // NOTICE: Object with `type` property keyword (https://mongoosejs.com/docs/schematypes.html#type-key)
+      if (fieldInfo.options.type[0] instanceof Object && fieldInfo.options.type[0].type) {
+        return [getTypeFromNative(fieldInfo.options.type[0])];
+      }
+
       // Object
       return [objectType(fieldInfo.options.type[0], (key) =>
         getTypeFromNative(fieldInfo.options.type[0][key]))];
@@ -250,6 +256,11 @@ module.exports = (model, opts) => {
 
     if (fieldInfo.enumValues && fieldInfo.enumValues.length) {
       schema.enums = fieldInfo.enumValues;
+    }
+
+    // NOTICE: Create enums from caster (for ['Enum'] type).
+    if (fieldInfo.caster && fieldInfo.caster.enumValues && fieldInfo.caster.enumValues.length) {
+      schema.enums = fieldInfo.caster.enumValues;
     }
 
     const isRequired = getRequired(fieldInfo);
