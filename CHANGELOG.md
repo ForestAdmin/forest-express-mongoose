@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 6.1.1 - 2020-04-28
 ### Fixed
 - Schema - Fix array of enums detection.
 
