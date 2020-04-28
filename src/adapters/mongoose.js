@@ -149,7 +149,7 @@ module.exports = (model, opts) => {
       if (fieldInfo.options.type[0] instanceof Object
         && fieldInfo.options.type[0].type
         // NOTICE: In case there is `[{type:{type:String}}]` which means "type" is used as property.
-        //         See: https://mongoosejs.com/docs/faq.html#type-key).
+        //         See: https://mongoosejs.com/docs/faq.html#type-key
         && !fieldInfo.options.type[0].type.type) {
         return [getTypeFromNative(fieldInfo.options.type[0])];
       }
