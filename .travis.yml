@@ -1,12 +1,8 @@
-sudo: required
-
 language: node_js
-
-node_js:
-  - 11.14.0
+node_js: 11.14.0
 
 services:
-  - docker --privileged
+  - docker
 
 before_install:
   - docker-compose --version
