@@ -56,7 +56,7 @@
     "mongoose": "5.8.1",
     "mongoose-fixture-loader": "1.0.2",
     "onchange": "6.0.0",
-    "simple-git": "1.65.0"
+    "simple-git": "2.3.0"
   },
   "scripts": {
     "build": "./node_modules/.bin/babel src --out-dir dist && echo '\n\\033[0;34m[+] \\033[0;32mBuild done\\033[0m'",
