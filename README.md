@@ -128,6 +128,6 @@ user and your application data through the Admin API.
 
 ## Community
 
-👇 Join our Slack community of +1000 developers
+👇 Join our Developers community for support and more
 
-[![Slack Status](http://community.forestadmin.com/badge.svg)](https://community.forestadmin.com)
+[![Discourse developers community](https://img.shields.io/discourse/posts?label=discourse&server=https%3A%2F%2Fcommunity.forestadmin.com)](https://community.forestadmin.com)
