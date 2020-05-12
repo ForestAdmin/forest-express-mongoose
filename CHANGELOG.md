@@ -1,3 +1,10 @@
+## [6.1.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.1.2...v6.1.3) (2020-05-12)
+
+
+### Bug Fixes
+
+* **security:** patch newly detected vulnerabilities ([293c919](https://github.com/ForestAdmin/forest-express-mongoose/commit/293c919b91d501a32e80272ff7435a127887f188))
+
 ## RELEASE 6.1.2 - 2020-05-12
 ### Changed
 - Technical - Remove MongoClient deprecation warnings in tests.
