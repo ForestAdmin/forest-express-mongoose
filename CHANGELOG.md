@@ -5,6 +5,8 @@
 - Technical - Remove MongoClient deprecation warnings in tests.
 - Technical - Patch CI configuration warnings.
 - Readme - Update the community badge.
+- Readme - Fix interface screenshots display.
+- Readme - Update and re-position the "How it works" section.
 
 ## RELEASE 6.1.1 - 2020-04-28
 ### Fixed
