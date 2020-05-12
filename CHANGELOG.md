@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## RELEASE 6.1.2 - 2020-05-12
 ### Changed
 - Technical - Remove MongoClient deprecation warnings in tests.
 - Technical - Patch CI configuration warnings.
