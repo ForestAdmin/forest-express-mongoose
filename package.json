@@ -44,6 +44,8 @@
     "@commitlint/config-conventional": "8.3.4",
     "@commitlint/travis-cli": "8.3.5",
     "@forestadmin/devops": "2.0.1",
+    "@semantic-release/changelog": "5.0.1",
+    "@semantic-release/git": "9.0.0",
     "babel-eslint": "10.0.3",
     "dotenv": "6.2.0",
     "eslint": "6.7.2",
@@ -56,6 +58,8 @@
     "mongoose": "5.8.1",
     "mongoose-fixture-loader": "1.0.2",
     "onchange": "6.0.0",
+    "semantic-release": "17.0.7",
+    "semantic-release-slack-bot": "1.6.2",
     "simple-git": "1.65.0"
   },
   "scripts": {
@@ -63,7 +67,6 @@
     "build:watch": "onchange 'src/**/*.js' -i -- yarn build",
     "lint": "./node_modules/eslint/bin/eslint.js .eslint-bin scripts src test",
     "readme:update-coverage": "yarn test:coverage && node ./scripts/update-coverage.js",
-    "release": "yarn build && node ./scripts/release.js",
     "test": "jest",
     "test:coverage": "jest --coverage"
   }
