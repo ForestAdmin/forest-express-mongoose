@@ -22,12 +22,9 @@ jobs:
       name: Tests
     - stage: Build & Publish
       if: branch = master AND type != pull_request
-      script:
-        - yarn
-        - yarn build
+      script: skip
       deploy:
         provider: script
-        cleanup: false
         on:
           branch: master
-        script: yarn && npx semantic-release
+        script: yarn && yarn build && npx semantic-release
