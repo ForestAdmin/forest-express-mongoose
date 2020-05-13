@@ -1,3 +1,10 @@
+## [6.1.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.1.3...v6.1.4) (2020-05-13)
+
+
+### Bug Fixes
+
+* **package:** publish on NPM with all the necessary code ([#336](https://github.com/ForestAdmin/forest-express-mongoose/issues/336)) ([0f1db15](https://github.com/ForestAdmin/forest-express-mongoose/commit/0f1db1506b99b43ed4db0391d87c2140cfd2b89e))
+
 ## [6.1.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.1.2...v6.1.3) (2020-05-12)
 
 
