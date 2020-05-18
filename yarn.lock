@@ -1262,6 +1262,11 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
+"@kwsites/exec-p@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@kwsites/exec-p/-/exec-p-0.4.0.tgz#ab3765d482849ba6e825721077c248cf9f3323b7"
+  integrity sha512-44DWNv5gDR9EwrCTVQ4ZC99yPqVS0VCWrYIBl45qNR8XQy+4lbl0IQG8kBDf6NHwj4Ib4c2z1Fq1IUJOCbkZcw==
+
 "@marionebl/sander@^0.6.0":
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/@marionebl/sander/-/sander-0.6.1.tgz#1958965874f24bc51be48875feb50d642fc41f7b"
@@ -8922,17 +8927,20 @@ signale@^1.2.1:
     figures "^2.0.0"
     pkg-conf "^2.1.0"
 
-simple-git@1.65.0:
-  version "1.65.0"
-  resolved "https://registry.yarnpkg.com/simple-git/-/simple-git-1.65.0.tgz#2364a534ae3a67668beaf2a165af04f47a268923"
-  integrity sha1-I2SlNK46Z2aL6vKhZa8E9HomiSM=
-
 simple-git@1.78.0:
   version "1.78.0"
   resolved "https://registry.yarnpkg.com/simple-git/-/simple-git-1.78.0.tgz#6e1c53162dffb0d5d6245a60dce7f3df210aaeb4"
   integrity sha1-bhxTFi3/sNXWJFpg3Ofz3yEKrrQ=
   dependencies:
     debug "^2.6.7"
+
+simple-git@2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/simple-git/-/simple-git-2.5.0.tgz#538b14b25f83916a56f30eca53f13796db6712f6"
+  integrity sha512-4gmtMqfIL9bsBNJDP/rDwZe3GsQL/tp85Qv5cmRc8iIDNOZJS4IX1oPfcqp9b7BGPc5bfuw4yd1i3lQacvuqDQ==
+  dependencies:
+    "@kwsites/exec-p" "^0.4.0"
+    debug "^4.0.1"
 
 simple-swizzle@^0.2.2:
   version "0.2.2"
