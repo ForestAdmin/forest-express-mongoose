@@ -24,7 +24,7 @@
   },
   "main": "dist/index.js",
   "dependencies": {
-    "@babel/runtime": "7.8.3",
+    "@babel/runtime": "7.10.1",
     "bluebird": "2.9.25",
     "forest-express": "7.2.0",
     "http-errors": "1.7.2",
@@ -34,12 +34,12 @@
     "semver": "5.6.0"
   },
   "devDependencies": {
-    "@babel/cli": "7.8.3",
-    "@babel/core": "7.8.3",
-    "@babel/plugin-proposal-optional-chaining": "7.8.3",
-    "@babel/plugin-transform-runtime": "7.8.3",
-    "@babel/preset-env": "7.8.3",
-    "@babel/register": "7.8.3",
+    "@babel/cli": "7.10.1",
+    "@babel/core": "7.10.1",
+    "@babel/plugin-proposal-optional-chaining": "7.10.1",
+    "@babel/plugin-transform-runtime": "7.10.1",
+    "@babel/preset-env": "7.10.1",
+    "@babel/register": "7.10.1",
     "@commitlint/cli": "8.3.5",
     "@commitlint/config-conventional": "8.3.4",
     "@commitlint/travis-cli": "8.3.5",
