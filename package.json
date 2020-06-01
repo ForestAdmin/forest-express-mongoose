@@ -26,7 +26,7 @@
   "dependencies": {
     "@babel/runtime": "7.10.1",
     "bluebird": "2.9.25",
-    "forest-express": "7.2.0",
+    "forest-express": "7.2.7",
     "http-errors": "1.7.2",
     "lodash": "4.17.13",
     "moment": "2.24.0",
