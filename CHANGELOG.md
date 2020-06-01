@@ -1,3 +1,10 @@
+## [6.1.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.1.4...v6.1.5) (2020-06-01)
+
+
+### Bug Fixes
+
+* **dependencies:** update babel dependencies to 7.10.1 ([#345](https://github.com/ForestAdmin/forest-express-mongoose/issues/345)) ([83684b3](https://github.com/ForestAdmin/forest-express-mongoose/commit/83684b356e6d1a243ff4b98ccee4286d93682179))
+
 ## [6.1.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.1.3...v6.1.4) (2020-05-13)
 
 
