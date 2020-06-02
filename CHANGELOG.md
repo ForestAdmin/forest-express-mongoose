@@ -1,3 +1,10 @@
+# [6.2.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.1.5...v6.2.0) (2020-06-02)
+
+
+### Features
+
+* **forest-express:** upgrade forest-express to 7.3.0 to add the scope validation feature [#347](https://github.com/ForestAdmin/forest-express-mongoose/issues/347) ([6d45542](https://github.com/ForestAdmin/forest-express-mongoose/commit/6d4554219f420dd4d31b90238fa95c9ddf821e30))
+
 ## [6.1.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.1.4...v6.1.5) (2020-06-01)
 
 
