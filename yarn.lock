@@ -9235,17 +9235,17 @@ signale@^1.2.1:
     figures "^2.0.0"
     pkg-conf "^2.1.0"
 
-simple-git@1.65.0:
-  version "1.65.0"
-  resolved "https://registry.yarnpkg.com/simple-git/-/simple-git-1.65.0.tgz#2364a534ae3a67668beaf2a165af04f47a268923"
-  integrity sha1-I2SlNK46Z2aL6vKhZa8E9HomiSM=
-
 simple-git@1.78.0:
   version "1.78.0"
   resolved "https://registry.yarnpkg.com/simple-git/-/simple-git-1.78.0.tgz#6e1c53162dffb0d5d6245a60dce7f3df210aaeb4"
   integrity sha1-bhxTFi3/sNXWJFpg3Ofz3yEKrrQ=
   dependencies:
     debug "^2.6.7"
+
+simple-git@2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/simple-git/-/simple-git-2.6.0.tgz#04b554d1038e6036af2ae4d67a30bc5fd75f4fcd"
+  integrity sha512-eplWRfu6RTfoAzGl7I0+g06MvYauXaNpjeuhFiOYZO9hevnH54RkkStOkEevWwqBWfdzWNO9ocffbdtxFzBqXQ==
 
 simple-swizzle@^0.2.2:
   version "0.2.2"
