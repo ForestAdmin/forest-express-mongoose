@@ -1,3 +1,10 @@
+## [6.2.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.2.0...v6.2.1) (2020-06-23)
+
+
+### Bug Fixes
+
+* **services:** create and expose records remover ([#362](https://github.com/ForestAdmin/forest-express-mongoose/issues/362)) ([ca83957](https://github.com/ForestAdmin/forest-express-mongoose/commit/ca839577d9169e6635bbc57851f2e489471ddf58))
+
 # [6.2.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.1.5...v6.2.0) (2020-06-02)
 
 
