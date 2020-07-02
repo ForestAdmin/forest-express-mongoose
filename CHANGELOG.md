@@ -1,3 +1,10 @@
+# [6.3.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.2.1...v6.3.0) (2020-07-02)
+
+
+### Features
+
+* **filter:** is blank now also filter empty strings ([#369](https://github.com/ForestAdmin/forest-express-mongoose/issues/369)) ([3f15c7b](https://github.com/ForestAdmin/forest-express-mongoose/commit/3f15c7bfc547fe7d095d4b091a44a6a110350cb8))
+
 ## [6.2.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.2.0...v6.2.1) (2020-06-23)
 
 
