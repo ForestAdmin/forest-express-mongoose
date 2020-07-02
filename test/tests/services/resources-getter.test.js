@@ -103,6 +103,20 @@ describe('service > resources-getter', () => {
               giftMessage: 'Thank you',
               orderer: '41224d776a326fb40f000001',
             },
+            {
+              // _id: 102,
+              amount: 4000,
+              comment: 'Don\'t touch this',
+              giftMessage: '',
+              orderer: null,
+            },
+            {
+              // _id: 103,
+              amount: 5000,
+              comment: 'Don\'t touch this',
+              giftMessage: null,
+              orderer: null,
+            },
           ]), loadFixture(UserModel, [
             {
               _id: '41224d776a326fb40f000001',
@@ -167,20 +181,47 @@ describe('service > resources-getter', () => {
   });
 
   describe('with a basic flat filter', () => {
-    it('should filter correctly', async () => {
-      expect.assertions(2);
-      const parameters = {
-        fields: {
-          order: '_id,amount,description,giftMessage',
-        },
-        page: { number: '1', size: '30' },
-        filters: JSON.stringify({ field: 'giftMessage', operator: 'starts_with', value: 'Here' }),
-        timezone: 'Europe/Paris',
-      };
+    describe('with a "starts_with" operator', () => {
+      it('should filter correctly', async () => {
+        expect.assertions(3);
+        const parameters = {
+          fields: {
+            order: '_id,amount,description,giftMessage',
+          },
+          page: { number: '1', size: '30' },
+          filters: JSON.stringify({ field: 'giftMessage', operator: 'starts_with', value: 'Here' }),
+          timezone: 'Europe/Paris',
+        };
 
-      const result = await new ResourcesGetter(OrderModel, options, parameters).perform();
-      expect(result[0]).toHaveLength(1);
-      expect(result[0][0].comment).toMatch(/comment/);
+        const result = await new ResourcesGetter(OrderModel, options, parameters).perform();
+        expect(result[0]).toHaveLength(1);
+        expect(result[0][0].giftMessage).toMatch(/^Here/);
+        expect(result[0][0].comment).toMatch(/comment/);
+      });
+    });
+
+    describe('with a "blank" operator', () => {
+      it('should filter correctly', async () => {
+        expect.assertions(3);
+        const parameters = {
+          fields: {
+            order: '_id,amount,description,giftMessage',
+          },
+          page: { number: '1', size: '30' },
+          filters: JSON.stringify({ field: 'giftMessage', operator: 'blank', value: null }),
+          timezone: 'Europe/Paris',
+        };
+
+        const result = await new ResourcesGetter(OrderModel, options, parameters).perform();
+        expect(result[0]).toHaveLength(2);
+        result[0].forEach((item) => {
+          if (item.giftMessage === null) {
+            expect(item.giftMessage).toBeNull();
+          } else {
+            expect(item.giftMessage).toStrictEqual('');
+          }
+        });
+      });
     });
   });
 
