@@ -137,7 +137,7 @@ function FiltersParser(model, timezone, options) {
       case 'present':
         return { $exists: true };
       case 'blank':
-        return null;
+        return { $in: [null, ''] };
       case 'equal':
         return parseFct(value);
       case 'in':
