@@ -67,6 +67,6 @@
     "lint": "./node_modules/eslint/bin/eslint.js .eslint-bin scripts src test",
     "readme:update-coverage": "yarn test:coverage && node ./scripts/update-coverage.js",
     "test": "jest",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage --collectCoverageFrom=\"src/**/*.{ts,js}\""
   }
 }
