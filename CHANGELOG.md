@@ -1,3 +1,10 @@
+## [6.3.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.3.0...v6.3.1) (2020-07-13)
+
+
+### Bug Fixes
+
+* fix validator error on update ([#373](https://github.com/ForestAdmin/forest-express-mongoose/issues/373)) ([7c96758](https://github.com/ForestAdmin/forest-express-mongoose/commit/7c9675822596671644cd64b36b6b6480b5598b3b))
+
 # [6.3.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.2.1...v6.3.0) (2020-07-02)
 
 
