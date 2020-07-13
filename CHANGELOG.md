@@ -1,3 +1,10 @@
+## [6.3.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.3.1...v6.3.2) (2020-07-13)
+
+
+### Bug Fixes
+
+* **vulnerabilities:** bump 2 dependencies of dependencies ([#379](https://github.com/ForestAdmin/forest-express-mongoose/issues/379)) ([34dc17c](https://github.com/ForestAdmin/forest-express-mongoose/commit/34dc17cb12d1246c19f1e6ee8f9738f93e6b80ea))
+
 ## [6.3.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.3.0...v6.3.1) (2020-07-13)
 
 
