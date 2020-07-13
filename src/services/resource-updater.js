@@ -42,7 +42,7 @@ function ResourceUpdater(model, params, record) {
           Interface.logger.error(`Cannot update the ${modelName} #${recordId} because of an unexpected issue: ${error}`);
         }
 
-        return model.findByIdAndUpdate(recordId);
+        return P.reject(error);
       });
 }
 
