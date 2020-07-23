@@ -74,7 +74,9 @@ module.exports = (model, opts) => {
       }
 
       // NOTICE: Detect enum values for Enums in subdocument arrays.
-      if (fieldInfo.enum && fieldInfo.enum.length) {
+      if (fieldInfo.enum
+        && Array.isArray(fieldInfo.enum)
+        && fieldInfo.enumValues.length) {
         field.enums = fieldInfo.enum;
       }
 
