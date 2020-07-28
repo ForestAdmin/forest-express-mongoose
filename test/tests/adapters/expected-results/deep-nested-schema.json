@@ -16,6 +16,10 @@
           {
             "field": "field2Field1",
             "type": "Boolean"
+          },
+          {
+            "field": "field2Field2",
+            "type": "Number"
           }
         ]
       }

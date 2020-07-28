@@ -73,11 +73,6 @@ module.exports = (model, opts) => {
         field.enums = fieldInfo.enumValues;
       }
 
-      // NOTICE: Detect enum values for Enums in subdocument arrays.
-      if (fieldInfo.enum && fieldInfo.enum.length) {
-        field.enums = fieldInfo.enum;
-      }
-
       type.fields.push(field);
     });
 
