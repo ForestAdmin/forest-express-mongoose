@@ -1,3 +1,10 @@
+## [6.3.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.3.2...v6.3.3) (2020-07-28)
+
+
+### Bug Fixes
+
+* **adapter:** avoid serializing enum function on Number type ([#384](https://github.com/ForestAdmin/forest-express-mongoose/issues/384)) ([c1fcd6e](https://github.com/ForestAdmin/forest-express-mongoose/commit/c1fcd6e39a7e71e41ab1498245b79e940121cbcd))
+
 ## [6.3.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.3.1...v6.3.2) (2020-07-13)
 
 
