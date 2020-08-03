@@ -169,11 +169,15 @@
             }
           }
         ]
-      }
+      },
+      "isGenerated": false
     },
     {
       "field": "_id",
-      "type": "String"
+      "type": "String",
+      "isRequired": true,
+      "isReadOnly": true,
+      "isGenerated": true
     }
   ]
 }

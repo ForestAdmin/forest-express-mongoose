@@ -7,6 +7,7 @@
       "field": "name",
       "type": "String",
       "isRequired": true,
+      "isGenerated": false,
       "validations": [
         {
           "type": "is present"
@@ -17,6 +18,7 @@
       "field": "introText",
       "type": "String",
       "isRequired": true,
+      "isGenerated": false,
       "validations": [
         {
           "type": "is present"
@@ -25,12 +27,14 @@
     },
     {
       "field": "outroText",
-      "type": "String"
+      "type": "String",
+      "isGenerated": false
     },
     {
       "field": "pretest",
       "type": "Boolean",
       "isRequired": true,
+      "isGenerated": false,
       "defaultValue": false,
       "validations": [
         {
@@ -42,6 +46,7 @@
       "field": "closeAt",
       "type": "Date",
       "isRequired": true,
+      "isGenerated": true,
       "validations": [
         {
           "type": "is present"
@@ -52,6 +57,7 @@
       "field": "launchAt",
       "type": "Date",
       "isRequired": true,
+      "isGenerated": true,
       "validations": [
         {
           "type": "is present"
@@ -79,6 +85,7 @@
         }
       ],
       "isRequired": true,
+      "isGenerated": true,
       "defaultValue": [],
       "validations": [
         {
@@ -151,6 +158,7 @@
         }
       ],
       "isRequired": true,
+      "isGenerated": true,
       "defaultValue": [],
       "validations": [
         {
@@ -179,6 +187,7 @@
         }
       ],
       "isRequired": true,
+      "isGenerated": true,
       "defaultValue": [],
       "validations": [
         {
@@ -265,6 +274,7 @@
         }
       ],
       "isRequired": true,
+      "isGenerated": true,
       "defaultValue": [],
       "validations": [
         {
@@ -305,6 +315,7 @@
         }
       ],
       "isRequired": true,
+      "isGenerated": true,
       "defaultValue": [],
       "validations": [
         {
@@ -341,6 +352,7 @@
         ]
       },
       "isRequired": true,
+      "isGenerated": true,
       "defaultValue": {
         "attnCheck": true,
         "poststratify": true
@@ -402,6 +414,7 @@
         ]
       },
       "isRequired": true,
+      "isGenerated": true,
       "defaultValue": {
         "country": "US"
       },
@@ -428,11 +441,15 @@
             "type": "Date"
           }
         ]
-      }
+      },
+      "isGenerated": false
     },
     {
       "field": "_id",
-      "type": "String"
+      "type": "String",
+      "isRequired": true,
+      "isGenerated": true,
+      "isReadOnly": true
     }
   ]
 }

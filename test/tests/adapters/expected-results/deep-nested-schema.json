@@ -7,7 +7,8 @@
       "field": "field1",
       "type": [
         "Date"
-      ]
+      ],
+      "isGenerated": false
     },
     {
       "field": "field2",
@@ -22,7 +23,8 @@
             "type": "Number"
           }
         ]
-      }
+      },
+      "isGenerated": false
     },
     {
       "field": "depth1",
@@ -69,11 +71,15 @@
             ]
           }
         ]
-      }
+      },
+      "isGenerated": false
     },
     {
       "field": "_id",
-      "type": "String"
+      "type": "String",
+      "isRequired": true,
+      "isReadOnly": true,
+      "isGenerated": true
     }
   ]
 }

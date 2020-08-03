@@ -200,7 +200,15 @@ module.exports = (model, opts) => {
   });
 
   function getRequired(fieldInfo) {
-    return fieldInfo.isRequired === true;
+    return fieldInfo.isRequired === true || fieldInfo.path === '_id';
+  }
+
+  function getGenerated(fieldInfo) {
+    return Boolean(fieldInfo.options && (fieldInfo.options.auto || fieldInfo.options.default));
+  }
+
+  function getReadOnly(fieldInfo) {
+    return fieldInfo.path === '_id';
   }
 
   function getValidations(fieldInfo) {
@@ -267,6 +275,12 @@ module.exports = (model, opts) => {
     const isRequired = getRequired(fieldInfo);
     if (isRequired) {
       schema.isRequired = isRequired;
+    }
+
+    schema.isGenerated = getGenerated(fieldInfo);
+
+    if (getReadOnly(fieldInfo)) {
+      schema.isReadOnly = true;
     }
 
     if (fieldInfo.options && !_.isNull(fieldInfo.options.default)
