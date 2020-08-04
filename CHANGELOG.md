@@ -1,3 +1,10 @@
+## [6.3.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.3.3...v6.3.4) (2020-08-04)
+
+
+### Bug Fixes
+
+* **vulnerability:** patch a potential vulnerability updating forest-express to version 7.4.1 ([#397](https://github.com/ForestAdmin/forest-express-mongoose/issues/397)) ([f570050](https://github.com/ForestAdmin/forest-express-mongoose/commit/f57005046eb5291806fae221f65b55b3b93c8c36))
+
 ## [6.3.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.3.2...v6.3.3) (2020-07-28)
 
 
