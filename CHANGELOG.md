@@ -1,3 +1,10 @@
+## [6.3.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.3.4...v6.3.5) (2020-08-05)
+
+
+### Bug Fixes
+
+* **related data:** fix related data display regression introduced in v6.3.4 ([#399](https://github.com/ForestAdmin/forest-express-mongoose/issues/399)) ([a632b5a](https://github.com/ForestAdmin/forest-express-mongoose/commit/a632b5a08ffbe93a7f6adf8f18823fa64b547ae2))
+
 ## [6.3.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.3.3...v6.3.4) (2020-08-04)
 
 
