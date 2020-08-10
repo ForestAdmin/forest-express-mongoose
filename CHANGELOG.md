@@ -1,3 +1,10 @@
+## [6.3.6](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.3.5...v6.3.6) (2020-08-10)
+
+
+### Bug Fixes
+
+* prevent scopes validation crashes for conditions with boolean or number values ([#400](https://github.com/ForestAdmin/forest-express-mongoose/issues/400)) ([d6cb450](https://github.com/ForestAdmin/forest-express-mongoose/commit/d6cb450cf9c45d2dcbd3bb81010bbe5c8fc19c07))
+
 ## [6.3.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.3.4...v6.3.5) (2020-08-05)
 
 
