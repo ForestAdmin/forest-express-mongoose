@@ -5,6 +5,7 @@ const utils = require('../utils/schema');
 
 function ResourceCreator(Model, params) {
   const schema = Interface.Schemas.schemas[utils.getModelName(Model)];
+
   function create() {
     return new P((resolve, reject) => {
       const idField = schema.fields.find((field) => field.field === '_id');
