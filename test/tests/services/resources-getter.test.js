@@ -84,7 +84,11 @@ describe('service > resources-getter', () => {
         UserModel = mongoose.model('User', UserSchema);
         FilmModel = mongoose.model('Film', FilmSchema);
 
-        return Promise.all([OrderModel.remove({}), UserModel.remove({}), FilmModel.remove({})]);
+        return Promise.all([
+          OrderModel.deleteMany({}),
+          UserModel.deleteMany({}),
+          FilmModel.deleteMany({}),
+        ]);
       })
       .then(() =>
         Promise.all([

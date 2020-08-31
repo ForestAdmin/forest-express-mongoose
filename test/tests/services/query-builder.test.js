@@ -60,7 +60,7 @@ describe('service > query-builder', () => {
         LumberJackModel = mongoose.model('LumberJack', LumberJackSchema);
         TreeModel = mongoose.model('Tree', TreeSchema);
 
-        return Promise.all([LumberJackModel.remove({}), TreeModel.remove({})]);
+        return Promise.all([LumberJackModel.deleteMany({}), TreeModel.deleteMany({})]);
       })
       .then(() =>
         Promise.all([
