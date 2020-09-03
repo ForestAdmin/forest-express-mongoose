@@ -8,7 +8,12 @@ function ResourceCreator(Model, params) {
 
   function create() {
     return new P((resolve, reject) => {
-      if ('_id' in params) { delete params._id; }
+      const idField = schema.fields.find((field) => field.field === '_id');
+      const isAutomaticId = !idField || !idField.isRequired;
+
+      if ('_id' in params && isAutomaticId) {
+        delete params._id;
+      }
 
       new Model(params)
         .save((err, record) => {

@@ -200,7 +200,11 @@ module.exports = (model, opts) => {
   });
 
   function getRequired(fieldInfo) {
-    return fieldInfo.isRequired === true;
+    return fieldInfo.isRequired === true
+      || (
+        fieldInfo.path === '_id'
+        && fieldInfo.options.type !== mongoose.Schema.ObjectId
+      );
   }
 
   function getValidations(fieldInfo) {
