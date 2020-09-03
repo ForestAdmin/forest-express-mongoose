@@ -6,8 +6,9 @@ import mongooseConnect from '../../utils/mongoose-connect';
 
 describe('service > resources-creator', () => {
   let IslandModel;
+  let CityModel;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     Interface.Schemas = {
       schemas: {
         Island: {
@@ -20,27 +21,50 @@ describe('service > resources-creator', () => {
             { field: 'population', type: 'Number' },
           ],
         },
+        City: {
+          name: 'City',
+          idField: '_id',
+          searchFields: ['name'],
+          fields: [
+            { field: '_id', type: 'String', isRequired: true },
+            { field: 'name', type: 'String' },
+            { field: 'population', type: 'Number' },
+          ],
+        },
       },
     };
 
-    return mongooseConnect()
-      .then(() => {
-        const IslandSchema = mongoose.Schema({
-          name: {
-            type: String,
-            validate: {
-              validator: (v) => ['Kauai', 'Oahu', 'Haiti'].includes(v),
-              message: (props) => `${props.value} is not valid`,
-            },
-          },
-          population: {
-            type: Number,
-          },
-        });
+    await mongooseConnect();
+    const IslandSchema = new mongoose.Schema({
+      name: {
+        type: String,
+        validate: {
+          validator: (v) => ['Kauai', 'Oahu', 'Haiti'].includes(v),
+          message: (props) => `${props.value} is not valid`,
+        },
+      },
+      population: {
+        type: Number,
+      },
+    });
 
-        IslandModel = mongoose.model('Island', IslandSchema);
-        return IslandModel.deleteMany({});
-      });
+    IslandModel = mongoose.model('Island', IslandSchema);
+    await IslandModel.deleteMany({});
+
+    const CitySchema = new mongoose.Schema({
+      _id: {
+        type: String,
+      },
+      name: {
+        type: String,
+      },
+      population: {
+        type: Number,
+      },
+    });
+
+    CityModel = mongoose.model('City', CitySchema);
+    await CityModel.deleteMany({});
   });
 
   afterAll(() => mongoose.connection.close());
@@ -70,6 +94,14 @@ describe('service > resources-creator', () => {
     const result = await new ResourcesCreator(IslandModel, { _id: '56cb91bdc3464f14678934ca', name: 'Haiti' })
       .perform();
     expect(result).toHaveProperty('name', 'Haiti');
-    expect(result.id).not.toBe('56cb91bdc3464f14678934ca');
+    expect(result._id).not.toBe('56cb91bdc3464f14678934ca');
+  });
+
+  it('should not ignore _id for non-generated ids', async () => {
+    expect.assertions(2);
+    const result = await new ResourcesCreator(CityModel, { _id: '56cb91bdc3464f14678934ca', name: 'Lyon' })
+      .perform();
+    expect(result).toHaveProperty('name', 'Lyon');
+    expect(result._id).toBe('56cb91bdc3464f14678934ca');
   });
 });
