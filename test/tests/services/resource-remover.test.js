@@ -24,7 +24,7 @@ describe('service > resource-remover', () => {
 
     return mongooseConnect()
       .then(() => {
-        const IslandSchema = mongoose.Schema({
+        const IslandSchema = new mongoose.Schema({
           name: { type: String },
         });
 

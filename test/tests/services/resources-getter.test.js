@@ -62,19 +62,19 @@ describe('service > resources-getter', () => {
 
     return mongooseConnect()
       .then(() => {
-        const OrderSchema = mongoose.Schema({
+        const OrderSchema = new mongoose.Schema({
           amount: { type: Number },
           comment: { type: String },
           giftMessage: { type: String },
           orderer: { type: 'ObjectId' },
           receiver: { type: 'ObjectId' },
         });
-        const UserSchema = mongoose.Schema({
+        const UserSchema = new mongoose.Schema({
           _id: { type: 'ObjectId' },
           name: { type: String },
           age: { type: Number },
         });
-        const FilmSchema = mongoose.Schema({
+        const FilmSchema = new mongoose.Schema({
           _id: { type: 'ObjectId' },
           title: { type: String },
           duration: { type: Number },
