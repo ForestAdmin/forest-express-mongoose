@@ -274,6 +274,10 @@ module.exports = (model, opts) => {
       schema.isRequired = isRequired;
     }
 
+    if (path === '_id') {
+      schema.isPrimaryKey = true;
+    }
+
     if (fieldInfo.options && !_.isNull(fieldInfo.options.default)
       && !_.isUndefined(fieldInfo.options.default)
       && !_.isFunction(fieldInfo.options.default)) {

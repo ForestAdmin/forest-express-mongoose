@@ -755,4 +755,30 @@ describe('adapters > schema-adapter', () => {
       expect(result.fields).toHaveLength(2);
     });
   });
+
+  describe('isPrimaryKey flag', () => {
+    let model;
+
+    beforeAll(() => {
+      const schema = new mongoose.Schema({
+        _id: mongoose.Schema.ObjectId,
+        bar: String,
+      });
+      model = mongoose.model('Foo', schema);
+    });
+
+    it('should be set to true on field _id', async () => {
+      expect.assertions(2);
+
+      const result = await SchemaAdapter(model, {
+        mongoose,
+        connections: [mongoose],
+      });
+      expect(result).toHaveProperty('fields');
+
+      const idField = result.fields.find((field) => field.field === '_id');
+
+      expect(idField.isPrimaryKey).toBe(true);
+    });
+  });
 });

@@ -432,7 +432,8 @@
     },
     {
       "field": "_id",
-      "type": "String"
+      "type": "String",
+      "isPrimaryKey": true
     }
   ]
 }
