@@ -204,6 +204,7 @@ module.exports = (model, opts) => {
       || (
         fieldInfo.path === '_id'
         && !fieldInfo.options.auto
+        && fieldInfo.options.type !== mongoose.Schema.ObjectId
       );
   }
 
