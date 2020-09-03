@@ -693,6 +693,36 @@ describe('adapters > schema-adapter', () => {
       expect(result).toHaveProperty('fields');
       expect(result.fields[0].isRequired).toStrictEqual(true);
     });
+
+    it('should be set to true for non-generated ids', async () => {
+      expect.assertions(2);
+      const schema = mongoose.Schema({
+        _id: String,
+      });
+      const model = mongoose.model('Foo', schema);
+
+      const result = await SchemaAdapter(model, {
+        mongoose,
+        connections: [mongoose],
+      });
+      expect(result).toHaveProperty('fields');
+      expect(result.fields[0].isRequired).toStrictEqual(true);
+    });
+
+    it('should be set to false for non-generated ids', async () => {
+      expect.assertions(2);
+      const schema = mongoose.Schema({
+        _id: mongoose.Schema.ObjectId,
+      });
+      const model = mongoose.model('Foo', schema);
+
+      const result = await SchemaAdapter(model, {
+        mongoose,
+        connections: [mongoose],
+      });
+      expect(result).toHaveProperty('fields');
+      expect(result.fields[0].isRequired).toStrictEqual(false);
+    });
   });
 
   describe('"isRequired" flag', () => {

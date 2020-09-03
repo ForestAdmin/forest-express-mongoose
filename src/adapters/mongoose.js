@@ -203,7 +203,7 @@ module.exports = (model, opts) => {
     return fieldInfo.isRequired === true
       || (
         fieldInfo.path === '_id'
-        && fieldInfo.options.type !== mongoose.Schema.ObjectId
+        && !fieldInfo.options.auto
       );
   }
 
