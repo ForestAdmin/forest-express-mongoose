@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const SchemaAdapter = require('../../../src/adapters/mongoose');
+const createSchemaAdapter = require('../../../src/adapters/mongoose');
 
 const { Schema } = mongoose;
 
@@ -17,10 +17,10 @@ describe('adapters > schema-adapter', () => {
   describe('type Date', () => {
     it('should have the type Date', async () => {
       expect.assertions(3);
-      const schema = mongoose.Schema({ foo: Date });
+      const schema = new mongoose.Schema({ foo: Date });
       const model = mongoose.model('Foo', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -33,10 +33,10 @@ describe('adapters > schema-adapter', () => {
   describe('type String', () => {
     it('should have the type String', async () => {
       expect.assertions(3);
-      const schema = mongoose.Schema({ foo: String });
+      const schema = new mongoose.Schema({ foo: String });
       const model = mongoose.model('Foo', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -49,10 +49,10 @@ describe('adapters > schema-adapter', () => {
   describe('type Boolean', () => {
     it('should have the type Boolean', async () => {
       expect.assertions(3);
-      const schema = mongoose.Schema({ foo: Boolean });
+      const schema = new mongoose.Schema({ foo: Boolean });
       const model = mongoose.model('Foo', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -65,10 +65,10 @@ describe('adapters > schema-adapter', () => {
   describe('type Number', () => {
     it('should have the type Number', async () => {
       expect.assertions(3);
-      const schema = mongoose.Schema({ foo: Number });
+      const schema = new mongoose.Schema({ foo: Number });
       const model = mongoose.model('Foo', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -81,7 +81,7 @@ describe('adapters > schema-adapter', () => {
   describe('type object', () => {
     it('should have the type { fields: [...]}', async () => {
       expect.assertions(10);
-      const schema = mongoose.Schema({
+      const schema = new mongoose.Schema({
         foo: {
           field1: String,
           field2: Boolean,
@@ -89,7 +89,7 @@ describe('adapters > schema-adapter', () => {
       });
       const model = mongoose.model('Foo', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -109,13 +109,13 @@ describe('adapters > schema-adapter', () => {
   describe('type ObjectID', () => {
     it('should have the type String', async () => {
       expect.assertions(3);
-      const schema = mongoose.Schema({
+      const schema = new mongoose.Schema({
         foo: mongoose.Schema.Types.ObjectId,
       });
 
       const model = mongoose.model('Foo', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -128,13 +128,13 @@ describe('adapters > schema-adapter', () => {
   describe('{}', () => {
     it('should have the type Json', async () => {
       expect.assertions(5);
-      const schema = mongoose.Schema({
+      const schema = new mongoose.Schema({
         foo: {},
         foo2: { type: {} },
       });
       const model = mongoose.model('Foo', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -149,13 +149,13 @@ describe('adapters > schema-adapter', () => {
   describe('type Object', () => {
     it('should have the type Json', async () => {
       expect.assertions(5);
-      const schema = mongoose.Schema({
+      const schema = new mongoose.Schema({
         foo: Object,
         foo2: { type: Object },
       });
       const model = mongoose.model('Foo', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -170,13 +170,13 @@ describe('adapters > schema-adapter', () => {
   describe('[]', () => {
     it('should have the type Json', async () => {
       expect.assertions(5);
-      const schema = mongoose.Schema({
+      const schema = new mongoose.Schema({
         foo: [],
         foo2: { type: [] },
       });
       const model = mongoose.model('Foo', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -191,12 +191,12 @@ describe('adapters > schema-adapter', () => {
   describe('array of dates', () => {
     it('should have the type [\'Date\']', async () => {
       expect.assertions(3);
-      const schema = mongoose.Schema({
+      const schema = new mongoose.Schema({
         foo: [Date],
       });
       const model = mongoose.model('Foo', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -209,12 +209,12 @@ describe('adapters > schema-adapter', () => {
   describe('array of strings', () => {
     it('should have the type [\'String\']', async () => {
       expect.assertions(3);
-      const schema = mongoose.Schema({
+      const schema = new mongoose.Schema({
         foo: [String],
       });
       const model = mongoose.model('Foo', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -227,12 +227,12 @@ describe('adapters > schema-adapter', () => {
   describe('array of booleans', () => {
     it('should have the type [\'Boolean\']', async () => {
       expect.assertions(3);
-      const schema = mongoose.Schema({
+      const schema = new mongoose.Schema({
         foo: [Boolean],
       });
       const model = mongoose.model('Foo', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -245,12 +245,12 @@ describe('adapters > schema-adapter', () => {
   describe('array of numbers', () => {
     it('should have the type [\'Number\']', async () => {
       expect.assertions(3);
-      const schema = mongoose.Schema({
+      const schema = new mongoose.Schema({
         foo: [Number],
       });
       const model = mongoose.model('Foo', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -263,12 +263,12 @@ describe('adapters > schema-adapter', () => {
   describe('array of objectids ([ObjectId])', () => {
     it('should have the type [String]', async () => {
       expect.assertions(3);
-      const schema = mongoose.Schema({
+      const schema = new mongoose.Schema({
         foo: [mongoose.Schema.Types.ObjectId],
       });
       const model = mongoose.model('Foo', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -281,7 +281,7 @@ describe('adapters > schema-adapter', () => {
   describe('array of string with enum values', () => {
     it('should have the type [Enum]', async () => {
       expect.assertions(4);
-      const schema = mongoose.Schema({
+      const schema = new mongoose.Schema({
         permissions: [{
           type: String,
           enum: ['user:read', 'user:write'],
@@ -289,7 +289,7 @@ describe('adapters > schema-adapter', () => {
       });
       const model = mongoose.model('User', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -303,13 +303,13 @@ describe('adapters > schema-adapter', () => {
   describe('array of objectids ([type: ObjectId])', () => {
     it('should have the type [String]', async () => {
       expect.assertions(4);
-      mongoose.model('User', mongoose.Schema());
-      const schema = mongoose.Schema({
+      mongoose.model('User', new mongoose.Schema());
+      const schema = new mongoose.Schema({
         foo: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
       });
       const model = mongoose.model('Foo', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -323,13 +323,13 @@ describe('adapters > schema-adapter', () => {
   describe('array of {}', () => {
     it('should have the type [Json]', async () => {
       expect.assertions(5);
-      const schema = mongoose.Schema({
+      const schema = new mongoose.Schema({
         foo: [{}],
         foo2: { type: [{}] },
       });
       const model = mongoose.model('Foo', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -344,7 +344,7 @@ describe('adapters > schema-adapter', () => {
   describe('array of objects', () => {
     it('should have the type fields: [{...}, {...}]', async () => {
       expect.assertions(13);
-      const schema = mongoose.Schema({
+      const schema = new mongoose.Schema({
         foo: [{
           field1: String,
           field2: Date,
@@ -352,7 +352,7 @@ describe('adapters > schema-adapter', () => {
       });
       const model = mongoose.model('Foo', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -373,14 +373,14 @@ describe('adapters > schema-adapter', () => {
 
     it('should support array of objects with syntax { type: String }', async () => {
       expect.assertions(1);
-      const schema = mongoose.Schema({
+      const schema = new mongoose.Schema({
         people: [{
           firstName: { type: String },
         }],
       });
       const model = mongoose.model('Foo', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -389,17 +389,17 @@ describe('adapters > schema-adapter', () => {
 
     it('should support array of object with sub schema', async () => {
       expect.assertions(13);
-      const schemaEmbed = mongoose.Schema({
+      const schemaEmbed = new mongoose.Schema({
         field1: { type: String },
         field2: Date,
       });
 
-      const schema = mongoose.Schema({
+      const schema = new mongoose.Schema({
         foo: [schemaEmbed],
       });
       const model = mongoose.model('Foo', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -422,19 +422,19 @@ describe('adapters > schema-adapter', () => {
   describe('array of schemas', () => {
     it('should have the type `{ fields: [...]}`', async () => {
       expect.assertions(8);
-      const userSchema = mongoose.Schema({
+      const userSchema = new mongoose.Schema({
         firstName: String,
         lastName: String,
         createdAt: Date,
       });
 
-      const schema = mongoose.Schema({
+      const schema = new mongoose.Schema({
         users: [userSchema],
       });
 
       const model = mongoose.model('Foo', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -458,7 +458,7 @@ describe('adapters > schema-adapter', () => {
   describe('array of schemas with reserved keyword "type"', () => {
     it('should have the type `{ fields: [...]}`', async () => {
       expect.assertions(1);
-      const schema = mongoose.Schema({
+      const schema = new mongoose.Schema({
         action: [{
           type: { type: String },
           value: String,
@@ -466,7 +466,7 @@ describe('adapters > schema-adapter', () => {
       });
       const model = mongoose.model('Foo', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -480,7 +480,7 @@ describe('adapters > schema-adapter', () => {
   describe('shower of nested objects/arrays', () => {
     it('should have the type fields: [{...}, {...}]', async () => {
       expect.assertions(31);
-      const schema = mongoose.Schema({
+      const schema = new mongoose.Schema({
         foo: [{
           field1: [{
             field1Field1: [Date],
@@ -490,7 +490,7 @@ describe('adapters > schema-adapter', () => {
       });
       const model = mongoose.model('Foo', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -533,7 +533,7 @@ describe('adapters > schema-adapter', () => {
   describe('deep nested objects', () => {
     it('should have the correct schema', async () => {
       expect.assertions(1);
-      const schema = mongoose.Schema({
+      const schema = new mongoose.Schema({
         depth1: {
           field1: [Date],
           field2: { field2Field1: Boolean },
@@ -565,7 +565,7 @@ describe('adapters > schema-adapter', () => {
       });
       const model = mongoose.model('Foo', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -594,7 +594,7 @@ describe('adapters > schema-adapter', () => {
 
       const model = mongoose.model('Foo', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -609,7 +609,7 @@ describe('adapters > schema-adapter', () => {
       // eslint-disable-next-line global-require
       const complexModel = require('./schemas/complex-shema');
 
-      const result = await new SchemaAdapter(complexModel, {
+      const result = await createSchemaAdapter(complexModel, {
         mongoose,
         connections: [mongoose],
       });
@@ -621,15 +621,15 @@ describe('adapters > schema-adapter', () => {
   describe('nested object with hasOne relationship', () => {
     it('should have the reference set', async () => {
       expect.assertions(1);
-      mongoose.model('User', mongoose.Schema());
-      const schema = mongoose.Schema({
+      mongoose.model('User', new mongoose.Schema());
+      const schema = new mongoose.Schema({
         foo: {
           bar: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
         },
       });
       const model = mongoose.model('Foo', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -644,13 +644,13 @@ describe('adapters > schema-adapter', () => {
   describe('hasOne relationship', () => {
     it('should have the ref attribute set', async () => {
       expect.assertions(2);
-      mongoose.model('Bar', mongoose.Schema());
-      const schema = mongoose.Schema({
+      mongoose.model('Bar', new mongoose.Schema());
+      const schema = new mongoose.Schema({
         foo: { type: String, ref: 'Bar' },
       });
       const model = mongoose.model('Foo', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -662,13 +662,13 @@ describe('adapters > schema-adapter', () => {
   describe('hasMany relationship', () => {
     it('should have the ref attribute set', async () => {
       expect.assertions(2);
-      mongoose.model('Bar', mongoose.Schema());
-      const schema = mongoose.Schema({
+      mongoose.model('Bar', new mongoose.Schema());
+      const schema = new mongoose.Schema({
         foos: [{ type: String, ref: 'Bar' }],
       });
       const model = mongoose.model('Foo', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -680,13 +680,13 @@ describe('adapters > schema-adapter', () => {
   describe('"isRequired" flag', () => {
     it('should be set to true', async () => {
       expect.assertions(2);
-      const schema = mongoose.Schema({
+      const schema = new mongoose.Schema({
         foo: { type: String, required: true },
         bar: String,
       });
       const model = mongoose.model('Foo', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -696,12 +696,12 @@ describe('adapters > schema-adapter', () => {
 
     it('should be set to true for non-generated ids', async () => {
       expect.assertions(2);
-      const schema = mongoose.Schema({
+      const schema = new mongoose.Schema({
         _id: String,
       });
       const model = mongoose.model('WithNonGeneratedId', schema);
 
-      const result = await SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -711,12 +711,12 @@ describe('adapters > schema-adapter', () => {
 
     it('should be set to false for generated ids', async () => {
       expect.assertions(2);
-      const schema = mongoose.Schema({
+      const schema = new mongoose.Schema({
         _id: mongoose.Schema.ObjectId,
       });
       const model = mongoose.model('WithGeneratedId', schema);
 
-      const result = await SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -726,12 +726,12 @@ describe('adapters > schema-adapter', () => {
 
     it('should not appear', async () => {
       expect.assertions(2);
-      const schema = mongoose.Schema({
+      const schema = new mongoose.Schema({
         bar: String,
       });
       const model = mongoose.model('Foo', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
@@ -743,12 +743,12 @@ describe('adapters > schema-adapter', () => {
   describe('__v', () => {
     it('should not appear', async () => {
       expect.assertions(1);
-      const schema = mongoose.Schema({
+      const schema = new mongoose.Schema({
         foo: String,
       });
       const model = mongoose.model('Foo', schema);
 
-      const result = await new SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
