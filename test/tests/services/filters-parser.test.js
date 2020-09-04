@@ -37,7 +37,7 @@ describe('service > filters-parser', () => {
 
     return mongooseConnect()
       .then(() => {
-        const IslandSchema = mongoose.Schema({
+        const IslandSchema = new mongoose.Schema({
           id: { type: Number },
           name: { type: String },
           size: { type: Number },

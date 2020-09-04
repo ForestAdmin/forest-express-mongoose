@@ -47,11 +47,11 @@ describe('service > query-builder', () => {
 
     return mongooseConnect()
       .then(() => {
-        const LumberJackSchema = mongoose.Schema({
+        const LumberJackSchema = new mongoose.Schema({
           _id: { type: 'ObjectId' },
           name: { type: String },
         });
-        const TreeSchema = mongoose.Schema({
+        const TreeSchema = new mongoose.Schema({
           id: { type: Number },
           age: { type: String },
           owner: { type: 'ObjectId' },
