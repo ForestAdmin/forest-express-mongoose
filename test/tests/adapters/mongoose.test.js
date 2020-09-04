@@ -677,7 +677,7 @@ describe('adapters > schema-adapter', () => {
     });
   });
 
-  describe('isRequired flag', () => {
+  describe('"isRequired" flag', () => {
     it('should be set to true', async () => {
       expect.assertions(2);
       const schema = mongoose.Schema({
@@ -723,9 +723,7 @@ describe('adapters > schema-adapter', () => {
       expect(result).toHaveProperty('fields');
       expect(result.fields[0].isRequired).toBeUndefined();
     });
-  });
 
-  describe('"isRequired" flag', () => {
     it('should not appear', async () => {
       expect.assertions(2);
       const schema = mongoose.Schema({
