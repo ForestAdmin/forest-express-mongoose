@@ -677,7 +677,7 @@ describe('adapters > schema-adapter', () => {
     });
   });
 
-  describe('isRequired flag', () => {
+  describe('"isRequired" flag', () => {
     it('should be set to true', async () => {
       expect.assertions(2);
       const schema = new mongoose.Schema({
@@ -693,9 +693,37 @@ describe('adapters > schema-adapter', () => {
       expect(result).toHaveProperty('fields');
       expect(result.fields[0].isRequired).toStrictEqual(true);
     });
-  });
 
-  describe('"isRequired" flag', () => {
+    it('should be set to true for non-generated ids', async () => {
+      expect.assertions(2);
+      const schema = new mongoose.Schema({
+        _id: String,
+      });
+      const model = mongoose.model('WithNonGeneratedId', schema);
+
+      const result = await createSchemaAdapter(model, {
+        mongoose,
+        connections: [mongoose],
+      });
+      expect(result).toHaveProperty('fields');
+      expect(result.fields[0].isRequired).toStrictEqual(true);
+    });
+
+    it('should be set to false for generated ids', async () => {
+      expect.assertions(2);
+      const schema = new mongoose.Schema({
+        _id: mongoose.Schema.ObjectId,
+      });
+      const model = mongoose.model('WithGeneratedId', schema);
+
+      const result = await createSchemaAdapter(model, {
+        mongoose,
+        connections: [mongoose],
+      });
+      expect(result).toHaveProperty('fields');
+      expect(result.fields[0].isRequired).toBeUndefined();
+    });
+
     it('should not appear', async () => {
       expect.assertions(2);
       const schema = new mongoose.Schema({
