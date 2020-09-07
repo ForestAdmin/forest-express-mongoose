@@ -1,3 +1,10 @@
+## [6.3.7](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.3.6...v6.3.7) (2020-09-07)
+
+
+### Bug Fixes
+
+* :bug: allow to create documents with non-generated ids ([#407](https://github.com/ForestAdmin/forest-express-mongoose/issues/407)) ([fd2cffc](https://github.com/ForestAdmin/forest-express-mongoose/commit/fd2cffc81e59a83428fc412fd7f5f07ff3cc0dde))
+
 ## [6.3.6](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.3.5...v6.3.6) (2020-08-10)
 
 
