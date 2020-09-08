@@ -1,3 +1,10 @@
+## [6.3.8](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.3.7...v6.3.8) (2020-09-08)
+
+
+### Bug Fixes
+
+* :bug: correctly return documents when filtering on a field that is not returned ([#413](https://github.com/ForestAdmin/forest-express-mongoose/issues/413)) ([1190261](https://github.com/ForestAdmin/forest-express-mongoose/commit/119026181025e9ed2b84c76b3a0124f91176254a))
+
 ## [6.3.7](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.3.6...v6.3.7) (2020-09-07)
 
 
