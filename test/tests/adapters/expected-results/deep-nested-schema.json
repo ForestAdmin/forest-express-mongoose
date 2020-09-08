@@ -5,20 +5,24 @@
   "fields": [
     {
       "field": "field1",
+      "isPrimaryKey": false,
       "type": [
         "Date"
       ]
     },
     {
       "field": "field2",
+      "isPrimaryKey": false,
       "type": {
         "fields": [
           {
             "field": "field2Field1",
+            "isPrimaryKey": false,
             "type": "Boolean"
           },
           {
             "field": "field2Field2",
+            "isPrimaryKey": false,
             "type": "Number"
           }
         ]
@@ -26,20 +30,24 @@
     },
     {
       "field": "depth1",
+      "isPrimaryKey": false,
       "type": {
         "fields": [
           {
             "field": "depth1Field1",
+            "isPrimaryKey": false,
             "type": [
               "Date"
             ]
           },
           {
             "field": "depth1Field2",
+            "isPrimaryKey": false,
             "type": {
               "fields": [
                 {
                   "field": "depth1Field2Field1",
+                  "isPrimaryKey": false,
                   "type": "Boolean"
                 }
               ]
@@ -47,22 +55,26 @@
           },
           {
             "field": "depth2",
+            "isPrimaryKey": false,
             "type": [
               {
                 "fields": [
                   {
                     "field": "depth2Field1",
+                    "isPrimaryKey": false,
                     "type": [
                       "Date"
                     ]
                   },
                   {
                     "field": "depth2Field2.depth2Field2Field1",
-                    "type": "Boolean"
+                    "type": "Boolean",
+                    "isPrimaryKey": false
                   },
                   {
                     "field": "_id",
-                    "type": "String"
+                    "type": "String",
+                    "isPrimaryKey": true
                   }
                 ]
               }

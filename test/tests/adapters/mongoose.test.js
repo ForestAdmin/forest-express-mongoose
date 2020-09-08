@@ -447,10 +447,10 @@ describe('adapters > schema-adapter', () => {
       expect(result.fields[0].type[0]).toHaveProperty('fields');
 
       expect(result.fields[0].type[0].fields).toStrictEqual([
-        { field: 'firstName', type: 'String' },
-        { field: 'lastName', type: 'String' },
-        { field: 'createdAt', type: 'Date' },
-        { field: '_id', type: 'String' },
+        { field: 'firstName', type: 'String', isPrimaryKey: false },
+        { field: 'lastName', type: 'String', isPrimaryKey: false },
+        { field: 'createdAt', type: 'Date', isPrimaryKey: false },
+        { field: '_id', type: 'String', isPrimaryKey: true },
       ]);
     });
   });
@@ -471,8 +471,8 @@ describe('adapters > schema-adapter', () => {
         connections: [mongoose],
       });
       expect(result.fields[0].type[0].fields).toStrictEqual([
-        { field: 'type', type: 'String' },
-        { field: 'value', type: 'String' },
+        { field: 'type', type: 'String', isPrimaryKey: false },
+        { field: 'value', type: 'String', isPrimaryKey: false },
       ]);
     });
   });
@@ -637,6 +637,7 @@ describe('adapters > schema-adapter', () => {
         field: 'bar',
         type: 'String',
         reference: 'User._id',
+        isPrimaryKey: false,
       });
     });
   });
