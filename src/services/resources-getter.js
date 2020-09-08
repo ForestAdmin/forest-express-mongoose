@@ -28,7 +28,6 @@ function ResourcesGetter(model, opts, params) {
   this.perform = () => getSegmentCondition()
     .then(async (segment) => {
       const jsonQuery = [];
-      await queryBuilder.addProjection(jsonQuery);
       await queryBuilder.addFiltersAndJoins(jsonQuery, segment);
 
       if (params.search) {
@@ -43,6 +42,8 @@ function ResourcesGetter(model, opts, params) {
       if (params.sort) {
         queryBuilder.addSortToQuery(jsonQuery);
       }
+
+      await queryBuilder.addProjection(jsonQuery);
 
       queryBuilder.addSkipAndLimitToQuery(jsonQuery);
 

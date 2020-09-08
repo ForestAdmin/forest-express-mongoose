@@ -55,6 +55,7 @@ describe('service > resources-getter', () => {
               type: 'String',
               get: (film) => `${film.title} ${film.duration}`,
             },
+            { field: 'rating', type: 'Number' },
           ],
         },
       },
@@ -78,6 +79,7 @@ describe('service > resources-getter', () => {
           _id: { type: 'ObjectId' },
           title: { type: String },
           duration: { type: Number },
+          rating: { type: Number },
         });
 
         OrderModel = mongoose.model('Order', OrderSchema);
@@ -134,11 +136,13 @@ describe('service > resources-getter', () => {
               _id: '41224d776a326fb40f000011',
               duration: 149,
               title: 'Terminator',
+              rating: 4.5,
             },
             {
               _id: '41224d776a326fb40f000012',
               duration: 360,
               title: 'Titanic',
+              rating: 4,
             },
             {
               _id: '41224d776a326fb40f000013',
@@ -388,6 +392,57 @@ describe('service > resources-getter', () => {
         expect(titles).toHaveLength(3);
         const durations = result.filter((film) => !!film.duration);
         expect(durations).toHaveLength(0);
+      });
+    });
+
+    describe('with a condition on a non-filtered field', () => {
+      it('should return filtered results on the rating', async () => {
+        expect.assertions(1);
+
+        const parameters = {
+          fields: { films: 'title' },
+          page: { number: '1', size: '15' },
+          filters: '{"field":"rating","operator":"present","value":null}',
+          timezone: 'Europe/Paris',
+        };
+
+        const result = await new ResourcesGetter(FilmModel, options, parameters).perform();
+
+        expect(result[0]).toHaveLength(2);
+      });
+
+      it('should return sorted results by rating (asc)', async () => {
+        expect.assertions(3);
+
+        const parameters = {
+          fields: { films: 'title' },
+          page: { number: '1', size: '15' },
+          sort: 'rating',
+          timezone: 'Europe/Paris',
+        };
+
+        const result = await new ResourcesGetter(FilmModel, options, parameters).perform();
+
+        expect(result[0]).toHaveLength(3);
+        expect(result[0][0].title).toBe('Matrix');
+        expect(result[0][1].title).toBe('Titanic');
+      });
+
+      it('should return sorted results by rating (desc)', async () => {
+        expect.assertions(3);
+
+        const parameters = {
+          fields: { films: 'title' },
+          page: { number: '1', size: '15' },
+          sort: '-rating',
+          timezone: 'Europe/Paris',
+        };
+
+        const result = await new ResourcesGetter(FilmModel, options, parameters).perform();
+
+        expect(result[0]).toHaveLength(3);
+        expect(result[0][0].title).toBe('Terminator');
+        expect(result[0][1].title).toBe('Titanic');
       });
     });
   });
