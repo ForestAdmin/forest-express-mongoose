@@ -771,7 +771,7 @@ describe('adapters > schema-adapter', () => {
     it('should be set to true on field _id', async () => {
       expect.assertions(2);
 
-      const result = await SchemaAdapter(model, {
+      const result = await createSchemaAdapter(model, {
         mongoose,
         connections: [mongoose],
       });
