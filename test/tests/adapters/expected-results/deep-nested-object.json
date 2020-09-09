@@ -5,24 +5,20 @@
   "fields": [
     {
       "field": "depth1",
-      "isPrimaryKey": false,
       "type": {
         "fields": [
           {
             "field": "field1",
-            "isPrimaryKey": false,
             "type": [
               "Date"
             ]
           },
           {
             "field": "field2",
-            "isPrimaryKey": false,
             "type": {
               "fields": [
                 {
                   "field": "field2Field1",
-                  "isPrimaryKey": false,
                   "type": "Boolean"
                 }
               ]
@@ -30,24 +26,20 @@
           },
           {
             "field": "depth2",
-            "isPrimaryKey": false,
             "type": {
               "fields": [
                 {
                   "field": "field1",
-                  "isPrimaryKey": false,
                   "type": [
                     "Date"
                   ]
                 },
                 {
                   "field": "field2",
-                  "isPrimaryKey": false,
                   "type": {
                     "fields": [
                       {
                         "field": "field2Field1",
-                        "isPrimaryKey": false,
                         "type": "Boolean"
                       }
                     ]
@@ -55,24 +47,20 @@
                 },
                 {
                   "field": "depth3",
-                  "isPrimaryKey": false,
                   "type": {
                     "fields": [
                       {
                         "field": "field1",
-                        "isPrimaryKey": false,
                         "type": [
                           "Date"
                         ]
                       },
                       {
                         "field": "field2",
-                        "isPrimaryKey": false,
                         "type": {
                           "fields": [
                             {
                               "field": "field2Field1",
-                              "isPrimaryKey": false,
                               "type": "Boolean"
                             }
                           ]
@@ -80,24 +68,20 @@
                       },
                       {
                         "field": "depth4",
-                        "isPrimaryKey": false,
                         "type": {
                           "fields": [
                             {
                               "field": "field1",
-                              "isPrimaryKey": false,
                               "type": [
                                 "Date"
                               ]
                             },
                             {
                               "field": "field2",
-                              "isPrimaryKey": false,
                               "type": {
                                 "fields": [
                                   {
                                     "field": "field2Field1",
-                                    "isPrimaryKey": false,
                                     "type": "Boolean"
                                   }
                                 ]
@@ -105,24 +89,20 @@
                             },
                             {
                               "field": "depth5",
-                              "isPrimaryKey": false,
                               "type": {
                                 "fields": [
                                   {
                                     "field": "field1",
-                                    "isPrimaryKey": false,
                                     "type": [
                                       "Date"
                                     ]
                                   },
                                   {
                                     "field": "field2",
-                                    "isPrimaryKey": false,
                                     "type": {
                                       "fields": [
                                         {
                                           "field": "field2Field1",
-                                          "isPrimaryKey": false,
                                           "type": "Boolean"
                                         }
                                       ]
@@ -130,24 +110,20 @@
                                   },
                                   {
                                     "field": "depth6",
-                                    "isPrimaryKey": false,
                                     "type": {
                                       "fields": [
                                         {
                                           "field": "field1",
-                                          "isPrimaryKey": false,
                                           "type": [
                                             "Date"
                                           ]
                                         },
                                         {
                                           "field": "field2",
-                                          "isPrimaryKey": false,
                                           "type": {
                                             "fields": [
                                               {
                                                 "field": "field2Field1",
-                                                "isPrimaryKey": false,
                                                 "type": "Boolean"
                                               }
                                             ]
@@ -155,24 +131,20 @@
                                         },
                                         {
                                           "field": "depth7",
-                                          "isPrimaryKey": false,
                                           "type": {
                                             "fields": [
                                               {
                                                 "field": "field1",
-                                                "isPrimaryKey": false,
                                                 "type": [
                                                   "Date"
                                                 ]
                                               },
                                               {
                                                 "field": "field2",
-                                                "isPrimaryKey": false,
                                                 "type": {
                                                   "fields": [
                                                     {
                                                       "field": "field2Field1",
-                                                      "isPrimaryKey": false,
                                                       "type": "Boolean"
                                                     }
                                                   ]

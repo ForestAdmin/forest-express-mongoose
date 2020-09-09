@@ -7,7 +7,6 @@
       "field": "name",
       "type": "String",
       "isRequired": true,
-      "isPrimaryKey": false,
       "validations": [
         {
           "type": "is present"
@@ -18,7 +17,6 @@
       "field": "introText",
       "type": "String",
       "isRequired": true,
-      "isPrimaryKey": false,
       "validations": [
         {
           "type": "is present"
@@ -27,14 +25,12 @@
     },
     {
       "field": "outroText",
-      "isPrimaryKey": false,
       "type": "String"
     },
     {
       "field": "pretest",
       "type": "Boolean",
       "isRequired": true,
-      "isPrimaryKey": false,
       "defaultValue": false,
       "validations": [
         {
@@ -46,7 +42,6 @@
       "field": "closeAt",
       "type": "Date",
       "isRequired": true,
-      "isPrimaryKey": false,
       "validations": [
         {
           "type": "is present"
@@ -57,7 +52,6 @@
       "field": "launchAt",
       "type": "Date",
       "isRequired": true,
-      "isPrimaryKey": false,
       "validations": [
         {
           "type": "is present"
@@ -71,12 +65,10 @@
           "fields": [
             {
               "field": "question_id",
-              "isPrimaryKey": false,
               "type": "String"
             },
             {
               "field": "sortOrder",
-              "isPrimaryKey": false,
               "type": "Number"
             },
             {
@@ -88,7 +80,6 @@
         }
       ],
       "isRequired": true,
-      "isPrimaryKey": false,
       "defaultValue": [],
       "validations": [
         {
@@ -103,34 +94,28 @@
           "fields": [
             {
               "field": "content_id",
-              "isPrimaryKey": false,
               "type": "String"
             },
             {
               "field": "placebo",
-              "isPrimaryKey": false,
               "type": "Boolean"
             },
             {
               "field": "attentionCheck",
-              "isPrimaryKey": false,
               "type": {
                 "fields": [
                   {
                     "field": "questionFieldName",
-                    "isPrimaryKey": false,
                     "type": "String"
                   },
                   {
                     "field": "acceptedAnswers",
-                    "isPrimaryKey": false,
                     "type": [
                       "String"
                     ]
                   },
                   {
                     "field": "question_id",
-                    "isPrimaryKey": false,
                     "type": "String"
                   }
                 ]
@@ -138,12 +123,10 @@
             },
             {
               "field": "batchName",
-              "isPrimaryKey": false,
               "type": "String"
             },
             {
               "field": "batchNum",
-              "isPrimaryKey": false,
               "type": "Number"
             },
             {
@@ -152,17 +135,14 @@
                 "fields": [
                   {
                     "field": "responsesNeeded",
-                    "isPrimaryKey": false,
                     "type": "Number"
                   },
                   {
                     "field": "useRandom",
-                    "isPrimaryKey": false,
                     "type": "Boolean"
                   }
                 ]
-              },
-              "isPrimaryKey": false
+              }
             },
             {
               "field": "_id",
@@ -173,7 +153,6 @@
         }
       ],
       "isRequired": true,
-      "isPrimaryKey": false,
       "defaultValue": [],
       "validations": [
         {
@@ -188,12 +167,10 @@
           "fields": [
             {
               "field": "index_id",
-              "isPrimaryKey": false,
               "type": "String"
             },
             {
               "field": "directionDependency",
-              "isPrimaryKey": false,
               "type": "String"
             },
             {
@@ -205,7 +182,6 @@
         }
       ],
       "isRequired": true,
-      "isPrimaryKey": false,
       "defaultValue": [],
       "validations": [
         {
@@ -220,34 +196,28 @@
           "fields": [
             {
               "field": "name",
-              "isPrimaryKey": false,
               "type": "String"
             },
             {
               "field": "sortOrder",
-              "isPrimaryKey": false,
               "type": "Number"
             },
             {
               "field": "index_id",
-              "isPrimaryKey": false,
               "type": "String"
             },
             {
               "field": "filters",
-              "isPrimaryKey": false,
               "type": [
                 {
                   "fields": [
                     {
                       "field": "category",
-                      "isPrimaryKey": false,
                       "type": "String"
                     },
                     {
                       "field": "method",
                       "type": "Enum",
-                      "isPrimaryKey": false,
                       "enums": [
                          "number",
                          "percentile",
@@ -257,7 +227,6 @@
                     {
                       "field": "direction",
                       "type": "Enum",
-                      "isPrimaryKey": false,
                       "enums": [
                          "gt",
                          "lt"
@@ -265,12 +234,10 @@
                     },
                     {
                       "field": "limit",
-                      "isPrimaryKey": false,
                       "type": "Number"
                     },
                     {
                       "field": "allowedValues",
-                      "isPrimaryKey": false,
                       "type": [
                         "String"
                       ]
@@ -286,12 +253,10 @@
             },
             {
               "field": "counts",
-              "isPrimaryKey": false,
               "type": null
             },
             {
               "field": "results",
-              "isPrimaryKey": false,
               "type": [
                 "Json"
               ]
@@ -305,7 +270,6 @@
         }
       ],
       "isRequired": true,
-      "isPrimaryKey": false,
       "defaultValue": [],
       "validations": [
         {
@@ -320,27 +284,22 @@
           "fields": [
             {
               "field": "mode",
-              "isPrimaryKey": false,
               "type": "String"
             },
             {
               "field": "acquisitionConfig_id",
-              "isPrimaryKey": false,
               "type": "String"
             },
             {
               "field": "HITTypeId",
-              "isPrimaryKey": false,
               "type": "String"
             },
             {
               "field": "uniqueWorkerQualificationTypeId",
-              "isPrimaryKey": false,
               "type": "String"
             },
             {
               "field": "completionCode",
-              "isPrimaryKey": false,
               "type": "String"
             },
             {
@@ -352,7 +311,6 @@
         }
       ],
       "isRequired": true,
-      "isPrimaryKey": false,
       "defaultValue": [],
       "validations": [
         {
@@ -366,27 +324,22 @@
         "fields": [
           {
             "field": "attnCheck",
-            "isPrimaryKey": false,
             "type": "Boolean"
           },
           {
             "field": "poststratify",
-            "isPrimaryKey": false,
             "type": "Boolean"
           },
           {
             "field": "censusYear",
-            "isPrimaryKey": false,
             "type": "String"
           },
           {
             "field": "allowDuplicatesAcrossBatches",
-            "isPrimaryKey": false,
             "type": "Boolean"
           },
           {
             "field": "customSegments",
-            "isPrimaryKey": false,
             "type": [
               "String"
             ]
@@ -394,7 +347,6 @@
         ]
       },
       "isRequired": true,
-      "isPrimaryKey": false,
       "defaultValue": {
         "attnCheck": true,
         "poststratify": true
@@ -411,24 +363,20 @@
         "fields": [
           {
             "field": "country",
-            "isPrimaryKey": false,
             "type": "String"
           },
           {
             "field": "state",
-            "isPrimaryKey": false,
             "type": {
               "fields": [
                 {
                   "field": "included",
-                  "isPrimaryKey": false,
                   "type": [
                     "String"
                   ]
                 },
                 {
                   "field": "excluded",
-                  "isPrimaryKey": false,
                   "type": [
                     "String"
                   ]
@@ -443,12 +391,10 @@
           },
           {
             "field": "settings",
-            "isPrimaryKey": false,
             "type": {
               "fields": [
                 {
                   "field": "politicalSpectrum",
-                  "isPrimaryKey": false,
                   "type": [
                     "String"
                   ]
@@ -464,7 +410,6 @@
         ]
       },
       "isRequired": true,
-      "isPrimaryKey": false,
       "defaultValue": {
         "country": "US"
       },
@@ -476,22 +421,18 @@
     },
     {
       "field": "analysisMeta",
-      "isPrimaryKey": false,
       "type": {
         "fields": [
           {
             "field": "branch",
-            "isPrimaryKey": false,
             "type": "String"
           },
           {
             "field": "commit",
-            "isPrimaryKey": false,
             "type": "String"
           },
           {
             "field": "timestamp",
-            "isPrimaryKey": false,
             "type": "Date"
           }
         ]
