@@ -73,6 +73,7 @@
             },
             {
               "field": "_id",
+              "isPrimaryKey": true,
               "type": "String"
             }
           ]
@@ -145,6 +146,7 @@
             },
             {
               "field": "_id",
+              "isPrimaryKey": true,
               "type": "String"
             }
           ]
@@ -173,6 +175,7 @@
             },
             {
               "field": "_id",
+              "isPrimaryKey": true,
               "type": "String"
             }
           ]
@@ -241,6 +244,7 @@
                     },
                     {
                       "field": "_id",
+                      "isPrimaryKey": true,
                       "type": "String"
                     }
                   ]
@@ -259,6 +263,7 @@
             },
             {
               "field": "_id",
+              "isPrimaryKey": true,
               "type": "String"
             }
           ]
@@ -299,6 +304,7 @@
             },
             {
               "field": "_id",
+              "isPrimaryKey": true,
               "type": "String"
             }
           ]
@@ -377,6 +383,7 @@
                 },
                 {
                   "field": "_id",
+                  "isPrimaryKey": true,
                   "type": "String"
                 }
               ]
@@ -394,6 +401,7 @@
                 },
                 {
                   "field": "_id",
+                  "isPrimaryKey": true,
                   "type": "String"
                 }
               ]
@@ -432,7 +440,8 @@
     },
     {
       "field": "_id",
-      "type": "String"
+      "type": "String",
+      "isPrimaryKey": true
     }
   ]
 }

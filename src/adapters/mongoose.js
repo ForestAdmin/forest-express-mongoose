@@ -64,6 +64,10 @@ module.exports = (model, opts) => {
         type: getType(fieldName),
       };
 
+      if (fieldName === '_id') {
+        field.isPrimaryKey = true;
+      }
+
       if (!field.type) { return; }
 
       const ref = detectReference(fieldInfo);
@@ -191,6 +195,10 @@ module.exports = (model, opts) => {
         type: getTypeFromMongoose(fieldType),
       };
 
+      if (fieldName === '_id') {
+        field.isPrimaryKey = true;
+      }
+
       if (fieldType.enumValues && fieldType.enumValues.length) {
         field.enums = fieldType.enumValues;
       }
@@ -272,6 +280,10 @@ module.exports = (model, opts) => {
     const isRequired = getRequired(fieldInfo);
     if (isRequired) {
       schema.isRequired = isRequired;
+    }
+
+    if (path === '_id') {
+      schema.isPrimaryKey = true;
     }
 
     if (fieldInfo.options && !_.isNull(fieldInfo.options.default)
