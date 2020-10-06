@@ -50,7 +50,7 @@
     "eslint": "6.7.2",
     "eslint-config-airbnb-base": "14.0.0",
     "eslint-plugin-import": "2.18.2",
-    "eslint-plugin-jest": "23.0.4",
+    "eslint-plugin-jest": "24.1.0",
     "eslint-plugin-sonarjs": "0.5.0",
     "husky": "4.2.5",
     "jest": "26.0.1",
