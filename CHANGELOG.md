@@ -1,3 +1,10 @@
+## [6.3.9](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.3.8...v6.3.9) (2020-10-27)
+
+
+### Bug Fixes
+
+* switched moment to moment-tz for line-stat-getter ([#428](https://github.com/ForestAdmin/forest-express-mongoose/issues/428)) ([3f6b55a](https://github.com/ForestAdmin/forest-express-mongoose/commit/3f6b55a32064d370cfc648393c22254ac48d2c4c))
+
 ## [6.3.8](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.3.7...v6.3.8) (2020-09-08)
 
 
