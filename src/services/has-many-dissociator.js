@@ -14,22 +14,21 @@ function HasManyDissociator(model, association, opts, params, data) {
           if (error) { return reject(error); }
           return resolve();
         });
-      } else {
-        const updateParams = {};
-        updateParams[params.associationName] = { $in: documentIds };
-
-        model
-          .findByIdAndUpdate(params.recordId, {
-            $pull: updateParams,
-          }, {
-            new: true,
-          })
-          .lean()
-          .exec((error, record) => {
-            if (error) { return reject(error); }
-            return resolve(record);
-          });
       }
+      const updateParams = {};
+      updateParams[params.associationName] = { $in: documentIds };
+
+      model
+        .findByIdAndUpdate(params.recordId, {
+          $pull: updateParams,
+        }, {
+          new: true,
+        })
+        .lean()
+        .exec((error, record) => {
+          if (error) { return reject(error); }
+          return resolve(record);
+        });
     }));
 }
 
