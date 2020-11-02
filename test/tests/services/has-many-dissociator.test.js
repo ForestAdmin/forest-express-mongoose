@@ -62,8 +62,6 @@ describe('service > has-many-dissociator', () => {
 
         LumberJackModel = mongoose.model('LumberJack', LumberJackSchema);
         TreeModel = mongoose.model('Tree', TreeSchema);
-
-        return Promise.all([LumberJackModel.remove({}), TreeModel.remove({})]);
       });
   });
 
@@ -81,7 +79,8 @@ describe('service > has-many-dissociator', () => {
         _id: '41224d776a326fb40f000002',
         name: 'Adolin Kholin',
       },
-    ]), loadFixture(TreeModel, [
+    ]),
+    loadFixture(TreeModel, [
       {
         _id: '41224d776a326fb40f000003',
         name: 'Ashe Tree Lane',
