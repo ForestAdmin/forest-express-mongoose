@@ -1,3 +1,10 @@
+## [6.3.10](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.3.9...v6.3.10) (2020-11-02)
+
+
+### Bug Fixes
+
+* **has-many-dissociator:** dissociate relationship when related record is deleted ([#429](https://github.com/ForestAdmin/forest-express-mongoose/issues/429)) ([923b80f](https://github.com/ForestAdmin/forest-express-mongoose/commit/923b80fc24335315a42f0342cde62651b0bfb858))
+
 ## [6.3.9](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.3.8...v6.3.9) (2020-10-27)
 
 
