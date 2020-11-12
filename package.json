@@ -63,7 +63,7 @@
   },
   "scripts": {
     "build": "./node_modules/.bin/babel src --out-dir dist && echo '\n\\033[0;34m[+] \\033[0;32mBuild done\\033[0m'",
-    "build:watch": "onchange 'src/**/*.js' -i -- yarn build",
+    "build:watch": "onchange 'src/**/*.js' 'node_modules/forest-express/dist/*' --no-exclude -i -- yarn build",
     "lint": "./node_modules/eslint/bin/eslint.js .eslint-bin src test",
     "test": "jest --runInBand",
     "test:coverage": "jest --runInBand --coverage --collectCoverageFrom=\"src/**/*.{ts,js}\""
