@@ -111,7 +111,7 @@ function QueryBuilder(model, params, opts) {
   };
 
   this.addCountToQuery = (jsonQuery) => {
-    if (Orm.hasRequiredVersion(opts.mongoose, '3.4')) {
+    if (Orm.hasRequiredVersion(opts.Mongoose, '3.4')) {
       jsonQuery.push({ $count: 'count' });
     } else {
       jsonQuery.push({ $group: { _id: null, count: { $sum: 1 } } });

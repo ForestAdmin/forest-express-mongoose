@@ -2,7 +2,6 @@ const P = require('bluebird');
 const _ = require('lodash');
 const Interface = require('forest-express');
 const utils = require('../utils/schema');
-const mongooseUtils = require('../services/mongoose-utils');
 
 /* eslint-disable */
 function unflatten(data) {
@@ -27,13 +26,11 @@ function unflatten(data) {
 module.exports = (model, opts) => {
   const fields = [];
   const paths = unflatten(model.schema.paths);
-  const { mongoose } = opts;
+  const { Mongoose, models } = opts;
   // NOTICE: mongoose.base is used when opts.mongoose is not the default connection.
-  const Schema = mongoose.Schema || mongoose.base.Schema;
   let schemaType;
 
   function formatRef(ref) {
-    const models = mongooseUtils.getModels(opts);
     if (models[ref]) {
       return utils.getModelName(models[ref]);
     }
@@ -105,7 +102,7 @@ module.exports = (model, opts) => {
     if (_.isFunction(type) && type.name === 'ObjectId') {
       return 'String';
     }
-    if (type instanceof Schema) {
+    if (type instanceof Mongoose.Schema) {
       return schemaType(type);
     }
 
@@ -138,7 +135,7 @@ module.exports = (model, opts) => {
         || _.keys(fieldInfo.caster.options).length === 0)) {
         return [getTypeFromMongoose(fieldInfo.caster)];
       }
-      if (fieldInfo.options.type[0] instanceof Schema) {
+      if (fieldInfo.options.type[0] instanceof Mongoose.Schema) {
         // Schema
         return [schemaType(fieldInfo.options.type[0])];
       }
@@ -212,7 +209,7 @@ module.exports = (model, opts) => {
       || (
         fieldInfo.path === '_id'
         && !fieldInfo.options.auto
-        && fieldInfo.options.type !== mongoose.Schema.ObjectId
+        && fieldInfo.options.type !== Mongoose.ObjectId
       );
   }
 

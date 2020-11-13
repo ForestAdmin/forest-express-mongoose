@@ -1,7 +1,5 @@
-const mongooseUtils = require('../services/mongoose-utils');
-
 exports.getReferenceModel = (options, reference) => {
-  const models = mongooseUtils.getModels(options);
+  const { models } = options;
   return models[exports.getReferenceCollectionName(reference)];
 };
 

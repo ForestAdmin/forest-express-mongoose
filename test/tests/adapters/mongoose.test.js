@@ -21,8 +21,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('Foo', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result).toHaveProperty('fields');
       expect(result.fields[0]).toHaveProperty('field', 'foo');
@@ -37,8 +38,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('Foo', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result).toHaveProperty('fields');
       expect(result.fields[0]).toHaveProperty('field', 'foo');
@@ -53,8 +55,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('Foo', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result).toHaveProperty('fields');
       expect(result.fields[0]).toHaveProperty('field', 'foo');
@@ -69,8 +72,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('Foo', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result).toHaveProperty('fields');
       expect(result.fields[0]).toHaveProperty('field', 'foo');
@@ -90,8 +94,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('Foo', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result).toHaveProperty('fields');
       expect(result.fields[0]).toHaveProperty('type');
@@ -116,8 +121,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('Foo', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result).toHaveProperty('fields');
       expect(result.fields[0]).toHaveProperty('field', 'foo');
@@ -135,8 +141,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('Foo', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result).toHaveProperty('fields');
       expect(result.fields[0].field).toStrictEqual('foo');
@@ -156,8 +163,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('Foo', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result).toHaveProperty('fields');
       expect(result.fields[0].field).toStrictEqual('foo');
@@ -177,8 +185,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('Foo', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result).toHaveProperty('fields');
       expect(result.fields[0].field).toStrictEqual('foo');
@@ -197,8 +206,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('Foo', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result).toHaveProperty('fields');
       expect(result.fields[0].field).toStrictEqual('foo');
@@ -215,8 +225,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('Foo', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result).toHaveProperty('fields');
       expect(result.fields[0].field).toStrictEqual('foo');
@@ -233,8 +244,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('Foo', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result).toHaveProperty('fields');
       expect(result.fields[0].field).toStrictEqual('foo');
@@ -251,8 +263,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('Foo', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result).toHaveProperty('fields');
       expect(result.fields[0].field).toStrictEqual('foo');
@@ -269,8 +282,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('Foo', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result).toHaveProperty('fields');
       expect(result.fields[0]).toHaveProperty('field', 'foo');
@@ -290,8 +304,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('User', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result).toHaveProperty('fields');
       expect(result.fields[0]).toHaveProperty('field', 'permissions');
@@ -310,8 +325,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('Foo', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result).toHaveProperty('fields');
       expect(result.fields[0]).toHaveProperty('field', 'foo');
@@ -330,8 +346,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('Foo', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result).toHaveProperty('fields');
       expect(result.fields[0].field).toStrictEqual('foo');
@@ -353,8 +370,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('Foo', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result).toHaveProperty('fields');
       expect(result.fields[0].field).toStrictEqual('foo');
@@ -381,8 +399,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('Foo', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result.fields[0].type[0].fields[0]).toHaveProperty('type', 'String');
     });
@@ -400,8 +419,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('Foo', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result).toHaveProperty('fields');
       expect(result.fields[0].field).toStrictEqual('foo');
@@ -435,8 +455,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('Foo', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result).toHaveProperty('fields');
       expect(result.fields[0].field).toStrictEqual('users');
@@ -467,8 +488,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('Foo', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result.fields[0].type[0].fields).toStrictEqual([
         { field: 'type', type: 'String' },
@@ -491,8 +513,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('Foo', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result).toHaveProperty('fields');
       expect(result.fields[0].field).toStrictEqual('foo');
@@ -566,8 +589,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('Foo', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       // eslint-disable-next-line global-require
       expect(result).toStrictEqual(require('./expected-results/deep-nested-object'));
@@ -595,8 +619,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('Foo', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       // eslint-disable-next-line global-require
       expect(result).toStrictEqual(require('./expected-results/deep-nested-schema'));
@@ -610,8 +635,9 @@ describe('adapters > schema-adapter', () => {
       const complexModel = require('./schemas/complex-shema');
 
       const result = await createSchemaAdapter(complexModel, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       // eslint-disable-next-line global-require
       expect(result).toStrictEqual(require('./expected-results/real-world-schema'));
@@ -630,8 +656,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('Foo', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result.fields[0].type.fields[0]).toStrictEqual({
         field: 'bar',
@@ -651,8 +678,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('Foo', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result).toHaveProperty('fields');
       expect(result.fields[0]).toHaveProperty('reference', 'Bar._id');
@@ -669,8 +697,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('Foo', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result).toHaveProperty('fields');
       expect(result.fields[0].reference).toStrictEqual('Bar._id');
@@ -687,8 +716,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('Foo', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result).toHaveProperty('fields');
       expect(result.fields[0].isRequired).toStrictEqual(true);
@@ -702,8 +732,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('WithNonGeneratedId', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result).toHaveProperty('fields');
       expect(result.fields[0].isRequired).toStrictEqual(true);
@@ -717,8 +748,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('WithGeneratedId', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result).toHaveProperty('fields');
       expect(result.fields[0].isRequired).toBeUndefined();
@@ -732,8 +764,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('Foo', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result).toHaveProperty('fields');
       expect(result.fields[0].isRequired).toBeUndefined();
@@ -749,8 +782,9 @@ describe('adapters > schema-adapter', () => {
       const model = mongoose.model('Foo', schema);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result.fields).toHaveLength(2);
     });
@@ -771,8 +805,9 @@ describe('adapters > schema-adapter', () => {
       expect.assertions(2);
 
       const result = await createSchemaAdapter(model, {
-        mongoose,
+        Mongoose: mongoose,
         connections: [mongoose],
+        models: mongoose.models,
       });
       expect(result).toHaveProperty('fields');
 
