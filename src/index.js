@@ -27,16 +27,7 @@ exports.PUBLIC_ROUTES = Interface.PUBLIC_ROUTES;
 exports.init = (opts) => {
   exports.opts = opts;
 
-  const { Mongoose, mongoose: connections, ...models } = opts.toBeDefined;
-  // In case of multi DB the definition of connections should be
-  // connnections = { dbName1 : mongooseConnection1, dbName2: mongooseConnection2 }
-  // In case of single DB the definition of connections should be
-  // connections = Mongoose object
-  // opts.useMultipleDatabase = !(connections instanceof Mongoose.Connection);
-  // opts.connections = opts.useMultipleDatabase ? Object.values(connections) : [connections];
-  opts.connections = [connections];
-  opts.models = models;
-  opts.Mongoose = Mongoose;
+  opts.useMultipleDatabase = Object.keys(opts.connections).length > 1;
 
   exports.getLianaName = () => 'forest-express-mongoose';
 

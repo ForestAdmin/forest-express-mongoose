@@ -1,6 +1,8 @@
 exports.getReferenceModel = (options, reference) => {
-  const { models } = options;
-  return models[exports.getReferenceCollectionName(reference)];
+  const { connections } = options;
+  return Object.values(connections)
+    .reduce((models, connection) => models.concat(Object.values(connection.models)), [])
+    .find((model) => exports.getModelName(model) === exports.getReferenceCollectionName(reference));
 };
 
 exports.getReferenceField = (reference) => reference.split('.')[1];

@@ -47,7 +47,7 @@ function QueryBuilder(model, params, opts) {
         return this;
       }
 
-      const referencedKey = field.reference.split('.')[1];
+      const referencedKey = utils.getReferenceField(field.reference);
       const subModel = utils.getReferenceModel(opts, field.reference);
       joinQuery.push({
         $lookup: {

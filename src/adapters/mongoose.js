@@ -26,13 +26,14 @@ function unflatten(data) {
 module.exports = (model, opts) => {
   const fields = [];
   const paths = unflatten(model.schema.paths);
-  const { Mongoose, models } = opts;
+  const { Mongoose } = opts;
   // NOTICE: mongoose.base is used when opts.mongoose is not the default connection.
   let schemaType;
 
   function formatRef(ref) {
-    if (models[ref]) {
-      return utils.getModelName(models[ref]);
+    const referenceModel = utils.getReferenceModel(opts, ref);
+    if (referenceModel) {
+      return utils.getModelName(referenceModel);
     }
     Interface.logger.warn(`Cannot find the reference "${ref}" on the model "${model.modelName}".`);
     return null;
