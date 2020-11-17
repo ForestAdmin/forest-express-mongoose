@@ -1,3 +1,10 @@
+# [6.4.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.3.10...v6.4.0) (2020-11-17)
+
+
+### Features
+
+* **smart actions:** add hooks in schema file ([#434](https://github.com/ForestAdmin/forest-express-mongoose/issues/434)) ([e88dfd1](https://github.com/ForestAdmin/forest-express-mongoose/commit/e88dfd100a0234d71023fd810442b84e1ff57064))
+
 ## [6.3.10](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.3.9...v6.3.10) (2020-11-02)
 
 
