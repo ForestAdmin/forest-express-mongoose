@@ -210,7 +210,7 @@ module.exports = (model, opts) => {
       || (
         fieldInfo.path === '_id'
         && !fieldInfo.options.auto
-        && fieldInfo.options.type !== Mongoose.Types.ObjectId
+        && fieldInfo.options.type instanceof Mongoose.Types.ObjectId
       );
   }
 
