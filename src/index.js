@@ -27,6 +27,7 @@ exports.PUBLIC_ROUTES = Interface.PUBLIC_ROUTES;
 exports.init = (opts) => {
   exports.opts = opts;
 
+  opts.Mongoose = opts.objectMapping;
   opts.useMultipleDatabase = Object.keys(opts.connections).length > 1;
 
   exports.getLianaName = () => 'forest-express-mongoose';
