@@ -49,7 +49,7 @@ function HasManyGetter(model, association, opts, params) {
     return new P((resolve, reject) => {
       let id = params.recordId;
       if (OBJECTID_REGEXP.test(params.recordId)) {
-        id = opts.Mongoose.ObjectId(id);
+        id = opts.Mongoose.Types.ObjectId(id);
       }
 
       return model
