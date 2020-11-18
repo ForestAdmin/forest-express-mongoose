@@ -12,7 +12,6 @@ describe('service > resources-getter', () => {
   const options = {
     Mongoose: mongoose,
     connections: [mongoose],
-    models: mongoose.models,
   };
 
   beforeAll(() => {

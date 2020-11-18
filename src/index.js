@@ -28,7 +28,7 @@ exports.init = (opts) => {
   exports.opts = opts;
 
   opts.Mongoose = opts.objectMapping;
-  opts.useMultipleDatabase = Object.keys(opts.connections).length > 1;
+  opts.useMultipleDatabases = Object.keys(opts.connections).length > 1;
 
   exports.getLianaName = () => 'forest-express-mongoose';
 
@@ -45,7 +45,7 @@ exports.init = (opts) => {
     return orm.getVersion(opts.Mongoose);
   };
 
-  exports.getDatabaseType = () => (opts.useMultipleDatabase ? 'multiple' : 'MongoDB');
+  exports.getDatabaseType = () => (opts.useMultipleDatabases ? 'multiple' : 'MongoDB');
 
   exports.SchemaAdapter = require('./adapters/mongoose');
 
