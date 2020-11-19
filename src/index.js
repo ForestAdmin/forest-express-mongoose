@@ -27,6 +27,15 @@ exports.PUBLIC_ROUTES = Interface.PUBLIC_ROUTES;
 exports.init = (opts) => {
   exports.opts = opts;
 
+  if (!opts.objectMapping) {
+    Interface.logger.error('The objectMapping option appears to be missing. Please make sure it is set correctly.');
+    return Promise.resolve(() => {});
+  }
+
+  if (opts.mongoose) {
+    Interface.logger.warn('mongoose option is not supported anymore. Please remove this option.');
+  }
+
   opts.Mongoose = opts.objectMapping;
   opts.useMultipleDatabases = Object.keys(opts.connections).length > 1;
 
@@ -40,10 +49,7 @@ exports.init = (opts) => {
     return null;
   };
 
-  exports.getOrmVersion = () => {
-    if (!opts.Mongoose) { return null; }
-    return orm.getVersion(opts.Mongoose);
-  };
+  exports.getOrmVersion = () => orm.getVersion(opts.Mongoose);
 
   exports.getDatabaseType = () => (opts.useMultipleDatabases ? 'multiple' : 'MongoDB');
 
