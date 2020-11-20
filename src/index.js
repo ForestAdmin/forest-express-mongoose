@@ -33,7 +33,7 @@ exports.init = (opts) => {
   }
 
   if (opts.mongoose) {
-    Interface.logger.warn('mongoose option is not supported anymore. Please remove this option.');
+    Interface.logger.warn('The mongoose option is not supported anymore. Please remove this option.');
   }
 
   opts.Mongoose = opts.objectMapping;
