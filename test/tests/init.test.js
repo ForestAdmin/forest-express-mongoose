@@ -249,7 +249,7 @@ describe('forest-express-mongoose > init', () => {
 
         const spy = jest.spyOn(forestExpressMock.logger, 'warn');
         initForestExpressMongoose({ mongoose: {} });
-        expect(spy).toHaveBeenCalledWith('mongoose option is not supported anymore. Please remove this option.');
+        expect(spy).toHaveBeenCalledWith('The mongoose option is not supported anymore. Please remove this option.');
       });
     });
   });
