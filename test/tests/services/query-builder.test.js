@@ -9,7 +9,7 @@ describe('service > query-builder', () => {
   let LumberJackModel;
 
   const options = {
-    mongoose,
+    Mongoose: mongoose,
     connections: [mongoose],
   };
 

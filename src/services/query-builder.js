@@ -47,7 +47,7 @@ function QueryBuilder(model, params, opts) {
         return this;
       }
 
-      const referencedKey = field.reference.split('.')[1];
+      const referencedKey = utils.getReferenceField(field.reference);
       const subModel = utils.getReferenceModel(opts, field.reference);
       joinQuery.push({
         $lookup: {
@@ -111,7 +111,7 @@ function QueryBuilder(model, params, opts) {
   };
 
   this.addCountToQuery = (jsonQuery) => {
-    if (Orm.hasRequiredVersion(opts.mongoose, '3.4')) {
+    if (Orm.hasRequiredVersion(opts.Mongoose, '3.4')) {
       jsonQuery.push({ $count: 'count' });
     } else {
       jsonQuery.push({ $group: { _id: null, count: { $sum: 1 } } });
