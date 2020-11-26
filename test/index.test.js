@@ -9,6 +9,13 @@ describe('index', () => {
       expect(forestExpressMongoose.collection).toBeInstanceOf(Function);
     });
 
+    it('should export an errorHandler middleware', () => {
+      expect.assertions(2);
+
+      expect(forestExpressMongoose.errorHandler).toBeDefined();
+      expect(forestExpressMongoose.errorHandler).toBeInstanceOf(Function);
+    });
+
     it('should export an ensureAuthenticated middleware', () => {
       expect.assertions(2);
 
