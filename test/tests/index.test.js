@@ -16,6 +16,13 @@ describe('index', () => {
       expect(forestExpressMongoose.ensureAuthenticated).toBeInstanceOf(Function);
     });
 
+    it('should export an errorHandler middleware', () => {
+      expect.assertions(2);
+
+      expect(forestExpressMongoose.errorHandler).toBeDefined();
+      expect(forestExpressMongoose.errorHandler).toBeInstanceOf(Function);
+    });
+
     it('should export a list of serializers and deserializers', () => {
       expect.assertions(4);
 
