@@ -1,3 +1,10 @@
+## [6.4.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.4.0...v6.4.1) (2020-11-26)
+
+
+### Bug Fixes
+
+* export error handler middleware ([#443](https://github.com/ForestAdmin/forest-express-mongoose/issues/443)) ([220f4c3](https://github.com/ForestAdmin/forest-express-mongoose/commit/220f4c37b9d0b1e652ce3e4c9489c49932a7abc8))
+
 # [6.4.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.3.10...v6.4.0) (2020-11-17)
 
 
