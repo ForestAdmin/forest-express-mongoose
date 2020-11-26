@@ -10,7 +10,7 @@ describe('service > query-builder', () => {
 
   const options = {
     Mongoose: mongoose,
-    connections: [mongoose],
+    connections: { mongoose },
   };
 
   beforeAll(() => {
