@@ -1,3 +1,10 @@
+# [6.5.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.4.1...v6.5.0) (2020-11-27)
+
+
+### Features
+
+* **smart actions:** endpoint that handle forms' load hooks ([86b15a3](https://github.com/ForestAdmin/forest-express-mongoose/commit/86b15a37bdf2f702142b83fbc0882a8cfd6c7359))
+
 ## [6.4.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.4.0...v6.4.1) (2020-11-26)
 
 
