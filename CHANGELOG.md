@@ -1,3 +1,10 @@
+## [6.5.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.5.0...v6.5.1) (2020-12-01)
+
+
+### Bug Fixes
+
+* **smart fields:** compute properly smart fields with mongoose ([#453](https://github.com/ForestAdmin/forest-express-mongoose/issues/453)) ([55c33f7](https://github.com/ForestAdmin/forest-express-mongoose/commit/55c33f774b1b4fe4f2c490d6b0ac354a5d7c8f5f))
+
 # [6.5.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.4.1...v6.5.0) (2020-11-27)
 
 
