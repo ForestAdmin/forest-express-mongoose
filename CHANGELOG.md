@@ -1,3 +1,24 @@
+## [6.5.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.5.0...v6.5.1) (2020-12-01)
+
+
+### Bug Fixes
+
+* **smart fields:** compute properly smart fields with mongoose ([#453](https://github.com/ForestAdmin/forest-express-mongoose/issues/453)) ([55c33f7](https://github.com/ForestAdmin/forest-express-mongoose/commit/55c33f774b1b4fe4f2c490d6b0ac354a5d7c8f5f))
+
+# [6.5.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.4.1...v6.5.0) (2020-11-27)
+
+
+### Features
+
+* **smart actions:** endpoint that handle forms' load hooks ([86b15a3](https://github.com/ForestAdmin/forest-express-mongoose/commit/86b15a37bdf2f702142b83fbc0882a8cfd6c7359))
+
+## [6.4.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.4.0...v6.4.1) (2020-11-26)
+
+
+### Bug Fixes
+
+* export error handler middleware ([#443](https://github.com/ForestAdmin/forest-express-mongoose/issues/443)) ([220f4c3](https://github.com/ForestAdmin/forest-express-mongoose/commit/220f4c37b9d0b1e652ce3e4c9489c49932a7abc8))
+
 # [7.0.0-beta.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.4.0...v7.0.0-beta.1) (2020-11-24)
 
 
