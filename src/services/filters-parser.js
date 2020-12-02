@@ -135,7 +135,7 @@ function FiltersParser(model, timezone, options) {
       case 'not_contains':
         return { $not: new RegExp(`.*${parseFct(value)}.*`) };
       case 'present':
-        return { $exists: true };
+        return { $exists: true, $ne: null };
       case 'blank':
         return { $in: [null, ''] };
       case 'equal':
