@@ -1,3 +1,11 @@
+## [6.5.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.5.1...v6.5.2) (2020-12-03)
+
+
+### Bug Fixes
+
+* **filters:** ensure 'is present' behaves as in forest-express-sequelize ([1a914c1](https://github.com/ForestAdmin/forest-express-mongoose/commit/1a914c1c611b5c2a13b001546b0de6081c6a25d0))
+* **filters:** ensure 'is present' behaves as in forest-express-sequelize ([fb3d531](https://github.com/ForestAdmin/forest-express-mongoose/commit/fb3d5311b2b4269edffba688dfe3b3bd3c98dd42))
+
 ## [6.5.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.5.0...v6.5.1) (2020-12-01)
 
 
