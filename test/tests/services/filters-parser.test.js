@@ -168,7 +168,7 @@ describe('service > filters-parser', () => {
           expect(await defaultParser.formatOperatorValue('name', 'after', value)).toStrictEqual({ $gt: value });
           expect(await defaultParser.formatOperatorValue('name', 'not_contains', value)).toStrictEqual({ $not: new RegExp(`.*${value}.*`) });
           expect(await defaultParser.formatOperatorValue('name', 'not_equal', value)).toStrictEqual({ $ne: value });
-          expect(await defaultParser.formatOperatorValue('name', 'present', value)).toStrictEqual({ $exists: true });
+          expect(await defaultParser.formatOperatorValue('name', 'present', value)).toStrictEqual({ $exists: true, $ne: null });
           expect(await defaultParser.formatOperatorValue('name', 'equal', value)).toStrictEqual(value);
           expect(await defaultParser.formatOperatorValue('name', 'blank', value)).toStrictEqual({ $in: [null, ''] });
         });
