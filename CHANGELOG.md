@@ -1,3 +1,10 @@
+# [6.6.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.5.2...v6.6.0) (2020-12-09)
+
+
+### Features
+
+* **smart actions:** introduce smart action forms hooks ([#459](https://github.com/ForestAdmin/forest-express-mongoose/issues/459)) ([a7c8183](https://github.com/ForestAdmin/forest-express-mongoose/commit/a7c81838b27333b90d90815a6209c4a713176ad9))
+
 ## [6.5.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.5.1...v6.5.2) (2020-12-03)
 
 
