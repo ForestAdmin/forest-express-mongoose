@@ -1,3 +1,10 @@
+## [6.6.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.6.0...v6.6.1) (2020-12-11)
+
+
+### Bug Fixes
+
+* array display with smart field ([#464](https://github.com/ForestAdmin/forest-express-mongoose/issues/464)) ([2119f53](https://github.com/ForestAdmin/forest-express-mongoose/commit/2119f53d7e76dc2ca86f7b4906f4488d06153db1))
+
 # [6.6.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.5.2...v6.6.0) (2020-12-09)
 
 
