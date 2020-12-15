@@ -1,3 +1,10 @@
+## [6.6.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.6.1...v6.6.2) (2020-12-15)
+
+
+### Bug Fixes
+
+* fix related data list display ([#467](https://github.com/ForestAdmin/forest-express-mongoose/issues/467)) ([4ffa177](https://github.com/ForestAdmin/forest-express-mongoose/commit/4ffa177f19bb6bad622cc8d75caad56a85c28b7a))
+
 ## [6.6.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.6.0...v6.6.1) (2020-12-11)
 
 
