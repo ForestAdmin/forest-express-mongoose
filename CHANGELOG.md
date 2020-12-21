@@ -1,3 +1,10 @@
+## [6.6.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.6.2...v6.6.3) (2020-12-21)
+
+
+### Bug Fixes
+
+* display correct reference field when it is a smartfield ([#471](https://github.com/ForestAdmin/forest-express-mongoose/issues/471)) ([ade568a](https://github.com/ForestAdmin/forest-express-mongoose/commit/ade568ae33bbe8fdcf26d1073263a0c82c365254))
+
 ## [6.6.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.6.1...v6.6.2) (2020-12-15)
 
 
