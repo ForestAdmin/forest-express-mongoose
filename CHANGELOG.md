@@ -1,3 +1,10 @@
+# [7.0.0-beta.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.0.0-beta.2...v7.0.0-beta.3) (2021-01-06)
+
+
+### Bug Fixes
+
+* user being disconnected after 33min instead of 14 days ([#474](https://github.com/ForestAdmin/forest-express-mongoose/issues/474)) ([8a70566](https://github.com/ForestAdmin/forest-express-mongoose/commit/8a70566653c52c4447668cbe9e383488e4c3a071))
+
 # [7.0.0-beta.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.0.0-beta.1...v7.0.0-beta.2) (2020-12-02)
 
 
