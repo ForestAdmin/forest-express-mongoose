@@ -1,3 +1,10 @@
+# [7.0.0-beta.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.0.0-beta.3...v7.0.0-beta.4) (2021-01-08)
+
+
+### Bug Fixes
+
+* **authentication:** error when authenticating with an invalid token in cookies ([#476](https://github.com/ForestAdmin/forest-express-mongoose/issues/476)) ([e61460a](https://github.com/ForestAdmin/forest-express-mongoose/commit/e61460a8c35d2bae86a9c915908ae1a8146243c3))
+
 # [7.0.0-beta.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.0.0-beta.2...v7.0.0-beta.3) (2021-01-06)
 
 
