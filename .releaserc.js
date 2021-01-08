@@ -51,5 +51,26 @@ module.exports = {
         packageName: 'forest-express-mongoose',
       }
     ],
+    [
+      "semantic-release-npm-deprecate-old-versions", {
+        "rules": [
+          { 
+            "rule": "supportLatest", 
+            "options": {
+              "numberOfMajorReleases": 2,
+              "numberOfMinorReleases": "all",
+              "numberOfPatchReleases": "all"
+            }
+          },
+          { 
+            "rule": "supportPreReleaseIfNotReleased", 
+            "options": {
+              "numberOfPreReleases": 1,
+            }
+          },
+          "deprecateAll"
+        ]
+      }
+    ]
   ],
 }
