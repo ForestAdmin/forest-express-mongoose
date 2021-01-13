@@ -57,7 +57,7 @@ module.exports = {
           { 
             "rule": "supportLatest", 
             "options": {
-              "numberOfMajorReleases": 2,
+              "numberOfMajorReleases": 3,
               "numberOfMinorReleases": "all",
               "numberOfPatchReleases": "all"
             }
