@@ -6,7 +6,7 @@ import utils from '../utils/schema';
 const AGGREGATOR_OPERATORS = ['and', 'or'];
 
 function FiltersParser(model, timezone, options) {
-  const schema = Interface.Schemas.schemas[utils.getModelName(model)];
+  const modelSchema = Interface.Schemas.schemas[utils.getModelName(model)];
 
   const parseInteger = (value) => Number.parseInt(value, 10);
   const parseDate = (value) => new Date(value);
@@ -55,6 +55,29 @@ function FiltersParser(model, timezone, options) {
         || _.isUndefined(condition.value)) {
       throw new InvalidFiltersFormatError('Invalid condition format');
     }
+
+    if (this.isSmartField(modelSchema, condition.field)) {
+      const fieldFound = modelSchema.fields.find((field) => field.field === condition.field);
+
+      if (!fieldFound.filter) {
+        throw new Error(`"filter" method missing on smart field "${fieldFound.field}"`);
+      }
+
+      const formattedCondition = fieldFound
+        .filter({
+          where: await this.formatOperatorValue(
+            condition.field,
+            condition.operator,
+            condition.value,
+          ),
+          condition,
+        });
+      if (!formattedCondition) {
+        throw new Error(`"filter" method on smart field "${fieldFound.field}" must return a condition`);
+      }
+      return formattedCondition;
+    }
+
     const formatedField = this.formatField(condition.field);
 
     return {
@@ -81,10 +104,10 @@ function FiltersParser(model, timezone, options) {
     const [fieldName, subfieldName] = key.split(':');
 
     // NOTICE: Mongoose Aggregate don't parse the value automatically.
-    let field = _.find(schema.fields, { field: fieldName });
+    let field = _.find(modelSchema.fields, { field: fieldName });
 
     if (!field) {
-      throw new InvalidFiltersFormatError(`Field '${fieldName}' not found on collection '${schema.name}'`);
+      throw new InvalidFiltersFormatError(`Field '${fieldName}' not found on collection '${modelSchema.name}'`);
     }
 
     const isEmbeddedField = !!field.type.fields;
@@ -149,6 +172,11 @@ function FiltersParser(model, timezone, options) {
 
   this.formatField = (field) => field.replace(':', '.');
 
+  this.isSmartField = (schema, fieldName) => {
+    const fieldFound = schema.fields.find((field) => field.field === fieldName);
+    return !!fieldFound && !!fieldFound.isVirtual;
+  };
+
   this.getAssociations = async (filtersString) => BaseFiltersParser.getAssociations(filtersString);
 
   this.formatAggregationForReferences = (aggregator, conditions) => ({ aggregator, conditions });
@@ -175,10 +203,10 @@ function FiltersParser(model, timezone, options) {
     }
 
     // Mongoose Aggregate don't parse the value automatically.
-    const field = _.find(schema.fields, { field: fieldName });
+    const field = _.find(modelSchema.fields, { field: fieldName });
 
     if (!field) {
-      throw new InvalidFiltersFormatError(`Field '${fieldName}' not found on collection '${schema.name}'`);
+      throw new InvalidFiltersFormatError(`Field '${fieldName}' not found on collection '${modelSchema.name}'`);
     }
 
     if (!field.reference) {
