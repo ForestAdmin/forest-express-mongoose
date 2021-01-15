@@ -1,3 +1,11 @@
+# [6.7.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.6.3...v6.7.0) (2021-01-15)
+
+
+### Features
+
+* **filter:** add possibility to filter on smart field ([090a902](https://github.com/ForestAdmin/forest-express-mongoose/commit/090a902d1f85cc082b0d4176343a19f823e3421d))
+* **filter:** add possibility to filter on smart field ([#478](https://github.com/ForestAdmin/forest-express-mongoose/issues/478)) ([e27feca](https://github.com/ForestAdmin/forest-express-mongoose/commit/e27feca408f26efcf61d65e7b47a1d9ae1ad2dfc))
+
 ## [6.6.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.6.2...v6.6.3) (2020-12-21)
 
 
