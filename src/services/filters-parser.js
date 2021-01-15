@@ -64,7 +64,7 @@ function FiltersParser(model, timezone, options) {
       throw new Error(`"filter" method missing on smart field "${fieldFound.field}"`);
     }
 
-    const formattedCondition = fieldFound
+    const formattedCondition = await Promise.resolve(fieldFound
       .filter({
         where: await this.formatOperatorValue(
           condition.field,
@@ -72,7 +72,7 @@ function FiltersParser(model, timezone, options) {
           condition.value,
         ),
         condition,
-      });
+      }));
     if (!formattedCondition) {
       throw new Error(`"filter" method on smart field "${fieldFound.field}" must return a condition`);
     }
