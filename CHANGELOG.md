@@ -1,3 +1,10 @@
+## [6.7.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.7.0...v6.7.1) (2021-01-18)
+
+
+### Bug Fixes
+
+* **forestadmin-schema:** regenerate forestadmin schema only when files are valid ([#477](https://github.com/ForestAdmin/forest-express-mongoose/issues/477)) ([558177a](https://github.com/ForestAdmin/forest-express-mongoose/commit/558177a89f81937c24c7d22258c20cf2d5faf178))
+
 # [6.7.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.6.3...v6.7.0) (2021-01-15)
 
 
