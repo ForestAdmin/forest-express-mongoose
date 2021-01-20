@@ -15,6 +15,8 @@ jobs:
       script: commitlint-travis
     - script: yarn lint
       name: Lint JavaScript
+    - script: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      name: Login on dockerhub
     - script: yarn test:coverage
       name: Tests
       # NOTICE: Handles code coverage reporting to Code Climate
