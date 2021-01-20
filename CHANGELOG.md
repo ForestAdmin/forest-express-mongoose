@@ -1,3 +1,10 @@
+## [6.7.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.7.1...v6.7.2) (2021-01-20)
+
+
+### Bug Fixes
+
+* **smart-action-hook:** value injected to an enum field of type  is now correctly handled ([#480](https://github.com/ForestAdmin/forest-express-mongoose/issues/480)) ([2593fb5](https://github.com/ForestAdmin/forest-express-mongoose/commit/2593fb588d2a3ce01e52969a5b3fb1800ee59cdc))
+
 ## [6.7.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.7.0...v6.7.1) (2021-01-18)
 
 
