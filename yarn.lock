@@ -9042,10 +9042,10 @@ saxes@^5.0.0:
   dependencies:
     xmlchars "^2.2.0"
 
-semantic-release-npm-deprecate-old-versions@1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/semantic-release-npm-deprecate-old-versions/-/semantic-release-npm-deprecate-old-versions-1.1.1.tgz#a21357af691bf1aac6889c28c50f2094a13bb3db"
-  integrity sha512-MXyugrFaUhGAkxO1x4rdNUH1ypyrsqPhk7lxBhDDRM7LLRDZQTvR/hkHOgC5N4xTASBXBnDsdIs8F+OHP2XQVg==
+semantic-release-npm-deprecate-old-versions@1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/semantic-release-npm-deprecate-old-versions/-/semantic-release-npm-deprecate-old-versions-1.1.2.tgz#1dd33a92dcb70f525672bf682a897f7806f45f9c"
+  integrity sha512-4P5wqVV7j5DGrrdsSu/iS2yOXELUIOX4dh/xlMsmHOEDptDe43PLlUDGAajijrbJKOCBvPxvIP7tn/7knfbW+g==
   dependencies:
     execa "^4.0.3"
     semver "^7.3.2"
