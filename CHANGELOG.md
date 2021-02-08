@@ -1,3 +1,23 @@
+# [7.0.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.7.2...v7.0.0) (2021-02-08)
+
+
+### Bug Fixes
+
+* **authentication:** error when authenticating with an invalid token in cookies ([#476](https://github.com/ForestAdmin/forest-express-mongoose/issues/476)) ([e61460a](https://github.com/ForestAdmin/forest-express-mongoose/commit/e61460a8c35d2bae86a9c915908ae1a8146243c3))
+* user being disconnected after 33min instead of 14 days ([#474](https://github.com/ForestAdmin/forest-express-mongoose/issues/474)) ([8a70566](https://github.com/ForestAdmin/forest-express-mongoose/commit/8a70566653c52c4447668cbe9e383488e4c3a071))
+
+
+### Features
+
+* init function now uses connections & objectMapping instead of sequelize as parameter ([#432](https://github.com/ForestAdmin/forest-express-mongoose/issues/432)) ([97b2ac2](https://github.com/ForestAdmin/forest-express-mongoose/commit/97b2ac2e29374de51435c5dff79fd033b41b74eb))
+
+
+### BREAKING CHANGES
+
+* mongoose options is not supported anymore by Liana.init()
+connections and objectMapping is now required on Liana.init().
+Update forest-express dependency to 8.0.0-beta.1 (See https://github.com/ForestAdmin/forest-express/tree/v8.0.0-beta.1)
+
 ## [6.7.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.7.1...v6.7.2) (2021-01-20)
 
 
