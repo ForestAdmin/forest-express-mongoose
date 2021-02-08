@@ -20,6 +20,20 @@
 * **filter:** add possibility to filter on smart field ([090a902](https://github.com/ForestAdmin/forest-express-mongoose/commit/090a902d1f85cc082b0d4176343a19f823e3421d))
 * **filter:** add possibility to filter on smart field ([#478](https://github.com/ForestAdmin/forest-express-mongoose/issues/478)) ([e27feca](https://github.com/ForestAdmin/forest-express-mongoose/commit/e27feca408f26efcf61d65e7b47a1d9ae1ad2dfc))
 
+# [7.0.0-beta.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.0.0-beta.3...v7.0.0-beta.4) (2021-01-08)
+
+
+### Bug Fixes
+
+* **authentication:** error when authenticating with an invalid token in cookies ([#476](https://github.com/ForestAdmin/forest-express-mongoose/issues/476)) ([e61460a](https://github.com/ForestAdmin/forest-express-mongoose/commit/e61460a8c35d2bae86a9c915908ae1a8146243c3))
+
+# [7.0.0-beta.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.0.0-beta.2...v7.0.0-beta.3) (2021-01-06)
+
+
+### Bug Fixes
+
+* user being disconnected after 33min instead of 14 days ([#474](https://github.com/ForestAdmin/forest-express-mongoose/issues/474)) ([8a70566](https://github.com/ForestAdmin/forest-express-mongoose/commit/8a70566653c52c4447668cbe9e383488e4c3a071))
+
 ## [6.6.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.6.2...v6.6.3) (2020-12-21)
 
 
@@ -47,6 +61,7 @@
 ### Features
 
 * **smart actions:** introduce smart action forms hooks ([#459](https://github.com/ForestAdmin/forest-express-mongoose/issues/459)) ([a7c8183](https://github.com/ForestAdmin/forest-express-mongoose/commit/a7c81838b27333b90d90815a6209c4a713176ad9))
+* **role-permissions:**  support the new role ACL format ([#577](https://github.com/ForestAdmin/forest-express/issues/569)) ([4aed30f](https://github.com/ForestAdmin/forest-express/commit/4aed30fefabf616360a05e54e7b4c6ff71c7a038))
 
 ## [6.5.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.5.1...v6.5.2) (2020-12-03)
 
@@ -55,6 +70,18 @@
 
 * **filters:** ensure 'is present' behaves as in forest-express-sequelize ([1a914c1](https://github.com/ForestAdmin/forest-express-mongoose/commit/1a914c1c611b5c2a13b001546b0de6081c6a25d0))
 * **filters:** ensure 'is present' behaves as in forest-express-sequelize ([fb3d531](https://github.com/ForestAdmin/forest-express-mongoose/commit/fb3d5311b2b4269edffba688dfe3b3bd3c98dd42))
+
+# [7.0.0-beta.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.0.0-beta.1...v7.0.0-beta.2) (2020-12-02)
+
+
+### Bug Fixes
+
+* **smart fields:** compute properly smart fields with mongoose ([#453](https://github.com/ForestAdmin/forest-express-mongoose/issues/453)) ([55c33f7](https://github.com/ForestAdmin/forest-express-mongoose/commit/55c33f774b1b4fe4f2c490d6b0ac354a5d7c8f5f))
+* export error handler middleware ([#443](https://github.com/ForestAdmin/forest-express-mongoose/issues/443)) ([220f4c3](https://github.com/ForestAdmin/forest-express-mongoose/commit/220f4c37b9d0b1e652ce3e4c9489c49932a7abc8))
+
+### Features
+
+* **smart actions:** endpoint that handle forms' load hooks ([86b15a3](https://github.com/ForestAdmin/forest-express-mongoose/commit/86b15a37bdf2f702142b83fbc0882a8cfd6c7359))
 
 ## [6.5.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.5.0...v6.5.1) (2020-12-01)
 
@@ -76,6 +103,20 @@
 ### Bug Fixes
 
 * export error handler middleware ([#443](https://github.com/ForestAdmin/forest-express-mongoose/issues/443)) ([220f4c3](https://github.com/ForestAdmin/forest-express-mongoose/commit/220f4c37b9d0b1e652ce3e4c9489c49932a7abc8))
+
+# [7.0.0-beta.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.4.0...v7.0.0-beta.1) (2020-11-24)
+
+
+### Features
+
+* init function now uses connections & objectMapping instead of sequelize as parameter ([#432](https://github.com/ForestAdmin/forest-express-mongoose/issues/432)) ([97b2ac2](https://github.com/ForestAdmin/forest-express-mongoose/commit/97b2ac2e29374de51435c5dff79fd033b41b74eb))
+
+
+### BREAKING CHANGES
+
+* mongoose options is not supported anymore by Liana.init()
+connections and objectMapping is now required on Liana.init().
+Update forest-express dependency to 8.0.0-beta.1 (See https://github.com/ForestAdmin/forest-express/tree/v8.0.0-beta.1)
 
 # [6.4.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.3.10...v6.4.0) (2020-11-17)
 

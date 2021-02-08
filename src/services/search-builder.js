@@ -30,7 +30,7 @@ function SearchBuilder(model, opts, params, searchFields) {
 
       if (value.instance === 'ObjectID') {
         if (new RegExp('^[0-9a-fA-F]{24}$').test(params.search)) {
-          condition[key] = opts.mongoose.Types.ObjectId(params.search);
+          condition[key] = opts.Mongoose.Types.ObjectId(params.search);
           pushCondition(condition, key);
         }
       } else if (value.instance === 'Number') {

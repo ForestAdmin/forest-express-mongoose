@@ -12,8 +12,8 @@ describe('service > filters-parser', () => {
   const timezone = 'Europe/Paris';
 
   const options = {
-    mongoose,
-    connections: [mongoose],
+    Mongoose: mongoose,
+    connections: { mongoose },
   };
 
   beforeAll(() => {
