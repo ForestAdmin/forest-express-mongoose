@@ -60,7 +60,7 @@
     "semantic-release": "17.3.0",
     "semantic-release-npm-deprecate-old-versions": "1.1.2",
     "semantic-release-slack-bot": "1.6.2",
-    "simple-git": "1.65.0"
+    "simple-git": "2.34.2"
   },
   "scripts": {
     "build": "./node_modules/.bin/babel src --out-dir dist && echo '\n\\033[0;34m[+] \\033[0;32mBuild done\\033[0m'",
