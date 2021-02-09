@@ -1,6 +1,15 @@
 module.exports = {
   plugins: [
-    '@semantic-release/commit-analyzer',
+    [
+      '@semantic-release/commit-analyzer', {
+        'releaseRules': [
+          // This rule allow to force a release by adding "force-release" in scope.
+          // Example: `chore(force-release): support new feature`
+          // Source: https://github.com/semantic-release/commit-analyzer#releaserules
+          { scope: 'force-release', release: 'patch' },
+        ],
+      },
+    ],
     '@semantic-release/release-notes-generator',
     '@semantic-release/changelog',
     '@semantic-release/npm',
@@ -42,5 +51,26 @@ module.exports = {
         packageName: 'forest-express-mongoose',
       }
     ],
+    [
+      "semantic-release-npm-deprecate-old-versions", {
+        "rules": [
+          { 
+            "rule": "supportLatest", 
+            "options": {
+              "numberOfMajorReleases": 3,
+              "numberOfMinorReleases": "all",
+              "numberOfPatchReleases": "all"
+            }
+          },
+          { 
+            "rule": "supportPreReleaseIfNotReleased", 
+            "options": {
+              "numberOfPreReleases": 1,
+            }
+          },
+          "deprecateAll"
+        ]
+      }
+    ]
   ],
 }
