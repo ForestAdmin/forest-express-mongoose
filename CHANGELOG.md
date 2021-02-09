@@ -1,3 +1,23 @@
+# [7.0.0-beta.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.0.0-beta.4...v7.0.0-beta.5) (2021-02-09)
+
+
+### Bug Fixes
+
+* **forestadmin-schema:** regenerate forestadmin schema only when files are valid ([#477](https://github.com/ForestAdmin/forest-express-mongoose/issues/477)) ([558177a](https://github.com/ForestAdmin/forest-express-mongoose/commit/558177a89f81937c24c7d22258c20cf2d5faf178))
+* **smart-action-hook:** value injected to an enum field of type  is now correctly handled ([#480](https://github.com/ForestAdmin/forest-express-mongoose/issues/480)) ([2593fb5](https://github.com/ForestAdmin/forest-express-mongoose/commit/2593fb588d2a3ce01e52969a5b3fb1800ee59cdc))
+* array display with smart field ([#464](https://github.com/ForestAdmin/forest-express-mongoose/issues/464)) ([2119f53](https://github.com/ForestAdmin/forest-express-mongoose/commit/2119f53d7e76dc2ca86f7b4906f4488d06153db1))
+* display correct reference field when it is a smartfield ([#471](https://github.com/ForestAdmin/forest-express-mongoose/issues/471)) ([ade568a](https://github.com/ForestAdmin/forest-express-mongoose/commit/ade568ae33bbe8fdcf26d1073263a0c82c365254))
+* fix related data list display ([#467](https://github.com/ForestAdmin/forest-express-mongoose/issues/467)) ([4ffa177](https://github.com/ForestAdmin/forest-express-mongoose/commit/4ffa177f19bb6bad622cc8d75caad56a85c28b7a))
+* **filters:** ensure 'is present' behaves as in forest-express-sequelize ([1a914c1](https://github.com/ForestAdmin/forest-express-mongoose/commit/1a914c1c611b5c2a13b001546b0de6081c6a25d0))
+* **filters:** ensure 'is present' behaves as in forest-express-sequelize ([fb3d531](https://github.com/ForestAdmin/forest-express-mongoose/commit/fb3d5311b2b4269edffba688dfe3b3bd3c98dd42))
+
+
+### Features
+
+* **filter:** add possibility to filter on smart field ([090a902](https://github.com/ForestAdmin/forest-express-mongoose/commit/090a902d1f85cc082b0d4176343a19f823e3421d))
+* **filter:** add possibility to filter on smart field ([#478](https://github.com/ForestAdmin/forest-express-mongoose/issues/478)) ([e27feca](https://github.com/ForestAdmin/forest-express-mongoose/commit/e27feca408f26efcf61d65e7b47a1d9ae1ad2dfc))
+* **smart actions:** introduce smart action forms hooks ([#459](https://github.com/ForestAdmin/forest-express-mongoose/issues/459)) ([a7c8183](https://github.com/ForestAdmin/forest-express-mongoose/commit/a7c81838b27333b90d90815a6209c4a713176ad9))
+
 ## [6.7.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.7.1...v6.7.2) (2021-01-20)
 
 
