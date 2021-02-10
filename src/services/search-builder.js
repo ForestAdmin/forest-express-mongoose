@@ -34,8 +34,13 @@ function SearchBuilder(model, opts, params, searchFields) {
           pushCondition(condition, key);
         }
       } else if (value.instance === 'Number') {
-        const searchNumber = Number(params.search);
+        let searchNumber = Number(params.search);
+
         if (!Number.isNaN(searchNumber)) {
+          if (!Number.isSafeInteger(searchNumber)) {
+            searchNumber = BigInt(params.search);
+          }
+
           condition[key] = searchNumber;
           pushCondition(condition, key);
         }

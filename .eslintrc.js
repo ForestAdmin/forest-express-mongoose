@@ -10,6 +10,7 @@ module.exports = {
   ],
   env: {
     node: true,
+    es2020: true,
   },
   rules: {
     'implicit-arrow-linebreak': 0,
