@@ -37,7 +37,7 @@ function SearchBuilder(model, opts, params, searchFields) {
         let searchNumber = Number(params.search);
 
         if (!Number.isNaN(searchNumber)) {
-          if (!Number.isSafeInteger(searchNumber)) {
+          if (Number.isInteger(searchNumber) && !Number.isSafeInteger(searchNumber)) {
             searchNumber = BigInt(params.search);
           }
 
