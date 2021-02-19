@@ -27,6 +27,7 @@ function unflatten(data) {
 module.exports = (model, opts) => {
   const fields = [];
   const paths = unflatten(model.schema.paths);
+  const { virtuals } = model.schema;
   const { mongoose } = opts;
   // NOTICE: mongoose.base is used when opts.mongoose is not the default connection.
   const Schema = mongoose.Schema || mongoose.base.Schema;
@@ -44,7 +45,7 @@ module.exports = (model, opts) => {
   function detectReference(fieldInfo) {
     if (fieldInfo.options) {
       if (fieldInfo.options.ref && fieldInfo.options.type) {
-        return `${formatRef(fieldInfo.options.ref)}._id`;
+        return ''.concat(formatRef(fieldInfo.options.ref), `.${fieldInfo.options.foreignKey || '_id'}`);
       }
       if (_.isArray(fieldInfo.options.type) && fieldInfo.options.type.length
         && fieldInfo.options.type[0].ref && fieldInfo.options.type[0].type) {
@@ -262,6 +263,16 @@ module.exports = (model, opts) => {
 
   function getFieldSchema(path) {
     const fieldInfo = paths[path];
+
+    // update if we detect a virtual with localField
+    const virtual = Object.values(virtuals).find((v) => v.options && v.options.localField === path);
+    if (virtual) {
+      fieldInfo.options = {
+        ...fieldInfo.options,
+        ref: virtual.options.ref,
+        foreignKey: virtual.options.foreignField,
+      };
+    }
 
     const schema = { field: path, type: getTypeFromMongoose(fieldInfo) };
 
