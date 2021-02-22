@@ -3,7 +3,6 @@ const P = require('bluebird');
 const Interface = require('forest-express');
 const utils = require('./utils/schema');
 const orm = require('./utils/orm');
-const mongooseUtils = require('./services/mongoose-utils');
 
 const REGEX_VERSION = /(\d+\.)?(\d+\.)?(\*|\d+)/;
 
@@ -29,10 +28,17 @@ exports.PUBLIC_ROUTES = Interface.PUBLIC_ROUTES;
 exports.init = (opts) => {
   exports.opts = opts;
 
-  // NOTICE: Ensure compatibility with the old middleware configuration.
-  if (!('connections' in opts)) {
-    opts.connections = [opts.mongoose];
+  if (!opts.objectMapping) {
+    Interface.logger.error('The objectMapping option appears to be missing. Please make sure it is set correctly.');
+    return Promise.resolve(() => {});
   }
+
+  if (opts.mongoose) {
+    Interface.logger.warn('The mongoose option is not supported anymore. Please remove this option.');
+  }
+
+  opts.Mongoose = opts.objectMapping;
+  opts.useMultipleDatabases = Object.keys(opts.connections).length > 1;
 
   exports.getLianaName = () => 'forest-express-mongoose';
 
@@ -44,16 +50,11 @@ exports.init = (opts) => {
     return null;
   };
 
-  exports.getOrmVersion = () => {
-    if (!opts.mongoose) { return null; }
-    return orm.getVersion(opts.mongoose);
-  };
+  exports.getOrmVersion = () => orm.getVersion(opts.Mongoose);
 
-  exports.getDatabaseType = () => 'MongoDB';
+  exports.getDatabaseType = () => (opts.useMultipleDatabases ? 'multiple' : 'MongoDB');
 
   exports.SchemaAdapter = require('./adapters/mongoose');
-
-  exports.getModels = () => mongooseUtils.getModels(opts);
 
   exports.getModelName = utils.getModelName;
   // TODO: Remove nameOld attribute once the lianas versions older than 2.0.0 are minority

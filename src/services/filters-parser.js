@@ -18,7 +18,7 @@ function FiltersParser(model, timezone, options) {
   const parseString = (value) => {
     // NOTICE: Check if the value is a real ObjectID. By default, the isValid method returns true
     //         for a random string with length 12 (example: 'Black Friday').
-    const { ObjectId } = options.mongoose.Types;
+    const { ObjectId } = options.Mongoose.Types;
     if (ObjectId.isValid(value) && ObjectId(value).toString() === value) {
       return ObjectId(value);
     }

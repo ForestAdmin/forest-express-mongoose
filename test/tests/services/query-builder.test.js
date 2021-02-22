@@ -9,8 +9,8 @@ describe('service > query-builder', () => {
   let LumberJackModel;
 
   const options = {
-    mongoose,
-    connections: [mongoose],
+    Mongoose: mongoose,
+    connections: { mongoose },
   };
 
   beforeAll(() => {
