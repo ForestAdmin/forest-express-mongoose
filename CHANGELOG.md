@@ -1,3 +1,5 @@
+## [7.0.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.0.0...v7.0.1) (2021-02-22)
+
 # [7.0.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.7.2...v7.0.0) (2021-02-22)
 
 This version has been released by error. Version 7.0.0 is deprecated and should not be used.
