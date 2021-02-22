@@ -39,8 +39,6 @@ jobs:
     needs: [lint]
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
       - uses: actions/setup-node@v1
       - name: Cache node_modules
         uses: actions/cache@v2
