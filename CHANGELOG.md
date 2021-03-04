@@ -1,3 +1,10 @@
+## [7.0.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.0.1...v7.0.2) (2021-03-04)
+
+
+### Bug Fixes
+
+* **authentication:** safari cannot login on remote lianas because of third party cookies ([#512](https://github.com/ForestAdmin/forest-express-mongoose/issues/512)) ([725de7b](https://github.com/ForestAdmin/forest-express-mongoose/commit/725de7b559d1589c93304f67f2fe17a0b078d840))
+
 ## [7.0.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.0.0...v7.0.1) (2021-02-22)
 
 # [7.0.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.7.2...v7.0.0) (2021-02-22)
