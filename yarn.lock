@@ -4478,10 +4478,10 @@ for-in@^1.0.2:
   resolved "https://registry.yarnpkg.com/for-in/-/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
   integrity sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=
 
-forest-express@8.0.2:
-  version "8.0.2"
-  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-8.0.2.tgz#23bf4be65e25444e4d2dab79bad4a7ffe8b899d6"
-  integrity sha512-Em1zJGIgldX4PvaZb7CfSl90TKamd03ql20MgRRahMb/qhamT+Tf/ses08g6qbLd9ANsWYoVA5RhJn28wZqBBw==
+forest-express@8.0.3:
+  version "8.0.3"
+  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-8.0.3.tgz#0ca9459878e19fb9b1fb471e7befd3a273df4275"
+  integrity sha512-mRI/4mIIdj0nSKUAd2Vz8+QQcWdNYTqwiRRkFmfRZPsZpzXUl/hrtNiEVxnY0c/1GM/nZyGacfFlZvs5cgAzPQ==
   dependencies:
     "@babel/runtime" "7.10.1"
     base32-encode "1.1.1"
@@ -4498,7 +4498,7 @@ forest-express@8.0.2:
     inflected "2.0.4"
     jsonapi-serializer "3.6.5"
     jsonwebtoken "8.5.1"
-    lodash "4.17.19"
+    lodash "4.17.21"
     moment "2.24.0"
     moment-timezone "0.5.26"
     openid-client "4.2.0"
@@ -6820,11 +6820,6 @@ lodash.without@~4.4.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/lodash.without/-/lodash.without-4.4.0.tgz#3cd4574a00b67bae373a94b748772640507b7aac"
   integrity sha1-PNRXSgC2e643OpS3SHcmQFB7eqw=
-
-lodash@4.17.19:
-  version "4.17.19"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.19.tgz#e48ddedbe30b3321783c5b4301fbd353bc1e4a4b"
-  integrity sha512-JNvd8XER9GQX0v2qJgsaN/mzFCNA5BRe/j8JN9d+tWyGLSodKQHKFicdwNYzWwI3wjRnaKPsGj1XkBjx/F96DQ==
 
 lodash@4.17.21, lodash@^4.16.3, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.4:
   version "4.17.21"
