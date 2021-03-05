@@ -1,3 +1,10 @@
+## [7.0.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.0.2...v7.0.3) (2021-03-05)
+
+
+### Bug Fixes
+
+* **security:** patch lodash vulnerabilities ([#500](https://github.com/ForestAdmin/forest-express-mongoose/issues/500)) ([a851711](https://github.com/ForestAdmin/forest-express-mongoose/commit/a85171174e942a026e01c145e5dddc77706d4dfd))
+
 ## [7.0.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.0.1...v7.0.2) (2021-03-04)
 
 
