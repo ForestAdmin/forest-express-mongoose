@@ -1,3 +1,10 @@
+## [7.0.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.0.4...v7.0.5) (2021-03-10)
+
+
+### Bug Fixes
+
+* **authentication:** unable to login when the agents respond to an url starting with a prefix ([#520](https://github.com/ForestAdmin/forest-express-mongoose/issues/520)) ([8933e12](https://github.com/ForestAdmin/forest-express-mongoose/commit/8933e12857da040f09819ef04d5b254aba412c2e))
+
 ## [7.0.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.0.3...v7.0.4) (2021-03-05)
 
 
