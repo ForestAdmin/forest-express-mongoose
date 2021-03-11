@@ -1,3 +1,15 @@
+# [7.1.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.0.5...v7.1.0) (2021-03-11)
+
+
+### Bug Fixes
+
+* commit a correct yarn lock ([206d713](https://github.com/ForestAdmin/forest-express-mongoose/commit/206d7134cfddf615cd24ecc48a9edb0b80cc61c3))
+
+
+### Features
+
+* **security:** bump version of forest-express ([767ed25](https://github.com/ForestAdmin/forest-express-mongoose/commit/767ed259707485d5faa4f1aa22d4bf84930c093d))
+
 ## [7.0.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.0.4...v7.0.5) (2021-03-10)
 
 
