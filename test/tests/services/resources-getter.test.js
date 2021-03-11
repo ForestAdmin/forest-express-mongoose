@@ -10,8 +10,8 @@ describe('service > resources-getter', () => {
   let FilmModel;
 
   const options = {
-    mongoose,
-    connections: [mongoose],
+    Mongoose: mongoose,
+    connections: { mongoose },
   };
 
   beforeAll(() => {

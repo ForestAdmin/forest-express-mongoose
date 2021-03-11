@@ -1,7 +1,7 @@
 {
   "name": "forest-express-mongoose",
   "description": "Official Express/Mongoose Liana for Forest",
-  "version": "6.4.0-development",
+  "version": "7.0.5",
   "author": "Sandro Munda <sandro@munda.me>",
   "contributors": [
     "Arnaud Besnier <arnaudibesnier@gmail.com>",
@@ -28,7 +28,7 @@
     "bluebird": "2.9.25",
     "forest-express": "8.0.5",
     "http-errors": "1.7.2",
-    "lodash": "4.17.19",
+    "lodash": "4.17.21",
     "moment": "2.24.0",
     "moment-timezone": "0.5.27",
     "semver": "5.6.0"
@@ -40,9 +40,8 @@
     "@babel/plugin-transform-runtime": "7.10.1",
     "@babel/preset-env": "7.10.1",
     "@babel/register": "7.10.1",
-    "@commitlint/cli": "8.3.5",
-    "@commitlint/config-conventional": "8.3.4",
-    "@commitlint/travis-cli": "8.3.5",
+    "@commitlint/cli": "11.0.0",
+    "@commitlint/config-conventional": "11.0.0",
     "@semantic-release/changelog": "5.0.1",
     "@semantic-release/git": "9.0.0",
     "@types/jest": "26.0.13",
@@ -54,16 +53,18 @@
     "eslint-plugin-sonarjs": "0.5.0",
     "husky": "4.2.5",
     "jest": "26.0.1",
+    "jest-extended": "0.11.5",
     "mongoose": "5.8.1",
     "mongoose-fixture-loader": "1.0.2",
     "onchange": "6.0.0",
-    "semantic-release": "17.0.7",
+    "semantic-release": "17.3.0",
+    "semantic-release-npm-deprecate-old-versions": "1.1.2",
     "semantic-release-slack-bot": "1.6.2",
     "simple-git": "1.65.0"
   },
   "scripts": {
     "build": "./node_modules/.bin/babel src --out-dir dist && echo '\n\\033[0;34m[+] \\033[0;32mBuild done\\033[0m'",
-    "build:watch": "onchange 'src/**/*.js' -i -- yarn build",
+    "build:watch": "onchange 'src/**/*.js' 'node_modules/forest-express/dist/*' --no-exclude -i -- yarn build",
     "lint": "./node_modules/eslint/bin/eslint.js .eslint-bin src test",
     "test": "jest --runInBand",
     "test:coverage": "jest --runInBand --coverage --collectCoverageFrom=\"src/**/*.{ts,js}\""
