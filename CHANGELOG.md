@@ -1,3 +1,10 @@
+# [7.2.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.1.0...v7.2.0) (2021-03-15)
+
+
+### Features
+
+* **security:** authorised only allowed stats queries using permissions ([#525](https://github.com/ForestAdmin/forest-express-mongoose/issues/525)) ([629ee81](https://github.com/ForestAdmin/forest-express-mongoose/commit/629ee817ef10c4c24342c15949aeb3ce99e53786))
+
 # [7.1.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.0.5...v7.1.0) (2021-03-11)
 
 
