@@ -1,3 +1,10 @@
+## [7.2.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.2.0...v7.2.1) (2021-03-18)
+
+
+### Bug Fixes
+
+* **security:** downgrade forest-express while the charts are broken ([69506f3](https://github.com/ForestAdmin/forest-express-mongoose/commit/69506f3684cd5425350868f085191c0c5412fb66))
+
 # [7.2.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.1.0...v7.2.0) (2021-03-15)
 
 
