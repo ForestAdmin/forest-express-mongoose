@@ -86,44 +86,42 @@ describe('service > has-many-getter', () => {
         TreeModel = mongoose.model('Tree', TreeSchema);
         return Promise.all([LumberJackModel.remove({}), TreeModel.remove({})]);
       })
-      .then(() => {
-        Promise.all([
-          loadFixture(LumberJackModel, [
-            {
-              _id: '41224d776a326fb40f000001',
-              name: 'Kaladin',
-              country: 'CZ',
-            },
-            {
-              _id: '41224d776a326fb40f000002',
-              name: 'Marcell Doe',
-              country: 'US',
-            },
-            {
-              _id: '41224d776a326fb40f000004',
-              name: 'Marc Schneider',
-              country: 'DE',
-            },
-            {
-              _id: '41224d776a326fb40f000005',
-              name: 'Maria Smith',
-              country: 'US',
-            },
-          ]),
-          loadFixture(TreeModel, [
-            {
-              _id: '41224d776a326fb40f000003',
-              name: 'Ashe Tree Lane',
-              owners: [
-                '41224d776a326fb40f000001',
-                '41224d776a326fb40f000002',
-                '41224d776a326fb40f000004',
-                '41224d776a326fb40f000005',
-              ],
-            },
-          ]),
-        ]);
-      });
+      .then(() => Promise.all([
+        loadFixture(LumberJackModel, [
+          {
+            _id: '41224d776a326fb40f000001',
+            name: 'Kaladin',
+            country: 'CZ',
+          },
+          {
+            _id: '41224d776a326fb40f000002',
+            name: 'Marcell Doe',
+            country: 'US',
+          },
+          {
+            _id: '41224d776a326fb40f000004',
+            name: 'Marc Schneider',
+            country: 'DE',
+          },
+          {
+            _id: '41224d776a326fb40f000005',
+            name: 'Maria Smith',
+            country: 'US',
+          },
+        ]),
+        loadFixture(TreeModel, [
+          {
+            _id: '41224d776a326fb40f000003',
+            name: 'Ashe Tree Lane',
+            owners: [
+              '41224d776a326fb40f000001',
+              '41224d776a326fb40f000002',
+              '41224d776a326fb40f000004',
+              '41224d776a326fb40f000005',
+            ],
+          },
+        ]),
+      ]));
   });
 
   afterAll(() => mongoose.connection.close());
@@ -154,8 +152,8 @@ describe('service > has-many-getter', () => {
       LumberJackModel,
       options,
       {
-        search: 'maria',
         ...parameters,
+        search: 'maria',
       },
     );
 
@@ -175,8 +173,8 @@ describe('service > has-many-getter', () => {
       LumberJackModel,
       options,
       {
-        filters: JSON.stringify({ field: 'name', operator: 'starts_with', value: 'Marc' }),
         ...parameters,
+        filters: JSON.stringify({ field: 'name', operator: 'starts_with', value: 'Marc' }),
       },
     );
 
@@ -189,7 +187,7 @@ describe('service > has-many-getter', () => {
     expect(count).toBe(2);
   });
 
-  it('should retrieve matching records and count when filter and search are specified', async () => {
+  it('should retrieve matching records and count with filter with aggregator', async () => {
     expect.assertions(6);
 
     const hasManyGetter = new HasManyGetter(
@@ -197,9 +195,14 @@ describe('service > has-many-getter', () => {
       LumberJackModel,
       options,
       {
-        search: 'mar',
-        filters: JSON.stringify({ field: 'country', operator: 'equal', value: 'US' }),
         ...parameters,
+        filters: JSON.stringify({
+          aggregator: 'and',
+          conditions: [
+            { field: 'country', operator: 'equal', value: 'US' },
+            { field: 'name', operator: 'starts_with', value: 'Mar' },
+          ],
+        }),
       },
     );
 
@@ -208,8 +211,33 @@ describe('service > has-many-getter', () => {
 
     expect(result[0]).toHaveLength(2);
     expect(result[0][0].name).toBe('Marcell Doe');
-    expect(result[0][0].country).toBe('US');
     expect(result[0][1].name).toBe('Maria Smith');
+    expect(result[0][0].country).toBe('US');
+    expect(result[0][1].country).toBe('US');
+    expect(count).toBe(2);
+  });
+
+  it('should retrieve matching records and count when filter and search are specified', async () => {
+    expect.assertions(6);
+
+    const hasManyGetter = new HasManyGetter(
+      TreeModel,
+      LumberJackModel,
+      options,
+      {
+        ...parameters,
+        search: 'mar',
+        filters: JSON.stringify({ field: 'country', operator: 'equal', value: 'US' }),
+      },
+    );
+
+    const result = await hasManyGetter.perform();
+    const count = await hasManyGetter.count();
+
+    expect(result[0]).toHaveLength(2);
+    expect(result[0][0].name).toBe('Marcell Doe');
+    expect(result[0][1].name).toBe('Maria Smith');
+    expect(result[0][0].country).toBe('US');
     expect(result[0][1].country).toBe('US');
     expect(count).toBe(2);
   });
