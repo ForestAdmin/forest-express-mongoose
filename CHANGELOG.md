@@ -1,3 +1,10 @@
+# [7.3.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.2.2...v7.3.0) (2021-03-25)
+
+
+### Features
+
+* add filters on related data ([#532](https://github.com/ForestAdmin/forest-express-mongoose/issues/532)) ([34f4110](https://github.com/ForestAdmin/forest-express-mongoose/commit/34f41102cb6b24f04e21eb60973c9dbd36072f32))
+
 ## [7.2.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.2.1...v7.2.2) (2021-03-19)
 
 
