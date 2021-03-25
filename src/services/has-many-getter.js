@@ -3,11 +3,13 @@ const P = require('bluebird');
 const Interface = require('forest-express');
 const SearchBuilder = require('./search-builder');
 const utils = require('../utils/schema');
+const FiltersParser = require('./filters-parser');
 
 function HasManyGetter(model, association, opts, params) {
   const OBJECTID_REGEXP = /^[0-9a-fA-F]{24}$/;
   const schema = Interface.Schemas.schemas[utils.getModelName(association)];
   const searchBuilder = new SearchBuilder(association, opts, params);
+  const filtersParser = new FiltersParser(association, params.timezone, opts);
 
   function hasPagination() {
     return params.page && params.page.number;
@@ -45,6 +47,25 @@ function HasManyGetter(model, association, opts, params) {
     });
   }
 
+  async function buildConditions(recordIds) {
+    const conditions = {
+      $and: [{ _id: { $in: recordIds } }],
+    };
+
+    if (params.search) {
+      const conditionsSearch = await searchBuilder.getConditions();
+      conditions.$and.push(conditionsSearch);
+    }
+
+    if (params.filters) {
+      const newFilters = await filtersParser.replaceAllReferences(params.filters);
+      const newFiltersString = JSON.stringify(newFilters);
+      conditions.$and.push(await filtersParser.perform(newFiltersString));
+    }
+
+    return conditions;
+  }
+
   function getRecordsAndRecordIds() {
     return new P((resolve, reject) => {
       let id = params.recordId;
@@ -63,15 +84,7 @@ function HasManyGetter(model, association, opts, params) {
         });
     })
       .then(async (recordIds) => {
-        const conditions = {
-          $and: [{ _id: { $in: recordIds } }],
-        };
-
-        if (params.search) {
-          const conditionsSearch = await searchBuilder.getConditions();
-          conditions.$and.push(conditionsSearch);
-        }
-
+        const conditions = await buildConditions(recordIds);
         const query = association.find(conditions);
         handlePopulate(query);
 
