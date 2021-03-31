@@ -1,3 +1,10 @@
+## [7.3.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.3.1...v7.3.2) (2021-03-31)
+
+
+### Bug Fixes
+
+* **security:** patch ini dependency vulnerability ([#538](https://github.com/ForestAdmin/forest-express-mongoose/issues/538)) ([255df7d](https://github.com/ForestAdmin/forest-express-mongoose/commit/255df7dd24bb559f2a8f2f29949faf34bfceac4e))
+
 ## [7.3.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.3.0...v7.3.1) (2021-03-31)
 
 
