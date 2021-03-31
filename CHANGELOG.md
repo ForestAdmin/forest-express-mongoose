@@ -1,3 +1,10 @@
+## [7.3.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.3.0...v7.3.1) (2021-03-31)
+
+
+### Bug Fixes
+
+* **security:** patch node-notifier vulnerabilities ([#537](https://github.com/ForestAdmin/forest-express-mongoose/issues/537)) ([92a4593](https://github.com/ForestAdmin/forest-express-mongoose/commit/92a459333c5c321566f20ef9d7ef3517c0c9ebe9))
+
 # [7.3.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.2.2...v7.3.0) (2021-03-25)
 
 
