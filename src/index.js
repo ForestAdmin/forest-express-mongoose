@@ -166,3 +166,5 @@ exports.init = (opts) => {
 
   return Interface.init(exports);
 };
+
+exports.inAppInit = (app, models, appDir) => Interface.inAppInit(app, models, appDir, exports.init);
