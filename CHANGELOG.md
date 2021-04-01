@@ -1,3 +1,10 @@
+## [7.3.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.3.3...v7.3.4) (2021-04-01)
+
+
+### Bug Fixes
+
+* **security:** patch npm-user-validate dependency vulnerabilities ([#540](https://github.com/ForestAdmin/forest-express-mongoose/issues/540)) ([bf9966b](https://github.com/ForestAdmin/forest-express-mongoose/commit/bf9966b757ff4f795ec034613b684da7278bc23d))
+
 ## [7.3.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.3.2...v7.3.3) (2021-04-01)
 
 
