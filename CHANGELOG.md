@@ -1,3 +1,10 @@
+## [7.3.7](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.3.6...v7.3.7) (2021-04-06)
+
+
+### Bug Fixes
+
+* **security:** patch marked dependency vulnerabilities ([#545](https://github.com/ForestAdmin/forest-express-mongoose/issues/545)) ([8c82799](https://github.com/ForestAdmin/forest-express-mongoose/commit/8c827990bba171bdfade7cdb903936544d1238a3))
+
 ## [7.3.6](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.3.5...v7.3.6) (2021-04-01)
 
 
