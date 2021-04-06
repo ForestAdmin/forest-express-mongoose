@@ -1,3 +1,10 @@
+## [7.3.8](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.3.7...v7.3.8) (2021-04-06)
+
+
+### Bug Fixes
+
+* **security:** patch mquery dependency vulnerabilities ([#546](https://github.com/ForestAdmin/forest-express-mongoose/issues/546)) ([e8d1dac](https://github.com/ForestAdmin/forest-express-mongoose/commit/e8d1dacfbad98f798843cfaf73fcd1cc2561c3e9))
+
 ## [7.3.7](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.3.6...v7.3.7) (2021-04-06)
 
 
