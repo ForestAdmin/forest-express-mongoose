@@ -1,3 +1,10 @@
+# [7.4.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.3.8...v7.4.0) (2021-04-09)
+
+
+### Features
+
+* **smart-action:** support hooks for smart collection ([#550](https://github.com/ForestAdmin/forest-express-mongoose/issues/550)) ([5eb3092](https://github.com/ForestAdmin/forest-express-mongoose/commit/5eb3092fcd451a9db07c222c528de0a969b58e09))
+
 ## [7.3.8](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.3.7...v7.3.8) (2021-04-06)
 
 
