@@ -1,3 +1,10 @@
+# [7.5.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.4.0...v7.5.0) (2021-04-12)
+
+
+### Features
+
+* **smart-action:** handle isReadOnly field in smart action forms ([#552](https://github.com/ForestAdmin/forest-express-mongoose/issues/552)) ([c28cb98](https://github.com/ForestAdmin/forest-express-mongoose/commit/c28cb982d69ea95e928ca91a1155ff9c8afb51e5))
+
 # [7.4.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.3.8...v7.4.0) (2021-04-09)
 
 
