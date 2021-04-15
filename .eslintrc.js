@@ -11,6 +11,9 @@ module.exports = {
   env: {
     node: true,
   },
+  ignorePatterns: [
+    'dist/**'
+  ],
   rules: {
     'implicit-arrow-linebreak': 0,
     'import/no-extraneous-dependencies': [
