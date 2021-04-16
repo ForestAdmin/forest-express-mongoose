@@ -1,3 +1,10 @@
+## [7.5.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.5.0...v7.5.1) (2021-04-16)
+
+
+### Bug Fixes
+
+* **date-filter:** filtering only on hours now returns the expected records ([#555](https://github.com/ForestAdmin/forest-express-mongoose/issues/555)) ([4ba8c7f](https://github.com/ForestAdmin/forest-express-mongoose/commit/4ba8c7f8a72f36253a43ae20147af427bf6ffc9f))
+
 # [7.5.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.4.0...v7.5.0) (2021-04-12)
 
 
