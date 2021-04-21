@@ -1,3 +1,10 @@
+## [7.5.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.5.1...v7.5.2) (2021-04-21)
+
+
+### Bug Fixes
+
+* **security:** patch ssri dependency vulnerability ([#556](https://github.com/ForestAdmin/forest-express-mongoose/issues/556)) ([33e8d2e](https://github.com/ForestAdmin/forest-express-mongoose/commit/33e8d2e47e28a6553245d1fa50b04f8d506bc704))
+
 ## [7.5.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.5.0...v7.5.1) (2021-04-16)
 
 
