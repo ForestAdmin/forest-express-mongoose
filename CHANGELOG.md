@@ -1,3 +1,10 @@
+# [7.6.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.5.2...v7.6.0) (2021-04-28)
+
+
+### Features
+
+* support yarn 2 plug n play install mode ([#560](https://github.com/ForestAdmin/forest-express-mongoose/issues/560)) ([47bc2a7](https://github.com/ForestAdmin/forest-express-mongoose/commit/47bc2a7b0f3b720671d273809f78e01574e4135c))
+
 ## [7.5.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.5.1...v7.5.2) (2021-04-21)
 
 
