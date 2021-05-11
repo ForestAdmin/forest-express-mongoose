@@ -70,6 +70,7 @@ describe('service > has-many-dissociator', () => {
   beforeEach(() => Promise.all([
     LumberJackModel.deleteMany({}),
     TreeModel.deleteMany({}),
+  ]).then(() => Promise.all([
     loadFixture(LumberJackModel, [
       {
         _id: '41224d776a326fb40f000001',
@@ -87,7 +88,7 @@ describe('service > has-many-dissociator', () => {
         owners: ['41224d776a326fb40f000001', '41224d776a326fb40f000002'],
       },
     ]),
-  ]));
+  ])));
 
   it('should delete the document and the association with option delete=true', async () => {
     expect.assertions(3);
