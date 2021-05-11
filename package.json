@@ -56,7 +56,6 @@
     "jest-extended": "0.11.5",
     "mongoose": "5.11.20",
     "mongoose-fixture-loader": "1.0.2",
-    "onchange": "6.0.0",
     "semantic-release": "17.4.2",
     "semantic-release-npm-deprecate-old-versions": "1.1.2",
     "semantic-release-slack-bot": "1.6.2",
@@ -64,7 +63,7 @@
   },
   "scripts": {
     "build": "babel --out-dir dist src",
-    "build:watch": "onchange 'src/**/*.js' 'node_modules/forest-express/dist/*' --no-exclude -i -- babel --source-maps inline --out-dir dist src",
+    "build:watch": "babel --watch --source-maps inline --out-dir dist src",
     "lint": "./node_modules/eslint/bin/eslint.js .eslint-bin src test",
     "test": "jest --runInBand",
     "test:coverage": "jest --runInBand --coverage --collectCoverageFrom=\"src/**/*.{ts,js}\""
