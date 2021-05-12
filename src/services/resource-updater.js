@@ -2,20 +2,25 @@ const _ = require('lodash');
 const Interface = require('forest-express');
 const utils = require('../utils/schema');
 
-function ResourceUpdater(model, params, record) {
-  const modelName = utils.getModelName(model);
-  const schema = Interface.Schemas.schemas[utils.getModelName(model)];
+class ResourceUpdater {
+  constructor(model, params, record) {
+    this._model = model;
+    this._record = record;
+  }
 
-  this.perform = async () => {
-    const recordId = record._id;
+  async perform() {
+    const modelName = utils.getModelName(this._model);
+    const schema = Interface.Schemas.schemas[utils.getModelName(this._model)];
+
+    const recordId = this._record._id;
 
     // NOTICE: Old versions of MongoDB (2.X) seem to refuse the presence of
     //         the _id in the $set. So we remove it. It is useless anyway.
-    delete record._id;
+    delete this._record._id;
 
-    const query = model.findByIdAndUpdate(
+    const query = this._model.findByIdAndUpdate(
       recordId,
-      { $set: record },
+      { $set: this._record },
       { new: true, runValidators: true },
     );
 
@@ -34,7 +39,7 @@ function ResourceUpdater(model, params, record) {
 
       throw error;
     }
-  };
+  }
 }
 
 module.exports = ResourceUpdater;

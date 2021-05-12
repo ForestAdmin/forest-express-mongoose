@@ -4,32 +4,41 @@ const HasManyGetter = require('./has-many-getter');
 const BATCH_INITIAL_PAGE = 1;
 const BATCH_SIZE = 1000;
 
-function ResourcesExporter(model, options, params, association) {
-  params.sort = '_id';
-  params.page = { size: BATCH_SIZE };
+class ResourcesExporter {
+  constructor(model, options, params, association) {
+    this._model = model;
+    this._options = options;
+    this._params = params;
+    this._association = association;
 
-  function getter() {
-    if (association) {
-      return new HasManyGetter(model, association, options, params);
-    }
-    return new ResourcesGetter(model, options, params);
+    this._params.sort = '_id';
+    this._params.page = { size: BATCH_SIZE };
   }
 
-  async function retrieveBatch(dataSender, pageNumber) {
-    params.page.number = pageNumber;
+  _getter() {
+    if (this._association) {
+      return new HasManyGetter(this._model, this._association, this._options, this._params);
+    }
+    return new ResourcesGetter(this._model, this._options, this._params);
+  }
 
-    const results = await getter().perform();
+  async _retrieveBatch(dataSender, pageNumber) {
+    this._params.page.number = pageNumber;
+
+    const results = await this._getter().perform();
     const records = results[0];
     await dataSender(records);
 
     if (records.length === BATCH_SIZE) {
-      return retrieveBatch(dataSender, pageNumber + 1);
+      return this._retrieveBatch(dataSender, pageNumber + 1);
     }
 
     return null;
   }
 
-  this.perform = (dataSender) => retrieveBatch(dataSender, BATCH_INITIAL_PAGE);
+  perform(dataSender) {
+    return this._retrieveBatch(dataSender, BATCH_INITIAL_PAGE);
+  }
 }
 
 module.exports = ResourcesExporter;

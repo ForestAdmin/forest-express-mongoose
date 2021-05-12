@@ -1,17 +1,24 @@
-function EmbeddedDocumentUpdater(model, params, association, record) {
-  this.perform = () => {
-    const { recordId } = params;
-    const recordIndex = parseInt(params.recordIndex, 10);
+class EmbeddedDocumentUpdater {
+  constructor(model, params, association, record) {
+    this._model = model;
+    this._params = params;
+    this._association = association;
+    this._record = record;
+  }
 
-    delete record._id;
+  async perform() {
+    const { recordId } = this._params;
+    const recordIndex = parseInt(this._params.recordIndex, 10);
 
-    const update = Object.keys(record).reduce((acc, value) => {
-      acc.$set[`${association}.${recordIndex}.${value}`] = record[value];
+    delete this._record._id;
+
+    const update = Object.keys(this._record).reduce((acc, value) => {
+      acc.$set[`${this._association}.${recordIndex}.${value}`] = this._record[value];
       return acc;
     }, { $set: {} });
 
-    return model.findByIdAndUpdate(recordId, update);
-  };
+    return this._model.findByIdAndUpdate(recordId, update);
+  }
 }
 
 module.exports = EmbeddedDocumentUpdater;
