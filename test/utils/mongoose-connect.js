@@ -7,7 +7,7 @@ function mongooseConnect() {
   return new P((resolve, reject) => {
     mongoose.connect(
       'mongodb://localhost:27017/forest-test',
-      { useNewUrlParser: true, useUnifiedTopology: true },
+      { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false },
     );
 
     const db = mongoose.connection;
