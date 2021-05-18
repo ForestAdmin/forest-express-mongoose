@@ -5,22 +5,19 @@ const utils = require('../utils/schema');
 function ResourceUpdater(model, params, record) {
   const modelName = utils.getModelName(model);
   const schema = Interface.Schemas.schemas[utils.getModelName(model)];
-  let recordId;
 
   this.perform = async () => {
-    recordId = record._id;
+    const recordId = record._id;
 
     // NOTICE: Old versions of MongoDB (2.X) seem to refuse the presence of
     //         the _id in the $set. So we remove it. It is useless anyway.
     delete record._id;
 
-    const query = model
-      .findByIdAndUpdate(recordId, {
-        $set: record,
-      }, {
-        new: true,
-        runValidators: true,
-      });
+    const query = model.findByIdAndUpdate(
+      recordId,
+      { $set: record },
+      { new: true, runValidators: true },
+    );
 
     _.each(schema.fields, (field) => {
       if (field.reference) { query.populate(field.field); }
