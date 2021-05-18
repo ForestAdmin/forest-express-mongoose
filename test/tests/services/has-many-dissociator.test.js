@@ -68,8 +68,8 @@ describe('service > has-many-dissociator', () => {
   afterAll(() => mongoose.connection.close());
 
   beforeEach(() => Promise.all([
-    LumberJackModel.remove({}),
-    TreeModel.remove({}),
+    LumberJackModel.deleteMany({}),
+    TreeModel.deleteMany({}),
     loadFixture(LumberJackModel, [
       {
         _id: '41224d776a326fb40f000001',
