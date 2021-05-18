@@ -4,11 +4,11 @@ const SearchBuilder = require('./search-builder');
 const utils = require('../utils/schema');
 const FiltersParser = require('./filters-parser');
 
-function HasManyGetter(model, association, opts, params) {
+function HasManyGetter(parentModel, childModel, opts, params) {
   const OBJECTID_REGEXP = /^[0-9a-fA-F]{24}$/;
-  const schema = Interface.Schemas.schemas[utils.getModelName(association)];
-  const searchBuilder = new SearchBuilder(association, opts, params);
-  const filtersParser = new FiltersParser(association, params.timezone, opts);
+  const schema = Interface.Schemas.schemas[utils.getModelName(childModel)];
+  const searchBuilder = new SearchBuilder(childModel, opts, params);
+  const filtersParser = new FiltersParser(childModel, params.timezone, opts);
 
   function hasPagination() {
     return params.page && params.page.number;
@@ -71,25 +71,25 @@ function HasManyGetter(model, association, opts, params) {
       id = opts.Mongoose.Types.ObjectId(id);
     }
 
-    const records1 = await model
+    const parentRecords = await parentModel
       .aggregate()
       .match({ _id: id })
       .unwind(params.associationName)
       .project(getProjection())
       .exec();
 
-    const recordIds = _.map(records1, (record) => record[params.associationName]);
-    const conditions = await buildConditions(recordIds);
-    const query = association.find(conditions);
+    const childRecordIds = _.map(parentRecords, (record) => record[params.associationName]);
+    const conditions = await buildConditions(childRecordIds);
+    const query = childModel.find(conditions);
     handlePopulate(query);
 
-    const records2 = await query;
-    return [records2, recordIds];
+    const childRecords = await query;
+    return [childRecords, childRecordIds];
   }
 
   this.perform = async () => {
-    const recordsAndRecordIds = await getRecordsAndRecordIds();
-    const records1 = recordsAndRecordIds[0];
+    const [childRecords, childRecordIds] = await getRecordsAndRecordIds();
+
     let fieldSort = params.sort;
     let descending = false;
 
@@ -100,25 +100,24 @@ function HasManyGetter(model, association, opts, params) {
 
     let recordsSorted;
     if (fieldSort) {
-      recordsSorted = _.sortBy(records1, (record) => record[fieldSort]);
+      recordsSorted = _.sortBy(childRecords, (record) => record[fieldSort]);
     } else {
-      const recordIds = recordsAndRecordIds[1];
       // NOTICE: Convert values to strings, so ObjectIds could be easily searched and compared.
-      const recordIdStrings = recordIds.map((recordId) => String(recordId));
+      const recordIdStrings = childRecordIds.map((recordId) => String(recordId));
       // NOTICE: indexOf could be improved by making a Map from record-ids to their index.
-          recordsSorted = _.sortBy(records1, record => recordIdStrings.indexOf(String(record._id))); // eslint-disable-line
+          recordsSorted = _.sortBy(childRecords, record => recordIdStrings.indexOf(String(record._id))); // eslint-disable-line
     }
 
-    let records2 = descending ? recordsSorted.reverse() : recordsSorted;
+    let sortedChildRecords = descending ? recordsSorted.reverse() : recordsSorted;
     let fieldsSearched = null;
 
     if (params.search) {
       fieldsSearched = searchBuilder.getFieldsSearched();
     }
 
-    records2 = _.slice(records2, getSkip(), getSkip() + getLimit());
+    sortedChildRecords = _.slice(sortedChildRecords, getSkip(), getSkip() + getLimit());
 
-    return [records2, fieldsSearched];
+    return [sortedChildRecords, fieldsSearched];
   };
 
   this.count = async () => {
