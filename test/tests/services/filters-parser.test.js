@@ -51,7 +51,7 @@ describe('service > filters-parser', () => {
         IslandModel = mongoose.model('Island', IslandSchema);
 
         defaultParser = new FiltersParser(IslandModel, timezone, options);
-        return IslandModel.remove({});
+        return IslandModel.deleteMany({});
       })
       .then(() =>
         loadFixture(IslandModel, [

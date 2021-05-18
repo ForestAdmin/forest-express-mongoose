@@ -30,14 +30,14 @@ describe('service > resources-remover', () => {
         });
 
         IslandModel = mongoose.model('Island', IslandSchema);
-        return IslandModel.remove({});
+        return IslandModel.deleteMany({});
       });
   });
 
   afterAll(() => mongoose.connection.close());
 
   beforeEach(async () => {
-    await IslandModel.remove({});
+    await IslandModel.deleteMany({});
     await loadFixture(IslandModel, [
       { name: 'Kauai', _id: '56cb91bdc3464f14678934ca' },
       { name: 'Oahu', _id: '56cb91bdc3464f14678934cb' },
