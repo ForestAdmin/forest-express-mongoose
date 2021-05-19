@@ -13,8 +13,8 @@ describe('service > resources-updater', () => {
   beforeAll(async () => {
     Interface.Schemas = {
       schemas: {
-        Reviews: {
-          name: 'Reviews',
+        ReviewsValue: {
+          name: 'ReviewsValue',
           idField: '_id',
           searchFields: ['name'],
           fields: [
@@ -25,15 +25,11 @@ describe('service > resources-updater', () => {
       },
     };
 
-    mongooseConnect();
+    await mongooseConnect();
 
-    const ReviewSchema = new mongoose.Schema({
-      rating: {
-        type: Number,
-      },
-    });
-
-    ReviewModel = mongoose.model('Reviews', ReviewSchema);
+    ReviewModel = mongoose.model('ReviewsValue', new mongoose.Schema({
+      rating: { type: Number },
+    }));
   });
 
   afterAll(() => mongoose.connection.close());

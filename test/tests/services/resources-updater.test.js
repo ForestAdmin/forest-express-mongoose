@@ -23,7 +23,7 @@ describe('service > resources-updater', () => {
       },
     };
 
-    mongooseConnect();
+    await mongooseConnect();
 
     const IslandSchema = new mongoose.Schema({
       name: {
