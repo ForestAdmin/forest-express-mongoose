@@ -1,4 +1,3 @@
-const P = require('bluebird');
 const _ = require('lodash');
 const Interface = require('forest-express');
 const createError = require('http-errors');
@@ -15,22 +14,16 @@ function ResourceGetter(model, params) {
     });
   }
 
-  this.perform = () =>
-    new P((resolve, reject) => {
-      const query = model.findById(params.recordId);
+  this.perform = async () => {
+    const query = model.findById(params.recordId);
+    handlePopulate(query);
 
-      handlePopulate(query);
-
-      query
-        .lean()
-        .exec((error, record) => {
-          if (!record) {
-            return reject(createError(404, `The ${model.name} #${params.recordId} does not exist.`));
-          }
-          if (error) { return reject(error); }
-          return resolve(record);
-        });
-    });
+    const record = await query.lean().exec();
+    if (!record) {
+      throw createError(404, `The ${model.name} #${params.recordId} does not exist.`);
+    }
+    return record;
+  };
 }
 
 module.exports = ResourceGetter;

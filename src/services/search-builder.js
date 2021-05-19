@@ -70,28 +70,19 @@ function SearchBuilder(model, opts, params, searchFields) {
       }
     });
 
-    const promises = [];
-    _.each(schema.fields, (field) => {
+    await Promise.all(schema.fields.map(async (field) => {
       if (field.search) {
-        // eslint-disable-next-line no-async-promise-executor
-        const promise = new Promise(async (resolve) => {
-          try {
-            const condition = await Promise.resolve(field.search(params.search));
-            if (condition) {
-              pushCondition(condition, field.field);
-            }
-            this.hasSmartFieldSearch = true;
-          } catch (error) {
-            Interface.logger.error(`Cannot search properly on Smart Field ${field.field}`, error);
+        try {
+          const condition = await field.search(params.search);
+          if (condition) {
+            pushCondition(condition, field.field);
           }
-
-          resolve();
-        });
-        promises.push(promise);
+          this.hasSmartFieldSearch = true;
+        } catch (error) {
+          Interface.logger.error(`Cannot search properly on Smart Field ${field.field}`, error);
+        }
       }
-    });
-
-    await Promise.all(promises);
+    }));
 
     return orQuery.$or.length ? orQuery : {};
   };

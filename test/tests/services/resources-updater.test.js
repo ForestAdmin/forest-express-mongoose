@@ -7,7 +7,7 @@ import mongooseConnect from '../../utils/mongoose-connect';
 describe('service > resources-updater', () => {
   let IslandModel;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     Interface.Schemas = {
       schemas: {
         Island: {
@@ -23,24 +23,23 @@ describe('service > resources-updater', () => {
       },
     };
 
-    return mongooseConnect()
-      .then(() => {
-        const IslandSchema = new mongoose.Schema({
-          name: {
-            type: String,
-            validate: {
-              validator: (v) => ['Kauai', 'Oahu', 'Haiti'].includes(v),
-              message: (props) => `${props.value} is not valid`,
-            },
-          },
-          population: {
-            type: Number,
-          },
-        });
+    mongooseConnect();
 
-        IslandModel = mongoose.model('Island', IslandSchema);
-        return IslandModel.deleteMany({});
-      });
+    const IslandSchema = new mongoose.Schema({
+      name: {
+        type: String,
+        validate: {
+          validator: (v) => ['Kauai', 'Oahu', 'Haiti'].includes(v),
+          message: (props) => `${props.value} is not valid`,
+        },
+      },
+      population: {
+        type: Number,
+      },
+    });
+
+    IslandModel = mongoose.model('Island', IslandSchema);
+    IslandModel.deleteMany({});
   });
 
   afterAll(() => mongoose.connection.close());

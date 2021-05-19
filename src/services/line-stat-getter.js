@@ -1,6 +1,4 @@
-/* eslint-disable no-underscore-dangle */
 import _ from 'lodash';
-import P from 'bluebird';
 import moment from 'moment-timezone';
 import Interface from 'forest-express';
 import QueryBuilder from './query-builder';
@@ -97,119 +95,116 @@ function LineStatFinder(model, params, opts) {
     return newRecords;
   }
 
-  this.perform = () => {
+  this.perform = async () => {
     const populateGroupByField = getReference(params.group_by_field);
     const groupByFieldName = populateGroupByField
       ? params.group_by_field.replace(':', '.') : params.group_by_field;
 
-    return new P(async (resolve, reject) => {
-      const jsonQuery = await queryBuilder.getQueryWithFiltersAndJoins(null);
-      if (populateGroupByField) {
-        queryBuilder.addJoinToQuery(populateGroupByField, jsonQuery);
+    const jsonQuery = await queryBuilder.getQueryWithFiltersAndJoins(null);
+    if (populateGroupByField) {
+      queryBuilder.addJoinToQuery(populateGroupByField, jsonQuery);
+    }
+
+    const groupBy = {};
+    const sort = {};
+
+    if (groupByFieldName) {
+      groupBy._id = `$${groupByFieldName}`;
+    }
+
+    if (params.group_by_date_field) {
+      switch (params.time_range) {
+        case 'Day':
+          groupBy.year = {
+            $year: [{
+              $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
+            }],
+          };
+          groupBy.month = {
+            $month: [{
+              $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
+            }],
+          };
+          groupBy.day = {
+            $dayOfMonth: [{
+              $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
+            }],
+          };
+          break;
+        case 'Week':
+          groupBy.week = {
+            $week: [{
+              $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
+            }],
+          };
+          groupBy.year = {
+            $year: [{
+              $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
+            }],
+          };
+          break;
+        case 'Year':
+          groupBy.year = {
+            $year: [{
+              $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
+            }],
+          };
+          break;
+        default: // Month
+          groupBy.month = {
+            $month: [{
+              $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
+            }],
+          };
+          groupBy.year = {
+            $year: [{
+              $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
+            }],
+          };
       }
+      sort[params.group_by_date_field] = 1;
+    }
 
-      const groupBy = {};
-      const sort = {};
+    let sum = 1;
+    if (params.aggregate_field) {
+      sum = `$${params.aggregate_field}`;
+    }
 
-      if (groupByFieldName) {
-        groupBy._id = `$${groupByFieldName}`;
-      }
-
-      if (params.group_by_date_field) {
-        switch (params.time_range) {
-          case 'Day':
-            groupBy.year = {
-              $year: [{
-                $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
-              }],
-            };
-            groupBy.month = {
-              $month: [{
-                $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
-              }],
-            };
-            groupBy.day = {
-              $dayOfMonth: [{
-                $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
-              }],
-            };
-            break;
-          case 'Week':
-            groupBy.week = {
-              $week: [{
-                $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
-              }],
-            };
-            groupBy.year = {
-              $year: [{
-                $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
-              }],
-            };
-            break;
-          case 'Year':
-            groupBy.year = {
-              $year: [{
-                $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
-              }],
-            };
-            break;
-          default: // Month
-            groupBy.month = {
-              $month: [{
-                $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
-              }],
-            };
-            groupBy.year = {
-              $year: [{
-                $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
-              }],
-            };
-        }
-        sort[params.group_by_date_field] = 1;
-      }
-
-      let sum = 1;
-      if (params.aggregate_field) {
-        sum = `$${params.aggregate_field}`;
-      }
-
-      if (params.group_by_date_field) {
-        jsonQuery.push({
-          $match: {
-            [params.group_by_date_field]: { $ne: null },
-          },
-        });
-      }
-
-      if (groupBy) {
-        jsonQuery.push({
-          $group: {
-            _id: groupBy,
-            [params.group_by_date_field]: { $first: `$${params.group_by_date_field}` },
-            count: { $sum: sum },
-          },
-        });
-      }
-
-      const query = model.aggregate(jsonQuery);
-
-      query.sort(sort)
-        .project({ values: { key: '$_id', value: '$count' } })
-        .exec((error, records) => (error ? reject(error) : resolve(records)));
-    })
-      .then((records) => {
-        if (!records.length) { return { value: [] }; }
-        const momentRange = params.time_range.toLowerCase();
-        const firstDate = setDate(records[0], momentRange);
-        const lastDate = setDate(records[records.length - 1], momentRange);
-
-        records = records.map((record) => ({
-          label: formatLabel(record, momentRange),
-          values: record.values,
-        }));
-
-        return { value: fillEmptyIntervals(records, momentRange, firstDate, lastDate) };
+    if (params.group_by_date_field) {
+      jsonQuery.push({
+        $match: {
+          [params.group_by_date_field]: { $ne: null },
+        },
       });
+    }
+
+    if (groupBy) {
+      jsonQuery.push({
+        $group: {
+          _id: groupBy,
+          [params.group_by_date_field]: { $first: `$${params.group_by_date_field}` },
+          count: { $sum: sum },
+        },
+      });
+    }
+
+    const query = model.aggregate(jsonQuery);
+
+    let records = await query.sort(sort)
+      .project({ values: { key: '$_id', value: '$count' } })
+      .exec();
+
+    if (!records.length) { return { value: [] }; }
+    const momentRange = params.time_range.toLowerCase();
+    const firstDate = setDate(records[0], momentRange);
+    const lastDate = setDate(records[records.length - 1], momentRange);
+
+    records = records.map((record) => ({
+      label: formatLabel(record, momentRange),
+      values: record.values,
+    }));
+
+    return { value: fillEmptyIntervals(records, momentRange, firstDate, lastDate) };
   };
 }
 

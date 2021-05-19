@@ -8,7 +8,7 @@ import { InvalidParameterError } from '../../../src/services/errors';
 describe('service > resources-remover', () => {
   let IslandModel;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     Interface.Schemas = {
       schemas: {
         Island: {
@@ -23,15 +23,14 @@ describe('service > resources-remover', () => {
       },
     };
 
-    return mongooseConnect()
-      .then(() => {
-        const IslandSchema = new mongoose.Schema({
-          name: { type: String },
-        });
+    await mongooseConnect();
 
-        IslandModel = mongoose.model('Island', IslandSchema);
-        return IslandModel.deleteMany({});
-      });
+    const IslandSchema = new mongoose.Schema({
+      name: { type: String },
+    });
+
+    IslandModel = mongoose.model('Island', IslandSchema);
+    await IslandModel.deleteMany({});
   });
 
   afterAll(() => mongoose.connection.close());

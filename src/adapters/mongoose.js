@@ -1,4 +1,3 @@
-const P = require('bluebird');
 const _ = require('lodash');
 const Interface = require('forest-express');
 const utils = require('../utils/schema');
@@ -23,7 +22,7 @@ function unflatten(data) {
 }
 /* eslint-enable */
 
-module.exports = (model, opts) => {
+module.exports = async (model, opts) => {
   const fields = [];
   const paths = unflatten(model.schema.paths);
   const { Mongoose } = opts;
@@ -299,17 +298,17 @@ module.exports = (model, opts) => {
     return schema;
   }
 
-  return P
-    .each(Object.keys(paths), (path) => {
-      if (path === '__v') { return; }
-      const field = getFieldSchema(path);
-      fields.push(field);
-    })
-    .then(() => ({
-      name: utils.getModelName(model),
-      // TODO: Remove nameOld attribute once the lianas versions older than 2.0.0 are minority.
-      nameOld: model.collection.name.replace(' ', ''),
-      idField: '_id',
-      fields,
-    }));
+  Object.keys(paths).forEach(async (path) => {
+    if (path === '__v') { return; }
+    const field = getFieldSchema(path);
+    fields.push(field);
+  });
+
+  return {
+    name: utils.getModelName(model),
+    // TODO: Remove nameOld attribute once the lianas versions older than 2.0.0 are minority.
+    nameOld: model.collection.name.replace(' ', ''),
+    idField: '_id',
+    fields,
+  };
 };

@@ -1,4 +1,3 @@
-const P = require('bluebird');
 const _ = require('lodash');
 const Interface = require('forest-express');
 const utils = require('../utils/schema');
@@ -6,43 +5,31 @@ const utils = require('../utils/schema');
 function ResourceCreator(Model, params) {
   const schema = Interface.Schemas.schemas[utils.getModelName(Model)];
 
-  function create() {
-    return new P((resolve, reject) => {
-      const idField = schema.fields.find((field) => field.field === '_id');
-      const isAutomaticId = !idField || !idField.isRequired;
+  async function create() {
+    const idField = schema.fields.find((field) => field.field === '_id');
+    const isAutomaticId = !idField || !idField.isRequired;
 
-      if ('_id' in params && isAutomaticId) {
-        delete params._id;
-      }
+    if ('_id' in params && isAutomaticId) {
+      delete params._id;
+    }
 
-      new Model(params)
-        .save((err, record) => {
-          if (err) { return reject(err); }
-          return resolve(record);
-        });
-    });
+    return new Model(params).save();
   }
 
-  function fetch(record) {
-    return new P((resolve, reject) => {
-      const query = Model.findById(record.id);
+  async function fetch(record) {
+    const query = Model.findById(record.id);
 
-      _.each(schema.fields, (field) => {
-        if (field.reference) { query.populate(field.field); }
-      });
-
-      query
-        .lean()
-        .exec((err, recordCreated) => {
-          if (err) { return reject(err); }
-          return resolve(recordCreated);
-        });
+    _.each(schema.fields, (field) => {
+      if (field.reference) { query.populate(field.field); }
     });
+
+    return query.lean().exec();
   }
 
-  this.perform = () =>
-    create()
-      .then((record) => fetch(record));
+  this.perform = async () => {
+    const record = await create();
+    return fetch(record);
+  };
 }
 
 module.exports = ResourceCreator;
