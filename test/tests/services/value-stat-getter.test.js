@@ -6,8 +6,9 @@ import ValueStatGetter from '../../../src/services/value-stat-getter';
 import mongooseConnect from '../../utils/mongoose-connect';
 
 const options = { Mongoose: mongoose, connections: { mongoose } };
+const baseParams = { timezone: 'Europe/Paris' };
 
-describe('service > resources-updater', () => {
+describe('service > value-stat-getter', () => {
   let ReviewModel;
 
   beforeAll(async () => {
@@ -41,7 +42,7 @@ describe('service > resources-updater', () => {
   it('should perform a count when their are no records', async () => {
     expect.assertions(1);
 
-    const params = { timezone: 'Europe/Paris' };
+    const params = baseParams;
     const getter = new ValueStatGetter(ReviewModel, params, options);
     expect(await getter.perform()).toStrictEqual({ value: 0 });
   });
@@ -49,11 +50,9 @@ describe('service > resources-updater', () => {
   it('should perform a count', async () => {
     expect.assertions(1);
 
-    await loadFixture(ReviewModel, [
-      { rating: 0, _id: '56cb91bdc3464f14678934cb' },
-    ]);
+    await loadFixture(ReviewModel, [{ rating: 0 }]);
 
-    const params = { timezone: 'Europe/Paris' };
+    const params = baseParams;
     const getter = new ValueStatGetter(ReviewModel, params, options);
     expect(await getter.perform()).toStrictEqual({ value: 1 });
   });
@@ -61,11 +60,9 @@ describe('service > resources-updater', () => {
   it('should perform a sum', async () => {
     expect.assertions(1);
 
-    await loadFixture(ReviewModel, [
-      { rating: 10, _id: '56cb91bdc3464f14678934cb' },
-    ]);
+    await loadFixture(ReviewModel, [{ rating: 10 }]);
 
-    const params = { timezone: 'Europe/Paris', aggregate_field: 'rating' };
+    const params = { ...baseParams, aggregate_field: 'rating' };
     const getter = new ValueStatGetter(ReviewModel, params, options);
     expect(await getter.perform()).toStrictEqual({ value: 10 });
   });

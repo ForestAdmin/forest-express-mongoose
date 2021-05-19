@@ -14,8 +14,7 @@ const baseParams = {
   timezone: 'Europe/Paris',
 };
 
-
-describe('service > resources-updater', () => {
+describe('service > line-stat-getter', () => {
   let ReviewModel;
   let dateNowSpy;
 
