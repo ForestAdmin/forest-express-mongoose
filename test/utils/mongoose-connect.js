@@ -1,23 +1,10 @@
 const mongoose = require('mongoose');
-const P = require('bluebird');
 
-mongoose.Promise = P;
-
-function mongooseConnect() {
-  return new P((resolve, reject) => {
-    mongoose.connect(
-      'mongodb://localhost:27017/forest-test',
-      { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false },
-    );
-
-    const db = mongoose.connection;
-    db.on('error', (error) => {
-      reject(error);
-    });
-    db.once('open', () => {
-      resolve();
-    });
-  });
+async function mongooseConnect() {
+  await mongoose.connect(
+    'mongodb://localhost:27017/forest-test',
+    { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false },
+  );
 }
 
 module.exports = mongooseConnect;

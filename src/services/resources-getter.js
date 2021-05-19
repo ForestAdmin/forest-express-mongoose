@@ -1,4 +1,3 @@
-import P from 'bluebird';
 import _ from 'lodash';
 import Interface from 'forest-express';
 import QueryBuilder from './query-builder';
@@ -8,8 +7,6 @@ function ResourcesGetter(model, opts, params) {
   const schema = Interface.Schemas.schemas[utils.getModelName(model)];
   const queryBuilder = new QueryBuilder(model, params, opts);
 
-  let fieldsSearched = null;
-
   function getSegment() {
     if (schema.segments && params.segment) {
       return _.find(schema.segments, (currentSegment) => currentSegment.name === params.segment);
@@ -17,49 +14,52 @@ function ResourcesGetter(model, opts, params) {
     return null;
   }
 
-  function getSegmentCondition() {
+  async function getSegmentCondition() {
     const segment = getSegment();
+
     if (segment && segment.where && typeof segment.where === 'function') {
-      return segment.where().then((where) => ({ where }));
+      const where = await segment.where();
+      return { where };
     }
-    return new P((resolve) => resolve(segment));
+
+    return segment;
   }
 
-  this.perform = () => getSegmentCondition()
-    .then(async (segment) => {
-      const jsonQuery = [];
-      await queryBuilder.addFiltersAndJoins(jsonQuery, segment);
+  this.perform = async () => {
+    let fieldsSearched = null;
+    const segment = await getSegmentCondition();
+    const jsonQuery = [];
+    await queryBuilder.addFiltersAndJoins(jsonQuery, segment);
 
-      if (params.search) {
-        fieldsSearched = queryBuilder.getFieldsSearched();
-        if (fieldsSearched.length === 0 && !queryBuilder.hasSmartFieldSearch()) {
-          // NOTICE: No search condition has been set for the current search,
-          //         no record can be found.
-          return [];
-        }
+    if (params.search) {
+      fieldsSearched = queryBuilder.getFieldsSearched();
+      if (fieldsSearched.length === 0 && !queryBuilder.hasSmartFieldSearch()) {
+        // NOTICE: No search condition has been set for the current search,
+        //         no record can be found.
+        return [[], []];
       }
+    }
 
-      if (params.sort) {
-        queryBuilder.addSortToQuery(jsonQuery);
-      }
+    if (params.sort) {
+      queryBuilder.addSortToQuery(jsonQuery);
+    }
 
-      await queryBuilder.addProjection(jsonQuery);
+    await queryBuilder.addProjection(jsonQuery);
+    queryBuilder.addSkipAndLimitToQuery(jsonQuery);
+    await queryBuilder.joinAllReferences(jsonQuery);
 
-      queryBuilder.addSkipAndLimitToQuery(jsonQuery);
+    const records = await model.aggregate(jsonQuery);
+    return [records, fieldsSearched];
+  };
 
-      await queryBuilder.joinAllReferences(jsonQuery);
+  this.count = async () => {
+    const segment = await getSegmentCondition();
+    const jsonQuery = await queryBuilder.getQueryWithFiltersAndJoins(segment);
+    queryBuilder.addCountToQuery(jsonQuery);
 
-      return model.aggregate(jsonQuery);
-    })
-    .then((records) => [records, fieldsSearched]);
-
-  this.count = () => getSegmentCondition()
-    .then(async (segment) => {
-      const jsonQuery = await queryBuilder.getQueryWithFiltersAndJoins(segment);
-      queryBuilder.addCountToQuery(jsonQuery);
-      return model.aggregate(jsonQuery)
-        .then((result) => (result[0] ? result[0].count : 0));
-    });
+    const result = await model.aggregate(jsonQuery);
+    return result[0] ? result[0].count : 0;
+  };
 }
 
 module.exports = ResourcesGetter;

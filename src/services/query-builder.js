@@ -37,9 +37,11 @@ function QueryBuilder(model, params, opts) {
     );
   };
 
-  this.addProjection = (jsonQuery) => this.getFieldNamesRequested()
-    .then((fieldNames) => projectionBuilder.getProjection(fieldNames))
-    .then((projection) => projection && jsonQuery.push(projection));
+  this.addProjection = async (jsonQuery) => {
+    const fieldNames = await this.getFieldNamesRequested();
+    const projection = await projectionBuilder.getProjection(fieldNames);
+    return projection && jsonQuery.push(projection);
+  };
 
   this.addJoinToQuery = (field, joinQuery) => {
     if (field.reference && !field.isVirtual && !field.integration) {

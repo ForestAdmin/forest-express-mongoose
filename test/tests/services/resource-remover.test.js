@@ -7,7 +7,7 @@ import mongooseConnect from '../../utils/mongoose-connect';
 describe('service > resource-remover', () => {
   let IslandModel;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     Interface.Schemas = {
       schemas: {
         Island: {
@@ -22,15 +22,14 @@ describe('service > resource-remover', () => {
       },
     };
 
-    return mongooseConnect()
-      .then(() => {
-        const IslandSchema = new mongoose.Schema({
-          name: { type: String },
-        });
+    await mongooseConnect();
 
-        IslandModel = mongoose.model('Island', IslandSchema);
-        return IslandModel.deleteMany({});
-      });
+    const IslandSchema = new mongoose.Schema({
+      name: { type: String },
+    });
+
+    IslandModel = mongoose.model('Island', IslandSchema);
+    await IslandModel.deleteMany({});
   });
 
   afterAll(() => mongoose.connection.close());

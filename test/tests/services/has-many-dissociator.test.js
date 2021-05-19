@@ -8,7 +8,7 @@ describe('service > has-many-dissociator', () => {
   let TreeModel;
   let LumberJackModel;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     Interface.Schemas = {
       schemas: {
         LumberJack: {
@@ -45,50 +45,49 @@ describe('service > has-many-dissociator', () => {
       },
     };
 
-    return mongooseConnect()
-      .then(() => {
-        const LumberJackSchema = new mongoose.Schema({
-          _id: { type: 'ObjectId' },
-          name: { type: String },
-        });
-        const TreeSchema = new mongoose.Schema({
-          id: { type: 'ObjectId' },
-          name: { type: String },
-          owners: {
-            type: ['ObjectId'],
-            ref: 'LumberJack',
-          },
-        });
+    await mongooseConnect();
 
-        LumberJackModel = mongoose.model('LumberJack', LumberJackSchema);
-        TreeModel = mongoose.model('Tree', TreeSchema);
-      });
+    const LumberJackSchema = new mongoose.Schema({
+      _id: { type: 'ObjectId' },
+      name: { type: String },
+    });
+    const TreeSchema = new mongoose.Schema({
+      id: { type: 'ObjectId' },
+      name: { type: String },
+      owners: {
+        type: ['ObjectId'],
+        ref: 'LumberJack',
+      },
+    });
+
+    LumberJackModel = mongoose.model('LumberJack', LumberJackSchema);
+    TreeModel = mongoose.model('Tree', TreeSchema);
+  });
+
+  beforeEach(async () => {
+    await Promise.all([LumberJackModel.deleteMany({}), TreeModel.deleteMany({})]);
+    await Promise.all([
+      loadFixture(LumberJackModel, [
+        {
+          _id: '41224d776a326fb40f000001',
+          name: 'Kaladin',
+        },
+        {
+          _id: '41224d776a326fb40f000002',
+          name: 'Adolin Kholin',
+        },
+      ]),
+      loadFixture(TreeModel, [
+        {
+          _id: '41224d776a326fb40f000003',
+          name: 'Ashe Tree Lane',
+          owners: ['41224d776a326fb40f000001', '41224d776a326fb40f000002'],
+        },
+      ]),
+    ]);
   });
 
   afterAll(() => mongoose.connection.close());
-
-  beforeEach(() => Promise.all([
-    LumberJackModel.deleteMany({}),
-    TreeModel.deleteMany({}),
-  ]).then(() => Promise.all([
-    loadFixture(LumberJackModel, [
-      {
-        _id: '41224d776a326fb40f000001',
-        name: 'Kaladin',
-      },
-      {
-        _id: '41224d776a326fb40f000002',
-        name: 'Adolin Kholin',
-      },
-    ]),
-    loadFixture(TreeModel, [
-      {
-        _id: '41224d776a326fb40f000003',
-        name: 'Ashe Tree Lane',
-        owners: ['41224d776a326fb40f000001', '41224d776a326fb40f000002'],
-      },
-    ]),
-  ])));
 
   it('should delete the document and the association with option delete=true', async () => {
     expect.assertions(3);

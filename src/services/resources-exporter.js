@@ -15,21 +15,18 @@ function ResourcesExporter(model, options, params, association) {
     return new ResourcesGetter(model, options, params);
   }
 
-  function retrieveBatch(dataSender, pageNumber) {
+  async function retrieveBatch(dataSender, pageNumber) {
     params.page.number = pageNumber;
-    return getter()
-      .perform()
-      .then((results) => {
-        const records = results[0];
 
-        return dataSender(records)
-          .then(() => {
-            if (records.length === BATCH_SIZE) {
-              return retrieveBatch(dataSender, pageNumber + 1);
-            }
-            return null;
-          });
-      });
+    const results = await getter().perform();
+    const records = results[0];
+    await dataSender(records);
+
+    if (records.length === BATCH_SIZE) {
+      return retrieveBatch(dataSender, pageNumber + 1);
+    }
+
+    return null;
   }
 
   this.perform = (dataSender) => retrieveBatch(dataSender, BATCH_INITIAL_PAGE);

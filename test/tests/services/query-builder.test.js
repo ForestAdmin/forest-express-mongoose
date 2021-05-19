@@ -13,7 +13,7 @@ describe('service > query-builder', () => {
     connections: { mongoose },
   };
 
-  beforeAll(() => {
+  beforeAll(async () => {
     Interface.Schemas = {
       schemas: {
         LumberJack: {
@@ -45,49 +45,47 @@ describe('service > query-builder', () => {
       },
     };
 
-    return mongooseConnect()
-      .then(() => {
-        const LumberJackSchema = new mongoose.Schema({
-          _id: { type: 'ObjectId' },
-          name: { type: String },
-        });
-        const TreeSchema = new mongoose.Schema({
-          id: { type: Number },
-          age: { type: String },
-          owner: { type: 'ObjectId' },
-        });
+    await mongooseConnect();
 
-        LumberJackModel = mongoose.model('LumberJack', LumberJackSchema);
-        TreeModel = mongoose.model('Tree', TreeSchema);
+    const LumberJackSchema = new mongoose.Schema({
+      _id: { type: 'ObjectId' },
+      name: { type: String },
+    });
+    const TreeSchema = new mongoose.Schema({
+      id: { type: Number },
+      age: { type: String },
+      owner: { type: 'ObjectId' },
+    });
 
-        return Promise.all([LumberJackModel.deleteMany({}), TreeModel.deleteMany({})]);
-      })
-      .then(() =>
-        Promise.all([
-          loadFixture(LumberJackModel, [
-            {
-              _id: '41224d776a326fb40f000001',
-              name: 'Kaladin',
-            },
-            {
-              _id: '41224d776a326fb40f000002',
-              name: 'Adolin Kholin',
-            },
-          ]), loadFixture(TreeModel, [
-            {
-              // id: 100,
-              name: 'Ashe Tree Lane',
-              age: 13,
-              owner: '41224d776a326fb40f000001',
-            },
-            {
-              // id: 101,
-              name: 'Treefingers',
-              age: 124,
-              owner: '41224d776a326fb40f000002',
-            },
-          ]),
-        ]));
+    LumberJackModel = mongoose.model('LumberJack', LumberJackSchema);
+    TreeModel = mongoose.model('Tree', TreeSchema);
+
+    await Promise.all([LumberJackModel.deleteMany({}), TreeModel.deleteMany({})]);
+    await Promise.all([
+      loadFixture(LumberJackModel, [
+        {
+          _id: '41224d776a326fb40f000001',
+          name: 'Kaladin',
+        },
+        {
+          _id: '41224d776a326fb40f000002',
+          name: 'Adolin Kholin',
+        },
+      ]), loadFixture(TreeModel, [
+        {
+          // id: 100,
+          name: 'Ashe Tree Lane',
+          age: 13,
+          owner: '41224d776a326fb40f000001',
+        },
+        {
+          // id: 101,
+          name: 'Treefingers',
+          age: 124,
+          owner: '41224d776a326fb40f000002',
+        },
+      ]),
+    ]);
   });
 
   afterAll(() => mongoose.connection.close());

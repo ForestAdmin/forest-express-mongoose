@@ -1,15 +1,14 @@
 const _ = require('lodash');
-const P = require('bluebird');
 const Interface = require('forest-express');
 const SearchBuilder = require('./search-builder');
 const utils = require('../utils/schema');
 const FiltersParser = require('./filters-parser');
 
-function HasManyGetter(model, association, opts, params) {
+function HasManyGetter(parentModel, childModel, opts, params) {
   const OBJECTID_REGEXP = /^[0-9a-fA-F]{24}$/;
-  const schema = Interface.Schemas.schemas[utils.getModelName(association)];
-  const searchBuilder = new SearchBuilder(association, opts, params);
-  const filtersParser = new FiltersParser(association, params.timezone, opts);
+  const schema = Interface.Schemas.schemas[utils.getModelName(childModel)];
+  const searchBuilder = new SearchBuilder(childModel, opts, params);
+  const filtersParser = new FiltersParser(childModel, params.timezone, opts);
 
   function hasPagination() {
     return params.page && params.page.number;
@@ -66,71 +65,65 @@ function HasManyGetter(model, association, opts, params) {
     return conditions;
   }
 
-  function getRecordsAndRecordIds() {
-    return new P((resolve, reject) => {
-      let id = params.recordId;
-      if (OBJECTID_REGEXP.test(params.recordId)) {
-        id = opts.Mongoose.Types.ObjectId(id);
-      }
+  async function getRecordsAndRecordIds() {
+    let id = params.recordId;
+    if (OBJECTID_REGEXP.test(params.recordId)) {
+      id = opts.Mongoose.Types.ObjectId(id);
+    }
 
-      return model
-        .aggregate()
-        .match({ _id: id })
-        .unwind(params.associationName)
-        .project(getProjection())
-        .exec((error, records) => {
-          if (error) { return reject(error); }
-          return resolve(_.map(records, (record) => record[params.associationName]));
-        });
-    })
-      .then(async (recordIds) => {
-        const conditions = await buildConditions(recordIds);
-        const query = association.find(conditions);
-        handlePopulate(query);
+    const parentRecords = await parentModel
+      .aggregate()
+      .match({ _id: id })
+      .unwind(params.associationName)
+      .project(getProjection())
+      .exec();
 
-        return query.then((records) => [records, recordIds]);
-      });
+    const childRecordIds = _.map(parentRecords, (record) => record[params.associationName]);
+    const conditions = await buildConditions(childRecordIds);
+    const query = childModel.find(conditions);
+    handlePopulate(query);
+
+    const childRecords = await query;
+    return [childRecords, childRecordIds];
   }
 
-  this.perform = () =>
-    getRecordsAndRecordIds()
-      .then((recordsAndRecordIds) => {
-        const records = recordsAndRecordIds[0];
-        let fieldSort = params.sort;
-        let descending = false;
+  this.perform = async () => {
+    const [childRecords, childRecordIds] = await getRecordsAndRecordIds();
 
-        if (params.sort && (params.sort[0] === '-')) {
-          fieldSort = params.sort.substring(1);
-          descending = true;
-        }
+    let fieldSort = params.sort;
+    let descending = false;
 
-        let recordsSorted;
-        if (fieldSort) {
-          recordsSorted = _.sortBy(records, (record) => record[fieldSort]);
-        } else {
-          const recordIds = recordsAndRecordIds[1];
-          // NOTICE: Convert values to strings, so ObjectIds could be easily searched and compared.
-          const recordIdStrings = recordIds.map((recordId) => String(recordId));
-          // NOTICE: indexOf could be improved by making a Map from record-ids to their index.
-          recordsSorted = _.sortBy(records, record => recordIdStrings.indexOf(String(record._id))); // eslint-disable-line
-        }
-        return descending ? recordsSorted.reverse() : recordsSorted;
-      })
-      .then((records) => {
-        let fieldsSearched = null;
+    if (params.sort && (params.sort[0] === '-')) {
+      fieldSort = params.sort.substring(1);
+      descending = true;
+    }
 
-        if (params.search) {
-          fieldsSearched = searchBuilder.getFieldsSearched();
-        }
+    let recordsSorted;
+    if (fieldSort) {
+      recordsSorted = _.sortBy(childRecords, (record) => record[fieldSort]);
+    } else {
+      // NOTICE: Convert values to strings, so ObjectIds could be easily searched and compared.
+      const recordIdStrings = childRecordIds.map((recordId) => String(recordId));
+      // NOTICE: indexOf could be improved by making a Map from record-ids to their index.
+          recordsSorted = _.sortBy(childRecords, record => recordIdStrings.indexOf(String(record._id))); // eslint-disable-line
+    }
 
-        records = _.slice(records, getSkip(), getSkip() + getLimit());
+    let sortedChildRecords = descending ? recordsSorted.reverse() : recordsSorted;
+    let fieldsSearched = null;
 
-        return [records, fieldsSearched];
-      });
+    if (params.search) {
+      fieldsSearched = searchBuilder.getFieldsSearched();
+    }
 
-  this.count = () =>
-    getRecordsAndRecordIds()
-      .then((recordsAndRecordIds) => recordsAndRecordIds[0].length);
+    sortedChildRecords = _.slice(sortedChildRecords, getSkip(), getSkip() + getLimit());
+
+    return [sortedChildRecords, fieldsSearched];
+  };
+
+  this.count = async () => {
+    const recordsAndRecordIds = await getRecordsAndRecordIds();
+    return recordsAndRecordIds[0].length;
+  };
 }
 
 module.exports = HasManyGetter;

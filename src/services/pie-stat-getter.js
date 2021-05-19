@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import P from 'bluebird';
 import Interface from 'forest-express';
 import moment from 'moment';
 import QueryBuilder from './query-builder';
@@ -16,25 +15,25 @@ function PieStatGetter(model, params, opts) {
     return currentField.reference ? currentField : null;
   }
 
-  this.perform = () => {
+  this.perform = async () => {
     const populateGroupByField = getReference(params.group_by_field);
     const groupByFieldName = populateGroupByField
       ? params.group_by_field.replace(':', '.') : params.group_by_field;
 
-    return new P(async (resolve, reject) => {
-      const jsonQuery = await queryBuilder.getQueryWithFiltersAndJoins(null);
-      if (populateGroupByField) {
-        queryBuilder.addJoinToQuery(populateGroupByField, jsonQuery);
-      }
+    const jsonQuery = await queryBuilder.getQueryWithFiltersAndJoins(null);
+    if (populateGroupByField) {
+      queryBuilder.addJoinToQuery(populateGroupByField, jsonQuery);
+    }
 
-      const query = model.aggregate(jsonQuery);
+    const query = model.aggregate(jsonQuery);
 
-      let sum = 1;
-      if (params.aggregate_field) {
-        sum = `$${params.aggregate_field}`;
-      }
+    let sum = 1;
+    if (params.aggregate_field) {
+      sum = `$${params.aggregate_field}`;
+    }
 
-      query
+    const records = {
+      value: await query
         .group({
           _id: `$${groupByFieldName}`,
           count: { $sum: sum },
@@ -45,15 +44,16 @@ function PieStatGetter(model, params, opts) {
           _id: false,
         })
         .sort({ value: -1 })
-        .exec((err, records) => (err ? reject(err) : resolve({ value: records })));
-    }).then((records) => {
-      if (field && field.type === 'Date') {
-        _.each(records.value, (record) => {
-          record.key = moment(record.key).format('DD/MM/YYYY HH:mm:ss');
-        });
-      }
-      return records;
-    });
+        .exec(),
+    };
+
+    if (field && field.type === 'Date') {
+      _.each(records.value, (record) => {
+        record.key = moment(record.key).format('DD/MM/YYYY HH:mm:ss');
+      });
+    }
+
+    return records;
   };
 }
 

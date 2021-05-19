@@ -16,7 +16,7 @@ describe('service > filters-parser', () => {
     connections: { mongoose },
   };
 
-  beforeAll(() => {
+  beforeAll(async () => {
     islandForestSchema = {
       name: 'Island',
       idField: 'id',
@@ -38,38 +38,35 @@ describe('service > filters-parser', () => {
       },
     };
 
-    return mongooseConnect()
-      .then(() => {
-        const IslandSchema = new mongoose.Schema({
-          id: { type: Number },
-          name: { type: String },
-          size: { type: Number },
-          isBig: { type: Boolean },
-          inhabitedOn: { type: Date },
-        });
+    await mongooseConnect();
+    const IslandSchema = new mongoose.Schema({
+      id: { type: Number },
+      name: { type: String },
+      size: { type: Number },
+      isBig: { type: Boolean },
+      inhabitedOn: { type: Date },
+    });
 
-        IslandModel = mongoose.model('Island', IslandSchema);
+    IslandModel = mongoose.model('Island', IslandSchema);
 
-        defaultParser = new FiltersParser(IslandModel, timezone, options);
-        return IslandModel.deleteMany({});
-      })
-      .then(() =>
-        loadFixture(IslandModel, [
-          {
-            // id: 100,
-            name: 'Pyk',
-            size: 13,
-            isBig: false,
-            inhabitedOn: '2019-02-11T23:00:00.000Z',
-          },
-          {
-            // id: 101,
-            name: 'Dragonstone',
-            size: 124,
-            isBig: true,
-            inhabitedOn: '2018-03-21T23:00:00.000Z',
-          },
-        ]));
+    defaultParser = new FiltersParser(IslandModel, timezone, options);
+    await IslandModel.deleteMany({});
+    await loadFixture(IslandModel, [
+      {
+        // id: 100,
+        name: 'Pyk',
+        size: 13,
+        isBig: false,
+        inhabitedOn: '2019-02-11T23:00:00.000Z',
+      },
+      {
+        // id: 101,
+        name: 'Dragonstone',
+        size: 124,
+        isBig: true,
+        inhabitedOn: '2018-03-21T23:00:00.000Z',
+      },
+    ]);
   });
 
   afterAll(() => mongoose.connection.close());
