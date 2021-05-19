@@ -1,18 +1,23 @@
+class BelongsToUpdater {
+  constructor(model, association, opts, params, data) {
+    this._model = model;
+    this._params = params;
+    this._data = data;
+  }
 
-function BelongsToUpdater(model, association, opts, params, data) {
-  this.perform = async () => {
+  async perform() {
     const updateParams = {};
-    updateParams[params.associationName] = data.data ? data.data.id : null;
+    updateParams[this._params.associationName] = this._data.data ? this._data.data.id : null;
 
-    return model
-      .findByIdAndUpdate(params.recordId, {
+    return this._model
+      .findByIdAndUpdate(this._params.recordId, {
         $set: updateParams,
       }, {
         new: true,
       })
       .lean()
       .exec();
-  };
+  }
 }
 
 module.exports = BelongsToUpdater;

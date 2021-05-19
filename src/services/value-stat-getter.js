@@ -1,16 +1,22 @@
 import QueryBuilder from './query-builder';
 
-function ValueStatGetter(model, params, opts) {
-  const queryBuilder = new QueryBuilder(model, params, opts);
+class ValueStatGetter {
+  constructor(model, params, opts) {
+    this._model = model;
+    this._params = params;
+    this._opts = opts;
+  }
 
-  this.perform = async () => {
+  async perform() {
+    const queryBuilder = new QueryBuilder(this._model, this._params, this._opts);
+
     let sum = 1;
-    if (params.aggregate_field) {
-      sum = `$${params.aggregate_field}`;
+    if (this._params.aggregate_field) {
+      sum = `$${this._params.aggregate_field}`;
     }
 
     const jsonQuery = await queryBuilder.getQueryWithFiltersAndJoins(null);
-    const records = await model.aggregate(jsonQuery)
+    const records = await this._model.aggregate(jsonQuery)
       .group({
         _id: null,
         total: { $sum: sum },
@@ -22,7 +28,7 @@ function ValueStatGetter(model, params, opts) {
     }
 
     return { value: records[0].total };
-  };
+  }
 }
 
 module.exports = ValueStatGetter;

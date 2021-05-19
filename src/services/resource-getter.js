@@ -3,10 +3,14 @@ const Interface = require('forest-express');
 const createError = require('http-errors');
 const utils = require('../utils/schema');
 
-function ResourceGetter(model, params) {
-  const schema = Interface.Schemas.schemas[utils.getModelName(model)];
+class ResourceGetter {
+  constructor(model, params) {
+    this._model = model;
+    this._params = params;
+  }
 
-  function handlePopulate(query) {
+  _handlePopulate(query) {
+    const schema = Interface.Schemas.schemas[utils.getModelName(this._model)];
     _.each(schema.fields, (field) => {
       if (field.reference) {
         query.populate(field.field);
@@ -14,16 +18,16 @@ function ResourceGetter(model, params) {
     });
   }
 
-  this.perform = async () => {
-    const query = model.findById(params.recordId);
-    handlePopulate(query);
+  async perform() {
+    const query = this._model.findById(this._params.recordId);
+    this._handlePopulate(query);
 
     const record = await query.lean().exec();
     if (!record) {
-      throw createError(404, `The ${model.name} #${params.recordId} does not exist.`);
+      throw createError(404, `The ${this._model.name} #${this._params.recordId} does not exist.`);
     }
     return record;
-  };
+  }
 }
 
 module.exports = ResourceGetter;

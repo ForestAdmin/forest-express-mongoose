@@ -1,20 +1,25 @@
+class HasManyAssociator {
+  constructor(model, association, opts, params, data) {
+    this._model = model;
+    this._params = params;
+    this._data = data;
+  }
 
-function HasManyAssociator(model, association, opts, params, data) {
-  this.perform = () => {
+  perform() {
     const updateParams = {};
-    updateParams[params.associationName] = {
-      $each: data.data.map((document) => document.id),
+    updateParams[this._params.associationName] = {
+      $each: this._data.data.map((document) => document.id),
     };
 
-    return model
-      .findByIdAndUpdate(params.recordId, {
+    return this._model
+      .findByIdAndUpdate(this._params.recordId, {
         $push: updateParams,
       }, {
         new: true,
       })
       .lean()
       .exec();
-  };
+  }
 }
 
 module.exports = HasManyAssociator;
