@@ -4,11 +4,22 @@ import QueryBuilder from './query-builder';
 import utils from '../utils/schema';
 
 class ResourcesGetter {
-  constructor(model, opts, params) {
+  constructor(model, opts, params, user) {
     this._model = model;
-    this._opts = opts;
+    this._opts = { Mongoose: this._model.base, connections: this._model.base.connections };
     this._params = params;
-    this._queryBuilder = new QueryBuilder(this._model, this._params, this._opts);
+    this._user = user;
+  }
+
+  async _getScopedParams() {
+    return {
+      ...this._params,
+      filters: await Interface.scopeManager.appendScopeForUser(
+        this._params.filters,
+        this._user,
+        utils.getModelName(this._model),
+      ),
+    };
   }
 
   _getSegment() {
@@ -34,36 +45,43 @@ class ResourcesGetter {
   }
 
   async perform() {
+    const params = await this._getScopedParams();
+
     let fieldsSearched = null;
     const segment = await this._getSegmentCondition();
     const jsonQuery = [];
-    await this._queryBuilder.addFiltersAndJoins(jsonQuery, segment);
+    const queryBuilder = new QueryBuilder(this._model, params, this._opts);
 
-    if (this._params.search) {
-      fieldsSearched = this._queryBuilder.getFieldsSearched();
-      if (fieldsSearched.length === 0 && !this._queryBuilder.hasSmartFieldSearch()) {
+    await queryBuilder.addFiltersAndJoins(jsonQuery, segment);
+
+    if (params.search) {
+      fieldsSearched = queryBuilder.getFieldsSearched();
+      if (fieldsSearched.length === 0 && !queryBuilder.hasSmartFieldSearch()) {
         // NOTICE: No search condition has been set for the current search,
         //         no record can be found.
         return [[], []];
       }
     }
 
-    if (this._params.sort) {
-      this._queryBuilder.addSortToQuery(jsonQuery);
+    if (params.sort) {
+      queryBuilder.addSortToQuery(jsonQuery);
     }
 
-    await this._queryBuilder.addProjection(jsonQuery);
-    this._queryBuilder.addSkipAndLimitToQuery(jsonQuery);
-    await this._queryBuilder.joinAllReferences(jsonQuery);
+    await queryBuilder.addProjection(jsonQuery);
+    queryBuilder.addSkipAndLimitToQuery(jsonQuery);
+    await queryBuilder.joinAllReferences(jsonQuery);
 
     const records = await this._model.aggregate(jsonQuery);
     return [records, fieldsSearched];
   }
 
   async count() {
+    const params = await this._getScopedParams();
     const segment = await this._getSegmentCondition();
-    const jsonQuery = await this._queryBuilder.getQueryWithFiltersAndJoins(segment);
-    this._queryBuilder.addCountToQuery(jsonQuery);
+
+    const queryBuilder = new QueryBuilder(this._model, params, this._opts);
+    const jsonQuery = await queryBuilder.getQueryWithFiltersAndJoins(segment);
+    queryBuilder.addCountToQuery(jsonQuery);
 
     const result = await this._model.aggregate(jsonQuery);
     return result[0] ? result[0].count : 0;

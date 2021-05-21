@@ -4,10 +4,16 @@ import Interface from 'forest-express';
 import ResourcesUpdater from '../../../src/services/resource-updater';
 import mongooseConnect from '../../utils/mongoose-connect';
 
+const user = { renderingId: 1 };
+const params = { timezone: 'Europe/Paris' };
+
 describe('service > resources-updater', () => {
   let IslandModel;
+  let scopeSpy;
 
   beforeAll(async () => {
+    scopeSpy = jest.spyOn(Interface.scopeManager, 'getScopeForUser').mockReturnValue(null);
+
     Interface.Schemas = {
       schemas: {
         Island: {
@@ -42,7 +48,10 @@ describe('service > resources-updater', () => {
     IslandModel.deleteMany({});
   });
 
-  afterAll(() => mongoose.connection.close());
+  afterAll(async () => {
+    scopeSpy.mockRestore();
+    await mongoose.connection.close();
+  });
 
   beforeEach(async () => {
     await IslandModel.deleteMany({});
@@ -54,22 +63,28 @@ describe('service > resources-updater', () => {
 
   it('should reject with validation error', async () => {
     expect.assertions(1);
-    const island = IslandModel({ _id: '56cb91bdc3464f14678934ca', name: 'Foo' });
-    await expect(new ResourcesUpdater(IslandModel, '56cb91bdc3464f14678934ca', island)
-      .perform()).rejects.toThrow(ValidationError);
-  });
 
-  it('should resolve with updated object', async () => {
-    expect.assertions(1);
-    const island = IslandModel({ _id: '56cb91bdc3464f14678934ca', name: 'Haiti' });
-    await expect(await new ResourcesUpdater(IslandModel, '56cb91bdc3464f14678934ca', island)
-      .perform()).toHaveProperty('name', 'Haiti');
+    const island = IslandModel({ _id: '56cb91bdc3464f14678934ca', name: 'Foo' });
+    const updater = new ResourcesUpdater(IslandModel, params, island, user);
+
+    await expect(updater.perform()).rejects.toThrow(ValidationError);
   });
 
   it('should reject with cast validation error', async () => {
     expect.assertions(1);
+
     const island = { _id: '56cb91bdc3464f14678934ca', population: 'foo' };
-    await expect(new ResourcesUpdater(IslandModel, '56cb91bdc3464f14678934ca', island)
-      .perform()).rejects.toThrow(CastError);
+    const updater = new ResourcesUpdater(IslandModel, params, island, user);
+
+    await expect(updater.perform()).rejects.toThrow(CastError);
+  });
+
+  it('should resolve with updated object', async () => {
+    expect.assertions(1);
+
+    const island = IslandModel({ _id: '56cb91bdc3464f14678934ca', name: 'Haiti' });
+    const updater = new ResourcesUpdater(IslandModel, params, island, user);
+
+    expect(await updater.perform()).toHaveProperty('name', 'Haiti');
   });
 });

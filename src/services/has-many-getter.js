@@ -7,12 +7,13 @@ const FiltersParser = require('./filters-parser');
 const OBJECTID_REGEXP = /^[0-9a-fA-F]{24}$/;
 
 class HasManyGetter {
-  constructor(parentModel, childModel, opts, params) {
+  constructor(parentModel, model, opts, params, user) {
     this._parentModel = parentModel;
-    this._childModel = childModel;
+    this._model = model;
     this._params = params;
-    this._opts = opts;
-    this._searchBuilder = new SearchBuilder(childModel, opts, params);
+    this._opts = { Mongoose: model.base, connections: model.base.connections };
+    this._user = user;
+    this._searchBuilder = new SearchBuilder(model, this._opts, params);
   }
 
   _hasPagination() {
@@ -42,7 +43,7 @@ class HasManyGetter {
   }
 
   _handlePopulate(query) {
-    const schema = Interface.Schemas.schemas[utils.getModelName(this._childModel)];
+    const schema = Interface.Schemas.schemas[utils.getModelName(this._model)];
 
     _.each(schema.fields, (field) => {
       if (field.reference) {
@@ -63,9 +64,15 @@ class HasManyGetter {
       conditions.$and.push(conditionsSearch);
     }
 
-    if (this._params.filters) {
-      const filtersParser = new FiltersParser(this._childModel, this._params.timezone, this._opts);
-      const newFilters = await filtersParser.replaceAllReferences(this._params.filters);
+    const filters = await Interface.scopeManager.appendScopeForUser(
+      this._params.filters,
+      this._user,
+      utils.getModelName(this._model),
+    );
+
+    if (filters) {
+      const filtersParser = new FiltersParser(this._model, this._params.timezone, this._opts);
+      const newFilters = await filtersParser.replaceAllReferences(filters);
       const newFiltersString = JSON.stringify(newFilters);
       conditions.$and.push(await filtersParser.perform(newFiltersString));
     }
@@ -88,7 +95,7 @@ class HasManyGetter {
 
     const childRecordIds = _.map(parentRecords, (record) => record[this._params.associationName]);
     const conditions = await this._buildConditions(childRecordIds);
-    const query = this._childModel.find(conditions);
+    const query = this._model.find(conditions);
     this._handlePopulate(query);
 
     const childRecords = await query;

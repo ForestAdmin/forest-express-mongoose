@@ -5,10 +5,11 @@ import QueryBuilder from './query-builder';
 import utils from '../utils/schema';
 
 class LineStatGetter {
-  constructor(model, params, opts) {
+  constructor(model, params, opts, user) {
     this._model = model;
     this._params = params;
-    this._opts = opts;
+    this._opts = { Mongoose: this._model.base, connections: this._model.base.connections };
+    this._user = user;
   }
 
   _getReference(fieldName) {
@@ -98,13 +99,22 @@ class LineStatGetter {
   }
 
   async perform() {
-    const timezone = -parseInt(moment().tz(this._params.timezone).format('Z'), 10);
-    const timezoneOffset = timezone * 60 * 60 * 1000;
-    const queryBuilder = new QueryBuilder(this._model, this._params, this._opts);
+    const params = {
+      ...this._params,
+      filters: await Interface.scopeManager.appendScopeForUser(
+        this._params.filters,
+        this._user,
+        utils.getModelName(this._model),
+      ),
+    };
 
-    const populateGroupByField = this._getReference(this._params.group_by_field);
+    const timezone = -parseInt(moment().tz(params.timezone).format('Z'), 10);
+    const timezoneOffset = timezone * 60 * 60 * 1000;
+    const queryBuilder = new QueryBuilder(this._model, params, this._opts);
+
+    const populateGroupByField = this._getReference(params.group_by_field);
     const groupByFieldName = populateGroupByField
-      ? this._params.group_by_field.replace(':', '.') : this._params.group_by_field;
+      ? params.group_by_field.replace(':', '.') : params.group_by_field;
 
     const jsonQuery = await queryBuilder.getQueryWithFiltersAndJoins(null);
     if (populateGroupByField) {
@@ -118,68 +128,68 @@ class LineStatGetter {
       groupBy._id = `$${groupByFieldName}`;
     }
 
-    if (this._params.group_by_date_field) {
-      switch (this._params.time_range) {
+    if (params.group_by_date_field) {
+      switch (params.time_range) {
         case 'Day':
           groupBy.year = {
             $year: [{
-              $subtract: [`$${this._params.group_by_date_field}`, timezoneOffset],
+              $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
             }],
           };
           groupBy.month = {
             $month: [{
-              $subtract: [`$${this._params.group_by_date_field}`, timezoneOffset],
+              $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
             }],
           };
           groupBy.day = {
             $dayOfMonth: [{
-              $subtract: [`$${this._params.group_by_date_field}`, timezoneOffset],
+              $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
             }],
           };
           break;
         case 'Week':
           groupBy.week = {
             $week: [{
-              $subtract: [`$${this._params.group_by_date_field}`, timezoneOffset],
+              $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
             }],
           };
           groupBy.year = {
             $year: [{
-              $subtract: [`$${this._params.group_by_date_field}`, timezoneOffset],
+              $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
             }],
           };
           break;
         case 'Year':
           groupBy.year = {
             $year: [{
-              $subtract: [`$${this._params.group_by_date_field}`, timezoneOffset],
+              $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
             }],
           };
           break;
         default: // Month
           groupBy.month = {
             $month: [{
-              $subtract: [`$${this._params.group_by_date_field}`, timezoneOffset],
+              $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
             }],
           };
           groupBy.year = {
             $year: [{
-              $subtract: [`$${this._params.group_by_date_field}`, timezoneOffset],
+              $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
             }],
           };
       }
-      sort[this._params.group_by_date_field] = 1;
+      sort[params.group_by_date_field] = 1;
     }
 
     let sum = 1;
-    if (this._params.aggregate_field) {
-      sum = `$${this._params.aggregate_field}`;
+    if (params.aggregate_field) {
+      sum = `$${params.aggregate_field}`;
     }
 
-    if (this._params.group_by_date_field) {
+    if (params.group_by_date_field) {
       jsonQuery.push({
         $match: {
-          [this._params.group_by_date_field]: { $ne: null },
+          [params.group_by_date_field]: { $ne: null },
         },
       });
     }
@@ -188,7 +198,7 @@ class LineStatGetter {
       jsonQuery.push({
         $group: {
           _id: groupBy,
-          [this._params.group_by_date_field]: { $first: `$${this._params.group_by_date_field}` },
+          [params.group_by_date_field]: { $first: `$${params.group_by_date_field}` },
           count: { $sum: sum },
         },
       });
@@ -201,7 +211,7 @@ class LineStatGetter {
       .exec();
 
     if (!records.length) { return { value: [] }; }
-    const momentRange = this._params.time_range.toLowerCase();
+    const momentRange = params.time_range.toLowerCase();
     const firstDate = LineStatGetter._setDate(records[0], momentRange);
     const lastDate = LineStatGetter._setDate(records[records.length - 1], momentRange);
 

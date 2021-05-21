@@ -1,11 +1,24 @@
 const _ = require('lodash');
 const Interface = require('forest-express');
+const createError = require('http-errors');
+const ResourcesGetter = require('./resources-getter');
 const utils = require('../utils/schema');
 
 class ResourceUpdater {
-  constructor(model, params, record) {
+  constructor(model, params, record, user) {
     this._model = model;
+    this._params = params;
     this._record = record;
+    this._user = user;
+  }
+
+  async _isAllowed(recordId) {
+    const params = {
+      timezone: this._params.timezone,
+      filters: JSON.stringify({ field: '_id', operator: 'equal', value: recordId }),
+    };
+
+    return await new ResourcesGetter(this._model, null, params, this._user).count() === 1;
   }
 
   async perform() {
@@ -13,6 +26,9 @@ class ResourceUpdater {
     const schema = Interface.Schemas.schemas[utils.getModelName(this._model)];
 
     const recordId = this._record._id;
+    if (!await this._isAllowed(recordId)) {
+      throw createError(404, `The ${this._model.name} #${recordId} does not exist.`);
+    }
 
     // NOTICE: Old versions of MongoDB (2.X) seem to refuse the presence of
     //         the _id in the $set. So we remove it. It is useless anyway.
