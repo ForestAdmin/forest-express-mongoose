@@ -1,3 +1,10 @@
+## [7.6.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.6.0...v7.6.1) (2021-05-21)
+
+
+### Bug Fixes
+
+* distribution charts using groupby on a relationship throws 403 Forbidden ([#577](https://github.com/ForestAdmin/forest-express-mongoose/issues/577)) ([a2ee140](https://github.com/ForestAdmin/forest-express-mongoose/commit/a2ee14017ae81b731f4711d57e1d9aac6f613429))
+
 # [7.6.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.5.2...v7.6.0) (2021-04-28)
 
 
