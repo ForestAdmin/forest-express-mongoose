@@ -1,3 +1,10 @@
+## [7.6.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.6.1...v7.6.2) (2021-05-25)
+
+
+### Bug Fixes
+
+* **smart-actions-change-hook:** record is no longer altered and is sent correctly ([#585](https://github.com/ForestAdmin/forest-express-mongoose/issues/585)) ([53d87ad](https://github.com/ForestAdmin/forest-express-mongoose/commit/53d87adc21578637a848b81081ac78d87865c4c8))
+
 ## [7.6.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.6.0...v7.6.1) (2021-05-21)
 
 
