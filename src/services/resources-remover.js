@@ -9,16 +9,6 @@ class ResourcesRemover {
     this._user = user;
   }
 
-  async _isAllowed() {
-    const params = {
-      timezone: this._params.timezone,
-      filters: JSON.stringify({ field: '_id', operator: 'in', value: this._ids }),
-    };
-
-    return this._ids.length
-      === await new ResourcesGetter(this._model, null, params, this._user).count();
-  }
-
   async perform() {
     if (!Array.isArray(this._ids) || !this._ids.length) {
       throw new InvalidParameterError('`ids` must be a non-empty array.');
@@ -29,6 +19,21 @@ class ResourcesRemover {
     }
 
     return null;
+  }
+
+  /**
+   * Check if all records maching the provided list of ids are in scope.
+   * We can't do that in a single request as mongo does not supports deletes in
+   * aggregation pipelines
+   */
+  async _isAllowed() {
+    const params = {
+      timezone: this._params.timezone,
+      filters: JSON.stringify({ field: '_id', operator: 'in', value: this._ids }),
+    };
+
+    return this._ids.length
+      === await new ResourcesGetter(this._model, null, params, this._user).count();
   }
 }
 

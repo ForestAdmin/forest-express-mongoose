@@ -1,6 +1,5 @@
-import Interface from 'forest-express';
+import getScopedParams from '../utils/scopes';
 import QueryBuilder from './query-builder';
-import utils from '../utils/schema';
 
 class ValueStatGetter {
   constructor(model, params, opts) {
@@ -9,19 +8,8 @@ class ValueStatGetter {
     this._opts = opts;
   }
 
-  async _getScopedParams() {
-    return {
-      ...this._params,
-      filters: await Interface.scopeManager.appendScopeForUser(
-        this._params.filters,
-        this._user,
-        utils.getModelName(this._model),
-      ),
-    };
-  }
-
   async perform() {
-    const params = await this._getScopedParams();
+    const params = await getScopedParams(this._params, this._model, this._user);
     const queryBuilder = new QueryBuilder(this._model, params, this._opts);
 
     let sum = 1;
@@ -30,11 +18,9 @@ class ValueStatGetter {
     }
 
     const jsonQuery = await queryBuilder.getQueryWithFiltersAndJoins(null);
-    const records = await this._model.aggregate(jsonQuery)
-      .group({
-        _id: null,
-        total: { $sum: sum },
-      })
+    const records = await this._model
+      .aggregate(jsonQuery)
+      .group({ _id: null, total: { $sum: sum } })
       .exec();
 
     if (!records || !records.length) {

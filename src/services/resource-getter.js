@@ -11,15 +11,6 @@ class ResourceGetter {
     this._user = user;
   }
 
-  async _isAllowed() {
-    const params = {
-      timezone: this._params.timezone,
-      filters: JSON.stringify({ field: '_id', operator: 'equal', value: this._params.recordId }),
-    };
-
-    return await new ResourcesGetter(this._model, null, params, this._user).count() === 1;
-  }
-
   _handlePopulate(query) {
     const schema = Interface.Schemas.schemas[utils.getModelName(this._model)];
     _.each(schema.fields, (field) => {
@@ -43,6 +34,20 @@ class ResourceGetter {
     }
 
     return record;
+  }
+
+  /**
+   * Check if the record is in scope for the given user.
+   * We can't do that in a single request to mongo, as checking scopes requires using
+   * an aggregation pipeline to perform $lookups
+   */
+  async _isAllowed() {
+    const params = {
+      timezone: this._params.timezone,
+      filters: JSON.stringify({ field: '_id', operator: 'equal', value: this._params.recordId }),
+    };
+
+    return await new ResourcesGetter(this._model, null, params, this._user).count() === 1;
   }
 }
 

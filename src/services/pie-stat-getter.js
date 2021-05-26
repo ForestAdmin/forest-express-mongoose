@@ -1,7 +1,8 @@
-import { Schemas, scopeManager } from 'forest-express';
+import { Schemas } from 'forest-express';
 import _ from 'lodash';
 import moment from 'moment';
 import utils from '../utils/schema';
+import getScopedParams from '../utils/scopes';
 import QueryBuilder from './query-builder';
 
 class PieStatGetter {
@@ -20,15 +21,7 @@ class PieStatGetter {
   }
 
   async perform() {
-    const params = {
-      ...this._params,
-      filters: await scopeManager.appendScopeForUser(
-        this._params.filters,
-        this._user,
-        utils.getModelName(this._model),
-      ),
-    };
-
+    const params = await getScopedParams(this._params, this._model, this._user);
     const field = _.find(this._schema.fields, { field: params.group_by_field });
     const queryBuilder = new QueryBuilder(this._model, params, this._opts);
     const populateGroupByField = this._getReference(params.group_by_field);

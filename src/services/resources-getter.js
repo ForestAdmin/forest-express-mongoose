@@ -2,6 +2,7 @@ import _ from 'lodash';
 import Interface from 'forest-express';
 import QueryBuilder from './query-builder';
 import utils from '../utils/schema';
+import getScopedParams from '../utils/scopes';
 
 class ResourcesGetter {
   constructor(model, opts, params, user) {
@@ -9,17 +10,6 @@ class ResourcesGetter {
     this._opts = { Mongoose: this._model.base, connections: this._model.base.connections };
     this._params = params;
     this._user = user;
-  }
-
-  async _getScopedParams() {
-    return {
-      ...this._params,
-      filters: await Interface.scopeManager.appendScopeForUser(
-        this._params.filters,
-        this._user,
-        utils.getModelName(this._model),
-      ),
-    };
   }
 
   _getSegment() {
@@ -45,7 +35,7 @@ class ResourcesGetter {
   }
 
   async perform() {
-    const params = await this._getScopedParams();
+    const params = await getScopedParams(this._params, this._model, this._user);
 
     let fieldsSearched = null;
     const segment = await this._getSegmentCondition();
@@ -76,7 +66,7 @@ class ResourcesGetter {
   }
 
   async count() {
-    const params = await this._getScopedParams();
+    const params = await getScopedParams(this._params, this._model, this._user);
     const segment = await this._getSegmentCondition();
 
     const queryBuilder = new QueryBuilder(this._model, params, this._opts);

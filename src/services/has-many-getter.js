@@ -1,8 +1,9 @@
-const _ = require('lodash');
-const Interface = require('forest-express');
-const SearchBuilder = require('./search-builder');
-const utils = require('../utils/schema');
-const FiltersParser = require('./filters-parser');
+import Interface from 'forest-express';
+import _ from 'lodash';
+import utils from '../utils/schema';
+import getScopedParams from '../utils/scopes';
+import FiltersParser from './filters-parser';
+import SearchBuilder from './search-builder';
 
 const OBJECTID_REGEXP = /^[0-9a-fA-F]{24}$/;
 
@@ -55,24 +56,17 @@ class HasManyGetter {
   }
 
   async _buildConditions(recordIds) {
-    const conditions = {
-      $and: [{ _id: { $in: recordIds } }],
-    };
+    const conditions = { $and: [{ _id: { $in: recordIds } }] };
 
-    if (this._params.search) {
+    const params = await getScopedParams(this._params, this._model, this._user);
+    if (params.search) {
       const conditionsSearch = await this._searchBuilder.getConditions();
       conditions.$and.push(conditionsSearch);
     }
 
-    const filters = await Interface.scopeManager.appendScopeForUser(
-      this._params.filters,
-      this._user,
-      utils.getModelName(this._model),
-    );
-
-    if (filters) {
-      const filtersParser = new FiltersParser(this._model, this._params.timezone, this._opts);
-      const newFilters = await filtersParser.replaceAllReferences(filters);
+    if (params.filters) {
+      const filtersParser = new FiltersParser(this._model, params.timezone, this._opts);
+      const newFilters = await filtersParser.replaceAllReferences(params.filters);
       const newFiltersString = JSON.stringify(newFilters);
       conditions.$and.push(await filtersParser.perform(newFiltersString));
     }

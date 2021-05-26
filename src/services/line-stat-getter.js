@@ -1,8 +1,9 @@
+import Interface from 'forest-express';
 import _ from 'lodash';
 import moment from 'moment-timezone';
-import Interface from 'forest-express';
-import QueryBuilder from './query-builder';
 import utils from '../utils/schema';
+import getScopedParams from '../utils/scopes';
+import QueryBuilder from './query-builder';
 
 class LineStatGetter {
   constructor(model, params, opts, user) {
@@ -99,15 +100,7 @@ class LineStatGetter {
   }
 
   async perform() {
-    const params = {
-      ...this._params,
-      filters: await Interface.scopeManager.appendScopeForUser(
-        this._params.filters,
-        this._user,
-        utils.getModelName(this._model),
-      ),
-    };
-
+    const params = await getScopedParams(this._params, this._model, this._user);
     const timezone = -parseInt(moment().tz(params.timezone).format('Z'), 10);
     const timezoneOffset = timezone * 60 * 60 * 1000;
     const queryBuilder = new QueryBuilder(this._model, params, this._opts);
