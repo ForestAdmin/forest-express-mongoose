@@ -5,10 +5,16 @@ import ResourcesRemover from '../../../src/services/resources-remover';
 import mongooseConnect from '../../utils/mongoose-connect';
 import { InvalidParameterError } from '../../../src/services/errors';
 
+const user = { renderingId: 1 };
+const params = { timezone: 'Europe/Paris' };
+
 describe('service > resources-remover', () => {
   let IslandModel;
+  let scopeSpy;
 
   beforeAll(async () => {
+    scopeSpy = jest.spyOn(Interface.scopeManager, 'getScopeForUser').mockReturnValue(null);
+
     Interface.Schemas = {
       schemas: {
         Island: {
@@ -33,7 +39,10 @@ describe('service > resources-remover', () => {
     await IslandModel.deleteMany({});
   });
 
-  afterAll(() => mongoose.connection.close());
+  afterAll(async () => {
+    scopeSpy.mockRestore();
+    await mongoose.connection.close();
+  });
 
   beforeEach(async () => {
     await IslandModel.deleteMany({});
@@ -43,32 +52,54 @@ describe('service > resources-remover', () => {
     ]);
   });
 
+  it('should throw error if ids is empty', async () => {
+    expect.assertions(1);
 
-  it('should throw error if ids is not an array or empty', () => {
-    expect.assertions(3);
-    expect(() => new ResourcesRemover(null, []).perform()).toThrow(InvalidParameterError);
-    expect(() => new ResourcesRemover(null, 'foo').perform()).toThrow(InvalidParameterError);
-    expect(() => new ResourcesRemover(null, {}).perform()).toThrow(InvalidParameterError);
+    const remover = new ResourcesRemover(null, params, [], user);
+    await expect(remover.perform()).rejects.toThrow(InvalidParameterError);
+  });
+
+  it('should throw error if ids is a string', async () => {
+    expect.assertions(1);
+
+    const remover = new ResourcesRemover(null, params, 'foo', user);
+    await expect(remover.perform()).rejects.toThrow(InvalidParameterError);
+  });
+
+  it('should throw error if ids is an object', async () => {
+    expect.assertions(1);
+
+    const remover = new ResourcesRemover(null, params, {}, user);
+    await expect(remover.perform()).rejects.toThrow(InvalidParameterError);
   });
 
   it('should remove one resource with existing ID', async () => {
     expect.assertions(1);
-    await new ResourcesRemover(IslandModel, ['56cb91bdc3464f14678934ca']).perform();
+
+    const ids = ['56cb91bdc3464f14678934ca'];
+    await new ResourcesRemover(IslandModel, params, ids, user).perform();
     const documentsCount = await IslandModel.countDocuments();
+
     expect(documentsCount).toStrictEqual(1);
   });
 
   it('should remove all resources with existing ID', async () => {
     expect.assertions(1);
-    await new ResourcesRemover(IslandModel, ['56cb91bdc3464f14678934ca', '56cb91bdc3464f14678934cb']).perform();
+
+    const ids = ['56cb91bdc3464f14678934ca', '56cb91bdc3464f14678934cb'];
+    await new ResourcesRemover(IslandModel, params, ids, user).perform();
     const documentsCount = await IslandModel.countDocuments();
+
     expect(documentsCount).toStrictEqual(0);
   });
 
   it('should not remove resource with not existing ID', async () => {
     expect.assertions(1);
-    await new ResourcesRemover(IslandModel, ['56cb91bdc3464f14678934cd']).perform();
+
+    const ids = ['56cb91bdc3464f14678934cd'];
+    await new ResourcesRemover(IslandModel, params, ids, user).perform();
     const documentsCount = await IslandModel.countDocuments();
+
     expect(documentsCount).toStrictEqual(2);
   });
 });

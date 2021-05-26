@@ -1,12 +1,16 @@
+import ResourcesRemover from './resources-remover';
 
-class ResourceRemover {
-  constructor(model, params) {
-    this._model = model;
-    this._params = params;
+class ResourceRemover extends ResourcesRemover {
+  constructor(model, params, user) {
+    super(model, params, [params.recordId], user);
   }
 
-  async perform() {
-    await this._model.deleteOne({ _id: this._params.recordId });
+  perform() {
+    if (!this._params.recordId) {
+      return null;
+    }
+
+    return super.perform();
   }
 }
 
