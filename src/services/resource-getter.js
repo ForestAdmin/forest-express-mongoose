@@ -1,13 +1,16 @@
-const P = require('bluebird');
 const _ = require('lodash');
 const Interface = require('forest-express');
 const createError = require('http-errors');
 const utils = require('../utils/schema');
 
-function ResourceGetter(model, params) {
-  const schema = Interface.Schemas.schemas[utils.getModelName(model)];
+class ResourceGetter {
+  constructor(model, params) {
+    this._model = model;
+    this._params = params;
+  }
 
-  function handlePopulate(query) {
+  _handlePopulate(query) {
+    const schema = Interface.Schemas.schemas[utils.getModelName(this._model)];
     _.each(schema.fields, (field) => {
       if (field.reference) {
         query.populate(field.field);
@@ -15,22 +18,16 @@ function ResourceGetter(model, params) {
     });
   }
 
-  this.perform = () =>
-    new P((resolve, reject) => {
-      const query = model.findById(params.recordId);
+  async perform() {
+    const query = this._model.findById(this._params.recordId);
+    this._handlePopulate(query);
 
-      handlePopulate(query);
-
-      query
-        .lean()
-        .exec((error, record) => {
-          if (!record) {
-            return reject(createError(404, `The ${model.name} #${params.recordId} does not exist.`));
-          }
-          if (error) { return reject(error); }
-          return resolve(record);
-        });
-    });
+    const record = await query.lean().exec();
+    if (!record) {
+      throw createError(404, `The ${this._model.name} #${this._params.recordId} does not exist.`);
+    }
+    return record;
+  }
 }
 
 module.exports = ResourceGetter;

@@ -1,40 +1,44 @@
 import _ from 'lodash';
-import P from 'bluebird';
 import Interface from 'forest-express';
 import moment from 'moment';
 import QueryBuilder from './query-builder';
 import utils from '../utils/schema';
 
-function PieStatGetter(model, params, opts) {
-  const schema = Interface.Schemas.schemas[utils.getModelName(model)];
-  const field = _.find(schema.fields, { field: params.group_by_field });
-  const queryBuilder = new QueryBuilder(model, params, opts);
+class PieStatGetter {
+  constructor(model, params, opts) {
+    this._model = model;
+    this._params = params;
+    this._opts = opts;
+    this._schema = Interface.Schemas.schemas[utils.getModelName(this._model)];
+  }
 
-  function getReference(fieldName) {
+  _getReference(fieldName) {
     const fieldNameWithoutSubField = fieldName.includes(':') ? fieldName.split(':')[0] : fieldName;
-    const currentField = _.find(schema.fields, { field: fieldNameWithoutSubField });
+    const currentField = _.find(this._schema.fields, { field: fieldNameWithoutSubField });
     return currentField.reference ? currentField : null;
   }
 
-  this.perform = () => {
-    const populateGroupByField = getReference(params.group_by_field);
+  async perform() {
+    const field = _.find(this._schema.fields, { field: this._params.group_by_field });
+    const queryBuilder = new QueryBuilder(this._model, this._params, this._opts);
+    const populateGroupByField = this._getReference(this._params.group_by_field);
     const groupByFieldName = populateGroupByField
-      ? params.group_by_field.replace(':', '.') : params.group_by_field;
+      ? this._params.group_by_field.replace(':', '.') : this._params.group_by_field;
 
-    return new P(async (resolve, reject) => {
-      const jsonQuery = await queryBuilder.getQueryWithFiltersAndJoins(null);
-      if (populateGroupByField) {
-        queryBuilder.addJoinToQuery(populateGroupByField, jsonQuery);
-      }
+    const jsonQuery = await queryBuilder.getQueryWithFiltersAndJoins(null);
+    if (populateGroupByField) {
+      queryBuilder.addJoinToQuery(populateGroupByField, jsonQuery);
+    }
 
-      const query = model.aggregate(jsonQuery);
+    const query = this._model.aggregate(jsonQuery);
 
-      let sum = 1;
-      if (params.aggregate_field) {
-        sum = `$${params.aggregate_field}`;
-      }
+    let sum = 1;
+    if (this._params.aggregate_field) {
+      sum = `$${this._params.aggregate_field}`;
+    }
 
-      query
+    const records = {
+      value: await query
         .group({
           _id: `$${groupByFieldName}`,
           count: { $sum: sum },
@@ -45,16 +49,17 @@ function PieStatGetter(model, params, opts) {
           _id: false,
         })
         .sort({ value: -1 })
-        .exec((err, records) => (err ? reject(err) : resolve({ value: records })));
-    }).then((records) => {
-      if (field && field.type === 'Date') {
-        _.each(records.value, (record) => {
-          record.key = moment(record.key).format('DD/MM/YYYY HH:mm:ss');
-        });
-      }
-      return records;
-    });
-  };
+        .exec(),
+    };
+
+    if (field && field.type === 'Date') {
+      _.each(records.value, (record) => {
+        record.key = moment(record.key).format('DD/MM/YYYY HH:mm:ss');
+      });
+    }
+
+    return records;
+  }
 }
 
 module.exports = PieStatGetter;

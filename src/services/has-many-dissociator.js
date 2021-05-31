@@ -1,35 +1,31 @@
-const P = require('bluebird');
 
-function HasManyDissociator(model, association, opts, params, data) {
-  const isDelete = Boolean(params.delete);
+class HasManyDissociator {
+  constructor(model, association, opts, params, data) {
+    this._model = model;
+    this._association = association;
+    this._params = params;
+    this._data = data;
+  }
 
-  this.perform = () =>
-    new P(((resolve, reject) => {
-      const documentIds = data.data.map((document) => document.id);
+  async perform() {
+    const isDelete = Boolean(this._params.delete);
+    const documentIds = this._data.data.map((document) => document.id);
+    if (isDelete) {
+      await this._association.deleteMany({ _id: { $in: documentIds } });
+    }
 
-      if (isDelete) {
-        association.deleteMany({
-          _id: { $in: documentIds },
-        }, (error) => {
-          if (error) { return reject(error); }
-          return resolve();
-        });
-      }
-      const updateParams = {};
-      updateParams[params.associationName] = { $in: documentIds };
+    const updateParams = {};
+    updateParams[this._params.associationName] = { $in: documentIds };
 
-      model
-        .findByIdAndUpdate(params.recordId, {
-          $pull: updateParams,
-        }, {
-          new: true,
-        })
-        .lean()
-        .exec((error, record) => {
-          if (error) { return reject(error); }
-          return resolve(record);
-        });
-    }));
+    return this._model
+      .findByIdAndUpdate(this._params.recordId, {
+        $pull: updateParams,
+      }, {
+        new: true,
+      })
+      .lean()
+      .exec();
+  }
 }
 
 module.exports = HasManyDissociator;

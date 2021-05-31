@@ -230,8 +230,8 @@ function FiltersParser(model, timezone, options) {
     };
     const query = await subModelFilterParser.perform(JSON.stringify(newCondition));
     const [, referencedKey] = field.reference.split('.');
-    const subModelIds = await subModel.find(query)
-      .then((records) => records.map((record) => record[referencedKey]));
+    const subModelRecords = await subModel.find(query);
+    const subModelIds = subModelRecords.map((record) => record[referencedKey]);
 
     const resultCondition = {
       field: fieldName,

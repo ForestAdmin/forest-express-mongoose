@@ -1,13 +1,13 @@
-const P = require('bluebird');
 
-function ResourceRemover(Model, params) {
-  this.perform = () =>
-    new P((resolve, reject) => {
-      Model.remove({ _id: params.recordId }, (err) => {
-        if (err) { return reject(err); }
-        return resolve();
-      });
-    });
+class ResourceRemover {
+  constructor(model, params) {
+    this._model = model;
+    this._params = params;
+  }
+
+  async perform() {
+    await this._model.deleteOne({ _id: this._params.recordId });
+  }
 }
 
 module.exports = ResourceRemover;

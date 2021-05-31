@@ -14,7 +14,7 @@ describe('service > resources-getter', () => {
     connections: { mongoose },
   };
 
-  beforeAll(() => {
+  beforeAll(async () => {
     Interface.Schemas = {
       schemas: {
         Order: {
@@ -61,96 +61,97 @@ describe('service > resources-getter', () => {
       },
     };
 
-    return mongooseConnect()
-      .then(() => {
-        const OrderSchema = new mongoose.Schema({
-          amount: { type: Number },
-          comment: { type: String },
-          giftMessage: { type: String },
-          orderer: { type: 'ObjectId' },
-          receiver: { type: 'ObjectId' },
-        });
-        const UserSchema = new mongoose.Schema({
-          _id: { type: 'ObjectId' },
-          name: { type: String },
-          age: { type: Number },
-        });
-        const FilmSchema = new mongoose.Schema({
-          _id: { type: 'ObjectId' },
-          title: { type: String },
-          duration: { type: Number },
-          rating: { type: Number },
-        });
+    await mongooseConnect();
 
-        OrderModel = mongoose.model('Order', OrderSchema);
-        UserModel = mongoose.model('User', UserSchema);
-        FilmModel = mongoose.model('Film', FilmSchema);
+    const OrderSchema = new mongoose.Schema({
+      amount: { type: Number },
+      comment: { type: String },
+      giftMessage: { type: String },
+      orderer: { type: 'ObjectId' },
+      receiver: { type: 'ObjectId' },
+    });
+    const UserSchema = new mongoose.Schema({
+      _id: { type: 'ObjectId' },
+      name: { type: String },
+      age: { type: Number },
+    });
+    const FilmSchema = new mongoose.Schema({
+      _id: { type: 'ObjectId' },
+      title: { type: String },
+      duration: { type: Number },
+      rating: { type: Number },
+    });
 
-        return Promise.all([OrderModel.remove({}), UserModel.remove({}), FilmModel.remove({})]);
-      })
-      .then(() =>
-        Promise.all([
-          loadFixture(OrderModel, [
-            {
-              // _id: 100,
-              amount: 199,
-              comment: 'no comment!',
-              giftMessage: 'Here is your gift',
-              receiver: '41224d776a326fb40f000002',
-            },
-            {
-              // _id: 101,
-              amount: 1399,
-              comment: 'this is a gift',
-              giftMessage: 'Thank you',
-              orderer: '41224d776a326fb40f000001',
-            },
-            {
-              // _id: 102,
-              amount: 4000,
-              comment: 'Don\'t touch this',
-              giftMessage: '',
-              orderer: null,
-            },
-            {
-              // _id: 103,
-              amount: 5000,
-              comment: 'Don\'t touch this',
-              giftMessage: null,
-              orderer: null,
-            },
-          ]), loadFixture(UserModel, [
-            {
-              _id: '41224d776a326fb40f000001',
-              age: 49,
-              name: 'Rust Cohle',
-            },
-            {
-              _id: '41224d776a326fb40f000002',
-              age: 30,
-              name: 'Jacco Gardner',
-            },
-          ]),
-          loadFixture(FilmModel, [
-            {
-              _id: '41224d776a326fb40f000011',
-              duration: 149,
-              title: 'Terminator',
-              rating: 4.5,
-            },
-            {
-              _id: '41224d776a326fb40f000012',
-              duration: 360,
-              title: 'Titanic',
-              rating: 4,
-            },
-            {
-              _id: '41224d776a326fb40f000013',
-              duration: 125,
-              title: 'Matrix',
-            },
-          ]),
-        ]));
+    OrderModel = mongoose.model('Order', OrderSchema);
+    UserModel = mongoose.model('User', UserSchema);
+    FilmModel = mongoose.model('Film', FilmSchema);
+
+    await Promise.all([
+      OrderModel.deleteMany({}), UserModel.deleteMany({}), FilmModel.deleteMany({}),
+    ]);
+
+    await Promise.all([
+      loadFixture(OrderModel, [
+        {
+          // _id: 100,
+          amount: 199,
+          comment: 'no comment!',
+          giftMessage: 'Here is your gift',
+          receiver: '41224d776a326fb40f000002',
+        },
+        {
+          // _id: 101,
+          amount: 1399,
+          comment: 'this is a gift',
+          giftMessage: 'Thank you',
+          orderer: '41224d776a326fb40f000001',
+        },
+        {
+          // _id: 102,
+          amount: 4000,
+          comment: 'Don\'t touch this',
+          giftMessage: '',
+          orderer: null,
+        },
+        {
+          // _id: 103,
+          amount: 5000,
+          comment: 'Don\'t touch this',
+          giftMessage: null,
+          orderer: null,
+        },
+      ]), loadFixture(UserModel, [
+        {
+          _id: '41224d776a326fb40f000001',
+          age: 49,
+          name: 'Rust Cohle',
+        },
+        {
+          _id: '41224d776a326fb40f000002',
+          age: 30,
+          name: 'Jacco Gardner',
+        },
+      ]),
+      loadFixture(FilmModel, [
+        {
+          _id: '41224d776a326fb40f000011',
+          duration: 149,
+          title: 'Terminator',
+          rating: 4.5,
+        },
+        {
+          _id: '41224d776a326fb40f000012',
+          duration: 360,
+          title: 'Titanic',
+          rating: 4,
+        },
+        {
+          _id: '41224d776a326fb40f000013',
+          duration: 125,
+          title: 'Matrix',
+        },
+      ]),
+    ]);
   });
 
   afterAll(() => mongoose.connection.close());

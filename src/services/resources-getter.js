@@ -1,65 +1,73 @@
-import P from 'bluebird';
 import _ from 'lodash';
 import Interface from 'forest-express';
 import QueryBuilder from './query-builder';
 import utils from '../utils/schema';
 
-function ResourcesGetter(model, opts, params) {
-  const schema = Interface.Schemas.schemas[utils.getModelName(model)];
-  const queryBuilder = new QueryBuilder(model, params, opts);
+class ResourcesGetter {
+  constructor(model, opts, params) {
+    this._model = model;
+    this._opts = opts;
+    this._params = params;
+    this._queryBuilder = new QueryBuilder(this._model, this._params, this._opts);
+  }
 
-  let fieldsSearched = null;
-
-  function getSegment() {
-    if (schema.segments && params.segment) {
-      return _.find(schema.segments, (currentSegment) => currentSegment.name === params.segment);
+  _getSegment() {
+    const schema = Interface.Schemas.schemas[utils.getModelName(this._model)];
+    if (schema.segments && this._params.segment) {
+      return _.find(
+        schema.segments,
+        (currentSegment) => currentSegment.name === this._params.segment,
+      );
     }
     return null;
   }
 
-  function getSegmentCondition() {
-    const segment = getSegment();
+  async _getSegmentCondition() {
+    const segment = this._getSegment();
+
     if (segment && segment.where && typeof segment.where === 'function') {
-      return segment.where().then((where) => ({ where }));
+      const where = await segment.where();
+      return { where };
     }
-    return new P((resolve) => resolve(segment));
+
+    return segment;
   }
 
-  this.perform = () => getSegmentCondition()
-    .then(async (segment) => {
-      const jsonQuery = [];
-      await queryBuilder.addFiltersAndJoins(jsonQuery, segment);
+  async perform() {
+    let fieldsSearched = null;
+    const segment = await this._getSegmentCondition();
+    const jsonQuery = [];
+    await this._queryBuilder.addFiltersAndJoins(jsonQuery, segment);
 
-      if (params.search) {
-        fieldsSearched = queryBuilder.getFieldsSearched();
-        if (fieldsSearched.length === 0 && !queryBuilder.hasSmartFieldSearch()) {
-          // NOTICE: No search condition has been set for the current search,
-          //         no record can be found.
-          return [];
-        }
+    if (this._params.search) {
+      fieldsSearched = this._queryBuilder.getFieldsSearched();
+      if (fieldsSearched.length === 0 && !this._queryBuilder.hasSmartFieldSearch()) {
+        // NOTICE: No search condition has been set for the current search,
+        //         no record can be found.
+        return [[], []];
       }
+    }
 
-      if (params.sort) {
-        queryBuilder.addSortToQuery(jsonQuery);
-      }
+    if (this._params.sort) {
+      this._queryBuilder.addSortToQuery(jsonQuery);
+    }
 
-      await queryBuilder.addProjection(jsonQuery);
+    await this._queryBuilder.addProjection(jsonQuery);
+    this._queryBuilder.addSkipAndLimitToQuery(jsonQuery);
+    await this._queryBuilder.joinAllReferences(jsonQuery);
 
-      queryBuilder.addSkipAndLimitToQuery(jsonQuery);
+    const records = await this._model.aggregate(jsonQuery);
+    return [records, fieldsSearched];
+  }
 
-      await queryBuilder.joinAllReferences(jsonQuery);
+  async count() {
+    const segment = await this._getSegmentCondition();
+    const jsonQuery = await this._queryBuilder.getQueryWithFiltersAndJoins(segment);
+    this._queryBuilder.addCountToQuery(jsonQuery);
 
-      return model.aggregate(jsonQuery);
-    })
-    .then((records) => [records, fieldsSearched]);
-
-  this.count = () => getSegmentCondition()
-    .then(async (segment) => {
-      const jsonQuery = await queryBuilder.getQueryWithFiltersAndJoins(segment);
-      queryBuilder.addCountToQuery(jsonQuery);
-      return model.aggregate(jsonQuery)
-        .then((result) => (result[0] ? result[0].count : 0));
-    });
+    const result = await this._model.aggregate(jsonQuery);
+    return result[0] ? result[0].count : 0;
+  }
 }
 
 module.exports = ResourcesGetter;

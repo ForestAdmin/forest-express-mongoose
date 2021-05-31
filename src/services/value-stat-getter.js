@@ -1,30 +1,34 @@
-import P from 'bluebird';
 import QueryBuilder from './query-builder';
 
-function ValueStatGetter(model, params, opts) {
-  const queryBuilder = new QueryBuilder(model, params, opts);
+class ValueStatGetter {
+  constructor(model, params, opts) {
+    this._model = model;
+    this._params = params;
+    this._opts = opts;
+  }
 
-  this.perform = () => new P(async (resolve, reject) => {
-    const jsonQuery = await queryBuilder.getQueryWithFiltersAndJoins(null);
-    const query = model.aggregate(jsonQuery);
+  async perform() {
+    const queryBuilder = new QueryBuilder(this._model, this._params, this._opts);
 
     let sum = 1;
-    if (params.aggregate_field) {
-      sum = `$${params.aggregate_field}`;
+    if (this._params.aggregate_field) {
+      sum = `$${this._params.aggregate_field}`;
     }
 
-    query
+    const jsonQuery = await queryBuilder.getQueryWithFiltersAndJoins(null);
+    const records = await this._model.aggregate(jsonQuery)
       .group({
         _id: null,
         total: { $sum: sum },
       })
-      .exec((err, records) => {
-        if (err) { return reject(err); }
-        if (!records || !records.length) { return resolve({ value: 0 }); }
+      .exec();
 
-        return resolve({ value: records[0].total });
-      });
-  });
+    if (!records || !records.length) {
+      return { value: 0 };
+    }
+
+    return { value: records[0].total };
+  }
 }
 
 module.exports = ValueStatGetter;

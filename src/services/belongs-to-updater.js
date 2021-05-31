@@ -1,23 +1,23 @@
-const P = require('bluebird');
+class BelongsToUpdater {
+  constructor(model, association, opts, params, data) {
+    this._model = model;
+    this._params = params;
+    this._data = data;
+  }
 
-function BelongsToUpdater(model, association, opts, params, data) {
-  this.perform = () =>
-    new P(((resolve, reject) => {
-      const updateParams = {};
-      updateParams[params.associationName] = data.data ? data.data.id : null;
+  async perform() {
+    const updateParams = {};
+    updateParams[this._params.associationName] = this._data.data ? this._data.data.id : null;
 
-      model
-        .findByIdAndUpdate(params.recordId, {
-          $set: updateParams,
-        }, {
-          new: true,
-        })
-        .lean()
-        .exec((err, record) => {
-          if (err) { return reject(err); }
-          return resolve(record);
-        });
-    }));
+    return this._model
+      .findByIdAndUpdate(this._params.recordId, {
+        $set: updateParams,
+      }, {
+        new: true,
+      })
+      .lean()
+      .exec();
+  }
 }
 
 module.exports = BelongsToUpdater;

@@ -6,25 +6,34 @@ import SearchBuilder from './search-builder';
 import FiltersParser from './filters-parser';
 import ProjectionBuilder from './projection-builder';
 
-function QueryBuilder(model, params, opts) {
-  const schema = Interface.Schemas.schemas[utils.getModelName(model)];
-  const searchBuilder = new SearchBuilder(model, opts, params, schema.searchFields);
-  const filterParser = new FiltersParser(model, params.timezone, opts);
-  const projectionBuilder = new ProjectionBuilder(schema);
+class QueryBuilder {
+  constructor(model, params, opts) {
+    this._model = model;
+    this._params = params;
+    this._opts = opts;
 
-  const { filters } = params;
+    this._schema = Interface.Schemas.schemas[utils.getModelName(this._model)];
+    this._searchBuilder = new SearchBuilder(
+      this._model, this._opts, this._params, this._schema.searchFields,
+    );
+    this._filterParser = new FiltersParser(this._model, this._params.timezone, this._opts);
+    this._projectionBuilder = new ProjectionBuilder(this._schema);
+  }
 
-  this.joinAlreadyExists = (field, joinQuery) =>
-    !!_.find(joinQuery, (join) => join && join.$lookup && join.$lookup.as === field.field);
+  static _joinAlreadyExists(field, joinQuery) {
+    return !!_.find(joinQuery, (join) => join && join.$lookup && join.$lookup.as === field.field);
+  }
 
-  this.getFieldNamesRequested = async () => {
-    if (!params.fields || !params.fields[model.collection.name]) { return null; }
+  async getFieldNamesRequested() {
+    if (!this._params.fields || !this._params.fields[this._model.collection.name]) { return null; }
 
     // NOTICE: Populate the necessary associations for filters
-    const associations = params.filters ? await filterParser.getAssociations(params.filters) : [];
+    const associations = this._params.filters
+      ? await this._filterParser.getAssociations(this._params.filters)
+      : [];
 
-    if (params.sort && params.sort.includes('.')) {
-      let [associationFromSorting] = params.sort.split('.');
+    if (this._params.sort && this._params.sort.includes('.')) {
+      let [associationFromSorting] = this._params.sort.split('.');
       if (associationFromSorting[0] === '-') {
         associationFromSorting = associationFromSorting.substring(1);
       }
@@ -32,23 +41,25 @@ function QueryBuilder(model, params, opts) {
     }
 
     return _.union(
-      params.fields[model.collection.name].split(','),
+      this._params.fields[this._model.collection.name].split(','),
       associations,
     );
-  };
+  }
 
-  this.addProjection = (jsonQuery) => this.getFieldNamesRequested()
-    .then((fieldNames) => projectionBuilder.getProjection(fieldNames))
-    .then((projection) => projection && jsonQuery.push(projection));
+  async addProjection(jsonQuery) {
+    const fieldNames = await this.getFieldNamesRequested();
+    const projection = await this._projectionBuilder.getProjection(fieldNames);
+    return projection && jsonQuery.push(projection);
+  }
 
-  this.addJoinToQuery = (field, joinQuery) => {
+  addJoinToQuery(field, joinQuery) {
     if (field.reference && !field.isVirtual && !field.integration) {
-      if (this.joinAlreadyExists(field, joinQuery)) {
+      if (QueryBuilder._joinAlreadyExists(field, joinQuery)) {
         return this;
       }
 
       const referencedKey = utils.getReferenceField(field.reference);
-      const subModel = utils.getReferenceModel(opts, field.reference);
+      const subModel = utils.getReferenceModel(this._opts, field.reference);
       joinQuery.push({
         $lookup: {
           from: subModel.collection.name,
@@ -58,7 +69,7 @@ function QueryBuilder(model, params, opts) {
         },
       });
 
-      const fieldPath = field.field && model.schema.path(field.field);
+      const fieldPath = field.field && this._model.schema.path(field.field);
       if (fieldPath && fieldPath.instance !== 'Array') {
         joinQuery.push({
           $unwind: {
@@ -70,83 +81,93 @@ function QueryBuilder(model, params, opts) {
     }
 
     return this;
-  };
+  }
 
-  this.joinAllReferences = async (jsonQuery, alreadyJoinedQuery) => {
+  async joinAllReferences(jsonQuery, alreadyJoinedQuery) {
     const fieldNames = await this.getFieldNamesRequested();
-    schema.fields.forEach((field) => {
+    this._schema.fields.forEach((field) => {
       if ((fieldNames && !fieldNames.includes(field.field))
-        || this.joinAlreadyExists(field, alreadyJoinedQuery)) {
+          || QueryBuilder._joinAlreadyExists(field, alreadyJoinedQuery)) {
         return;
       }
       this.addJoinToQuery(field, jsonQuery);
     });
     return this;
-  };
+  }
 
-  this.addFiltersToQuery = async (jsonQuery) => {
-    const newFilters = await filterParser.replaceAllReferences(filters);
+  async _addFiltersToQuery(jsonQuery) {
+    const newFilters = await this._filterParser.replaceAllReferences(this._params.filters);
     const newFiltersString = JSON.stringify(newFilters);
-    jsonQuery.push(await filterParser.perform(newFiltersString));
-  };
+    jsonQuery.push(await this._filterParser.perform(newFiltersString));
+  }
 
-  this.addSortToQuery = (jsonQuery) => {
-    const order = params.sort.startsWith('-') ? -1 : 1;
-    let sortParam = order > 0 ? params.sort : params.sort.substring(1);
-    if (params.sort.split('.').length > 1) {
-      [sortParam] = params.sort.split('.');
-      const [association] = params.sort.split('.');
+  addSortToQuery(jsonQuery) {
+    const order = this._params.sort.startsWith('-') ? -1 : 1;
+    let sortParam = order > 0 ? this._params.sort : this._params.sort.substring(1);
+    if (this._params.sort.split('.').length > 1) {
+      [sortParam] = this._params.sort.split('.');
+      const [association] = this._params.sort.split('.');
       this.addJoinToQuery(association, jsonQuery);
     }
     jsonQuery.push({ $sort: { [sortParam]: order } });
 
     return this;
-  };
+  }
 
-  this.addSkipAndLimitToQuery = (jsonQuery) => {
-    jsonQuery.push({ $skip: this.getSkip() });
-    jsonQuery.push({ $limit: this.getLimit() });
+  addSkipAndLimitToQuery(jsonQuery) {
+    jsonQuery.push({ $skip: this._getSkip() });
+    jsonQuery.push({ $limit: this._getLimit() });
 
     return this;
-  };
+  }
 
-  this.addCountToQuery = (jsonQuery) => {
-    if (Orm.hasRequiredVersion(opts.Mongoose, '3.4')) {
+  addCountToQuery(jsonQuery) {
+    if (Orm.hasRequiredVersion(this._opts.Mongoose, '3.4')) {
       jsonQuery.push({ $count: 'count' });
     } else {
       jsonQuery.push({ $group: { _id: null, count: { $sum: 1 } } });
     }
 
     return this;
-  };
+  }
 
-  this.hasPagination = () => params.page && params.page.number;
+  _hasPagination() {
+    return this._params.page && this._params.page.number;
+  }
 
-  this.getLimit = () => (this.hasPagination() && params.page.size
-    ? Number.parseInt(params.page.size, 10) : 10);
+  _getLimit() {
+    return (this._hasPagination() && this._params.page.size
+      ? Number.parseInt(this._params.page.size, 10) : 10);
+  }
 
-  this.getSkip = () => (this.hasPagination()
-    ? (Number.parseInt(params.page.number, 10) - 1) * this.getLimit() : 0);
+  _getSkip() {
+    return (this._hasPagination()
+      ? (Number.parseInt(this._params.page.number, 10) - 1) * this._getLimit() : 0);
+  }
 
-  this.hasSmartFieldSearch = () => searchBuilder.hasSmartFieldSearch;
+  hasSmartFieldSearch() {
+    return this._searchBuilder.hasSmartFieldSearch;
+  }
 
-  this.getFieldsSearched = () => searchBuilder.getFieldsSearched();
+  getFieldsSearched() {
+    return this._searchBuilder.getFieldsSearched();
+  }
 
-  this.getQueryWithFiltersAndJoins = async (segment) => {
+  async getQueryWithFiltersAndJoins(segment) {
     const jsonQuery = [];
     await this.addFiltersAndJoins(jsonQuery, segment);
     return jsonQuery;
-  };
+  }
 
-  this.addFiltersAndJoins = async (jsonQuery, segment) => {
+  async addFiltersAndJoins(jsonQuery, segment) {
     const conditions = [];
 
-    if (filters) {
-      await this.addFiltersToQuery(conditions);
+    if (this._params.filters) {
+      await this._addFiltersToQuery(conditions);
     }
 
-    if (params.search) {
-      await searchBuilder.getWhere(conditions);
+    if (this._params.search) {
+      await this._searchBuilder.getWhere(conditions);
     }
 
     if (segment) {
@@ -162,7 +183,8 @@ function QueryBuilder(model, params, opts) {
     }
 
     return this;
-  };
+  }
 }
+
 
 module.exports = QueryBuilder;

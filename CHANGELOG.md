@@ -1,3 +1,202 @@
+## [7.6.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.6.1...v7.6.2) (2021-05-25)
+
+
+### Bug Fixes
+
+* **smart-actions-change-hook:** record is no longer altered and is sent correctly ([#585](https://github.com/ForestAdmin/forest-express-mongoose/issues/585)) ([53d87ad](https://github.com/ForestAdmin/forest-express-mongoose/commit/53d87adc21578637a848b81081ac78d87865c4c8))
+
+## [7.6.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.6.0...v7.6.1) (2021-05-21)
+
+
+### Bug Fixes
+
+* distribution charts using groupby on a relationship throws 403 Forbidden ([#577](https://github.com/ForestAdmin/forest-express-mongoose/issues/577)) ([a2ee140](https://github.com/ForestAdmin/forest-express-mongoose/commit/a2ee14017ae81b731f4711d57e1d9aac6f613429))
+
+# [7.6.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.5.2...v7.6.0) (2021-04-28)
+
+
+### Features
+
+* support yarn 2 plug n play install mode ([#560](https://github.com/ForestAdmin/forest-express-mongoose/issues/560)) ([47bc2a7](https://github.com/ForestAdmin/forest-express-mongoose/commit/47bc2a7b0f3b720671d273809f78e01574e4135c))
+
+## [7.5.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.5.1...v7.5.2) (2021-04-21)
+
+
+### Bug Fixes
+
+* **security:** patch ssri dependency vulnerability ([#556](https://github.com/ForestAdmin/forest-express-mongoose/issues/556)) ([33e8d2e](https://github.com/ForestAdmin/forest-express-mongoose/commit/33e8d2e47e28a6553245d1fa50b04f8d506bc704))
+
+## [7.5.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.5.0...v7.5.1) (2021-04-16)
+
+
+### Bug Fixes
+
+* **date-filter:** filtering only on hours now returns the expected records ([#555](https://github.com/ForestAdmin/forest-express-mongoose/issues/555)) ([4ba8c7f](https://github.com/ForestAdmin/forest-express-mongoose/commit/4ba8c7f8a72f36253a43ae20147af427bf6ffc9f))
+
+# [7.5.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.4.0...v7.5.0) (2021-04-12)
+
+
+### Features
+
+* **smart-action:** handle isReadOnly field in smart action forms ([#552](https://github.com/ForestAdmin/forest-express-mongoose/issues/552)) ([c28cb98](https://github.com/ForestAdmin/forest-express-mongoose/commit/c28cb982d69ea95e928ca91a1155ff9c8afb51e5))
+
+# [7.4.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.3.8...v7.4.0) (2021-04-09)
+
+
+### Features
+
+* **smart-action:** support hooks for smart collection ([#550](https://github.com/ForestAdmin/forest-express-mongoose/issues/550)) ([5eb3092](https://github.com/ForestAdmin/forest-express-mongoose/commit/5eb3092fcd451a9db07c222c528de0a969b58e09))
+
+## [7.3.8](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.3.7...v7.3.8) (2021-04-06)
+
+
+### Bug Fixes
+
+* **security:** patch mquery dependency vulnerabilities ([#546](https://github.com/ForestAdmin/forest-express-mongoose/issues/546)) ([e8d1dac](https://github.com/ForestAdmin/forest-express-mongoose/commit/e8d1dacfbad98f798843cfaf73fcd1cc2561c3e9))
+
+## [7.3.7](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.3.6...v7.3.7) (2021-04-06)
+
+
+### Bug Fixes
+
+* **security:** patch marked dependency vulnerabilities ([#545](https://github.com/ForestAdmin/forest-express-mongoose/issues/545)) ([8c82799](https://github.com/ForestAdmin/forest-express-mongoose/commit/8c827990bba171bdfade7cdb903936544d1238a3))
+
+## [7.3.6](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.3.5...v7.3.6) (2021-04-01)
+
+
+### Bug Fixes
+
+* **security:** patch node-fetch dependency vulnerability ([#542](https://github.com/ForestAdmin/forest-express-mongoose/issues/542)) ([f344a43](https://github.com/ForestAdmin/forest-express-mongoose/commit/f344a431261d72b6d622b36887ed1a9412b9c720))
+
+## [7.3.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.3.4...v7.3.5) (2021-04-01)
+
+
+### Bug Fixes
+
+* **security:** patch forest-express transitive vulnerabilities ([#541](https://github.com/ForestAdmin/forest-express-mongoose/issues/541)) ([7eb69a5](https://github.com/ForestAdmin/forest-express-mongoose/commit/7eb69a51a5d7b6907e389cf4ed1004abaa46d99d))
+
+## [7.3.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.3.3...v7.3.4) (2021-04-01)
+
+
+### Bug Fixes
+
+* **security:** patch npm-user-validate dependency vulnerabilities ([#540](https://github.com/ForestAdmin/forest-express-mongoose/issues/540)) ([bf9966b](https://github.com/ForestAdmin/forest-express-mongoose/commit/bf9966b757ff4f795ec034613b684da7278bc23d))
+
+## [7.3.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.3.2...v7.3.3) (2021-04-01)
+
+
+### Bug Fixes
+
+* **security:** patch y18n dependency vulnerabilities ([#539](https://github.com/ForestAdmin/forest-express-mongoose/issues/539)) ([edac343](https://github.com/ForestAdmin/forest-express-mongoose/commit/edac343da2c13bcba4cbaada7a98941249031ec9))
+
+## [7.3.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.3.1...v7.3.2) (2021-03-31)
+
+
+### Bug Fixes
+
+* **security:** patch ini dependency vulnerability ([#538](https://github.com/ForestAdmin/forest-express-mongoose/issues/538)) ([255df7d](https://github.com/ForestAdmin/forest-express-mongoose/commit/255df7dd24bb559f2a8f2f29949faf34bfceac4e))
+
+## [7.3.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.3.0...v7.3.1) (2021-03-31)
+
+
+### Bug Fixes
+
+* **security:** patch node-notifier vulnerabilities ([#537](https://github.com/ForestAdmin/forest-express-mongoose/issues/537)) ([92a4593](https://github.com/ForestAdmin/forest-express-mongoose/commit/92a459333c5c321566f20ef9d7ef3517c0c9ebe9))
+
+# [7.3.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.2.2...v7.3.0) (2021-03-25)
+
+
+### Features
+
+* add filters on related data ([#532](https://github.com/ForestAdmin/forest-express-mongoose/issues/532)) ([34f4110](https://github.com/ForestAdmin/forest-express-mongoose/commit/34f41102cb6b24f04e21eb60973c9dbd36072f32))
+
+## [7.2.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.2.1...v7.2.2) (2021-03-19)
+
+
+### Bug Fixes
+
+* **security:** authorised only allowed stats queries using permissions ([#529](https://github.com/ForestAdmin/forest-express-mongoose/issues/529)) ([d6767ef](https://github.com/ForestAdmin/forest-express-mongoose/commit/d6767ef67cf0b40c9a14797f2a4e6549675d39ec))
+
+## [7.2.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.2.0...v7.2.1) (2021-03-18)
+
+
+### Bug Fixes
+
+* **security:** downgrade forest-express while the charts are broken ([69506f3](https://github.com/ForestAdmin/forest-express-mongoose/commit/69506f3684cd5425350868f085191c0c5412fb66))
+
+# [7.2.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.1.0...v7.2.0) (2021-03-15)
+
+
+### Features
+
+* **security:** authorised only allowed stats queries using permissions ([#525](https://github.com/ForestAdmin/forest-express-mongoose/issues/525)) ([629ee81](https://github.com/ForestAdmin/forest-express-mongoose/commit/629ee817ef10c4c24342c15949aeb3ce99e53786))
+
+# [7.1.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.0.5...v7.1.0) (2021-03-11)
+
+
+### Bug Fixes
+
+* commit a correct yarn lock ([206d713](https://github.com/ForestAdmin/forest-express-mongoose/commit/206d7134cfddf615cd24ecc48a9edb0b80cc61c3))
+
+
+### Features
+
+* **security:** bump version of forest-express ([767ed25](https://github.com/ForestAdmin/forest-express-mongoose/commit/767ed259707485d5faa4f1aa22d4bf84930c093d))
+
+## [7.0.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.0.4...v7.0.5) (2021-03-10)
+
+
+### Bug Fixes
+
+* **authentication:** unable to login when the agents respond to an url starting with a prefix ([#520](https://github.com/ForestAdmin/forest-express-mongoose/issues/520)) ([8933e12](https://github.com/ForestAdmin/forest-express-mongoose/commit/8933e12857da040f09819ef04d5b254aba412c2e))
+
+## [7.0.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.0.3...v7.0.4) (2021-03-05)
+
+
+### Bug Fixes
+
+* **security:** patch lodash vulnerabilities ([#514](https://github.com/ForestAdmin/forest-express-mongoose/issues/514)) ([e181d53](https://github.com/ForestAdmin/forest-express-mongoose/commit/e181d534ff7e72d6b7a254d66b7341ba5373629a))
+
+## [7.0.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.0.2...v7.0.3) (2021-03-05)
+
+
+### Bug Fixes
+
+* **security:** patch lodash vulnerabilities ([#500](https://github.com/ForestAdmin/forest-express-mongoose/issues/500)) ([a851711](https://github.com/ForestAdmin/forest-express-mongoose/commit/a85171174e942a026e01c145e5dddc77706d4dfd))
+
+## [7.0.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.0.1...v7.0.2) (2021-03-04)
+
+
+### Bug Fixes
+
+* **authentication:** safari cannot login on remote lianas because of third party cookies ([#512](https://github.com/ForestAdmin/forest-express-mongoose/issues/512)) ([725de7b](https://github.com/ForestAdmin/forest-express-mongoose/commit/725de7b559d1589c93304f67f2fe17a0b078d840))
+
+## [7.0.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.0.0...v7.0.1) (2021-02-22)
+
+# [7.0.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v6.7.2...v7.0.0) (2021-02-22)
+
+This version has been released by error. Version 7.0.0 is deprecated and should not be used.
+
+Please use the version 7.0.1 instead
+
+
+### Bug Fixes
+
+* **authentication:** error when authenticating with an invalid token in cookies ([#476](https://github.com/ForestAdmin/forest-express-mongoose/issues/476)) ([e61460a](https://github.com/ForestAdmin/forest-express-mongoose/commit/e61460a8c35d2bae86a9c915908ae1a8146243c3))
+* user being disconnected after 33min instead of 14 days ([#474](https://github.com/ForestAdmin/forest-express-mongoose/issues/474)) ([8a70566](https://github.com/ForestAdmin/forest-express-mongoose/commit/8a70566653c52c4447668cbe9e383488e4c3a071))
+
+
+### Features
+
+* init function now uses connections & objectMapping instead of sequelize as parameter ([#432](https://github.com/ForestAdmin/forest-express-mongoose/issues/432)) ([97b2ac2](https://github.com/ForestAdmin/forest-express-mongoose/commit/97b2ac2e29374de51435c5dff79fd033b41b74eb))
+
+
+### BREAKING CHANGES
+
+* mongoose options is not supported anymore by Liana.init()
+connections and objectMapping is now required on Liana.init().
+Update forest-express dependency to 8.0.0-beta.1 (See https://github.com/ForestAdmin/forest-express/tree/v8.0.0-beta.1)
+
 # [7.0.0-beta.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.0.0-beta.4...v7.0.0-beta.5) (2021-02-09)
 
 
