@@ -4,25 +4,28 @@ import Interface from 'forest-express';
 import mongooseConnect from '../../utils/mongoose-connect';
 import HasManyGetter from '../../../src/services/has-many-getter';
 
+const user = { renderingId: 1 };
+const options = {
+  Mongoose: mongoose,
+  connections: { mongoose },
+};
+const parameters = {
+  fields: {
+    order: '_id,name,country',
+  },
+  recordId: '41224d776a326fb40f000003',
+  associationName: 'owners',
+  timezone: 'Europe/Paris',
+};
+
 describe('service > has-many-getter', () => {
   let TreeModel;
   let LumberJackModel;
-
-  const options = {
-    Mongoose: mongoose,
-    connections: { mongoose },
-  };
-
-  const parameters = {
-    fields: {
-      order: '_id,name,country',
-    },
-    recordId: '41224d776a326fb40f000003',
-    associationName: 'owners',
-    timezone: 'Europe/Paris',
-  };
+  let scopeSpy;
 
   beforeAll(async () => {
+    scopeSpy = jest.spyOn(Interface.scopeManager, 'getScopeForUser').mockReturnValue(null);
+
     Interface.Schemas = {
       schemas: {
         LumberJack: {
@@ -124,7 +127,10 @@ describe('service > has-many-getter', () => {
     ]);
   });
 
-  afterAll(() => mongoose.connection.close());
+  afterAll(async () => {
+    scopeSpy.mockRestore();
+    await mongoose.connection.close();
+  });
 
   it('should retrieve all the related records when there is no filters or search', async () => {
     expect.assertions(2);
@@ -134,6 +140,7 @@ describe('service > has-many-getter', () => {
       LumberJackModel,
       options,
       parameters,
+      user,
     );
 
     const result = await hasManyGetter.perform();
@@ -155,6 +162,7 @@ describe('service > has-many-getter', () => {
         ...parameters,
         search: 'maria',
       },
+      user,
     );
 
     const result = await hasManyGetter.perform();
@@ -176,6 +184,7 @@ describe('service > has-many-getter', () => {
         ...parameters,
         filters: JSON.stringify({ field: 'name', operator: 'starts_with', value: 'Marc' }),
       },
+      user,
     );
 
     const result = await hasManyGetter.perform();
@@ -204,6 +213,7 @@ describe('service > has-many-getter', () => {
           ],
         }),
       },
+      user,
     );
 
     const result = await hasManyGetter.perform();
@@ -229,6 +239,7 @@ describe('service > has-many-getter', () => {
         search: 'mar',
         filters: JSON.stringify({ field: 'country', operator: 'equal', value: 'US' }),
       },
+      user,
     );
 
     const result = await hasManyGetter.perform();

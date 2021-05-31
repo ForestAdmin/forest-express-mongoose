@@ -4,10 +4,15 @@ import Interface from 'forest-express';
 import ResourceRemover from '../../../src/services/resource-remover';
 import mongooseConnect from '../../utils/mongoose-connect';
 
+const user = { renderingId: 1 };
+const baseParams = { timezone: 'Europe/Paris' };
+
 describe('service > resource-remover', () => {
   let IslandModel;
+  let scopeSpy;
 
   beforeAll(async () => {
+    scopeSpy = jest.spyOn(Interface.scopeManager, 'getScopeForUser').mockReturnValue(null);
     Interface.Schemas = {
       schemas: {
         Island: {
@@ -32,7 +37,10 @@ describe('service > resource-remover', () => {
     await IslandModel.deleteMany({});
   });
 
-  afterAll(() => mongoose.connection.close());
+  afterAll(async () => {
+    scopeSpy.mockRestore();
+    await mongoose.connection.close();
+  });
 
   beforeEach(async () => {
     await IslandModel.deleteMany({});
@@ -45,21 +53,29 @@ describe('service > resource-remover', () => {
 
   it('should not remove resource with missing recordId', async () => {
     expect.assertions(1);
-    await new ResourceRemover(IslandModel, {}).perform();
+
+    await new ResourceRemover(IslandModel, baseParams, user).perform();
+
     const documentsCount = await IslandModel.countDocuments();
     expect(documentsCount).toStrictEqual(2);
   });
 
   it('should remove one resource with existing ID', async () => {
     expect.assertions(1);
-    await new ResourceRemover(IslandModel, { recordId: '56cb91bdc3464f14678934ca' }).perform();
+
+    const params = { ...baseParams, recordId: '56cb91bdc3464f14678934ca' };
+    await new ResourceRemover(IslandModel, params, user).perform();
+
     const documentsCount = await IslandModel.countDocuments();
     expect(documentsCount).toStrictEqual(1);
   });
 
   it('should not remove resource with not existing ID', async () => {
     expect.assertions(1);
-    await new ResourceRemover(IslandModel, { recordId: '56cb91bdc3464f14678934cd' }).perform();
+
+    const params = { ...baseParams, recordId: '56cb91bdc3464f14678934cd' };
+    await new ResourceRemover(IslandModel, params, user).perform();
+
     const documentsCount = await IslandModel.countDocuments();
     expect(documentsCount).toStrictEqual(2);
   });

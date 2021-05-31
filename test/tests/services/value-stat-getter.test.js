@@ -5,13 +5,17 @@ import loadFixture from 'mongoose-fixture-loader';
 import ValueStatGetter from '../../../src/services/value-stat-getter';
 import mongooseConnect from '../../utils/mongoose-connect';
 
+const user = { renderingId: 1 };
 const options = { Mongoose: mongoose, connections: { mongoose } };
 const baseParams = { timezone: 'Europe/Paris' };
 
 describe('service > value-stat-getter', () => {
   let ReviewModel;
+  let scopeSpy;
 
   beforeAll(async () => {
+    scopeSpy = jest.spyOn(Interface.scopeManager, 'getScopeForUser').mockReturnValue(null);
+
     Interface.Schemas = {
       schemas: {
         ReviewsValue: {
@@ -33,7 +37,10 @@ describe('service > value-stat-getter', () => {
     }));
   });
 
-  afterAll(() => mongoose.connection.close());
+  afterAll(async () => {
+    scopeSpy.mockRestore();
+    await mongoose.connection.close();
+  });
 
   beforeEach(async () => {
     await ReviewModel.deleteMany({});
@@ -43,7 +50,7 @@ describe('service > value-stat-getter', () => {
     expect.assertions(1);
 
     const params = baseParams;
-    const getter = new ValueStatGetter(ReviewModel, params, options);
+    const getter = new ValueStatGetter(ReviewModel, params, options, user);
     expect(await getter.perform()).toStrictEqual({ value: 0 });
   });
 
@@ -53,7 +60,7 @@ describe('service > value-stat-getter', () => {
     await loadFixture(ReviewModel, [{ rating: 0 }]);
 
     const params = baseParams;
-    const getter = new ValueStatGetter(ReviewModel, params, options);
+    const getter = new ValueStatGetter(ReviewModel, params, options, user);
     expect(await getter.perform()).toStrictEqual({ value: 1 });
   });
 
@@ -63,7 +70,7 @@ describe('service > value-stat-getter', () => {
     await loadFixture(ReviewModel, [{ rating: 10 }]);
 
     const params = { ...baseParams, aggregate_field: 'rating' };
-    const getter = new ValueStatGetter(ReviewModel, params, options);
+    const getter = new ValueStatGetter(ReviewModel, params, options, user);
     expect(await getter.perform()).toStrictEqual({ value: 10 });
   });
 });

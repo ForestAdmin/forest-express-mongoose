@@ -4,11 +4,17 @@ import Interface from 'forest-express';
 import ResourcesCreator from '../../../src/services/resource-creator';
 import mongooseConnect from '../../utils/mongoose-connect';
 
+const user = { renderingId: 1 };
+const params = { timezone: 'Europe/Paris' };
+
 describe('service > resources-creator', () => {
   let IslandModel;
   let CityModel;
+  let scopeSpy;
 
   beforeAll(async () => {
+    scopeSpy = jest.spyOn(Interface.scopeManager, 'getScopeForUser').mockReturnValue(null);
+
     Interface.Schemas = {
       schemas: {
         Island: {
@@ -67,7 +73,10 @@ describe('service > resources-creator', () => {
     await CityModel.deleteMany({});
   });
 
-  afterAll(() => mongoose.connection.close());
+  afterAll(async () => {
+    scopeSpy.mockRestore();
+    await mongoose.connection.close();
+  });
 
   beforeEach(async () => {
     await IslandModel.deleteMany({});
@@ -79,29 +88,43 @@ describe('service > resources-creator', () => {
 
   it('should reject with validation error', async () => {
     expect.assertions(1);
-    await expect(new ResourcesCreator(IslandModel, { name: 'Wrong name' })
-      .perform()).rejects.toThrow(ValidationError);
+
+    const record = { name: 'Wrong name' };
+    const creator = new ResourcesCreator(IslandModel, params, record, user);
+    const promise = creator.perform();
+
+    await expect(promise).rejects.toThrow(ValidationError);
   });
 
   it('should resolve with updated object', async () => {
     expect.assertions(1);
-    await expect(await new ResourcesCreator(IslandModel, { name: 'Haiti' })
-      .perform()).toHaveProperty('name', 'Haiti');
+
+    const record = { name: 'Haiti' };
+    const creator = new ResourcesCreator(IslandModel, params, record, user);
+    const result = await creator.perform();
+
+    expect(result).toHaveProperty('name', 'Haiti');
   });
 
   it('should ignore _id with updated object', async () => {
     expect.assertions(2);
-    const result = await new ResourcesCreator(IslandModel, { _id: '56cb91bdc3464f14678934ca', name: 'Haiti' })
-      .perform();
+
+    const record = { _id: '56cb91bdc3464f14678934ca', name: 'Haiti' };
+    const creator = new ResourcesCreator(IslandModel, params, record, user);
+    const result = await creator.perform();
+
     expect(result).toHaveProperty('name', 'Haiti');
     expect(result._id).not.toBe('56cb91bdc3464f14678934ca');
   });
 
   it('should not ignore _id for non-generated ids', async () => {
     expect.assertions(2);
-    const result = await new ResourcesCreator(CityModel, { _id: '56cb91bdc3464f14678934ca', name: 'Lyon' })
-      .perform();
+
+    const record = { _id: 'customid', name: 'Lyon' };
+    const creator = new ResourcesCreator(CityModel, params, record, user);
+    const result = await creator.perform();
+
     expect(result).toHaveProperty('name', 'Lyon');
-    expect(result._id).toBe('56cb91bdc3464f14678934ca');
+    expect(result._id).toBe('customid');
   });
 });

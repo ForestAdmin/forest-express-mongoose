@@ -1,18 +1,20 @@
-const _ = require('lodash');
-const Interface = require('forest-express');
-const SearchBuilder = require('./search-builder');
-const utils = require('../utils/schema');
-const FiltersParser = require('./filters-parser');
+import Interface from 'forest-express';
+import _ from 'lodash';
+import utils from '../utils/schema';
+import getScopedParams from '../utils/scopes';
+import FiltersParser from './filters-parser';
+import SearchBuilder from './search-builder';
 
 const OBJECTID_REGEXP = /^[0-9a-fA-F]{24}$/;
 
 class HasManyGetter {
-  constructor(parentModel, childModel, opts, params) {
+  constructor(parentModel, model, opts, params, user) {
     this._parentModel = parentModel;
-    this._childModel = childModel;
+    this._model = model;
     this._params = params;
-    this._opts = opts;
-    this._searchBuilder = new SearchBuilder(childModel, opts, params);
+    this._opts = { Mongoose: model.base, connections: model.base.connections };
+    this._user = user;
+    this._searchBuilder = new SearchBuilder(model, this._opts, params);
   }
 
   _hasPagination() {
@@ -42,7 +44,7 @@ class HasManyGetter {
   }
 
   _handlePopulate(query) {
-    const schema = Interface.Schemas.schemas[utils.getModelName(this._childModel)];
+    const schema = Interface.Schemas.schemas[utils.getModelName(this._model)];
 
     _.each(schema.fields, (field) => {
       if (field.reference) {
@@ -54,18 +56,17 @@ class HasManyGetter {
   }
 
   async _buildConditions(recordIds) {
-    const conditions = {
-      $and: [{ _id: { $in: recordIds } }],
-    };
+    const conditions = { $and: [{ _id: { $in: recordIds } }] };
 
-    if (this._params.search) {
+    const params = await getScopedParams(this._params, this._model, this._user);
+    if (params.search) {
       const conditionsSearch = await this._searchBuilder.getConditions();
       conditions.$and.push(conditionsSearch);
     }
 
-    if (this._params.filters) {
-      const filtersParser = new FiltersParser(this._childModel, this._params.timezone, this._opts);
-      const newFilters = await filtersParser.replaceAllReferences(this._params.filters);
+    if (params.filters) {
+      const filtersParser = new FiltersParser(this._model, params.timezone, this._opts);
+      const newFilters = await filtersParser.replaceAllReferences(params.filters);
       const newFiltersString = JSON.stringify(newFilters);
       conditions.$and.push(await filtersParser.perform(newFiltersString));
     }
@@ -88,7 +89,7 @@ class HasManyGetter {
 
     const childRecordIds = _.map(parentRecords, (record) => record[this._params.associationName]);
     const conditions = await this._buildConditions(childRecordIds);
-    const query = this._childModel.find(conditions);
+    const query = this._model.find(conditions);
     this._handlePopulate(query);
 
     const childRecords = await query;
