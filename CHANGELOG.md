@@ -1,3 +1,13 @@
+# [8.0.0-beta.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.6.2...v8.0.0-beta.1) (2021-05-31)
+
+
+* feat(scopes)!: enforce scopes restrictions on a wider range of requests (#586) ([2ce0904](https://github.com/ForestAdmin/forest-express-mongoose/commit/2ce09043f0115a791f0b831ab49b08c534c50f2e)), closes [#586](https://github.com/ForestAdmin/forest-express-mongoose/issues/586)
+
+
+### BREAKING CHANGES
+
+* the public API of forest-express has changed to include the parameters which are needed to evaluate scope filters. This includes PermissionMiddlewareCreator, all classes on the /exposed folder and most services. Many routes now require providing the current user timezone.
+
 ## [7.6.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.6.1...v7.6.2) (2021-05-25)
 
 
