@@ -1,3 +1,10 @@
+# [7.7.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.6.2...v7.7.0) (2021-06-03)
+
+
+### Features
+
+* **schema:** move some meta data under stack attribute to prevent blocking scenarios on DWO ([#591](https://github.com/ForestAdmin/forest-express-mongoose/issues/591)) ([9ef8c44](https://github.com/ForestAdmin/forest-express-mongoose/commit/9ef8c44ff726d81682708500057b8a5b9b34cfd1))
+
 ## [7.6.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.6.1...v7.6.2) (2021-05-25)
 
 
