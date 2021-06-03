@@ -1,3 +1,10 @@
+## [7.7.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.7.0...v7.7.1) (2021-06-03)
+
+
+### Bug Fixes
+
+* correctly get the IP address from the request headers ([#592](https://github.com/ForestAdmin/forest-express-mongoose/issues/592)) ([e8349bf](https://github.com/ForestAdmin/forest-express-mongoose/commit/e8349bf7a2e75219382e01086a080b2127e91c80))
+
 # [7.7.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.6.2...v7.7.0) (2021-06-03)
 
 
