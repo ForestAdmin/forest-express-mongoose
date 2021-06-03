@@ -4603,10 +4603,10 @@ for-in@^1.0.2:
   resolved "https://registry.yarnpkg.com/for-in/-/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
   integrity sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=
 
-forest-express@8.6.0:
-  version "8.6.0"
-  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-8.6.0.tgz#0a8a838c1d2da513151729c7312d6d1f73c50b34"
-  integrity sha512-zyRtVZxGMt/Uq/3XZyZ9cvvGu98zZf4z5Aarc37LcIgdgK2dn+1BfCd6y6X5pAzdW6sQtFOLSWr1MR98K4TeCA==
+forest-express@8.6.1:
+  version "8.6.1"
+  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-8.6.1.tgz#0c8ace8c5ba133225b7b8b378e7ce8dd2103c8b0"
+  integrity sha512-8ihZmLacw3yD5jjx/pPNhrtayLax3vX2u28BmSKhnhXjBNeeLga7VkmmUDpOj35oASrL/LXH+CJjjo1nhwUSjA==
   dependencies:
     "@babel/runtime" "7.10.1"
     base32-encode "1.1.1"
@@ -4621,6 +4621,7 @@ forest-express@8.6.0:
     forest-ip-utils "1.0.1"
     http-errors "1.7.3"
     inflected "2.0.4"
+    ipaddr.js "2.0.0"
     jsonapi-serializer "3.6.5"
     jsonwebtoken "8.5.1"
     lodash "4.17.21"
@@ -5460,6 +5461,11 @@ ipaddr.js@1.9.0:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.0.tgz#37df74e430a0e47550fe54a2defe30d8acd95f65"
   integrity sha512-M4Sjn6N/+O6/IXSJseKqHoFc+5FdGJ22sXqnjTpdZweHK64MzEPAyQZyEU3R/KRv2GLoa7nNtg/C2Ev6m7z+eA==
+
+ipaddr.js@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-2.0.0.tgz#77ccccc8063ae71ab65c55f21b090698e763fc6e"
+  integrity sha512-S54H9mIj0rbxRIyrDMEuuER86LdlgUg9FSeZ8duQb6CUG2iRrA36MYVQBSprTF/ZeAwvyQ5mDGuNvIPM0BIl3w==
 
 is-accessor-descriptor@^0.1.6:
   version "0.1.6"
