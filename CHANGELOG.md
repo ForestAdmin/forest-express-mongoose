@@ -1,3 +1,16 @@
+# [8.0.0-beta.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.0-beta.1...v8.0.0-beta.2) (2021-06-07)
+
+
+### Features
+
+* **smart-action:** user can add dynamically field with hook on smart action form ([#593](https://github.com/ForestAdmin/forest-express-mongoose/issues/593)) ([90b4330](https://github.com/ForestAdmin/forest-express-mongoose/commit/90b4330e073c78da79a2ebbbbb2055e9e459a940))
+
+
+### BREAKING CHANGES
+
+* **smart-action:** fields parameters on hook function is no longer a map of field, it is now an array.
+change hook is no longer choosen by the field name, field need to have hook defined inside it definition by addin a props hook.
+
 # [8.0.0-beta.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.6.2...v8.0.0-beta.1) (2021-05-31)
 
 
