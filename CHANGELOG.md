@@ -1,3 +1,10 @@
+# [7.8.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.7.1...v7.8.0) (2021-06-09)
+
+
+### Features
+
+* include role in the user data inside the request ([#597](https://github.com/ForestAdmin/forest-express-mongoose/issues/597)) ([508047b](https://github.com/ForestAdmin/forest-express-mongoose/commit/508047b51cf70a67098648f36cfecd689f9d2b6a))
+
 ## [7.7.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.7.0...v7.7.1) (2021-06-03)
 
 
