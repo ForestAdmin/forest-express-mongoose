@@ -4603,10 +4603,10 @@ for-in@^1.0.2:
   resolved "https://registry.yarnpkg.com/for-in/-/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
   integrity sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=
 
-forest-express@8.7.0:
-  version "8.7.0"
-  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-8.7.0.tgz#ec79b43d727f6aebfe52bfb2d4d632972e1417f9"
-  integrity sha512-qpgI/Q45MB/Lb9qxRWlc6gLxnLwwfsYl0hrRSnINRuTOwe4cKmy7lTg7fGfiGFvYawiVYzk7C75SRXlbiDynig==
+forest-express@8.7.1:
+  version "8.7.1"
+  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-8.7.1.tgz#c7fa7eae3071d12142951a4b6a70d08ae92eba8a"
+  integrity sha512-UKAsLliIae9QUTHi5zOmtk1bzg7vHwv/1XDlJe4i7NTpp2EG9q/h5sQmnntA73a6T6U66sWBxWcA7GNoWpweVQ==
   dependencies:
     "@babel/runtime" "7.10.1"
     base32-encode "1.1.1"
@@ -4621,6 +4621,7 @@ forest-express@8.7.0:
     forest-ip-utils "1.0.1"
     http-errors "1.7.3"
     inflected "2.0.4"
+    ip-regex "4.3.0"
     ipaddr.js "2.0.0"
     jsonapi-serializer "3.6.5"
     jsonwebtoken "8.5.1"
@@ -5436,6 +5437,11 @@ ip-address@^5.8.9:
     jsbn "1.1.0"
     lodash "^4.17.15"
     sprintf-js "1.1.2"
+
+ip-regex@4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/ip-regex/-/ip-regex-4.3.0.tgz#687275ab0f57fa76978ff8f4dddc8a23d5990db5"
+  integrity sha512-B9ZWJxHHOHUhUjCPrMpLD4xEq35bUTClHM1S6CBU5ixQnkZmwipwgc96vAd7AAGM9TGHvJR+Uss+/Ak6UphK+Q==
 
 ip-regex@^2.1.0:
   version "2.1.0"
