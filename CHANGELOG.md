@@ -1,3 +1,10 @@
+## [7.8.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.8.0...v7.8.1) (2021-06-10)
+
+
+### Bug Fixes
+
+* prevent IP check from failing for the proxies including the port in the headers ([#601](https://github.com/ForestAdmin/forest-express-mongoose/issues/601)) ([8e61bd6](https://github.com/ForestAdmin/forest-express-mongoose/commit/8e61bd61258d3dd3c35b57ae74c104da2106267f))
+
 # [7.8.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.7.1...v7.8.0) (2021-06-09)
 
 
