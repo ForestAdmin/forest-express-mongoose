@@ -1,3 +1,10 @@
+## [7.8.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.8.1...v7.8.2) (2021-06-15)
+
+
+### Bug Fixes
+
+* **intercom:** fix date conversion from unix timestamp to js date of intercom attributes ([#604](https://github.com/ForestAdmin/forest-express-mongoose/issues/604)) ([5c824c0](https://github.com/ForestAdmin/forest-express-mongoose/commit/5c824c0d982bf733b2c70b7065768abb869b1021))
+
 ## [7.8.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.8.0...v7.8.1) (2021-06-10)
 
 
