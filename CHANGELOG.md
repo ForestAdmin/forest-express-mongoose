@@ -1,3 +1,10 @@
+# [8.0.0-beta.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.0-beta.2...v8.0.0-beta.3) (2021-06-22)
+
+
+### Bug Fixes
+
+* broken value charts due to missing user on ValueStatGetter constructor ([#609](https://github.com/ForestAdmin/forest-express-mongoose/issues/609)) ([0b52930](https://github.com/ForestAdmin/forest-express-mongoose/commit/0b52930dd6ced63bf3defe7c3263b27a8cb8f793))
+
 # [8.0.0-beta.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.0-beta.1...v8.0.0-beta.2) (2021-06-07)
 
 
