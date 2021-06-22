@@ -2,10 +2,11 @@ import getScopedParams from '../utils/scopes';
 import QueryBuilder from './query-builder';
 
 class ValueStatGetter {
-  constructor(model, params, opts) {
+  constructor(model, params, opts, user) {
     this._model = model;
     this._params = params;
     this._opts = opts;
+    this._user = user;
   }
 
   async perform() {
