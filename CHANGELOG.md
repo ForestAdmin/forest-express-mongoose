@@ -1,3 +1,10 @@
+## [7.8.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.8.2...v7.8.3) (2021-06-23)
+
+
+### Bug Fixes
+
+* **authentication:** error during authentication when the environment is secret passed as a liana option and not an environment variable ([#610](https://github.com/ForestAdmin/forest-express-mongoose/issues/610)) ([26aa456](https://github.com/ForestAdmin/forest-express-mongoose/commit/26aa456dacfc3fe67bcbb029a6ce1ea5eca1fe16))
+
 ## [7.8.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.8.1...v7.8.2) (2021-06-15)
 
 
