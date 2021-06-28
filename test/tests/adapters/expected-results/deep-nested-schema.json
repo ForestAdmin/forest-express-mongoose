@@ -20,13 +20,6 @@
           {
             "field": "field2Field2",
             "type": "Number"
-          }, {
-            "field": "field2Field3",
-            "type": "Enum",
-            "enums": [
-              "value1",
-              "value2"
-            ]
           }
         ]
       }
@@ -48,6 +41,14 @@
                 {
                   "field": "depth1Field2Field1",
                   "type": "Boolean"
+                },
+                {
+                  "field": "depth1Field2Field2",
+                  "type": "Enum",
+                  "enums": [
+                    "value1",
+                    "value2"
+                  ]
                 }
               ]
             }
