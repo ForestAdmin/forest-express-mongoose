@@ -579,7 +579,18 @@ describe('adapters > schema-adapter', () => {
       expect.assertions(1);
       const schema = new Schema({
         field1: [Date],
-        field2: { field2Field1: Boolean, field2Field2: Number },
+        field2: {
+          field2Field1: Boolean,
+          field2Field2: {
+            type: Number,
+            enum: [1, 2],
+          },
+          field2Field3: {
+            type: String,
+            enum: ['value1', 'value2'],
+            default: 'value1',
+          },
+        },
         depth1: new Schema({
           depth1Field1: [Date],
           depth1Field2: { depth1Field2Field1: Boolean },
