@@ -1,3 +1,10 @@
+# [7.9.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.8.5...v7.9.0) (2021-07-01)
+
+
+### Features
+
+* add typescript declaration file ([#594](https://github.com/ForestAdmin/forest-express-mongoose/issues/594)) ([fc0264d](https://github.com/ForestAdmin/forest-express-mongoose/commit/fc0264d48f8d5cde6898d7f7b54b5f820a328e8d))
+
 ## [7.8.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.8.4...v7.8.5) (2021-07-01)
 
 
