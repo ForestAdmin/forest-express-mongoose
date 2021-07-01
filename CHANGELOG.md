@@ -1,3 +1,10 @@
+## [7.8.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.8.4...v7.8.5) (2021-07-01)
+
+
+### Bug Fixes
+
+* **enums:** fix nested enum types not having values in forestadmin-schema ([#612](https://github.com/ForestAdmin/forest-express-mongoose/issues/612)) ([e9a369b](https://github.com/ForestAdmin/forest-express-mongoose/commit/e9a369bbf0da0502c8fe760797701a5c379ca0f5))
+
 ## [7.8.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.8.3...v7.8.4) (2021-06-30)
 
 
