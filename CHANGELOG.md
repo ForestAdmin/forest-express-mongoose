@@ -1,3 +1,10 @@
+# [8.0.0-beta.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.0-beta.3...v8.0.0-beta.4) (2021-07-02)
+
+
+### Features
+
+* **security:** secure segments queries ([#616](https://github.com/ForestAdmin/forest-express-mongoose/issues/616)) ([f09990a](https://github.com/ForestAdmin/forest-express-mongoose/commit/f09990a64ec27a882e9560007e068ae068bf562f))
+
 # [8.0.0-beta.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.0-beta.2...v8.0.0-beta.3) (2021-06-22)
 
 
