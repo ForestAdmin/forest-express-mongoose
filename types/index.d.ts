@@ -254,7 +254,7 @@ export interface CollectionOptions {
   fields?: SmartFieldOptions[];
   actions?: SmartActionOptions[];
   segments?: SmartSegmentOptions[];
-  flatten?: string[];
+  flatten?: { field: string, level?: number }[];
 }
 
 export function collection(name: string, options: CollectionOptions): void;
