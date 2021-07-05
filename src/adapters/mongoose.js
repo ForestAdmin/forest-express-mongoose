@@ -74,6 +74,12 @@ module.exports = async (model, opts) => {
         field.enums = fieldInfo.enumValues;
       }
 
+      if (fieldInfo.enum
+        && Array.isArray(fieldInfo.enum)
+        && fieldInfo.enum.length) {
+        field.enums = fieldInfo.enum;
+      }
+
       type.fields.push(field);
     });
 
