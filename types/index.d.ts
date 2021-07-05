@@ -1,4 +1,4 @@
-import { RequestHandler, Response, Request, NextFunction, Application } from 'express';
+import { Application, NextFunction, Request, RequestHandler, Response } from 'express';
 import {
   ConnectionOptions,
   Mongoose,
@@ -35,6 +35,9 @@ export interface DatabaseConfiguration {
 // Everything related to Forest Authentication
 
 export function ensureAuthenticated(request: Request, response: Response, next: NextFunction): void;
+export interface User {
+  renderingId: number;
+}
 
 // Everything related to Forest constants
 
@@ -50,7 +53,7 @@ interface RecordsSerialized {
 }
 
 export class AbstractRecordTool<T> {
-  constructor(model: Model<T>)
+  constructor(model: Model<T>, query: Record<string, any>, user: User)
   serialize(records: Document<T> | Document<T>[]): Promise<RecordsSerialized>;
 }
 
@@ -64,11 +67,11 @@ export class RecordsGetter<T> extends AbstractRecordTool<T> {
 }
 
 export class RecordsCounter<M extends Model<any>> extends AbstractRecordTool<M> {
-  count(query: Query): Promise<number>;
+  count(): Promise<number>;
 }
 
 export class RecordsExporter<M extends Model<any>> extends AbstractRecordTool<M> {
-  streamExport(response: Response, query: Query): Promise<void>;
+  streamExport(response: Response): Promise<void>;
 }
 
 export class RecordUpdater<M extends Model<any>> extends AbstractRecordTool<M> {
