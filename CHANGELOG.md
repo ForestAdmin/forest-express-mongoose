@@ -1,3 +1,10 @@
+## [7.9.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.9.0...v7.9.1) (2021-07-06)
+
+
+### Bug Fixes
+
+* add missing Json value for FieldType Type ([#620](https://github.com/ForestAdmin/forest-express-mongoose/issues/620)) ([f40126a](https://github.com/ForestAdmin/forest-express-mongoose/commit/f40126ac847254a9cbbedddf25305fff4821c0f7))
+
 # [7.9.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.8.5...v7.9.0) (2021-07-01)
 
 
