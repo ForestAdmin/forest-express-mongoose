@@ -1,3 +1,10 @@
+## [7.9.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.9.1...v7.9.2) (2021-07-06)
+
+
+### Bug Fixes
+
+* add isSearchable to collection options ([#623](https://github.com/ForestAdmin/forest-express-mongoose/issues/623)) ([bc8a2c1](https://github.com/ForestAdmin/forest-express-mongoose/commit/bc8a2c1b5260523e6c5945c6017ce87792a179fa))
+
 ## [7.9.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.9.0...v7.9.1) (2021-07-06)
 
 
