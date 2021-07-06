@@ -211,6 +211,7 @@ export interface SmartActionField {
   enums?: FieldEnumsType,
   defaultValue?: any,
   reference?: string,
+  hook?: string,
 }
 
 export interface SmartActionHookField extends SmartActionField {
@@ -222,7 +223,7 @@ export interface SmartActionLoadHookField extends SmartActionHookField {
 }
 
 export interface SmartActionLoadHook<T = any> {
-  (context: { fields: Record<string, SmartActionLoadHookField>, record: T & Document }): Record<string, SmartActionLoadHookField>
+  (context: { fields: Array<SmartActionLoadHookField>, record: T & Document }): Array<SmartActionLoadHookField>
 }
 
 export interface SmartActionChangeHookField extends SmartActionHookField {
@@ -230,7 +231,7 @@ export interface SmartActionChangeHookField extends SmartActionHookField {
 }
 
 export interface SmartActionChangeHook<T = any> {
-  (context: { fields: Record<string, SmartActionChangeHookField>, record: T }): Record<string, SmartActionChangeHookField>
+  (context: { fields: Array<SmartActionChangeHookField>, record: T, changedField: SmartActionChangeHookField }): Array<SmartActionChangeHookField>
 }
 
 export interface SmartActionHooks {
