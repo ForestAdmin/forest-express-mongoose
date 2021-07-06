@@ -32,6 +32,27 @@ export interface DatabaseConfiguration {
   }
 }
 
+export interface ForestRequest extends Request {
+  user: User,
+}
+
+export interface SelectAllRequestBody {
+  data: {
+    attributes: {
+      collection_name: string,
+      ids: string[],
+      parent_collection_name: string,
+      parent_collection_id: string,
+      parent_association_name: string,
+      all_records: boolean,
+      all_records_subset_query: Query,
+      all_records_ids_excluded: string[],
+      smart_action_id: string,
+    },
+    type: string,
+  },
+}
+
 // Everything related to Forest Authentication
 
 export function ensureAuthenticated(request: Request, response: Response, next: NextFunction): void;
@@ -63,7 +84,7 @@ export class RecordGetter<T> extends AbstractRecordTool<T> {
 
 export class RecordsGetter<T> extends AbstractRecordTool<T> {
   getAll(query: Query): Promise<(T & Document)[]>;
-  getIdsFromRequest(request: Request): Promise<string[]>;
+  getIdsFromRequest(request: ForestRequest): Promise<string[]>;
 }
 
 export class RecordsCounter<M extends Model<any>> extends AbstractRecordTool<M> {
@@ -222,8 +243,12 @@ export interface SmartActionLoadHookField extends SmartActionHookField {
   position: number,
 }
 
+export interface SmartActionHookRequest extends ForestRequest {
+  body: SelectAllRequestBody,
+}
+
 export interface SmartActionLoadHook<T = any> {
-  (context: { fields: SmartActionLoadHookField[], record: T & Document }): SmartActionLoadHookField[]
+  (context: { fields: SmartActionLoadHookField[], request: SmartActionHookRequest }): SmartActionLoadHookField[]
 }
 
 export interface SmartActionChangeHookField extends SmartActionHookField {
@@ -231,7 +256,7 @@ export interface SmartActionChangeHookField extends SmartActionHookField {
 }
 
 export interface SmartActionChangeHook<T = any> {
-  (context: { fields: SmartActionChangeHookField[], record: T, changedField: SmartActionChangeHookField }): SmartActionChangeHookField[]
+  (context: { fields: SmartActionChangeHookField[], changedField: SmartActionChangeHookField, request: SmartActionHookRequest }): SmartActionChangeHookField[]
 }
 
 export interface SmartActionHooks {
