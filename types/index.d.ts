@@ -223,7 +223,7 @@ export interface SmartActionLoadHookField extends SmartActionHookField {
 }
 
 export interface SmartActionLoadHook<T = any> {
-  (context: { fields: Array<SmartActionLoadHookField>, record: T & Document }): Array<SmartActionLoadHookField>
+  (context: { fields: SmartActionLoadHookField[], record: T & Document }): SmartActionLoadHookField[]
 }
 
 export interface SmartActionChangeHookField extends SmartActionHookField {
@@ -231,7 +231,7 @@ export interface SmartActionChangeHookField extends SmartActionHookField {
 }
 
 export interface SmartActionChangeHook<T = any> {
-  (context: { fields: Array<SmartActionChangeHookField>, record: T, changedField: SmartActionChangeHookField }): Array<SmartActionChangeHookField>
+  (context: { fields: SmartActionChangeHookField[], record: T, changedField: SmartActionChangeHookField }): SmartActionChangeHookField[]
 }
 
 export interface SmartActionHooks {
