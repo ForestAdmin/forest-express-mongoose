@@ -251,6 +251,7 @@ export interface SmartSegmentOptions {
 }
 
 export interface CollectionOptions {
+  isSearchable?: boolean;
   fields?: SmartFieldOptions[];
   actions?: SmartActionOptions[];
   segments?: SmartSegmentOptions[];
