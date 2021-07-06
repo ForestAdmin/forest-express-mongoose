@@ -179,7 +179,7 @@ export interface SegmentAggregationCreator<T = any> {
   (model: Model<T>): FilterQuery<any>;
 }
 
-type FieldType = 'Boolean' | 'Date' | 'Dateonly' | 'Enum' | 'File' | 'Number' | 'String' | ['Enum'] | ['Number'] | ['String'];
+type FieldType = 'Boolean' | 'Date' | 'Dateonly' | 'Enum' | 'File' | 'Number' | 'String' | 'Json' | ['Enum'] | ['Number'] | ['String'];
 
 type FieldEnumsType = string[] | number[] | Date[] | boolean[];
 
