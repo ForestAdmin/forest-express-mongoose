@@ -35,6 +35,69 @@ change hook is no longer choosen by the field name, field need to have hook defi
 
 * the public API of forest-express has changed to include the parameters which are needed to evaluate scope filters. This includes PermissionMiddlewareCreator, all classes on the /exposed folder and most services. Many routes now require providing the current user timezone.
 
+# [7.9.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.8.5...v7.9.0) (2021-07-01)
+
+
+### Features
+
+* add typescript declaration file ([#594](https://github.com/ForestAdmin/forest-express-mongoose/issues/594)) ([fc0264d](https://github.com/ForestAdmin/forest-express-mongoose/commit/fc0264d48f8d5cde6898d7f7b54b5f820a328e8d))
+
+## [7.8.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.8.4...v7.8.5) (2021-07-01)
+
+
+### Bug Fixes
+
+* **enums:** fix nested enum types not having values in forestadmin-schema ([#612](https://github.com/ForestAdmin/forest-express-mongoose/issues/612)) ([e9a369b](https://github.com/ForestAdmin/forest-express-mongoose/commit/e9a369bbf0da0502c8fe760797701a5c379ca0f5))
+
+## [7.8.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.8.3...v7.8.4) (2021-06-30)
+
+
+### Bug Fixes
+
+* **related-data:** reaching an embedded has-many relationship by URL does not display any records on mongoose ([#614](https://github.com/ForestAdmin/forest-express-mongoose/issues/614)) ([4f608ee](https://github.com/ForestAdmin/forest-express-mongoose/commit/4f608ee5311f05342fb0d96dbfaba1d5f43af29b))
+
+## [7.8.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.8.2...v7.8.3) (2021-06-23)
+
+
+### Bug Fixes
+
+* **authentication:** error during authentication when the environment is secret passed as a liana option and not an environment variable ([#610](https://github.com/ForestAdmin/forest-express-mongoose/issues/610)) ([26aa456](https://github.com/ForestAdmin/forest-express-mongoose/commit/26aa456dacfc3fe67bcbb029a6ce1ea5eca1fe16))
+
+## [7.8.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.8.1...v7.8.2) (2021-06-15)
+
+
+### Bug Fixes
+
+* **intercom:** fix date conversion from unix timestamp to js date of intercom attributes ([#604](https://github.com/ForestAdmin/forest-express-mongoose/issues/604)) ([5c824c0](https://github.com/ForestAdmin/forest-express-mongoose/commit/5c824c0d982bf733b2c70b7065768abb869b1021))
+
+## [7.8.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.8.0...v7.8.1) (2021-06-10)
+
+
+### Bug Fixes
+
+* prevent IP check from failing for the proxies including the port in the headers ([#601](https://github.com/ForestAdmin/forest-express-mongoose/issues/601)) ([8e61bd6](https://github.com/ForestAdmin/forest-express-mongoose/commit/8e61bd61258d3dd3c35b57ae74c104da2106267f))
+
+# [7.8.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.7.1...v7.8.0) (2021-06-09)
+
+
+### Features
+
+* include role in the user data inside the request ([#597](https://github.com/ForestAdmin/forest-express-mongoose/issues/597)) ([508047b](https://github.com/ForestAdmin/forest-express-mongoose/commit/508047b51cf70a67098648f36cfecd689f9d2b6a))
+
+## [7.7.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.7.0...v7.7.1) (2021-06-03)
+
+
+### Bug Fixes
+
+* correctly get the IP address from the request headers ([#592](https://github.com/ForestAdmin/forest-express-mongoose/issues/592)) ([e8349bf](https://github.com/ForestAdmin/forest-express-mongoose/commit/e8349bf7a2e75219382e01086a080b2127e91c80))
+
+# [7.7.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.6.2...v7.7.0) (2021-06-03)
+
+
+### Features
+
+* **schema:** move some meta data under stack attribute to prevent blocking scenarios on DWO ([#591](https://github.com/ForestAdmin/forest-express-mongoose/issues/591)) ([9ef8c44](https://github.com/ForestAdmin/forest-express-mongoose/commit/9ef8c44ff726d81682708500057b8a5b9b34cfd1))
+
 ## [7.6.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.6.1...v7.6.2) (2021-05-25)
 
 

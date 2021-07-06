@@ -5,3 +5,4 @@
 - [ ] Test manually the implemented changes
 - [ ] Review my own code (indentation, syntax, style, simplicity, readability)
 - [ ] Wonder if you can improve the existing code
+- [ ] If needed, Types have been updated
