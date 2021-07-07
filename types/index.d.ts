@@ -56,6 +56,7 @@ export interface SelectAllRequestBody {
 // Everything related to Forest Authentication
 
 export function ensureAuthenticated(request: Request, response: Response, next: NextFunction): void;
+
 export interface User {
   renderingId: number;
 }
