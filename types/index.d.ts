@@ -36,21 +36,52 @@ export interface ForestRequest extends Request {
   user: User,
 }
 
-export interface SelectAllRequestBody {
+interface ActionRequestAttributes {
+  collection_name: string,
+  ids: string[],
+  parent_collection_name: string,
+  parent_collection_id: string,
+  parent_association_name: string,
+  all_records: boolean,
+  all_records_subset_query: Query,
+  all_records_ids_excluded: string[],
+  smart_action_id: string,
+}
+
+interface ActionRequestBody {
   data: {
-    attributes: {
-      collection_name: string,
-      ids: string[],
-      parent_collection_name: string,
-      parent_collection_id: string,
-      parent_association_name: string,
-      all_records: boolean,
-      all_records_subset_query: Query,
-      all_records_ids_excluded: string[],
-      smart_action_id: string,
-    },
+    attributes: ActionRequestAttributes,
+    type: 'action-requests',
+  },
+}
+
+interface SmartActionRequestBody {
+  data: {
+    attributes: ActionRequestAttributes & { values: Record<string, any> },
     type: 'custom-action-requests',
   },
+}
+
+interface SmartActionHookRequestBody {
+  data: {
+    attributes: ActionRequestAttributes & {
+      fields: SmartActionChangeHookField[],
+      changedField: string,
+    },
+    type: 'custom-action-hook-requests',
+  },
+}
+
+export interface SmartActionRequest extends ForestRequest {
+  body: SmartActionRequestBody,
+}
+
+export interface SmartActionLoadHookRequest extends ForestRequest {
+  body: ActionRequestBody,
+}
+
+export interface SmartActionChangeHookRequest extends ForestRequest {
+  body: SmartActionHookRequestBody,
 }
 
 // Everything related to Forest Authentication
@@ -85,7 +116,7 @@ export class RecordGetter<T> extends AbstractRecordTool<T> {
 
 export class RecordsGetter<T> extends AbstractRecordTool<T> {
   getAll(query: Query): Promise<(T & Document)[]>;
-  getIdsFromRequest(request: ForestRequest): Promise<string[]>;
+  getIdsFromRequest(request: SmartActionRequest | SmartActionLoadHookRequest | SmartActionChangeHookRequest): Promise<string[]>;
 }
 
 export class RecordsCounter<M extends Model<any>> extends AbstractRecordTool<M> {
@@ -244,12 +275,8 @@ export interface SmartActionLoadHookField extends SmartActionHookField {
   position: number,
 }
 
-export interface SmartActionHookRequest extends ForestRequest {
-  body: SelectAllRequestBody,
-}
-
 export interface SmartActionLoadHook {
-  (context: { fields: SmartActionLoadHookField[], request: SmartActionHookRequest }): SmartActionLoadHookField[]
+  (context: { fields: SmartActionLoadHookField[], request: SmartActionLoadHookRequest }): SmartActionLoadHookField[]
 }
 
 export interface SmartActionChangeHookField extends SmartActionHookField {
@@ -257,7 +284,7 @@ export interface SmartActionChangeHookField extends SmartActionHookField {
 }
 
 export interface SmartActionChangeHook {
-  (context: { fields: SmartActionChangeHookField[], changedField: SmartActionChangeHookField, request: SmartActionHookRequest }): SmartActionChangeHookField[]
+  (context: { fields: SmartActionChangeHookField[], changedField: SmartActionChangeHookField, request: SmartActionChangeHookRequest }): SmartActionChangeHookField[]
 }
 
 export interface SmartActionHooks {
