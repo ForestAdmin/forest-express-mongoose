@@ -36,6 +36,7 @@ export interface ForestRequest extends Request {
   user: User,
 }
 
+// Base attributes for actions requests (content of request.data.body.attributes)
 interface ActionRequestAttributes {
   collection_name: string,
   ids: string[],
@@ -48,6 +49,7 @@ interface ActionRequestAttributes {
   smart_action_id: string,
 }
 
+// Base body from requests for action routes / hooks
 interface ActionRequestBody {
   data: {
     attributes: ActionRequestAttributes,
@@ -55,6 +57,7 @@ interface ActionRequestBody {
   },
 }
 
+// Base body from requests for classic smart action routes
 interface SmartActionRequestBody {
   data: {
     attributes: ActionRequestAttributes & { values: Record<string, any> },
@@ -62,6 +65,7 @@ interface SmartActionRequestBody {
   },
 }
 
+// Base body from requests for smart action hooks
 interface SmartActionHookRequestBody {
   data: {
     attributes: ActionRequestAttributes & {
@@ -72,14 +76,17 @@ interface SmartActionHookRequestBody {
   },
 }
 
+// Concrete smart action request for classic smart action routes
 export interface SmartActionRequest extends ForestRequest {
   body: SmartActionRequestBody,
 }
 
+// Request passed to smart action load hooks
 export interface SmartActionLoadHookRequest extends ForestRequest {
   body: ActionRequestBody,
 }
 
+// Request passed to smart action change hooks
 export interface SmartActionChangeHookRequest extends ForestRequest {
   body: SmartActionHookRequestBody,
 }
