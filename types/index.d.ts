@@ -49,7 +49,7 @@ export interface SelectAllRequestBody {
       all_records_ids_excluded: string[],
       smart_action_id: string,
     },
-    type: string,
+    type: 'custom-action-requests',
   },
 }
 
@@ -248,7 +248,7 @@ export interface SmartActionHookRequest extends ForestRequest {
   body: SelectAllRequestBody,
 }
 
-export interface SmartActionLoadHook<T = any> {
+export interface SmartActionLoadHook {
   (context: { fields: SmartActionLoadHookField[], request: SmartActionHookRequest }): SmartActionLoadHookField[]
 }
 
@@ -256,7 +256,7 @@ export interface SmartActionChangeHookField extends SmartActionHookField {
   previousValue: any,
 }
 
-export interface SmartActionChangeHook<T = any> {
+export interface SmartActionChangeHook {
   (context: { fields: SmartActionChangeHookField[], changedField: SmartActionChangeHookField, request: SmartActionHookRequest }): SmartActionChangeHookField[]
 }
 
