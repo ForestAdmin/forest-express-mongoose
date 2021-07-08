@@ -53,7 +53,7 @@ interface RecordsSerialized {
 }
 
 export class AbstractRecordTool<T> {
-  constructor(model: Model<T>, query: Record<string, any>, user: User)
+  constructor(model: Model<T>, user: User, query: Record<string, any>)
   serialize(records: Document<T> | Document<T>[]): Promise<RecordsSerialized>;
 }
 
