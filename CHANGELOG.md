@@ -1,3 +1,10 @@
+# [8.0.0-beta.6](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.0-beta.5...v8.0.0-beta.6) (2021-07-08)
+
+
+### Bug Fixes
+
+* abstractRecord type ([#624](https://github.com/ForestAdmin/forest-express-mongoose/issues/624)) ([56fbac3](https://github.com/ForestAdmin/forest-express-mongoose/commit/56fbac359c57a7e572de227a9ca2eb85d6496487))
+
 # [8.0.0-beta.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.0-beta.4...v8.0.0-beta.5) (2021-07-06)
 
 
