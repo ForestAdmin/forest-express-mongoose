@@ -1,3 +1,15 @@
+# [8.0.0-beta.7](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.0-beta.6...v8.0.0-beta.7) (2021-07-09)
+
+
+### Features
+
+* allow hooks for global and bulk smart action ([#622](https://github.com/ForestAdmin/forest-express-mongoose/issues/622)) ([2c5c7d1](https://github.com/ForestAdmin/forest-express-mongoose/commit/2c5c7d19cd6887b66014c255dd032c20b7bc54df))
+
+
+### BREAKING CHANGES
+
+* record is no longer send to the hook middleware & values option on smart action is no longer supported
+
 # [8.0.0-beta.6](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.0-beta.5...v8.0.0-beta.6) (2021-07-08)
 
 
