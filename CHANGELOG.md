@@ -1,3 +1,5 @@
+# [8.0.0-beta.9](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.0-beta.8...v8.0.0-beta.9) (2021-07-19)
+
 # [8.0.0-beta.8](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.0-beta.7...v8.0.0-beta.8) (2021-07-19)
 
 
