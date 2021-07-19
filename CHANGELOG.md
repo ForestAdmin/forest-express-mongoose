@@ -1,3 +1,30 @@
+# [8.0.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.9.2...v8.0.0) (2021-07-19)
+
+
+### Bug Fixes
+
+* abstractRecord type ([#624](https://github.com/ForestAdmin/forest-express-mongoose/issues/624)) ([56fbac3](https://github.com/ForestAdmin/forest-express-mongoose/commit/56fbac359c57a7e572de227a9ca2eb85d6496487))
+* broken value charts due to missing user on ValueStatGetter constructor ([#609](https://github.com/ForestAdmin/forest-express-mongoose/issues/609)) ([0b52930](https://github.com/ForestAdmin/forest-express-mongoose/commit/0b52930dd6ced63bf3defe7c3263b27a8cb8f793))
+* fix types ([7e2d7f2](https://github.com/ForestAdmin/forest-express-mongoose/commit/7e2d7f220abbcfff79a1f33e3635da5df65c041d))
+
+
+### Features
+
+* allow hooks for global and bulk smart action ([#622](https://github.com/ForestAdmin/forest-express-mongoose/issues/622)) ([2c5c7d1](https://github.com/ForestAdmin/forest-express-mongoose/commit/2c5c7d19cd6887b66014c255dd032c20b7bc54df))
+* **security:** secure segments queries ([#616](https://github.com/ForestAdmin/forest-express-mongoose/issues/616)) ([f09990a](https://github.com/ForestAdmin/forest-express-mongoose/commit/f09990a64ec27a882e9560007e068ae068bf562f))
+* **smart-action:** user can add dynamically field with hook on smart action form ([#593](https://github.com/ForestAdmin/forest-express-mongoose/issues/593)) ([90b4330](https://github.com/ForestAdmin/forest-express-mongoose/commit/90b4330e073c78da79a2ebbbbb2055e9e459a940))
+
+
+* feat(scopes)!: enforce scopes restrictions on a wider range of requests (#586) ([2ce0904](https://github.com/ForestAdmin/forest-express-mongoose/commit/2ce09043f0115a791f0b831ab49b08c534c50f2e)), closes [#586](https://github.com/ForestAdmin/forest-express-mongoose/issues/586)
+
+
+### BREAKING CHANGES
+
+* record is no longer send to the hook middleware & values option on smart action is no longer supported
+* **smart-action:** fields parameters on hook function is no longer a map of field, it is now an array.
+change hook is no longer choosen by the field name, field need to have hook defined inside it definition by addin a props hook.
+* the public API of forest-express has changed to include the parameters which are needed to evaluate scope filters. This includes PermissionMiddlewareCreator, all classes on the /exposed folder and most services. Many routes now require providing the current user timezone.
+
 # [8.0.0-beta.9](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.0-beta.8...v8.0.0-beta.9) (2021-07-19)
 
 # [8.0.0-beta.8](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.0-beta.7...v8.0.0-beta.8) (2021-07-19)
