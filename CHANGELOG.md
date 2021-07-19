@@ -1,3 +1,11 @@
+# [8.0.0-beta.8](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.0-beta.7...v8.0.0-beta.8) (2021-07-19)
+
+
+### Bug Fixes
+
+* add isSearchable to collection options ([#623](https://github.com/ForestAdmin/forest-express-mongoose/issues/623)) ([bc8a2c1](https://github.com/ForestAdmin/forest-express-mongoose/commit/bc8a2c1b5260523e6c5945c6017ce87792a179fa))
+* add missing Json value for FieldType Type ([#620](https://github.com/ForestAdmin/forest-express-mongoose/issues/620)) ([f40126a](https://github.com/ForestAdmin/forest-express-mongoose/commit/f40126ac847254a9cbbedddf25305fff4821c0f7))
+
 # [8.0.0-beta.7](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.0-beta.6...v8.0.0-beta.7) (2021-07-09)
 
 
