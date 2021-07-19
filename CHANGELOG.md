@@ -1,3 +1,52 @@
+# [8.0.0-beta.9](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.0-beta.8...v8.0.0-beta.9) (2021-07-19)
+
+# [8.0.0-beta.8](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.0-beta.7...v8.0.0-beta.8) (2021-07-19)
+
+
+### Bug Fixes
+
+* add isSearchable to collection options ([#623](https://github.com/ForestAdmin/forest-express-mongoose/issues/623)) ([bc8a2c1](https://github.com/ForestAdmin/forest-express-mongoose/commit/bc8a2c1b5260523e6c5945c6017ce87792a179fa))
+* add missing Json value for FieldType Type ([#620](https://github.com/ForestAdmin/forest-express-mongoose/issues/620)) ([f40126a](https://github.com/ForestAdmin/forest-express-mongoose/commit/f40126ac847254a9cbbedddf25305fff4821c0f7))
+
+# [8.0.0-beta.7](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.0-beta.6...v8.0.0-beta.7) (2021-07-09)
+
+
+### Features
+
+* allow hooks for global and bulk smart action ([#622](https://github.com/ForestAdmin/forest-express-mongoose/issues/622)) ([2c5c7d1](https://github.com/ForestAdmin/forest-express-mongoose/commit/2c5c7d19cd6887b66014c255dd032c20b7bc54df))
+
+
+### BREAKING CHANGES
+
+* record is no longer send to the hook middleware & values option on smart action is no longer supported
+
+# [8.0.0-beta.6](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.0-beta.5...v8.0.0-beta.6) (2021-07-08)
+
+
+### Bug Fixes
+
+* abstractRecord type ([#624](https://github.com/ForestAdmin/forest-express-mongoose/issues/624)) ([56fbac3](https://github.com/ForestAdmin/forest-express-mongoose/commit/56fbac359c57a7e572de227a9ca2eb85d6496487))
+
+# [8.0.0-beta.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.0-beta.4...v8.0.0-beta.5) (2021-07-06)
+
+
+### Bug Fixes
+
+* fix types ([7e2d7f2](https://github.com/ForestAdmin/forest-express-mongoose/commit/7e2d7f220abbcfff79a1f33e3635da5df65c041d))
+* **authentication:** error during authentication when the environment is secret passed as a liana option and not an environment variable ([#610](https://github.com/ForestAdmin/forest-express-mongoose/issues/610)) ([26aa456](https://github.com/ForestAdmin/forest-express-mongoose/commit/26aa456dacfc3fe67bcbb029a6ce1ea5eca1fe16))
+* **enums:** fix nested enum types not having values in forestadmin-schema ([#612](https://github.com/ForestAdmin/forest-express-mongoose/issues/612)) ([e9a369b](https://github.com/ForestAdmin/forest-express-mongoose/commit/e9a369bbf0da0502c8fe760797701a5c379ca0f5))
+* **intercom:** fix date conversion from unix timestamp to js date of intercom attributes ([#604](https://github.com/ForestAdmin/forest-express-mongoose/issues/604)) ([5c824c0](https://github.com/ForestAdmin/forest-express-mongoose/commit/5c824c0d982bf733b2c70b7065768abb869b1021))
+* **related-data:** reaching an embedded has-many relationship by URL does not display any records on mongoose ([#614](https://github.com/ForestAdmin/forest-express-mongoose/issues/614)) ([4f608ee](https://github.com/ForestAdmin/forest-express-mongoose/commit/4f608ee5311f05342fb0d96dbfaba1d5f43af29b))
+* correctly get the IP address from the request headers ([#592](https://github.com/ForestAdmin/forest-express-mongoose/issues/592)) ([e8349bf](https://github.com/ForestAdmin/forest-express-mongoose/commit/e8349bf7a2e75219382e01086a080b2127e91c80))
+* prevent IP check from failing for the proxies including the port in the headers ([#601](https://github.com/ForestAdmin/forest-express-mongoose/issues/601)) ([8e61bd6](https://github.com/ForestAdmin/forest-express-mongoose/commit/8e61bd61258d3dd3c35b57ae74c104da2106267f))
+
+
+### Features
+
+* add typescript declaration file ([#594](https://github.com/ForestAdmin/forest-express-mongoose/issues/594)) ([fc0264d](https://github.com/ForestAdmin/forest-express-mongoose/commit/fc0264d48f8d5cde6898d7f7b54b5f820a328e8d))
+* include role in the user data inside the request ([#597](https://github.com/ForestAdmin/forest-express-mongoose/issues/597)) ([508047b](https://github.com/ForestAdmin/forest-express-mongoose/commit/508047b51cf70a67098648f36cfecd689f9d2b6a))
+* **schema:** move some meta data under stack attribute to prevent blocking scenarios on DWO ([#591](https://github.com/ForestAdmin/forest-express-mongoose/issues/591)) ([9ef8c44](https://github.com/ForestAdmin/forest-express-mongoose/commit/9ef8c44ff726d81682708500057b8a5b9b34cfd1))
+
 ## [7.9.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.9.1...v7.9.2) (2021-07-06)
 
 
@@ -11,6 +60,13 @@
 ### Bug Fixes
 
 * add missing Json value for FieldType Type ([#620](https://github.com/ForestAdmin/forest-express-mongoose/issues/620)) ([f40126a](https://github.com/ForestAdmin/forest-express-mongoose/commit/f40126ac847254a9cbbedddf25305fff4821c0f7))
+
+# [8.0.0-beta.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.0-beta.3...v8.0.0-beta.4) (2021-07-02)
+
+
+### Features
+
+* **security:** secure segments queries ([#616](https://github.com/ForestAdmin/forest-express-mongoose/issues/616)) ([f09990a](https://github.com/ForestAdmin/forest-express-mongoose/commit/f09990a64ec27a882e9560007e068ae068bf562f))
 
 # [7.9.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.8.5...v7.9.0) (2021-07-01)
 
@@ -40,6 +96,13 @@
 
 * **authentication:** error during authentication when the environment is secret passed as a liana option and not an environment variable ([#610](https://github.com/ForestAdmin/forest-express-mongoose/issues/610)) ([26aa456](https://github.com/ForestAdmin/forest-express-mongoose/commit/26aa456dacfc3fe67bcbb029a6ce1ea5eca1fe16))
 
+# [8.0.0-beta.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.0-beta.2...v8.0.0-beta.3) (2021-06-22)
+
+
+### Bug Fixes
+
+* broken value charts due to missing user on ValueStatGetter constructor ([#609](https://github.com/ForestAdmin/forest-express-mongoose/issues/609)) ([0b52930](https://github.com/ForestAdmin/forest-express-mongoose/commit/0b52930dd6ced63bf3defe7c3263b27a8cb8f793))
+
 ## [7.8.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.8.1...v7.8.2) (2021-06-15)
 
 
@@ -61,6 +124,19 @@
 
 * include role in the user data inside the request ([#597](https://github.com/ForestAdmin/forest-express-mongoose/issues/597)) ([508047b](https://github.com/ForestAdmin/forest-express-mongoose/commit/508047b51cf70a67098648f36cfecd689f9d2b6a))
 
+# [8.0.0-beta.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.0-beta.1...v8.0.0-beta.2) (2021-06-07)
+
+
+### Features
+
+* **smart-action:** user can add dynamically field with hook on smart action form ([#593](https://github.com/ForestAdmin/forest-express-mongoose/issues/593)) ([90b4330](https://github.com/ForestAdmin/forest-express-mongoose/commit/90b4330e073c78da79a2ebbbbb2055e9e459a940))
+
+
+### BREAKING CHANGES
+
+* **smart-action:** fields parameters on hook function is no longer a map of field, it is now an array.
+change hook is no longer choosen by the field name, field need to have hook defined inside it definition by addin a props hook.
+
 ## [7.7.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.7.0...v7.7.1) (2021-06-03)
 
 
@@ -74,6 +150,16 @@
 ### Features
 
 * **schema:** move some meta data under stack attribute to prevent blocking scenarios on DWO ([#591](https://github.com/ForestAdmin/forest-express-mongoose/issues/591)) ([9ef8c44](https://github.com/ForestAdmin/forest-express-mongoose/commit/9ef8c44ff726d81682708500057b8a5b9b34cfd1))
+
+# [8.0.0-beta.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.6.2...v8.0.0-beta.1) (2021-05-31)
+
+
+* feat(scopes)!: enforce scopes restrictions on a wider range of requests (#586) ([2ce0904](https://github.com/ForestAdmin/forest-express-mongoose/commit/2ce09043f0115a791f0b831ab49b08c534c50f2e)), closes [#586](https://github.com/ForestAdmin/forest-express-mongoose/issues/586)
+
+
+### BREAKING CHANGES
+
+* the public API of forest-express has changed to include the parameters which are needed to evaluate scope filters. This includes PermissionMiddlewareCreator, all classes on the /exposed folder and most services. Many routes now require providing the current user timezone.
 
 ## [7.6.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.6.1...v7.6.2) (2021-05-25)
 

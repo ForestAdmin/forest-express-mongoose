@@ -5,11 +5,12 @@ const BATCH_INITIAL_PAGE = 1;
 const BATCH_SIZE = 1000;
 
 class ResourcesExporter {
-  constructor(model, options, params, association) {
+  constructor(model, options, params, association, user) {
     this._model = model;
     this._options = options;
     this._params = params;
     this._association = association;
+    this._user = user;
 
     this._params.sort = '_id';
     this._params.page = { size: BATCH_SIZE };
@@ -17,9 +18,11 @@ class ResourcesExporter {
 
   _getter() {
     if (this._association) {
-      return new HasManyGetter(this._model, this._association, this._options, this._params);
+      return new HasManyGetter(
+        this._model, this._association, this._options, this._params, this._user,
+      );
     }
-    return new ResourcesGetter(this._model, this._options, this._params);
+    return new ResourcesGetter(this._model, this._options, this._params, this._user);
   }
 
   async _retrieveBatch(dataSender, pageNumber) {

@@ -5,6 +5,7 @@ import loadFixture from 'mongoose-fixture-loader';
 import PieStatGetter from '../../../src/services/pie-stat-getter';
 import mongooseConnect from '../../utils/mongoose-connect';
 
+const user = { renderingId: 1 };
 const options = { Mongoose: mongoose, connections: { mongoose } };
 const baseParams = {
   aggregate: 'Count',
@@ -14,8 +15,11 @@ const baseParams = {
 
 describe('service > pie-stat-getter', () => {
   let ReviewModel;
+  let scopeSpy;
 
   beforeAll(async () => {
+    scopeSpy = jest.spyOn(Interface.scopeManager, 'getScopeForUser').mockReturnValue(null);
+
     Interface.Schemas = {
       schemas: {
         ReviewsPie: {
@@ -40,6 +44,7 @@ describe('service > pie-stat-getter', () => {
   });
 
   afterAll(async () => {
+    scopeSpy.mockRestore();
     await mongoose.connection.close();
   });
 
@@ -51,7 +56,7 @@ describe('service > pie-stat-getter', () => {
     expect.assertions(1);
 
     const params = { ...baseParams };
-    const getter = new PieStatGetter(ReviewModel, params, options);
+    const getter = new PieStatGetter(ReviewModel, params, options, user);
     expect(await getter.perform()).toStrictEqual({ value: [] });
   });
 
@@ -65,7 +70,7 @@ describe('service > pie-stat-getter', () => {
     ]);
 
     const params = { ...baseParams };
-    const getter = new PieStatGetter(ReviewModel, params, options);
+    const getter = new PieStatGetter(ReviewModel, params, options, user);
     expect(await getter.perform()).toStrictEqual({
       value: [
         { key: 66, value: 2 },
@@ -84,7 +89,7 @@ describe('service > pie-stat-getter', () => {
     ]);
 
     const params = { ...baseParams, aggregate_field: 'rating' };
-    const getter = new PieStatGetter(ReviewModel, params, options);
+    const getter = new PieStatGetter(ReviewModel, params, options, user);
     expect(await getter.perform()).toStrictEqual({
       value: [
         { key: 66, value: 132 },
@@ -107,7 +112,7 @@ describe('service > pie-stat-getter', () => {
       aggregate_field: 'rating',
     };
 
-    const getter = new PieStatGetter(ReviewModel, params, options);
+    const getter = new PieStatGetter(ReviewModel, params, options, user);
     expect(await getter.perform()).toStrictEqual({
       value: [
         { key: '02/01/2010 00:00:00', value: 15 },

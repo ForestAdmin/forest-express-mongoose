@@ -4,17 +4,25 @@ import Interface from 'forest-express';
 import ResourcesGetter from '../../../src/services/resources-getter';
 import mongooseConnect from '../../utils/mongoose-connect';
 
+const user = { renderingId: 1 };
+const options = { Mongoose: mongoose, connections: { mongoose } };
+const baseParams = {
+  fields: {
+    order: '_id,amount,description,giftMessage',
+  },
+  page: { number: '1', size: '30' },
+  timezone: 'Europe/Paris',
+};
+
 describe('service > resources-getter', () => {
   let OrderModel;
   let UserModel;
   let FilmModel;
-
-  const options = {
-    Mongoose: mongoose,
-    connections: { mongoose },
-  };
+  let scopeSpy;
 
   beforeAll(async () => {
+    scopeSpy = jest.spyOn(Interface.scopeManager, 'getScopeForUser').mockReturnValue(null);
+
     Interface.Schemas = {
       schemas: {
         Order: {
@@ -154,33 +162,26 @@ describe('service > resources-getter', () => {
     ]);
   });
 
-  afterAll(() => mongoose.connection.close());
+  afterAll(async () => {
+    scopeSpy.mockRestore();
+    await mongoose.connection.close();
+  });
 
   describe('with a search on a collection with searchFields', () => {
     it('should retrieve the record with `gift` value in `comment` field', async () => {
       expect.assertions(2);
-      const parameters = {
-        fields: {
-          order: '_id,amount,description,giftMessage',
-        },
-        page: { number: '1', size: '30' },
-        search: 'gift',
-        timezone: 'Europe/Paris',
-      };
 
-      const result = await new ResourcesGetter(OrderModel, options, parameters).perform();
+      const parameters = { ...baseParams, search: 'gift' };
+      const result = await new ResourcesGetter(OrderModel, options, parameters, user).perform();
       expect(result[0]).toHaveLength(1);
       expect(result[0][0].comment).toMatch(/gift/);
     });
 
     it('should retrieve the count of the records', async () => {
       expect.assertions(1);
-      const parameters = {
-        search: 'gift',
-        timezone: 'Europe/Paris',
-      };
 
-      const count = await new ResourcesGetter(OrderModel, options, parameters).count();
+      const parameters = { ...baseParams, search: 'gift' };
+      const count = await new ResourcesGetter(OrderModel, options, parameters, user).count();
       expect(count).toStrictEqual(1);
     });
   });
@@ -190,15 +191,11 @@ describe('service > resources-getter', () => {
       it('should filter correctly', async () => {
         expect.assertions(3);
         const parameters = {
-          fields: {
-            order: '_id,amount,description,giftMessage',
-          },
-          page: { number: '1', size: '30' },
+          ...baseParams,
           filters: JSON.stringify({ field: 'giftMessage', operator: 'starts_with', value: 'Here' }),
-          timezone: 'Europe/Paris',
         };
 
-        const result = await new ResourcesGetter(OrderModel, options, parameters).perform();
+        const result = await new ResourcesGetter(OrderModel, options, parameters, user).perform();
         expect(result[0]).toHaveLength(1);
         expect(result[0][0].giftMessage).toMatch(/^Here/);
         expect(result[0][0].comment).toMatch(/comment/);
@@ -209,15 +206,11 @@ describe('service > resources-getter', () => {
       it('should filter correctly', async () => {
         expect.assertions(3);
         const parameters = {
-          fields: {
-            order: '_id,amount,description,giftMessage',
-          },
-          page: { number: '1', size: '30' },
+          ...baseParams,
           filters: JSON.stringify({ field: 'giftMessage', operator: 'blank', value: null }),
-          timezone: 'Europe/Paris',
         };
 
-        const result = await new ResourcesGetter(OrderModel, options, parameters).perform();
+        const result = await new ResourcesGetter(OrderModel, options, parameters, user).perform();
         expect(result[0]).toHaveLength(2);
         result[0].forEach((item) => {
           if (item.giftMessage === null) {
@@ -234,10 +227,7 @@ describe('service > resources-getter', () => {
     it('should filter correctly', async () => {
       expect.assertions(2);
       const parameters = {
-        fields: {
-          order: '_id,amount,description,giftMessage',
-        },
-        page: { number: '1', size: '30' },
+        ...baseParams,
         filters: JSON.stringify({
           aggregator: 'and',
           conditions: [
@@ -245,10 +235,9 @@ describe('service > resources-getter', () => {
             { field: 'amount', operator: 'greater_than', value: '1000' },
           ],
         }),
-        timezone: 'Europe/Paris',
       };
 
-      const result = await new ResourcesGetter(OrderModel, options, parameters).perform();
+      const result = await new ResourcesGetter(OrderModel, options, parameters, user).perform();
       expect(result[0]).toHaveLength(1);
       expect(result[0][0].comment).toMatch(/gift/);
     });
@@ -258,16 +247,11 @@ describe('service > resources-getter', () => {
         it('should filter correctly', async () => {
           expect.assertions(2);
           const parameters = {
-            fields: {
-              order: '_id,amount,description,giftMessage',
-            },
-            page: { number: '1', size: '30' },
+            ...baseParams,
             filters: JSON.stringify({ field: 'orderer:name', operator: 'contains', value: 'Cohle' }),
-            timezone: 'Europe/Paris',
           };
 
-
-          const result = await new ResourcesGetter(OrderModel, options, parameters).perform();
+          const result = await new ResourcesGetter(OrderModel, options, parameters, user).perform();
           expect(result[0]).toHaveLength(1);
           expect(result[0][0].comment).toMatch(/gift/);
         });
@@ -276,11 +260,9 @@ describe('service > resources-getter', () => {
       describe('with \'and\' aggregator on two belongsTo on the same model', () => {
         it('should filter correctly', async () => {
           expect.assertions(1);
+
           const parameters = {
-            fields: {
-              order: '_id,amount,description,giftMessage',
-            },
-            page: { number: '1', size: '30' },
+            ...baseParams,
             filters: JSON.stringify({
               aggregator: 'and',
               conditions: [
@@ -288,10 +270,9 @@ describe('service > resources-getter', () => {
                 { field: 'orderer:name', operator: 'ends_with', value: 'Gardner' },
               ],
             }),
-            timezone: 'Europe/Paris',
           };
 
-          const result = await new ResourcesGetter(OrderModel, options, parameters).perform();
+          const result = await new ResourcesGetter(OrderModel, options, parameters, user).perform();
           expect(result[0]).toHaveLength(0);
         });
       });
@@ -300,10 +281,7 @@ describe('service > resources-getter', () => {
         it('should filter correctly', async () => {
           expect.assertions(1);
           const parameters = {
-            fields: {
-              order: '_id,amount,description,giftMessage',
-            },
-            page: { number: '1', size: '30' },
+            ...baseParams,
             filters: JSON.stringify({
               aggregator: 'or',
               conditions: [
@@ -311,10 +289,9 @@ describe('service > resources-getter', () => {
                 { field: 'receiver:name', operator: 'ends_with', value: 'Gardner' },
               ],
             }),
-            timezone: 'Europe/Paris',
           };
 
-          const result = await new ResourcesGetter(OrderModel, options, parameters).perform();
+          const result = await new ResourcesGetter(OrderModel, options, parameters, user).perform();
           expect(result[0]).toHaveLength(2);
         });
       });
@@ -323,10 +300,7 @@ describe('service > resources-getter', () => {
         it('should filter correctly', async () => {
           expect.assertions(1);
           const parameters = {
-            fields: {
-              order: '_id,amount,description,giftMessage',
-            },
-            page: { number: '1', size: '30' },
+            ...baseParams,
             filters: JSON.stringify({
               aggregator: 'or',
               conditions: [
@@ -347,10 +321,9 @@ describe('service > resources-getter', () => {
                 },
               ],
             }),
-            timezone: 'Europe/Paris',
           };
 
-          const result = await new ResourcesGetter(OrderModel, options, parameters).perform();
+          const result = await new ResourcesGetter(OrderModel, options, parameters, user).perform();
           expect(result[0]).toHaveLength(1);
         });
       });
@@ -368,7 +341,7 @@ describe('service > resources-getter', () => {
           timezone: 'Europe/Paris',
         };
 
-        const [result] = await new ResourcesGetter(FilmModel, options, parameters).perform();
+        const [result] = await new ResourcesGetter(FilmModel, options, parameters, user).perform();
         expect(result).toHaveLength(3);
         const titles = result.filter((film) => !!film.title);
         expect(titles).toHaveLength(3);
@@ -387,7 +360,7 @@ describe('service > resources-getter', () => {
           timezone: 'Europe/Paris',
         };
 
-        const [result] = await new ResourcesGetter(FilmModel, options, parameters).perform();
+        const [result] = await new ResourcesGetter(FilmModel, options, parameters, user).perform();
         expect(result).toHaveLength(3);
         const titles = result.filter((film) => !!film.title);
         expect(titles).toHaveLength(3);
@@ -407,7 +380,7 @@ describe('service > resources-getter', () => {
           timezone: 'Europe/Paris',
         };
 
-        const result = await new ResourcesGetter(FilmModel, options, parameters).perform();
+        const result = await new ResourcesGetter(FilmModel, options, parameters, user).perform();
 
         expect(result[0]).toHaveLength(2);
       });
@@ -422,7 +395,7 @@ describe('service > resources-getter', () => {
           timezone: 'Europe/Paris',
         };
 
-        const result = await new ResourcesGetter(FilmModel, options, parameters).perform();
+        const result = await new ResourcesGetter(FilmModel, options, parameters, user).perform();
 
         expect(result[0]).toHaveLength(3);
         expect(result[0][0].title).toBe('Matrix');
@@ -439,7 +412,7 @@ describe('service > resources-getter', () => {
           timezone: 'Europe/Paris',
         };
 
-        const result = await new ResourcesGetter(FilmModel, options, parameters).perform();
+        const result = await new ResourcesGetter(FilmModel, options, parameters, user).perform();
 
         expect(result[0]).toHaveLength(3);
         expect(result[0][0].title).toBe('Terminator');

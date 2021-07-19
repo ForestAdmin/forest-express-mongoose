@@ -1,15 +1,17 @@
+import { Schemas } from 'forest-express';
 import _ from 'lodash';
-import Interface from 'forest-express';
 import moment from 'moment';
-import QueryBuilder from './query-builder';
 import utils from '../utils/schema';
+import getScopedParams from '../utils/scopes';
+import QueryBuilder from './query-builder';
 
 class PieStatGetter {
-  constructor(model, params, opts) {
+  constructor(model, params, opts, user) {
     this._model = model;
     this._params = params;
-    this._opts = opts;
-    this._schema = Interface.Schemas.schemas[utils.getModelName(this._model)];
+    this._opts = { Mongoose: this._model.base, connections: this._model.base.connections };
+    this._user = user;
+    this._schema = Schemas.schemas[utils.getModelName(this._model)];
   }
 
   _getReference(fieldName) {
@@ -19,11 +21,12 @@ class PieStatGetter {
   }
 
   async perform() {
-    const field = _.find(this._schema.fields, { field: this._params.group_by_field });
-    const queryBuilder = new QueryBuilder(this._model, this._params, this._opts);
-    const populateGroupByField = this._getReference(this._params.group_by_field);
+    const params = await getScopedParams(this._params, this._model, this._user);
+    const field = _.find(this._schema.fields, { field: params.group_by_field });
+    const queryBuilder = new QueryBuilder(this._model, params, this._opts);
+    const populateGroupByField = this._getReference(params.group_by_field);
     const groupByFieldName = populateGroupByField
-      ? this._params.group_by_field.replace(':', '.') : this._params.group_by_field;
+      ? params.group_by_field.replace(':', '.') : params.group_by_field;
 
     const jsonQuery = await queryBuilder.getQueryWithFiltersAndJoins(null);
     if (populateGroupByField) {
@@ -33,8 +36,8 @@ class PieStatGetter {
     const query = this._model.aggregate(jsonQuery);
 
     let sum = 1;
-    if (this._params.aggregate_field) {
-      sum = `$${this._params.aggregate_field}`;
+    if (params.aggregate_field) {
+      sum = `$${params.aggregate_field}`;
     }
 
     const records = {

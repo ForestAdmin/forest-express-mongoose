@@ -1,4 +1,4 @@
-import { RequestHandler, Response, Request, NextFunction, Application } from 'express';
+import { Application, NextFunction, Request, RequestHandler, Response } from 'express';
 import {
   ConnectionOptions,
   Mongoose,
@@ -32,9 +32,72 @@ export interface DatabaseConfiguration {
   }
 }
 
+export interface ForestRequest extends Request {
+  user: User,
+}
+
+// Base attributes for actions requests (content of request.data.body.attributes)
+interface ActionRequestAttributes {
+  collection_name: string,
+  ids: string[],
+  parent_collection_name: string,
+  parent_collection_id: string,
+  parent_association_name: string,
+  all_records: boolean,
+  all_records_subset_query: Query,
+  all_records_ids_excluded: string[],
+  smart_action_id: string,
+}
+
+// Base body from requests for action routes / hooks
+interface ActionRequestBody {
+  data: {
+    attributes: ActionRequestAttributes,
+    type: 'action-requests',
+  },
+}
+
+// Base body from requests for classic smart action routes
+interface SmartActionRequestBody {
+  data: {
+    attributes: ActionRequestAttributes & { values: Record<string, any> },
+    type: 'custom-action-requests',
+  },
+}
+
+// Base body from requests for smart action hooks
+interface SmartActionHookRequestBody {
+  data: {
+    attributes: ActionRequestAttributes & {
+      fields: SmartActionChangeHookField[],
+      changedField: string,
+    },
+    type: 'custom-action-hook-requests',
+  },
+}
+
+// Concrete smart action request for classic smart action routes
+export interface SmartActionRequest extends ForestRequest {
+  body: SmartActionRequestBody,
+}
+
+// Request passed to smart action load hooks
+export interface SmartActionLoadHookRequest extends ForestRequest {
+  body: ActionRequestBody,
+}
+
+// Request passed to smart action change hooks
+export interface SmartActionChangeHookRequest extends ForestRequest {
+  body: SmartActionHookRequestBody,
+}
+
 // Everything related to Forest Authentication
 
 export function ensureAuthenticated(request: Request, response: Response, next: NextFunction): void;
+
+export interface User {
+  renderingId: number;
+}
 
 // Everything related to Forest constants
 
@@ -50,7 +113,7 @@ interface RecordsSerialized {
 }
 
 export class AbstractRecordTool<T> {
-  constructor(model: Model<T>)
+  constructor(model: Model<T>, user: User, query: Record<string, any>)
   serialize(records: Document<T> | Document<T>[]): Promise<RecordsSerialized>;
 }
 
@@ -60,15 +123,15 @@ export class RecordGetter<T> extends AbstractRecordTool<T> {
 
 export class RecordsGetter<T> extends AbstractRecordTool<T> {
   getAll(query: Query): Promise<(T & Document)[]>;
-  getIdsFromRequest(request: Request): Promise<string[]>;
+  getIdsFromRequest(request: SmartActionRequest | SmartActionLoadHookRequest | SmartActionChangeHookRequest): Promise<string[]>;
 }
 
 export class RecordsCounter<M extends Model<any>> extends AbstractRecordTool<M> {
-  count(query: Query): Promise<number>;
+  count(): Promise<number>;
 }
 
 export class RecordsExporter<M extends Model<any>> extends AbstractRecordTool<M> {
-  streamExport(response: Response, query: Query): Promise<void>;
+  streamExport(response: Response): Promise<void>;
 }
 
 export class RecordUpdater<M extends Model<any>> extends AbstractRecordTool<M> {
@@ -208,6 +271,7 @@ export interface SmartActionField {
   enums?: FieldEnumsType,
   defaultValue?: any,
   reference?: string,
+  hook?: string,
 }
 
 export interface SmartActionHookField extends SmartActionField {
@@ -218,16 +282,16 @@ export interface SmartActionLoadHookField extends SmartActionHookField {
   position: number,
 }
 
-export interface SmartActionLoadHook<T = any> {
-  (context: { fields: Record<string, SmartActionLoadHookField>, record: T & Document }): Record<string, SmartActionLoadHookField>
+export interface SmartActionLoadHook {
+  (context: { fields: SmartActionLoadHookField[], request: SmartActionLoadHookRequest }): SmartActionLoadHookField[]
 }
 
 export interface SmartActionChangeHookField extends SmartActionHookField {
   previousValue: any,
 }
 
-export interface SmartActionChangeHook<T = any> {
-  (context: { fields: Record<string, SmartActionChangeHookField>, record: T }): Record<string, SmartActionChangeHookField>
+export interface SmartActionChangeHook {
+  (context: { fields: SmartActionChangeHookField[], changedField: SmartActionChangeHookField, request: SmartActionChangeHookRequest }): SmartActionChangeHookField[]
 }
 
 export interface SmartActionHooks {

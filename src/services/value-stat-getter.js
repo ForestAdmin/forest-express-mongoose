@@ -1,26 +1,27 @@
+import getScopedParams from '../utils/scopes';
 import QueryBuilder from './query-builder';
 
 class ValueStatGetter {
-  constructor(model, params, opts) {
+  constructor(model, params, opts, user) {
     this._model = model;
     this._params = params;
     this._opts = opts;
+    this._user = user;
   }
 
   async perform() {
-    const queryBuilder = new QueryBuilder(this._model, this._params, this._opts);
+    const params = await getScopedParams(this._params, this._model, this._user);
+    const queryBuilder = new QueryBuilder(this._model, params, this._opts);
 
     let sum = 1;
-    if (this._params.aggregate_field) {
-      sum = `$${this._params.aggregate_field}`;
+    if (params.aggregate_field) {
+      sum = `$${params.aggregate_field}`;
     }
 
     const jsonQuery = await queryBuilder.getQueryWithFiltersAndJoins(null);
-    const records = await this._model.aggregate(jsonQuery)
-      .group({
-        _id: null,
-        total: { $sum: sum },
-      })
+    const records = await this._model
+      .aggregate(jsonQuery)
+      .group({ _id: null, total: { $sum: sum } })
       .exec();
 
     if (!records || !records.length) {

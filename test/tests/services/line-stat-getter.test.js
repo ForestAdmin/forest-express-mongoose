@@ -1,10 +1,10 @@
-
 import Interface from 'forest-express';
 import mongoose from 'mongoose';
 import loadFixture from 'mongoose-fixture-loader';
 import LineStatGetter from '../../../src/services/line-stat-getter';
 import mongooseConnect from '../../utils/mongoose-connect';
 
+const user = { renderingId: 1 };
 const options = { Mongoose: mongoose, connections: { mongoose } };
 const baseParams = {
   aggregate: 'Sum',
@@ -16,9 +16,12 @@ const baseParams = {
 
 describe('service > line-stat-getter', () => {
   let ReviewModel;
+  let scopeSpy;
   let dateNowSpy;
 
   beforeAll(async () => {
+    scopeSpy = jest.spyOn(Interface.scopeManager, 'getScopeForUser').mockReturnValue(null);
+
     dateNowSpy = jest
       .spyOn(Date, 'now')
       .mockImplementation(() => new Date(Date.UTC(2017, 1, 14)).valueOf());
@@ -50,6 +53,7 @@ describe('service > line-stat-getter', () => {
 
   afterAll(async () => {
     dateNowSpy.mockRestore();
+    scopeSpy.mockRestore();
 
     await mongoose.connection.close();
   });
@@ -63,7 +67,7 @@ describe('service > line-stat-getter', () => {
       expect.assertions(1);
 
       const params = baseParams;
-      const getter = new LineStatGetter(ReviewModel, params, options);
+      const getter = new LineStatGetter(ReviewModel, params, options, user);
       expect(await getter.perform()).toStrictEqual({ value: [] });
     });
   });
@@ -79,7 +83,7 @@ describe('service > line-stat-getter', () => {
       ]);
 
       const params = { ...baseParams, time_range: 'Day' };
-      const getter = new LineStatGetter(ReviewModel, params, options);
+      const getter = new LineStatGetter(ReviewModel, params, options, user);
       expect(await getter.perform()).toStrictEqual({
         value: [
           { label: '10/11/2016', values: { value: 10 } },
@@ -100,7 +104,7 @@ describe('service > line-stat-getter', () => {
       ]);
 
       const params = { ...baseParams, time_range: 'Week' };
-      const getter = new LineStatGetter(ReviewModel, params, options);
+      const getter = new LineStatGetter(ReviewModel, params, options, user);
       expect(await getter.perform()).toStrictEqual({
         value: [
           { label: 'W45-2016', values: { value: 10 } },
@@ -119,7 +123,7 @@ describe('service > line-stat-getter', () => {
       ]);
 
       const params = { ...baseParams, time_range: 'Month' };
-      const getter = new LineStatGetter(ReviewModel, params, options);
+      const getter = new LineStatGetter(ReviewModel, params, options, user);
       expect(await getter.perform()).toStrictEqual({
         value: [
           { label: 'Nov 16', values: { value: 20 } },
@@ -139,7 +143,7 @@ describe('service > line-stat-getter', () => {
       ]);
 
       const params = { ...baseParams, time_range: 'Year' };
-      const getter = new LineStatGetter(ReviewModel, params, options);
+      const getter = new LineStatGetter(ReviewModel, params, options, user);
       expect(await getter.perform()).toStrictEqual({
         value: [
           { label: '2016', values: { value: 20 } },
@@ -160,7 +164,7 @@ describe('service > line-stat-getter', () => {
       ]);
 
       const params = { ...baseParams, group_by_field: 'color' };
-      const getter = new LineStatGetter(ReviewModel, params, options);
+      const getter = new LineStatGetter(ReviewModel, params, options, user);
       expect(await getter.perform()).toStrictEqual({
         value: [
           { label: 'Nov 16', values: { value: 20 } },
