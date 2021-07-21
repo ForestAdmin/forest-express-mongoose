@@ -6,6 +6,7 @@ describe('service > fields-flattener', () => {
   let warnLoggerSpy;
 
   const generateEngineSchema = () => ({
+    name: 'cars',
     fields: [{
       field: 'engine',
       type: {
@@ -38,13 +39,14 @@ describe('service > fields-flattener', () => {
   describe('validating the flatten property', () => {
     describe('when the flatten property is not an array', () => {
       it('should display an error message', () => {
-        expect.assertions(1);
+        expect.assertions(2);
 
         jest.resetAllMocks();
-        const fieldsFlattener = new FieldsFlattener({}, { });
+        const fieldsFlattener = new FieldsFlattener({ name: 'cars' }, { });
         fieldsFlattener.validateOptions();
 
         expect(errorLoggerSpy).toHaveBeenCalledTimes(1);
+        expect(errorLoggerSpy).toHaveBeenCalledWith('Could not flatten fields from collection cars, flatten property should be an array.');
       });
     });
 
@@ -52,13 +54,14 @@ describe('service > fields-flattener', () => {
       describe('when the field does not exist', () => {
         describe('when the field is of type string', () => {
           it('should display an warning message', () => {
-            expect.assertions(1);
+            expect.assertions(2);
 
             jest.resetAllMocks();
             const fieldsFlattener = new FieldsFlattener({ fields: [] }, ['test']);
             fieldsFlattener.validateOptions();
 
             expect(warnLoggerSpy).toHaveBeenCalledTimes(1);
+            expect(warnLoggerSpy).toHaveBeenCalledWith('Could not flatten field test because it does not exist');
           });
 
           it('should remove the non existing field from fields to flatten', () => {
@@ -73,13 +76,14 @@ describe('service > fields-flattener', () => {
 
         describe('when the field is of type object', () => {
           it('should display a warning message', () => {
-            expect.assertions(1);
+            expect.assertions(2);
 
             jest.resetAllMocks();
             const fieldsFlattener = new FieldsFlattener({ fields: [] }, [{ field: 'test' }]);
             fieldsFlattener.validateOptions();
 
             expect(warnLoggerSpy).toHaveBeenCalledTimes(1);
+            expect(warnLoggerSpy).toHaveBeenCalledWith('Could not flatten field test because it does not exist');
           });
 
           it('should remove the non existing field from fields to flatten', () => {
@@ -95,13 +99,14 @@ describe('service > fields-flattener', () => {
 
       describe('when a field has not been specified in flatten object', () => {
         it('should display a warning message', () => {
-          expect.assertions(1);
+          expect.assertions(2);
 
           jest.resetAllMocks();
           const fieldsFlattener = new FieldsFlattener({ fields: [] }, [{ }]);
           fieldsFlattener.validateOptions();
 
           expect(warnLoggerSpy).toHaveBeenCalledTimes(1);
+          expect(warnLoggerSpy).toHaveBeenCalledWith(`Could not flatten field with the following configuration ${JSON.stringify({})} because no field has been specified`);
         });
 
         it('should remove the non existing field from fields to flatten', () => {
