@@ -18,7 +18,15 @@ describe('service > fields-flattener', () => {
             type: {
               fields: [
                 { field: 'manufacturer', type: 'String' },
-                { field: 'serialNumber', type: 'String' },
+                {
+                  field: 'serialNumber',
+                  type: {
+                    fields: [
+                      { field: 'number', type: 'String' },
+                      { field: 'position', type: 'String' },
+                    ],
+                  },
+                },
               ],
             },
           },
@@ -133,7 +141,7 @@ describe('service > fields-flattener', () => {
       const fieldsFlattener = new FieldsFlattener(schema, ['engine']);
       fieldsFlattener.flattenFields();
 
-      expect(schema.fields[0].field).toContain('|');
+      expect(schema.fields[0].field).toStrictEqual('engine|horsepower');
     });
   });
 
@@ -146,7 +154,7 @@ describe('service > fields-flattener', () => {
 
       fieldsFlattener.flattenFields();
 
-      expect(schema.fields).toHaveLength(5);
+      expect(schema.fields).toHaveLength(6);
     });
   });
 
@@ -161,7 +169,7 @@ describe('service > fields-flattener', () => {
 
           fieldsFlattener.flattenFields();
 
-          expect(schema.fields).toHaveLength(5);
+          expect(schema.fields).toHaveLength(6);
         });
       });
       describe('when the level property is lower than actual level', () => {
@@ -169,11 +177,11 @@ describe('service > fields-flattener', () => {
           expect.assertions(1);
 
           const schema = generateEngineSchema();
-          const fieldsFlattener = new FieldsFlattener(schema, [{ field: 'engine', level: 0 }]);
+          const fieldsFlattener = new FieldsFlattener(schema, [{ field: 'engine', level: 1 }]);
 
           fieldsFlattener.flattenFields();
 
-          expect(schema.fields).toHaveLength(4);
+          expect(schema.fields).toHaveLength(5);
         });
       });
     });
