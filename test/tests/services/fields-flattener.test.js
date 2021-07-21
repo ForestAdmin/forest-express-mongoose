@@ -130,6 +130,30 @@ describe('service > fields-flattener', () => {
         });
       });
     });
+
+    describe('when the level property is not a number', () => {
+      it('should display a warning message stating that all levels will be flatten', () => {
+        expect.assertions(2);
+
+        jest.resetAllMocks();
+        const fieldsFlattener = new FieldsFlattener(generateEngineSchema(), [{ field: 'engine', level: null }]);
+        fieldsFlattener.validateOptions();
+
+        expect(warnLoggerSpy).toHaveBeenCalledTimes(1);
+        expect(warnLoggerSpy).toHaveBeenCalledWith('Could not parse flatten level for field engine, defaulting to infinite');
+      });
+
+      it('should remove the wrong level from flatten configuration', () => {
+        expect.assertions(1);
+
+        jest.resetAllMocks();
+        const flatten = [{ field: 'engine', level: null }];
+        const fieldsFlattener = new FieldsFlattener(generateEngineSchema(), flatten);
+        fieldsFlattener.validateOptions();
+
+        expect(flatten[0].level).not.toBeDefined();
+      });
+    });
   });
 
   describe('flattening a field', () => {

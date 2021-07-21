@@ -20,6 +20,24 @@ module.exports = class FieldsFlattener {
     }
   }
 
+  _validateFlattenObjectConfiguration(flattenConfiguration, configurationIndex) {
+    if (!flattenConfiguration.field) {
+      Interface.logger.warn(`Could not flatten field with the following configuration ${JSON.stringify(flattenConfiguration)} because no field has been specified`);
+      this._removeWrongFlattenConfiguration(configurationIndex);
+    } else {
+      this._doesFieldExist(flattenConfiguration.field, configurationIndex);
+
+      if (flattenConfiguration.level !== undefined) {
+        flattenConfiguration.level = parseInt(flattenConfiguration.level, 10);
+
+        if (Number.isNaN(flattenConfiguration.level)) {
+          Interface.logger.warn(`Could not parse flatten level for field ${flattenConfiguration.field}, defaulting to infinite`);
+          delete flattenConfiguration.level;
+        }
+      }
+    }
+  }
+
   validateOptions() {
     if (!this.flatten) {
       this.flatten = [];
@@ -38,12 +56,7 @@ module.exports = class FieldsFlattener {
           this._doesFieldExist(flattenConfiguration, index);
           break;
         case 'object':
-          if (!flattenConfiguration.field) {
-            Interface.logger.warn(`Could not flatten field with the following configuration ${JSON.stringify(flattenConfiguration)} because no field has been specified`);
-            this._removeWrongFlattenConfiguration(index);
-          } else {
-            this._doesFieldExist(flattenConfiguration.field, index);
-          }
+          this._validateFlattenObjectConfiguration(flattenConfiguration, index);
           break;
         default: {
           Interface.logger.warn(`Could not identify the field to flatten with ${JSON.stringify(flattenConfiguration)}`);
