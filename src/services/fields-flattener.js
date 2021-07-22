@@ -86,7 +86,6 @@ module.exports = class FieldsFlattener {
   flattenFields() {
     this.validateOptions();
 
-    const indexes = [];
     const newFields = [];
 
     this.flatten.forEach((flattenConfiguration) => {
@@ -94,11 +93,10 @@ module.exports = class FieldsFlattener {
         .findIndex((field) => field.field === flattenConfiguration.field);
       const fieldSchema = this.schema.fields[fieldSchemaIndex];
 
-      indexes.push(fieldSchemaIndex);
       this._flattenField(fieldSchema, fieldSchema.field, newFields, flattenConfiguration.level);
-    });
 
-    indexes.forEach((fieldIndex) => this.schema.fields.splice(fieldIndex));
+      this.schema.fields.splice(fieldSchemaIndex, 1);
+    });
 
     this.schema.fields = [...this.schema.fields, ...newFields];
   }
