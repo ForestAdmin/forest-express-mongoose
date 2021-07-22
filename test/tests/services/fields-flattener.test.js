@@ -56,6 +56,15 @@ describe('service > fields-flattener', () => {
         expect(errorLoggerSpy).toHaveBeenCalledTimes(1);
         expect(errorLoggerSpy).toHaveBeenCalledWith('Could not flatten fields from collection cars, flatten property should be an array.');
       });
+
+      it('should not crash (eg prevent liana initialization)', () => {
+        expect.assertions(1);
+
+        jest.resetAllMocks();
+        const fieldsFlattener = new FieldsFlattener({ name: 'cars' }, { });
+
+        expect(() => { fieldsFlattener.validateOptions(); }).not.toThrow();
+      });
     });
 
     describe('when the field provided is invalid', () => {
@@ -174,8 +183,8 @@ describe('service > fields-flattener', () => {
       expect.assertions(1);
 
       const schema = generateEngineSchema();
-      const fieldsFlattener = new FieldsFlattener(schema, ['engine']);
 
+      const fieldsFlattener = new FieldsFlattener(schema, ['engine']);
       fieldsFlattener.flattenFields();
 
       expect(schema.fields).toHaveLength(6);
