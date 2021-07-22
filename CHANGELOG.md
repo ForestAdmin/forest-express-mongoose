@@ -1,3 +1,10 @@
+## [8.0.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.0...v8.0.1) (2021-07-22)
+
+
+### Bug Fixes
+
+* **related-data:** sequelize related data are not displayed ([#639](https://github.com/ForestAdmin/forest-express-mongoose/issues/639)) ([20febff](https://github.com/ForestAdmin/forest-express-mongoose/commit/20febfff103ad72a8ac7fa8faf8bcb0de4707cec))
+
 # [8.0.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.9.2...v8.0.0) (2021-07-19)
 
 
