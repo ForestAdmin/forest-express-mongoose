@@ -45,6 +45,7 @@ module.exports = class FieldsFlattener {
     }
 
     if (!Array.isArray(this.flatten)) {
+      this.flatten = [];
       Interface.logger.error(`Could not flatten fields from collection ${this.schema.name}, flatten property should be an array.`);
       return;
     }
