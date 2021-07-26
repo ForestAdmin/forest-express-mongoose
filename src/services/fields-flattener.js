@@ -105,4 +105,10 @@ module.exports = class FieldsFlattener {
 
     this.schema.fields = [...this.schema.fields, ...newFields];
   }
+
+  static unflattenFieldName(fieldName) {
+    if (!fieldName) return null;
+
+    return fieldName.replace(/\|/g, '.');
+  }
 };
