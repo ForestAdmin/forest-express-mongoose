@@ -1,3 +1,10 @@
+## [8.0.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.1...v8.0.2) (2021-07-26)
+
+
+### Bug Fixes
+
+* **actions:** fix regression on the bulk delete action ([#640](https://github.com/ForestAdmin/forest-express-mongoose/issues/640)) ([6880156](https://github.com/ForestAdmin/forest-express-mongoose/commit/6880156e1b7a6a2cc0b545c9122982c6fbb96dc2))
+
 ## [8.0.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.0...v8.0.1) (2021-07-22)
 
 
