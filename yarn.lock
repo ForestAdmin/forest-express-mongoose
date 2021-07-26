@@ -4769,10 +4769,10 @@ for-in@^1.0.2:
   resolved "https://registry.yarnpkg.com/for-in/-/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
   integrity sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=
 
-forest-express@9.0.1:
-  version "9.0.1"
-  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-9.0.1.tgz#f5ea7a8d4f9a12b9ed574a89eb451451f2d78142"
-  integrity sha512-D8fS3Fvtz+tBXaqEPpb71SUAEoMLVwa7JbdET5VqX+HeIVFD/Z37sfMRw+c4sS5Z4wodwTgJsZUYtSRsZ0LLPA==
+forest-express@9.0.2:
+  version "9.0.2"
+  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-9.0.2.tgz#83fb9f2b1bbe06a4f0f1771b3f232d6ebfd897c2"
+  integrity sha512-ig08ANGj9tGcryYnv7A5pu1KndkiozalfQ5sgEtUTU3AEZK3bFCQAYQFLdIXoYkz9xsUWPgY0EvoTGR+D/UuaQ==
   dependencies:
     "@babel/runtime" "7.10.1"
     base32-encode "1.1.1"
