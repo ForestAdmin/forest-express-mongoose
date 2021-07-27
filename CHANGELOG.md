@@ -1,3 +1,10 @@
+## [8.0.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.2...v8.0.3) (2021-07-27)
+
+
+### Bug Fixes
+
+* **update:** fix update record regression ([#643](https://github.com/ForestAdmin/forest-express-mongoose/issues/643)) ([cc39aeb](https://github.com/ForestAdmin/forest-express-mongoose/commit/cc39aebaaa421124c41b33a207dbd1211e3aa02d))
+
 ## [8.0.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.1...v8.0.2) (2021-07-26)
 
 
