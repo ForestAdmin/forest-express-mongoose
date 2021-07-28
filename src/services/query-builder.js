@@ -109,6 +109,7 @@ class QueryBuilder {
       const [association] = this._params.sort.split('.');
       this.addJoinToQuery(association, jsonQuery);
     }
+    if (sortParam.includes('|')) sortParam = sortParam.replace(/\|/g, '.');
     jsonQuery.push({ $sort: { [sortParam]: order } });
 
     return this;

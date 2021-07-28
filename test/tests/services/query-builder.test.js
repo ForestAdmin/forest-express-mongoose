@@ -150,4 +150,39 @@ describe('service > query-builder', () => {
       });
     });
   });
+
+  describe('addSortToQuery function', () => {
+    describe('on basic field', () => {
+      it('should add the sort correctly', () => {
+        expect.assertions(1);
+        const queryBuilder = new QueryBuilder(TreeModel, {
+          timezone: 'Europe/Paris',
+          sort: 'age',
+        }, options);
+        const expectedSort = {
+          $sort: { age: 1 },
+        };
+        const jsonQuery = [];
+        queryBuilder.addSortToQuery(jsonQuery);
+        expect(jsonQuery[0])
+          .toStrictEqual(expectedSort);
+      });
+    });
+    describe('on flattened field', () => {
+      it('should unflatten the field and add the sort correctly', () => {
+        expect.assertions(1);
+        const queryBuilder = new QueryBuilder(TreeModel, {
+          timezone: 'Europe/Paris',
+          sort: '-some|flattened|field',
+        }, options);
+        const expectedSort = {
+          $sort: { 'some.flattened.field': -1 },
+        };
+        const jsonQuery = [];
+        queryBuilder.addSortToQuery(jsonQuery);
+        expect(jsonQuery[0])
+          .toStrictEqual(expectedSort);
+      });
+    });
+  });
 });
