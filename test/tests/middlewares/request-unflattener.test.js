@@ -2,19 +2,19 @@ const requestUnflattener = require('../../../src/middlewares/request-unflattener
 
 
 describe('middlewares > request-unflattener', () => {
-  describe('detectFlattened', () => {
+  describe('isFieldFlattened', () => {
     describe('the parameter includes |', () => {
       it('should return true', () => {
         expect.assertions(1);
 
-        expect(requestUnflattener.detectFlattened('some|flattened|field')).toBe(true);
+        expect(requestUnflattener.isFieldFlattened('some|flattened|field')).toBe(true);
       });
     });
     describe('the parameter does not include |', () => {
       it('should return false', () => {
         expect.assertions(1);
 
-        expect(requestUnflattener.detectFlattened('some*other$characters'))
+        expect(requestUnflattener.isFieldFlattened('some*other$characters'))
           .toBe(false);
       });
     });

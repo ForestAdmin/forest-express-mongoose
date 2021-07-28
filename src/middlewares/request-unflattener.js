@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-function detectFlattened(name) {
+function isFieldFlattened(name) {
   return name?.includes('|');
 }
 
@@ -17,7 +17,7 @@ function unflattenCollectionFields(requestedFields) {
 
 function unflattenFields(request) {
   Object.entries(request.query.fields).forEach(([collection, requestedFields]) => {
-    if (detectFlattened(requestedFields)) {
+    if (isFieldFlattened(requestedFields)) {
       request.query.fields[collection] = unflattenCollectionFields(requestedFields);
     }
   });
@@ -35,7 +35,7 @@ function unflattenAttribute(attributeName, value, attributes) {
 
 function unflattenAttributes(request) {
   Object.entries(request.body.data.attributes).forEach(([attributeName, value]) => {
-    if (detectFlattened(attributeName)) {
+    if (isFieldFlattened(attributeName)) {
       const {
         parentObjectName,
         unflattenedObject,
@@ -48,7 +48,7 @@ function unflattenAttributes(request) {
 
 function unflattenSubsetQuery(request) {
   Object.entries(request.body.data.attributes.all_records_subset_query).forEach(([key, value]) => {
-    if (key.includes('fields') && detectFlattened(value)) {
+    if (key.includes('fields') && isFieldFlattened(value)) {
       request.body.data.attributes.all_records_subset_query[key] = unflattenCollectionFields(value);
     }
   });
@@ -71,7 +71,7 @@ function requestUnflattener(request, response, next) {
 }
 
 module.exports = requestUnflattener;
-module.exports.detectFlattened = detectFlattened;
+module.exports.isFieldFlattened = isFieldFlattened;
 module.exports.getParentFieldName = getParentFieldName;
 module.exports.unflattenCollectionFields = unflattenCollectionFields;
 module.exports.unflattenFields = unflattenFields;
