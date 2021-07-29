@@ -4,6 +4,7 @@ const Interface = require('forest-express');
 const utils = require('./utils/schema');
 const orm = require('./utils/orm');
 const FieldsFlattener = require('./services/fields-flattener');
+const RequestUnflattener = require('./middlewares/request-unflattener');
 
 const REGEX_VERSION = /(\d+\.)?(\d+\.)?(\*|\d+)/;
 
@@ -82,6 +83,7 @@ exports.init = (opts) => {
   exports.RecordsDecorator = require('./utils/records-decorator');
 
   exports.FieldsFlattener = FieldsFlattener;
+  exports.RequestUnflattener = RequestUnflattener;
 
   exports.Stripe = {
     getCustomer(customerModel, customerField, customerId) {
