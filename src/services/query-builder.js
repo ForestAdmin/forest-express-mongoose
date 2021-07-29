@@ -5,6 +5,7 @@ import Orm from '../utils/orm';
 import SearchBuilder from './search-builder';
 import FiltersParser from './filters-parser';
 import ProjectionBuilder from './projection-builder';
+import Flattener from './flattener';
 
 class QueryBuilder {
   constructor(model, params, opts) {
@@ -109,7 +110,7 @@ class QueryBuilder {
       const [association] = this._params.sort.split('.');
       this.addJoinToQuery(association, jsonQuery);
     }
-    if (sortParam.includes('|')) sortParam = sortParam.replace(/\|/g, '.');
+    if (Flattener._isFieldFlattened(sortParam)) sortParam = Flattener.unflattenFieldName(sortParam);
     jsonQuery.push({ $sort: { [sortParam]: order } });
 
     return this;

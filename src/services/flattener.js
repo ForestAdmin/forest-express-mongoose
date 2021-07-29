@@ -1,6 +1,7 @@
-const Interface = require('forest-express');
+import _ from 'lodash';
+import Interface from 'forest-express';
 
-module.exports = class FieldsFlattener {
+module.exports = class Flattener {
   constructor(schema, flatten) {
     this.schema = schema;
     this.flatten = flatten;
@@ -39,8 +40,80 @@ module.exports = class FieldsFlattener {
       Interface.logger.warn(`Could not flatten field with the following configuration ${JSON.stringify(flattenConfiguration)} because no field has been specified`);
       this._removeWrongFlattenConfiguration(configurationIndex);
     } else if (this._doesFieldExist(flattenConfiguration.field, configurationIndex)) {
-      FieldsFlattener._validateLevelProperty(flattenConfiguration);
+      Flattener._validateLevelProperty(flattenConfiguration);
     }
+  }
+
+  static _isFieldFlattened(name) {
+    return name?.includes('|');
+  }
+
+  static _getParentFieldName(fieldName) {
+    return fieldName?.split('|')[0];
+  }
+
+  static _unflattenCollectionFields(requestedFields) {
+    const fieldNames = new Set();
+    requestedFields.split(',')
+      .forEach((requestedField) => fieldNames.add(Flattener._getParentFieldName(requestedField)));
+    return [...fieldNames].join(',');
+  }
+
+  static _unflattenFields(request) {
+    Object.entries(request.query.fields).forEach(([collection, requestedFields]) => {
+      if (Flattener._isFieldFlattened(requestedFields)) {
+        request.query.fields[collection] = Flattener._unflattenCollectionFields(requestedFields);
+      }
+    });
+  }
+
+  static _unflattenAttribute(attributeName, value, attributes) {
+    let accessPathArray = attributeName.split('|');
+    const parentObjectName = accessPathArray.shift();
+    accessPathArray = accessPathArray.reverse();
+    const parentObject = attributes[parentObjectName] || {};
+    const unflattenedProperty = accessPathArray.reduce((a, prop) => ({ [prop]: a }), value);
+    const unflattenedObject = _.merge(parentObject, unflattenedProperty);
+    return { parentObjectName, unflattenedObject };
+  }
+
+  static _unflattenAttributes(request) {
+    Object.entries(request.body.data.attributes).forEach(([attributeName, value]) => {
+      if (Flattener._isFieldFlattened(attributeName)) {
+        const {
+          parentObjectName,
+          unflattenedObject,
+        } = Flattener._unflattenAttribute(attributeName, value, request.body.data.attributes);
+        delete request.body.data.attributes[attributeName];
+        request.body.data.attributes[parentObjectName] = unflattenedObject;
+      }
+    });
+  }
+
+  static _unflattenSubsetQuery(request) {
+    Object.entries(request.body.data.attributes.all_records_subset_query)
+      .forEach(([key, value]) => {
+        if (key.includes('fields') && Flattener._isFieldFlattened(value)) {
+          request.body.data.attributes.all_records_subset_query[key] = Flattener
+            ._unflattenCollectionFields(value);
+        }
+      });
+  }
+
+  static requestUnflattener(request, response, next) {
+    try {
+      if (!_.isEmpty(request.body?.data?.attributes)) {
+        Flattener._unflattenAttributes(request);
+
+        if (!_.isEmpty(request.body.data.attributes.all_records_subset_query)) {
+          Flattener._unflattenSubsetQuery(request);
+        }
+      }
+      if (!_.isEmpty(request.query?.fields)) {
+        Flattener._unflattenFields(request);
+      }
+      next();
+    } catch (error) { next(error); }
   }
 
   validateOptions() {

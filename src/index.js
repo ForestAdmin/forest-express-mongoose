@@ -3,8 +3,7 @@ const P = require('bluebird');
 const Interface = require('forest-express');
 const utils = require('./utils/schema');
 const orm = require('./utils/orm');
-const FieldsFlattener = require('./services/fields-flattener');
-const RequestUnflattener = require('./middlewares/request-unflattener');
+const Flattener = require('./services/flattener');
 
 const REGEX_VERSION = /(\d+\.)?(\d+\.)?(\*|\d+)/;
 
@@ -82,8 +81,7 @@ exports.init = (opts) => {
 
   exports.RecordsDecorator = require('./utils/records-decorator');
 
-  exports.FieldsFlattener = FieldsFlattener;
-  exports.RequestUnflattener = RequestUnflattener;
+  exports.Flattener = Flattener;
 
   exports.Stripe = {
     getCustomer(customerModel, customerField, customerId) {
