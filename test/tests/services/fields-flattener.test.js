@@ -243,4 +243,12 @@ describe('service > fields-flattener', () => {
       });
     });
   });
+
+  describe('un-flattening flattened fields', () => {
+    it('should correctly un-flatten field', () => {
+      expect.assertions(1);
+
+      expect(FieldsFlattener.unflattenFieldName('field|subfield')).toStrictEqual('field.subfield');
+    });
+  });
 });

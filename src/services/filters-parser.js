@@ -2,6 +2,7 @@ import _ from 'lodash';
 import Interface, { BaseFiltersParser, BaseOperatorDateParser } from 'forest-express';
 import { NoMatchingOperatorError, InvalidFiltersFormatError } from './errors';
 import utils from '../utils/schema';
+import FieldsFlattener from './fields-flattener';
 
 const AGGREGATOR_OPERATORS = ['and', 'or'];
 
@@ -89,7 +90,7 @@ function FiltersParser(model, timezone, options) {
     const formatedField = this.formatField(condition.field);
 
     return {
-      [formatedField]: await this.formatOperatorValue(
+      [FieldsFlattener.unflattenFieldName(formatedField)]: await this.formatOperatorValue(
         condition.field,
         condition.operator,
         condition.value,
@@ -226,7 +227,7 @@ function FiltersParser(model, timezone, options) {
     const newCondition = {
       operator: condition.operator,
       value: condition.value,
-      field: subFieldName,
+      field: FieldsFlattener.unflattenFieldName(subFieldName),
     };
     const query = await subModelFilterParser.perform(JSON.stringify(newCondition));
     const [, referencedKey] = field.reference.split('.');
@@ -234,7 +235,7 @@ function FiltersParser(model, timezone, options) {
     const subModelIds = subModelRecords.map((record) => record[referencedKey]);
 
     const resultCondition = {
-      field: fieldName,
+      field: FieldsFlattener.unflattenFieldName(fieldName),
       operator: 'in',
       value: subModelIds,
     };
@@ -242,7 +243,7 @@ function FiltersParser(model, timezone, options) {
       return {
         aggregator: 'or',
         conditions: [{
-          field: fieldName,
+          field: FieldsFlattener.unflattenFieldName(fieldName),
           operator: 'blank',
           value: null,
         }, resultCondition],
