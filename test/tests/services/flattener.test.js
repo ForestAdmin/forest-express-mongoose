@@ -1,0 +1,540 @@
+import Interface from 'forest-express';
+import Flattener from '../../../src/services/flattener';
+
+describe('service > Flattener', () => {
+  let errorLoggerSpy;
+  let warnLoggerSpy;
+
+  const generateEngineSchema = () => ({
+    name: 'cars',
+    fields: [{
+      field: 'engine',
+      type: {
+        fields: [
+          { field: 'horsepower', type: 'String' },
+          { field: 'cylinder', type: 'Number' },
+          {
+            field: 'identification',
+            type: {
+              fields: [
+                { field: 'manufacturer', type: 'String' },
+                {
+                  field: 'serialNumber',
+                  type: {
+                    fields: [
+                      { field: 'number', type: 'String' },
+                      { field: 'position', type: 'String' },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+          { field: 'company', type: 'String', reference: 'companies._id' },
+        ],
+      },
+    }],
+  });
+
+
+  beforeAll(() => {
+    errorLoggerSpy = jest
+      .spyOn(Interface.logger, 'error');
+    warnLoggerSpy = jest
+      .spyOn(Interface.logger, 'warn');
+  });
+
+  describe('validating the flatten property', () => {
+    describe('when the flatten property is not an array', () => {
+      it('should display an error message', () => {
+        expect.assertions(2);
+
+        jest.resetAllMocks();
+        const fieldsFlattener = new Flattener({ name: 'cars' }, { });
+        fieldsFlattener.validateOptions();
+
+        expect(errorLoggerSpy).toHaveBeenCalledTimes(1);
+        expect(errorLoggerSpy).toHaveBeenCalledWith('Could not flatten fields from collection cars, flatten property should be an array.');
+      });
+
+      it('should not crash (eg prevent liana initialization)', () => {
+        expect.assertions(1);
+
+        jest.resetAllMocks();
+        const fieldsFlattener = new Flattener({ name: 'cars' }, { });
+
+        expect(() => { fieldsFlattener.validateOptions(); }).not.toThrow();
+      });
+    });
+
+    describe('when the field provided is invalid', () => {
+      describe('when the field does not exist', () => {
+        describe('when the field is of type string', () => {
+          let fieldsFlattener;
+
+          beforeAll(() => {
+            jest.resetAllMocks();
+            fieldsFlattener = new Flattener({ fields: [] }, ['test']);
+            fieldsFlattener.validateOptions();
+          });
+
+          it('should display an warning message', () => {
+            expect.assertions(2);
+
+            expect(warnLoggerSpy).toHaveBeenCalledTimes(1);
+            expect(warnLoggerSpy).toHaveBeenCalledWith('Could not flatten field test because it does not exist');
+          });
+
+          it('should remove the non existing field from fields to flatten', () => {
+            expect.assertions(1);
+
+            expect(fieldsFlattener.flatten).toHaveLength(0);
+          });
+        });
+
+        describe('when the field is of type object', () => {
+          let fieldsFlattener;
+
+          beforeAll(() => {
+            jest.resetAllMocks();
+            fieldsFlattener = new Flattener({ fields: [] }, [{ field: 'test' }]);
+            fieldsFlattener.validateOptions();
+          });
+
+          it('should display a warning message', () => {
+            expect.assertions(2);
+
+            expect(warnLoggerSpy).toHaveBeenCalledTimes(1);
+            expect(warnLoggerSpy).toHaveBeenCalledWith('Could not flatten field test because it does not exist');
+          });
+
+          it('should remove the non existing field from fields to flatten', () => {
+            expect.assertions(1);
+
+            expect(fieldsFlattener.flatten).toHaveLength(0);
+          });
+        });
+      });
+
+      describe('when a field has not been specified in flatten object', () => {
+        let fieldsFlattener;
+
+        beforeAll(() => {
+          jest.resetAllMocks();
+          fieldsFlattener = new Flattener({ fields: [] }, [{ }]);
+          fieldsFlattener.validateOptions();
+        });
+
+        it('should display a warning message', () => {
+          expect.assertions(2);
+
+          expect(warnLoggerSpy).toHaveBeenCalledTimes(1);
+          expect(warnLoggerSpy).toHaveBeenCalledWith(`Could not flatten field with the following configuration ${JSON.stringify({})} because no field has been specified`);
+        });
+
+        it('should remove the non existing field from fields to flatten', () => {
+          expect.assertions(1);
+
+          expect(fieldsFlattener.flatten).toHaveLength(0);
+        });
+      });
+    });
+
+    describe('when the level property is not a number', () => {
+      it('should display a warning message stating that all levels will be flatten', () => {
+        expect.assertions(2);
+
+        jest.resetAllMocks();
+        const fieldsFlattener = new Flattener(generateEngineSchema(), [{ field: 'engine', level: null }]);
+        fieldsFlattener.validateOptions();
+
+        expect(warnLoggerSpy).toHaveBeenCalledTimes(1);
+        expect(warnLoggerSpy).toHaveBeenCalledWith('Could not parse flatten level for field engine, defaulting to infinite');
+      });
+
+      it('should remove the wrong level from flatten configuration', () => {
+        expect.assertions(1);
+
+        jest.resetAllMocks();
+        const flatten = [{ field: 'engine', level: null }];
+        const fieldsFlattener = new Flattener(generateEngineSchema(), flatten);
+        fieldsFlattener.validateOptions();
+
+        expect(flatten[0].level).not.toBeDefined();
+      });
+    });
+  });
+
+  describe('flattening a field', () => {
+    it('should merge fields name with | as separator', () => {
+      expect.assertions(1);
+
+      const schema = generateEngineSchema();
+
+      const fieldsFlattener = new Flattener(schema, ['engine']);
+      fieldsFlattener.flattenFields();
+
+      expect(schema.fields[0].field).toStrictEqual('engine|horsepower');
+    });
+  });
+
+  describe('when the level property is empty', () => {
+    it('should flatten every nested fields until the end', () => {
+      expect.assertions(1);
+
+      const schema = generateEngineSchema();
+
+      const fieldsFlattener = new Flattener(schema, ['engine']);
+      fieldsFlattener.flattenFields();
+
+      expect(schema.fields).toHaveLength(6);
+    });
+  });
+
+  describe('when the level property is specified', () => {
+    describe('when the level property is above 0', () => {
+      describe('when the level property is higher than actual level', () => {
+        it('should flatten every level until the end', () => {
+          expect.assertions(1);
+
+          const schema = generateEngineSchema();
+          const fieldsFlattener = new Flattener(schema, [{ field: 'engine', level: 100 }]);
+
+          fieldsFlattener.flattenFields();
+
+          expect(schema.fields).toHaveLength(6);
+        });
+      });
+      describe('when the level property is lower than actual level', () => {
+        it('should flatten only until specified level', () => {
+          expect.assertions(1);
+
+          const schema = generateEngineSchema();
+          const fieldsFlattener = new Flattener(schema, [{ field: 'engine', level: 1 }]);
+
+          fieldsFlattener.flattenFields();
+
+          expect(schema.fields).toHaveLength(5);
+        });
+      });
+    });
+    describe('when the level property is 0', () => {
+      it('should flatten only direct child field', () => {
+        expect.assertions(1);
+
+        const schema = generateEngineSchema();
+        const fieldsFlattener = new Flattener(schema, [{ field: 'engine', level: 0 }]);
+
+        fieldsFlattener.flattenFields();
+
+        expect(schema.fields).toHaveLength(4);
+      });
+    });
+    describe('when the level property is under 0', () => {
+      it('should not flatten any field', () => {
+        expect.assertions(1);
+
+        const schema = generateEngineSchema();
+        const fieldsFlattener = new Flattener(schema, [{ field: 'engine', level: -2 }]);
+
+        fieldsFlattener.flattenFields();
+
+        expect(schema.fields).toHaveLength(1);
+      });
+    });
+  });
+
+  describe('un-flattening flattened fields', () => {
+    it('should correctly un-flatten field', () => {
+      expect.assertions(1);
+
+      expect(Flattener.unflattenFieldName('field|subfield')).toStrictEqual('field.subfield');
+    });
+  });
+
+  describe('> middlewares > request-unflattener', () => {
+    describe('isFieldFlattened', () => {
+      describe('the parameter includes |', () => {
+        it('should return true', () => {
+          expect.assertions(1);
+
+          expect(Flattener._isFieldFlattened('some|flattened|field')).toBe(true);
+        });
+      });
+      describe('the parameter does not include |', () => {
+        it('should return false', () => {
+          expect.assertions(1);
+
+          expect(Flattener._isFieldFlattened('some*other$characters'))
+            .toBe(false);
+        });
+      });
+    });
+
+    describe('getParentFieldName', () => {
+      describe('the parameter includes |', () => {
+        it('should return the first field name', () => {
+          expect.assertions(1);
+
+          expect(Flattener._getParentFieldName('some|flattened|field')).toStrictEqual('some');
+        });
+      });
+      describe('the parameter does not include |', () => {
+        it('should return the whole parameter', () => {
+          expect.assertions(1);
+
+          expect(Flattener._getParentFieldName('some*other$characters')).toStrictEqual('some*other$characters');
+        });
+      });
+    });
+
+    describe('unflattenCollectionFields', () => {
+      it('should return a string of unflattened fields', () => {
+        expect.assertions(1);
+
+        expect(
+          Flattener._unflattenCollectionFields('wheelSize,engine|cylinder,engine|identification|serialNumber,name'),
+        ).toStrictEqual('wheelSize,engine,name');
+      });
+    });
+
+    describe('unflattenFields', () => {
+      describe('when fields are empty', () => {
+        it('should do nothing', () => {
+          expect.assertions(1);
+          const request = {
+            query: {
+              fields: {},
+            },
+          };
+
+          Flattener._unflattenFields(request);
+
+          expect(request).toStrictEqual({ query: { fields: {} } });
+        });
+      });
+      describe('when fields do not contain any flattened fields', () => {
+        it('should do nothing', () => {
+          expect.assertions(1);
+          const request = {
+            query: {
+              fields: { cars: 'company,name,engine' },
+            },
+          };
+
+          Flattener._unflattenFields(request);
+
+          expect(request).toStrictEqual({ query: { fields: { cars: 'company,name,engine' } } });
+        });
+      });
+      describe('when fields contain flattened fields', () => {
+        it('should do remove the flattened fields and leave the parent one', () => {
+          expect.assertions(1);
+          const request = {
+            query: {
+              fields: {
+                cars: 'company,name,engine|horsepower,engine|identification|serialNumber,wheelSize',
+                company: 'name',
+              },
+            },
+          };
+
+          Flattener._unflattenFields(request);
+
+          expect(request).toStrictEqual({ query: { fields: { cars: 'company,name,engine,wheelSize', company: 'name' } } });
+        });
+      });
+    });
+
+    describe('unflattenAttribute', () => {
+      describe('when attribute is flattened', () => {
+        it('should unflatted the attribute', () => {
+          expect.assertions(2);
+
+          const attributes = {
+            'engine|identification|serialNumber': '1234567',
+            name: 'Car',
+          };
+          const {
+            parentObjectName,
+            unflattenedObject,
+          } = Flattener._unflattenAttribute('engine|identification|serialNumber', '1234567', attributes);
+
+          expect(parentObjectName).toStrictEqual('engine');
+          expect(unflattenedObject).toStrictEqual({
+            identification: {
+              serialNumber: '1234567',
+            },
+          });
+        });
+        describe('when another attribute for the same parent field was already unflattened', () => {
+          it('should unflatten the attribute and insert it in the object', () => {
+            expect.assertions(2);
+
+            const attributes = {
+              engine: { horsePower: '125cv' },
+              'engine|identification|serialNumber': '1234567',
+              name: 'Car',
+            };
+            const {
+              parentObjectName,
+              unflattenedObject,
+            } = Flattener._unflattenAttribute('engine|identification|serialNumber', '1234567', attributes);
+
+            expect(parentObjectName).toStrictEqual('engine');
+            expect(unflattenedObject).toStrictEqual({
+              horsePower: '125cv',
+              identification: {
+                serialNumber: '1234567',
+              },
+            });
+          });
+        });
+      });
+    });
+
+    describe('unflattenAttributes', () => {
+      describe('when attributes have flattened fields', () => {
+        it('should unflatten the attributes and delete the flattened ones', () => {
+          expect.assertions(1);
+
+          const request = {
+            body: {
+              data: {
+                attributes: {
+                  'engine|horsePower': '125cv',
+                  'engine|identification|serialNumber': '1234567',
+                  name: 'Car',
+                },
+              },
+            },
+          };
+
+          Flattener._unflattenAttributes(request);
+
+          expect(request.body.data.attributes).toStrictEqual({
+            engine: {
+              horsePower: '125cv',
+              identification: {
+                serialNumber: '1234567',
+              },
+            },
+            name: 'Car',
+          });
+        });
+      });
+    });
+
+    describe('for a GET request', () => {
+      const mockResponse = {};
+      const mockNext = jest.fn();
+      const request = {
+        query: {
+          fields: {
+            cars: 'company,name,engine|horsepower,engine|identification|serialNumber,wheelSize',
+            company: 'name',
+          },
+        },
+      };
+
+      it('should unflatten the fields in the query', () => {
+        expect.assertions(2);
+        Flattener._requestUnflattener(request, mockResponse, mockNext);
+
+        expect(request).toStrictEqual({
+          query: {
+            fields: {
+              cars: 'company,name,engine,wheelSize',
+              company: 'name',
+            },
+          },
+        });
+        expect(mockNext).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('for a POST request', () => {
+      const mockResponse = {};
+      const mockNext = jest.fn();
+      const request = {
+        body: {
+          data: {
+            attributes: {
+              'engine|horsePower': '125cv',
+              'engine|identification|serialNumber': '1234567',
+              name: 'Car',
+            },
+          },
+        },
+      };
+
+      it('should unflatten the attributes in the body', () => {
+        expect.assertions(2);
+
+        Flattener._requestUnflattener(request, mockResponse, mockNext);
+
+        expect(request).toStrictEqual({
+          body: {
+            data: {
+              attributes: {
+                engine: {
+                  horsePower: '125cv',
+                  identification: {
+                    serialNumber: '1234567',
+                  },
+                },
+                name: 'Car',
+              },
+            },
+          },
+        });
+        expect(mockNext).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('for a bulk delete', () => {
+      const mockResponse = {};
+      const mockNext = jest.fn();
+      const request = {
+        body: {
+          data: {
+            attributes: {
+              all_records_subset_query: {
+                'fields[cars]': '_id,company,name,wheelSize,engine|horsePower,engine|identification|serialNumber',
+                'fields[company]': 'name',
+                'page[number]': 1,
+                'page[size]': 15,
+                sort: '-_id',
+                searchExtended: 0,
+              },
+            },
+          },
+        },
+      };
+
+      it('should unflatten the fields in subset query', () => {
+        expect.assertions(2);
+
+        Flattener._requestUnflattener(request, mockResponse, mockNext);
+
+        expect(request).toStrictEqual({
+          body: {
+            data: {
+              attributes: {
+                all_records_subset_query: {
+                  'fields[cars]': '_id,company,name,wheelSize,engine',
+                  'fields[company]': 'name',
+                  'page[number]': 1,
+                  'page[size]': 15,
+                  sort: '-_id',
+                  searchExtended: 0,
+                },
+              },
+            },
+          },
+        });
+        expect(mockNext).toHaveBeenCalledTimes(1);
+      });
+    });
+  });
+});
