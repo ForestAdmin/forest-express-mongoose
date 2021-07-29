@@ -17,6 +17,20 @@ module.exports = class FieldsFlattener {
     if (!fieldToFlatten) {
       Interface.logger.warn(`Could not flatten field ${fieldName} because it does not exist`);
       this._removeWrongFlattenConfiguration(index);
+      return false;
+    }
+
+    return true;
+  }
+
+  static _validateLevelProperty(flattenConfiguration) {
+    if (flattenConfiguration.level !== undefined) {
+      flattenConfiguration.level = parseInt(flattenConfiguration.level, 10);
+
+      if (Number.isNaN(flattenConfiguration.level)) {
+        Interface.logger.warn(`Could not parse flatten level for field ${flattenConfiguration.field}, defaulting to infinite`);
+        delete flattenConfiguration.level;
+      }
     }
   }
 
@@ -24,17 +38,8 @@ module.exports = class FieldsFlattener {
     if (!flattenConfiguration.field) {
       Interface.logger.warn(`Could not flatten field with the following configuration ${JSON.stringify(flattenConfiguration)} because no field has been specified`);
       this._removeWrongFlattenConfiguration(configurationIndex);
-    } else {
-      this._doesFieldExist(flattenConfiguration.field, configurationIndex);
-
-      if (flattenConfiguration.level !== undefined) {
-        flattenConfiguration.level = parseInt(flattenConfiguration.level, 10);
-
-        if (Number.isNaN(flattenConfiguration.level)) {
-          Interface.logger.warn(`Could not parse flatten level for field ${flattenConfiguration.field}, defaulting to infinite`);
-          delete flattenConfiguration.level;
-        }
-      }
+    } else if (this._doesFieldExist(flattenConfiguration.field, configurationIndex)) {
+      FieldsFlattener._validateLevelProperty(flattenConfiguration);
     }
   }
 
