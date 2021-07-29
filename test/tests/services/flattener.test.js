@@ -439,7 +439,7 @@ describe('service > Flattener', () => {
 
       it('should unflatten the fields in the query', () => {
         expect.assertions(2);
-        Flattener._requestUnflattener(request, mockResponse, mockNext);
+        Flattener.requestUnflattener(request, mockResponse, mockNext);
 
         expect(request).toStrictEqual({
           query: {
@@ -471,7 +471,7 @@ describe('service > Flattener', () => {
       it('should unflatten the attributes in the body', () => {
         expect.assertions(2);
 
-        Flattener._requestUnflattener(request, mockResponse, mockNext);
+        Flattener.requestUnflattener(request, mockResponse, mockNext);
 
         expect(request).toStrictEqual({
           body: {
@@ -515,7 +515,7 @@ describe('service > Flattener', () => {
       it('should unflatten the fields in subset query', () => {
         expect.assertions(2);
 
-        Flattener._requestUnflattener(request, mockResponse, mockNext);
+        Flattener.requestUnflattener(request, mockResponse, mockNext);
 
         expect(request).toStrictEqual({
           body: {

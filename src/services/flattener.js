@@ -100,7 +100,7 @@ module.exports = class Flattener {
       });
   }
 
-  static _requestUnflattener(request, response, next) {
+  static requestUnflattener(request, response, next) {
     try {
       if (!_.isEmpty(request.body?.data?.attributes)) {
         Flattener._unflattenAttributes(request);
