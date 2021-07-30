@@ -539,6 +539,47 @@ describe('service > Flattener', () => {
         expect(mockNext).toHaveBeenCalledTimes(1);
       });
     });
+
+    describe('for a belongsTo edit', () => {
+      const mockResponse = {};
+      const mockNext = jest.fn();
+      const request = {
+        query: {
+          timezone: 'Europe/Paris',
+          context: {
+            relationship: 'BelongsTo',
+            field: 'engine|identification|company',
+            collection: 'cars',
+            recordId: '5f928f4f1eedcfbce937bbce',
+          },
+          fields: { companies: 'name' },
+          search: 'Renault',
+          searchToEdit: 'true',
+        },
+      };
+
+      it('should unflatten the field in the context', () => {
+        expect.assertions(2);
+
+        Flattener.requestUnflattener(request, mockResponse, mockNext);
+
+        expect(request).toStrictEqual({
+          query: {
+            timezone: 'Europe/Paris',
+            context: {
+              relationship: 'BelongsTo',
+              field: 'engine.identification.company',
+              collection: 'cars',
+              recordId: '5f928f4f1eedcfbce937bbce',
+            },
+            fields: { companies: 'name' },
+            search: 'Renault',
+            searchToEdit: 'true',
+          },
+        });
+        expect(mockNext).toHaveBeenCalledTimes(1);
+      });
+    });
   });
 
   describe('when splitting on separator', () => {
