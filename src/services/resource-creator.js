@@ -1,6 +1,7 @@
 import { Schemas } from 'forest-express';
 import utils from '../utils/schema';
 import ResourceGetter from './resource-getter';
+import Flattener from './flattener';
 
 class ResourceCreator {
   constructor(model, params, body, user) {
@@ -9,6 +10,12 @@ class ResourceCreator {
     this._body = body;
     this._user = user;
     this._schema = Schemas.schemas[utils.getModelName(model)];
+    Object.keys(this._body).forEach((fieldName) => {
+      if (Flattener._isFieldFlattened(fieldName)) {
+        this._body[Flattener.unflattenFieldName(fieldName)] = this._body[fieldName];
+        delete this._body[fieldName];
+      }
+    });
   }
 
   async _create() {

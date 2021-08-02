@@ -235,7 +235,7 @@ function FiltersParser(model, timezone, options) {
     const subModelIds = subModelRecords.map((record) => record[referencedKey]);
 
     const resultCondition = {
-      field: Flattener.unflattenFieldName(fieldName),
+      field: fieldName,
       operator: 'in',
       value: subModelIds,
     };

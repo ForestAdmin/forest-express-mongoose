@@ -1,3 +1,4 @@
+import Flattener from './flattener';
 
 class HasManyDissociator {
   constructor(model, association, opts, params, data) {
@@ -15,7 +16,7 @@ class HasManyDissociator {
     }
 
     const updateParams = {};
-    updateParams[this._params.associationName] = { $in: documentIds };
+    updateParams[Flattener.unflattenFieldName(this._params.associationName)] = { $in: documentIds };
 
     return this._model
       .findByIdAndUpdate(this._params.recordId, {
