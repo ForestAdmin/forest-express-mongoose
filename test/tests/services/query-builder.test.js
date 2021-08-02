@@ -173,7 +173,7 @@ describe('service > query-builder', () => {
         expect.assertions(1);
         const queryBuilder = new QueryBuilder(TreeModel, {
           timezone: 'Europe/Paris',
-          sort: '-some|flattened|field',
+          sort: '-some@@@flattened@@@field',
         }, options);
         const expectedSort = {
           $sort: { 'some.flattened.field': -1 },

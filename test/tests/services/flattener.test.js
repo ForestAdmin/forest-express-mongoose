@@ -166,7 +166,7 @@ describe('service > Flattener', () => {
   });
 
   describe('flattening a field', () => {
-    it('should merge fields name with | as separator', () => {
+    it('should merge fields name with @@@ as separator', () => {
       expect.assertions(1);
 
       const schema = generateEngineSchema();
@@ -174,7 +174,7 @@ describe('service > Flattener', () => {
       const fieldsFlattener = new Flattener(schema, ['engine']);
       fieldsFlattener.flattenFields();
 
-      expect(schema.fields[0].field).toStrictEqual('engine|horsepower');
+      expect(schema.fields[0].field).toStrictEqual('engine@@@horsepower');
     });
   });
 
@@ -248,20 +248,20 @@ describe('service > Flattener', () => {
     it('should correctly un-flatten field', () => {
       expect.assertions(1);
 
-      expect(Flattener.unflattenFieldName('field|subfield')).toStrictEqual('field.subfield');
+      expect(Flattener.unflattenFieldName('field@@@subfield')).toStrictEqual('field.subfield');
     });
   });
 
   describe('> middlewares > request-unflattener', () => {
     describe('isFieldFlattened', () => {
-      describe('the parameter includes |', () => {
+      describe('the parameter includes @@@', () => {
         it('should return true', () => {
           expect.assertions(1);
 
-          expect(Flattener._isFieldFlattened('some|flattened|field')).toBe(true);
+          expect(Flattener._isFieldFlattened('some@@@flattened@@@field')).toBe(true);
         });
       });
-      describe('the parameter does not include |', () => {
+      describe('the parameter does not include @@@', () => {
         it('should return false', () => {
           expect.assertions(1);
 
@@ -272,14 +272,14 @@ describe('service > Flattener', () => {
     });
 
     describe('getParentFieldName', () => {
-      describe('the parameter includes |', () => {
+      describe('the parameter includes @@@', () => {
         it('should return the first field name', () => {
           expect.assertions(1);
 
-          expect(Flattener._getParentFieldName('some|flattened|field')).toStrictEqual('some');
+          expect(Flattener._getParentFieldName('some@@@flattened@@@field')).toStrictEqual('some');
         });
       });
-      describe('the parameter does not include |', () => {
+      describe('the parameter does not include @@@', () => {
         it('should return the whole parameter', () => {
           expect.assertions(1);
 
@@ -293,7 +293,7 @@ describe('service > Flattener', () => {
         expect.assertions(1);
 
         expect(
-          Flattener._unflattenCollectionFields('wheelSize,engine|cylinder,engine|identification|serialNumber,name'),
+          Flattener._unflattenCollectionFields('wheelSize,engine@@@cylinder,engine@@@identification@@@serialNumber,name'),
         ).toStrictEqual('wheelSize,engine,name');
       });
     });
@@ -333,7 +333,7 @@ describe('service > Flattener', () => {
           const request = {
             query: {
               fields: {
-                cars: 'company,name,engine|horsepower,engine|identification|serialNumber,wheelSize',
+                cars: 'company,name,engine@@@horsepower,engine@@@identification@@@serialNumber,wheelSize',
                 company: 'name',
               },
             },
@@ -352,13 +352,13 @@ describe('service > Flattener', () => {
           expect.assertions(2);
 
           const attributes = {
-            'engine|identification|serialNumber': '1234567',
+            'engine@@@identification@@@serialNumber': '1234567',
             name: 'Car',
           };
           const {
             parentObjectName,
             unflattenedObject,
-          } = Flattener._unflattenAttribute('engine|identification|serialNumber', '1234567', attributes);
+          } = Flattener._unflattenAttribute('engine@@@identification@@@serialNumber', '1234567', attributes);
 
           expect(parentObjectName).toStrictEqual('engine');
           expect(unflattenedObject).toStrictEqual({
@@ -373,13 +373,13 @@ describe('service > Flattener', () => {
 
             const attributes = {
               engine: { horsePower: '125cv' },
-              'engine|identification|serialNumber': '1234567',
+              'engine@@@identification@@@serialNumber': '1234567',
               name: 'Car',
             };
             const {
               parentObjectName,
               unflattenedObject,
-            } = Flattener._unflattenAttribute('engine|identification|serialNumber', '1234567', attributes);
+            } = Flattener._unflattenAttribute('engine@@@identification@@@serialNumber', '1234567', attributes);
 
             expect(parentObjectName).toStrictEqual('engine');
             expect(unflattenedObject).toStrictEqual({
@@ -402,8 +402,8 @@ describe('service > Flattener', () => {
             body: {
               data: {
                 attributes: {
-                  'engine|horsePower': '125cv',
-                  'engine|identification|serialNumber': '1234567',
+                  'engine@@@horsePower': '125cv',
+                  'engine@@@identification@@@serialNumber': '1234567',
                   name: 'Car',
                 },
               },
@@ -431,7 +431,7 @@ describe('service > Flattener', () => {
       const request = {
         query: {
           fields: {
-            cars: 'company,name,engine|horsepower,engine|identification|serialNumber,wheelSize',
+            cars: 'company,name,engine@@@horsepower,engine@@@identification@@@serialNumber,wheelSize',
             company: 'name',
           },
         },
@@ -460,8 +460,8 @@ describe('service > Flattener', () => {
         body: {
           data: {
             attributes: {
-              'engine|horsePower': '125cv',
-              'engine|identification|serialNumber': '1234567',
+              'engine@@@horsePower': '125cv',
+              'engine@@@identification@@@serialNumber': '1234567',
               name: 'Car',
             },
           },
@@ -500,7 +500,7 @@ describe('service > Flattener', () => {
           data: {
             attributes: {
               all_records_subset_query: {
-                'fields[cars]': '_id,company,name,wheelSize,engine|horsePower,engine|identification|serialNumber',
+                'fields[cars]': '_id,company,name,wheelSize,engine@@@horsePower,engine@@@identification@@@serialNumber',
                 'fields[company]': 'name',
                 'page[number]': 1,
                 'page[size]': 15,
