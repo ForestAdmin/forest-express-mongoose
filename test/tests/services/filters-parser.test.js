@@ -29,10 +29,10 @@ describe('service > filters-parser', () => {
         { field: 'size', type: 'Number' },
         { field: 'isBig', type: 'Boolean' },
         { field: 'inhabitedOn', type: 'Date' },
-        { field: 'location|latitude', type: 'String' },
-        { field: 'location|longitude', type: 'String' },
+        { field: 'location@@@latitude', type: 'String' },
+        { field: 'location@@@longitude', type: 'String' },
         {
-          field: 'location|description',
+          field: 'location@@@description',
           type: {
             date: 'Date',
             comment: 'String',
@@ -342,7 +342,7 @@ describe('service > filters-parser', () => {
         expect.assertions(1);
 
         const condition = {
-          field: 'location|longitude',
+          field: 'location@@@longitude',
           operator: 'present',
           value: null,
         };
@@ -358,7 +358,7 @@ describe('service > filters-parser', () => {
         expect.assertions(1);
 
         const condition = {
-          field: 'location|description:comment',
+          field: 'location@@@description:comment',
           operator: 'present',
           value: null,
         };

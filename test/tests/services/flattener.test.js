@@ -537,4 +537,17 @@ describe('service > Flattener', () => {
       });
     });
   });
+
+  describe('when splitting on separator', () => {
+    it('should split based on the separator `@@@`', () => {
+      expect.assertions(4);
+
+      const split = Flattener.splitOnSeparator('engine@@@companies');
+
+      expect(split).toBeArray();
+      expect(split).toHaveLength(2);
+      expect(split[0]).toStrictEqual('engine');
+      expect(split[1]).toStrictEqual('companies');
+    });
+  });
 });
