@@ -548,7 +548,7 @@ describe('service > Flattener', () => {
           timezone: 'Europe/Paris',
           context: {
             relationship: 'BelongsTo',
-            field: 'engine|identification|company',
+            field: `engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}company`,
             collection: 'cars',
             recordId: '5f928f4f1eedcfbce937bbce',
           },
