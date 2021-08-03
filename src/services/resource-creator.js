@@ -10,12 +10,13 @@ class ResourceCreator {
     this._body = body;
     this._user = user;
     this._schema = Schemas.schemas[utils.getModelName(model)];
-    Object.keys(this._body).forEach((fieldName) => {
-      if (Flattener._isFieldFlattened(fieldName)) {
-        this._body[Flattener.unflattenFieldName(fieldName)] = this._body[fieldName];
-        delete this._body[fieldName];
-      }
-    });
+
+    /*
+      We unflatten the attributes here, because the deserializer validates the fields'
+      name against the schema so we can not do it in the middleware, we have to unflatten
+      at the very end of the record creation flow.
+     */
+    Flattener.unflattenFieldNamesInObject(this._body);
   }
 
   async _create() {

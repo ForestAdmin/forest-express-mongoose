@@ -193,4 +193,13 @@ module.exports = class Flattener {
   static splitOnSeparator(fieldName) {
     return fieldName.split(FLATTEN_SEPARATOR);
   }
+
+  static unflattenFieldNamesInObject(object) {
+    Object.keys(object).forEach((fieldName) => {
+      if (Flattener._isFieldFlattened(fieldName)) {
+        object[Flattener.unflattenFieldName(fieldName)] = object[fieldName];
+        delete object[fieldName];
+      }
+    });
+  }
 };
