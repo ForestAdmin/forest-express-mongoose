@@ -595,4 +595,23 @@ describe('service > Flattener', () => {
       expect(split[1]).toStrictEqual('companies');
     });
   });
+
+  describe('unflattenFieldNamesInObject', () => {
+    it('should replace the separator in the property names', () => {
+      expect.assertions(1);
+
+      const object = {
+        [`engine${FLATTEN_SEPARATOR}horsePower`]: '125cv',
+        name: 'Car',
+        [`engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}manufacturer`]: 'Renault',
+      };
+      Flattener.unflattenFieldNamesInObject(object);
+
+      expect(object).toStrictEqual({
+        name: 'Car',
+        'engine.horsePower': '125cv',
+        'engine.identification.manufacturer': 'Renault',
+      });
+    });
+  });
 });
