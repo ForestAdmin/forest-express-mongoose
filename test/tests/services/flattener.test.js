@@ -1,6 +1,8 @@
 import Interface from 'forest-express';
 import Flattener from '../../../src/services/flattener';
 
+const FLATTEN_SEPARATOR = '@@@';
+
 describe('service > Flattener', () => {
   let errorLoggerSpy;
   let warnLoggerSpy;
@@ -166,7 +168,7 @@ describe('service > Flattener', () => {
   });
 
   describe('flattening a field', () => {
-    it('should merge fields name with @@@ as separator', () => {
+    it(`should merge fields name with ${FLATTEN_SEPARATOR} as separator`, () => {
       expect.assertions(1);
 
       const schema = generateEngineSchema();
@@ -174,7 +176,7 @@ describe('service > Flattener', () => {
       const fieldsFlattener = new Flattener(schema, ['engine']);
       fieldsFlattener.flattenFields();
 
-      expect(schema.fields[0].field).toStrictEqual('engine@@@horsepower');
+      expect(schema.fields[0].field).toStrictEqual(`engine${FLATTEN_SEPARATOR}horsepower`);
     });
   });
 
@@ -248,20 +250,20 @@ describe('service > Flattener', () => {
     it('should correctly un-flatten field', () => {
       expect.assertions(1);
 
-      expect(Flattener.unflattenFieldName('field@@@subfield')).toStrictEqual('field.subfield');
+      expect(Flattener.unflattenFieldName(`field${FLATTEN_SEPARATOR}subfield`)).toStrictEqual('field.subfield');
     });
   });
 
   describe('> middlewares > request-unflattener', () => {
     describe('isFieldFlattened', () => {
-      describe('the parameter includes @@@', () => {
+      describe('the parameter includes FLATTEN_SEPARATOR', () => {
         it('should return true', () => {
           expect.assertions(1);
 
-          expect(Flattener._isFieldFlattened('some@@@flattened@@@field')).toBe(true);
+          expect(Flattener._isFieldFlattened(`some${FLATTEN_SEPARATOR}flattened${FLATTEN_SEPARATOR}field`)).toBe(true);
         });
       });
-      describe('the parameter does not include @@@', () => {
+      describe('the parameter does not include FLATTEN_SEPARATOR', () => {
         it('should return false', () => {
           expect.assertions(1);
 
@@ -272,14 +274,14 @@ describe('service > Flattener', () => {
     });
 
     describe('getParentFieldName', () => {
-      describe('the parameter includes @@@', () => {
+      describe('the parameter includes FLATTEN_SEPARATOR', () => {
         it('should return the first field name', () => {
           expect.assertions(1);
 
-          expect(Flattener._getParentFieldName('some@@@flattened@@@field')).toStrictEqual('some');
+          expect(Flattener._getParentFieldName(`some${FLATTEN_SEPARATOR}flattened${FLATTEN_SEPARATOR}field`)).toStrictEqual('some');
         });
       });
-      describe('the parameter does not include @@@', () => {
+      describe('the parameter does not include FLATTEN_SEPARATOR', () => {
         it('should return the whole parameter', () => {
           expect.assertions(1);
 
@@ -293,7 +295,7 @@ describe('service > Flattener', () => {
         expect.assertions(1);
 
         expect(
-          Flattener._unflattenCollectionFields('wheelSize,engine@@@cylinder,engine@@@identification@@@serialNumber,name'),
+          Flattener._unflattenCollectionFields(`wheelSize,engine${FLATTEN_SEPARATOR}cylinder,engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}serialNumber,name`),
         ).toStrictEqual('wheelSize,engine,name');
       });
     });
@@ -333,7 +335,7 @@ describe('service > Flattener', () => {
           const request = {
             query: {
               fields: {
-                cars: 'company,name,engine@@@horsepower,engine@@@identification@@@serialNumber,wheelSize',
+                cars: `company,name,engine${FLATTEN_SEPARATOR}horsepower,engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}serialNumber,wheelSize`,
                 company: 'name',
               },
             },
@@ -347,18 +349,20 @@ describe('service > Flattener', () => {
     });
 
     describe('unflattenAttribute', () => {
+      const attributeName = `engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}serialNumber`;
+
       describe('when attribute is flattened', () => {
-        it('should unflatted the attribute', () => {
+        it('should unflatten the attribute', () => {
           expect.assertions(2);
 
           const attributes = {
-            'engine@@@identification@@@serialNumber': '1234567',
+            [attributeName]: '1234567',
             name: 'Car',
           };
           const {
             parentObjectName,
             unflattenedObject,
-          } = Flattener._unflattenAttribute('engine@@@identification@@@serialNumber', '1234567', attributes);
+          } = Flattener._unflattenAttribute(attributeName, '1234567', attributes);
 
           expect(parentObjectName).toStrictEqual('engine');
           expect(unflattenedObject).toStrictEqual({
@@ -373,13 +377,13 @@ describe('service > Flattener', () => {
 
             const attributes = {
               engine: { horsePower: '125cv' },
-              'engine@@@identification@@@serialNumber': '1234567',
+              [attributeName]: '1234567',
               name: 'Car',
             };
             const {
               parentObjectName,
               unflattenedObject,
-            } = Flattener._unflattenAttribute('engine@@@identification@@@serialNumber', '1234567', attributes);
+            } = Flattener._unflattenAttribute(attributeName, '1234567', attributes);
 
             expect(parentObjectName).toStrictEqual('engine');
             expect(unflattenedObject).toStrictEqual({
@@ -402,8 +406,8 @@ describe('service > Flattener', () => {
             body: {
               data: {
                 attributes: {
-                  'engine@@@horsePower': '125cv',
-                  'engine@@@identification@@@serialNumber': '1234567',
+                  [`engine${FLATTEN_SEPARATOR}horsePower`]: '125cv',
+                  [`engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}serialNumber`]: '1234567',
                   name: 'Car',
                 },
               },
@@ -431,7 +435,7 @@ describe('service > Flattener', () => {
       const request = {
         query: {
           fields: {
-            cars: 'company,name,engine@@@horsepower,engine@@@identification@@@serialNumber,wheelSize',
+            cars: `company,name,engine${FLATTEN_SEPARATOR}horsepower,engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}serialNumber,wheelSize`,
             company: 'name',
           },
         },
@@ -460,8 +464,8 @@ describe('service > Flattener', () => {
         body: {
           data: {
             attributes: {
-              'engine@@@horsePower': '125cv',
-              'engine@@@identification@@@serialNumber': '1234567',
+              [`engine${FLATTEN_SEPARATOR}horsePower`]: '125cv',
+              [`engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}serialNumber`]: '1234567',
               name: 'Car',
             },
           },
@@ -500,7 +504,7 @@ describe('service > Flattener', () => {
           data: {
             attributes: {
               all_records_subset_query: {
-                'fields[cars]': '_id,company,name,wheelSize,engine@@@horsePower,engine@@@identification@@@serialNumber',
+                'fields[cars]': `_id,company,name,wheelSize,engine${FLATTEN_SEPARATOR}horsePower,engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}serialNumber`,
                 'fields[company]': 'name',
                 'page[number]': 1,
                 'page[size]': 15,
@@ -536,13 +540,54 @@ describe('service > Flattener', () => {
         expect(mockNext).toHaveBeenCalledTimes(1);
       });
     });
+
+    describe('for a belongsTo edit', () => {
+      const mockResponse = {};
+      const mockNext = jest.fn();
+      const request = {
+        query: {
+          timezone: 'Europe/Paris',
+          context: {
+            relationship: 'BelongsTo',
+            field: `engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}company`,
+            collection: 'cars',
+            recordId: '5f928f4f1eedcfbce937bbce',
+          },
+          fields: { companies: 'name' },
+          search: 'Renault',
+          searchToEdit: 'true',
+        },
+      };
+
+      it('should unflatten the field in the context', () => {
+        expect.assertions(2);
+
+        Flattener.requestUnflattener(request, mockResponse, mockNext);
+
+        expect(request).toStrictEqual({
+          query: {
+            timezone: 'Europe/Paris',
+            context: {
+              relationship: 'BelongsTo',
+              field: 'engine.identification.company',
+              collection: 'cars',
+              recordId: '5f928f4f1eedcfbce937bbce',
+            },
+            fields: { companies: 'name' },
+            search: 'Renault',
+            searchToEdit: 'true',
+          },
+        });
+        expect(mockNext).toHaveBeenCalledTimes(1);
+      });
+    });
   });
 
   describe('when splitting on separator', () => {
-    it('should split based on the separator `@@@`', () => {
+    it('should split based on the separator FLATTEN_SEPARATOR', () => {
       expect.assertions(4);
 
-      const split = Flattener.splitOnSeparator('engine@@@companies');
+      const split = Flattener.splitOnSeparator(`engine${FLATTEN_SEPARATOR}companies`);
 
       expect(split).toBeArray();
       expect(split).toHaveLength(2);

@@ -4,6 +4,8 @@ import Interface from 'forest-express';
 import mongooseConnect from '../../utils/mongoose-connect';
 import QueryBuilder from '../../../src/services/query-builder';
 
+const FLATTEN_SEPARATOR = '@@@';
+
 describe('service > query-builder', () => {
   let TreeModel;
   let LumberJackModel;
@@ -173,7 +175,7 @@ describe('service > query-builder', () => {
         expect.assertions(1);
         const queryBuilder = new QueryBuilder(TreeModel, {
           timezone: 'Europe/Paris',
-          sort: '-some@@@flattened@@@field',
+          sort: `-some${FLATTEN_SEPARATOR}flattened${FLATTEN_SEPARATOR}field`,
         }, options);
         const expectedSort = {
           $sort: { 'some.flattened.field': -1 },
