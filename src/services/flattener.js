@@ -1,6 +1,8 @@
 import _ from 'lodash';
 import Interface from 'forest-express';
 
+const FLATTEN_SEPARATOR = '@@@';
+
 module.exports = class Flattener {
   constructor(schema, flatten) {
     this.schema = schema;
@@ -45,11 +47,11 @@ module.exports = class Flattener {
   }
 
   static _isFieldFlattened(name) {
-    return name?.includes('|');
+    return name?.includes(FLATTEN_SEPARATOR);
   }
 
   static _getParentFieldName(fieldName) {
-    return fieldName?.split('|')[0];
+    return fieldName?.split(FLATTEN_SEPARATOR)[0];
   }
 
   static _unflattenCollectionFields(requestedFields) {
@@ -68,7 +70,7 @@ module.exports = class Flattener {
   }
 
   static _unflattenAttribute(attributeName, value, attributes) {
-    let accessPathArray = attributeName.split('|');
+    let accessPathArray = attributeName.split(FLATTEN_SEPARATOR);
     const parentObjectName = accessPathArray.shift();
     accessPathArray = accessPathArray.reverse();
     const parentObject = attributes[parentObjectName] || {};
@@ -112,6 +114,9 @@ module.exports = class Flattener {
       if (!_.isEmpty(request.query?.fields)) {
         Flattener._unflattenFields(request);
       }
+      if (!_.isEmpty(request.query?.context)) {
+        request.query.context.field = Flattener.unflattenFieldName(request.query.context.field);
+      }
       next();
     } catch (error) { next(error); }
   }
@@ -147,7 +152,7 @@ module.exports = class Flattener {
   _flattenField(schema, parentFieldName, newFields = [], level = undefined) {
     if (schema.type?.fields && (level === undefined || level > -1)) {
       schema.type.fields.forEach((subField) => {
-        const newFieldName = parentFieldName ? `${parentFieldName}|${subField.field}` : schema.field;
+        const newFieldName = parentFieldName ? `${parentFieldName}${FLATTEN_SEPARATOR}${subField.field}` : schema.field;
         this._flattenField(
           subField,
           newFieldName,
@@ -182,6 +187,19 @@ module.exports = class Flattener {
   static unflattenFieldName(fieldName) {
     if (!fieldName) return null;
 
-    return fieldName.replace(/\|/g, '.');
+    return fieldName.replace(new RegExp(FLATTEN_SEPARATOR, 'g'), '.');
+  }
+
+  static splitOnSeparator(fieldName) {
+    return fieldName.split(FLATTEN_SEPARATOR);
+  }
+
+  static unflattenFieldNamesInObject(object) {
+    Object.keys(object).forEach((fieldName) => {
+      if (Flattener._isFieldFlattened(fieldName)) {
+        object[Flattener.unflattenFieldName(fieldName)] = object[fieldName];
+        delete object[fieldName];
+      }
+    });
   }
 };
