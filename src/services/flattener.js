@@ -202,4 +202,36 @@ module.exports = class Flattener {
       }
     });
   }
+
+  static flattenRecordDataForUpdates(record, flattenComposedKey, flattenedFields) {
+    const flattenedRecord = {};
+
+    if (flattenedFields.length === 0) return record;
+
+    Object.keys(record).forEach((attribute) => {
+      if (typeof record[attribute] === 'object') {
+        const flattenedPath = (flattenComposedKey) ? `${flattenComposedKey}${FLATTEN_SEPARATOR}${attribute}` : attribute;
+
+        if (flattenedFields.find((flattenedField) => flattenedField === flattenedPath)) {
+          flattenedRecord[attribute] = record[attribute];
+        } else {
+          const flattenedNested = Flattener
+            .flattenRecordDataForUpdates(record[attribute], flattenedPath, flattenedFields);
+          Object.keys(flattenedNested).forEach((nestedAttribute) => {
+            flattenedRecord[`${attribute}.${nestedAttribute}`] = flattenedNested[nestedAttribute];
+          });
+        }
+      } else {
+        flattenedRecord[attribute] = record[attribute];
+      }
+    });
+
+    return flattenedRecord;
+  }
+
+  static getFlattenedFieldsName(fields) {
+    return fields
+      .filter((field) => field.field.indexOf(FLATTEN_SEPARATOR))
+      .map((field) => field.field);
+  }
 };
