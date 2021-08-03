@@ -319,7 +319,7 @@ export interface CollectionOptions {
   fields?: SmartFieldOptions[];
   actions?: SmartActionOptions[];
   segments?: SmartSegmentOptions[];
-  flatten?: ({ field: string, level?: number } | string)[]
+  fieldsToFlatten?: ({ field: string, level?: number } | string)[]
 }
 
 export function collection(name: string, options: CollectionOptions): void;
