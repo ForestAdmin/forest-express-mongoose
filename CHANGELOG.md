@@ -1,3 +1,10 @@
+## [8.1.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.0...v8.1.1) (2021-08-04)
+
+
+### Bug Fixes
+
+* **types:** add missing RecordSerializer ([#655](https://github.com/ForestAdmin/forest-express-mongoose/issues/655)) ([482c5ba](https://github.com/ForestAdmin/forest-express-mongoose/commit/482c5ba764ba5f372dc6edfb467903044ea1b464))
+
 # [8.1.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.3...v8.1.0) (2021-08-04)
 
 
