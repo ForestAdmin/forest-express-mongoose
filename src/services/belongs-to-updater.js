@@ -1,3 +1,5 @@
+import Flattener from './flattener';
+
 class BelongsToUpdater {
   constructor(model, association, opts, params, data) {
     this._model = model;
@@ -7,7 +9,9 @@ class BelongsToUpdater {
 
   async perform() {
     const updateParams = {};
-    updateParams[this._params.associationName] = this._data.data ? this._data.data.id : null;
+    updateParams[
+      Flattener.unflattenFieldName(this._params.associationName)
+    ] = this._data.data ? this._data.data.id : null;
 
     return this._model
       .findByIdAndUpdate(this._params.recordId, {

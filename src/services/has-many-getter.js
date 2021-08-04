@@ -4,6 +4,7 @@ import utils from '../utils/schema';
 import getScopedParams from '../utils/scopes';
 import FiltersParser from './filters-parser';
 import SearchBuilder from './search-builder';
+import Flattener from './flattener';
 
 const OBJECTID_REGEXP = /^[0-9a-fA-F]{24}$/;
 
@@ -37,7 +38,7 @@ class HasManyGetter {
 
   _getProjection() {
     const projection = {};
-    projection[this._params.associationName] = 1;
+    projection[Flattener.unflattenFieldName(this._params.associationName)] = 1;
     projection._id = 0; // eslint-disable-line
 
     return projection;
@@ -83,11 +84,14 @@ class HasManyGetter {
     const parentRecords = await this._parentModel
       .aggregate()
       .match({ _id: id })
-      .unwind(this._params.associationName)
+      .unwind(`$${Flattener.unflattenFieldName(this._params.associationName)}`)
       .project(this._getProjection())
       .exec();
 
-    const childRecordIds = _.map(parentRecords, (record) => record[this._params.associationName]);
+
+    const splitted = this._params.associationName.split('@@@');
+    const childRecordIds = _.map(parentRecords, (record) =>
+      splitted.reduce((a, prop) => (a ? a[prop] : null), record));
     const conditions = await this._buildConditions(childRecordIds);
     const query = this._model.find(conditions);
     this._handlePopulate(query);

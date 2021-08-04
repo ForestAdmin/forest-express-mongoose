@@ -29,6 +29,15 @@ describe('service > filters-parser', () => {
         { field: 'size', type: 'Number' },
         { field: 'isBig', type: 'Boolean' },
         { field: 'inhabitedOn', type: 'Date' },
+        { field: 'location@@@latitude', type: 'String' },
+        { field: 'location@@@longitude', type: 'String' },
+        {
+          field: 'location@@@description',
+          type: {
+            date: 'Date',
+            comment: 'String',
+          },
+        },
       ],
     };
 
@@ -45,6 +54,18 @@ describe('service > filters-parser', () => {
       size: { type: Number },
       isBig: { type: Boolean },
       inhabitedOn: { type: Date },
+      location: {
+        type: {
+          latitude: { type: String },
+          longitude: { type: String },
+          description: {
+            type: {
+              date: { type: Date },
+              comment: { type: String },
+            },
+          },
+        },
+      },
     });
 
     IslandModel = mongoose.model('Island', IslandSchema);
@@ -312,6 +333,40 @@ describe('service > filters-parser', () => {
     it('should format nested fields correctly', () => {
       expect.assertions(1);
       expect(defaultParser.formatField('myCollection:myField')).toStrictEqual('myCollection.myField');
+    });
+  });
+
+  describe('querying on a flattened field', () => {
+    describe('querying on a first level field', () => {
+      it('should un-flatten the flattened field', async () => {
+        expect.assertions(1);
+
+        const condition = {
+          field: 'location@@@longitude',
+          operator: 'present',
+          value: null,
+        };
+
+        const newCondition = await defaultParser.formatCondition(condition);
+
+        expect(newCondition['location.longitude']).toStrictEqual({ $exists: true, $ne: null });
+      });
+    });
+
+    describe('querying on nested field form flattened field', () => {
+      it('should un-flatten the flattened field', async () => {
+        expect.assertions(1);
+
+        const condition = {
+          field: 'location@@@description:comment',
+          operator: 'present',
+          value: null,
+        };
+
+        const newCondition = await defaultParser.formatCondition(condition);
+
+        expect(newCondition['location.description.comment']).toStrictEqual({ $exists: true, $ne: null });
+      });
     });
   });
 });
