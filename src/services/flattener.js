@@ -204,9 +204,9 @@ module.exports = class Flattener {
   }
 
   static flattenRecordDataForUpdates(record, flattenComposedKey, flattenedFields) {
-    const flattenedRecord = {};
-
     if (flattenedFields.length === 0) return record;
+
+    const flattenedRecord = {};
 
     Object.keys(record).forEach((attribute) => {
       if (typeof record[attribute] === 'object') {
@@ -231,7 +231,7 @@ module.exports = class Flattener {
 
   static getFlattenedFieldsName(fields) {
     return fields
-      .filter((field) => field.field.indexOf(FLATTEN_SEPARATOR))
+      .filter((field) => Flattener._isFieldFlattened(field.field))
       .map((field) => field.field);
   }
 };

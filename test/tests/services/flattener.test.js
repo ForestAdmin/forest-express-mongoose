@@ -614,4 +614,70 @@ describe('service > Flattener', () => {
       });
     });
   });
+
+  describe('flattenRecordDataForUpdates', () => {
+    it('should return the record if there are no flattened fields', () => {
+      expect.assertions(1);
+
+      expect(Flattener.flattenRecordDataForUpdates({ name: 'Car' }, null, []))
+        .toStrictEqual({ name: 'Car' });
+    });
+
+    it('should flatten the simple type data', () => {
+      expect.assertions(1);
+
+      const record = {
+        engine: {
+          horsePower: '78',
+          identification: {
+            manufacturer: 'Renault'
+              + '',
+          },
+        },
+        name: 'Car',
+      };
+
+      const flattenedFields = [
+        `engine${FLATTEN_SEPARATOR}horsePower`,
+        `engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}manufacturer`,
+      ];
+
+      const flattenedRecord = Flattener.flattenRecordDataForUpdates(record, null, flattenedFields);
+
+      expect(flattenedRecord).toStrictEqual({
+        'engine.horsePower': '78',
+        'engine.identification.manufacturer': 'Renault',
+        name: 'Car',
+      });
+    });
+  });
+
+  describe('getFlattenedFieldsName', () => {
+    it('should return empty array if the fields do not contain flattened fields', () => {
+      expect.assertions(1);
+
+      const fields = [
+        { field: '_id', type: 'String' },
+        { field: 'name', type: 'String' },
+      ];
+
+      expect(Flattener.getFlattenedFieldsName(fields)).toHaveLength(0);
+    });
+
+    it('should return array of name if fields contain flattened fields', () => {
+      expect.assertions(2);
+
+      const fields = [
+        { field: '_id', type: 'String' },
+        { field: 'name', type: 'String' },
+        { field: `engine${FLATTEN_SEPARATOR}horsePower`, type: 'String' },
+        { field: `engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}manufacturer`, type: 'String' },
+      ];
+
+      const result = Flattener.getFlattenedFieldsName(fields);
+
+      expect(result).toHaveLength(2);
+      expect(result).toStrictEqual([`engine${FLATTEN_SEPARATOR}horsePower`, `engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}manufacturer`]);
+    });
+  });
 });
