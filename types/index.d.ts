@@ -152,6 +152,9 @@ export class RecordsRemover<M extends Model<any>> extends AbstractRecordTool<M> 
   remove(recordIds: RecordId[]): Promise<void>;
 }
 
+export class RecordSerializer<M extends Model<any>> extends AbstractRecordTool<M> {
+}
+
 // Everything related to Forest permissions
 
 export class PermissionMiddlewareCreator {
