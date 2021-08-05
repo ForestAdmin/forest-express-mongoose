@@ -122,7 +122,7 @@ export class RecordGetter<T> extends AbstractRecordTool<T> {
 }
 
 export class RecordsGetter<T> extends AbstractRecordTool<T> {
-  getAll(query: Query): Promise<(T & Document)[]>;
+  getAll(queryExtra?: Query): Promise<(T & Document)[]>;
   getIdsFromRequest(request: SmartActionRequest | SmartActionLoadHookRequest | SmartActionChangeHookRequest): Promise<string[]>;
 }
 
@@ -152,7 +152,9 @@ export class RecordsRemover<M extends Model<any>> extends AbstractRecordTool<M> 
   remove(recordIds: RecordId[]): Promise<void>;
 }
 
-export class RecordSerializer<M extends Model<any>> extends AbstractRecordTool<M> {
+export class RecordSerializer<T> {
+  constructor(model: { name: string } | Model<T>, user?: User, query?: Query);
+  serialize(records: Record<string, any> | Record<string, any>[]): Promise<RecordsSerialized>;
 }
 
 // Everything related to Forest permissions
