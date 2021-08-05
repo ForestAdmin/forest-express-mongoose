@@ -1,3 +1,10 @@
+## [8.1.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.1...v8.1.2) (2021-08-05)
+
+
+### Bug Fixes
+
+* **exposed:** reduce number of mandatory parameters in records-getter and record-serializer ([#656](https://github.com/ForestAdmin/forest-express-mongoose/issues/656)) ([253bac9](https://github.com/ForestAdmin/forest-express-mongoose/commit/253bac907a45c606de71f8b58179db1556013752))
+
 ## [8.1.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.0...v8.1.1) (2021-08-04)
 
 
