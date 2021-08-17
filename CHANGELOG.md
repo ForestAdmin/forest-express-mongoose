@@ -1,3 +1,10 @@
+## [8.1.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.2...v8.1.3) (2021-08-17)
+
+
+### Bug Fixes
+
+* **smart-action:** single and bulk smart action can't be triggered due to runtime error ([#658](https://github.com/ForestAdmin/forest-express-mongoose/issues/658)) ([80491d4](https://github.com/ForestAdmin/forest-express-mongoose/commit/80491d40c679c87d2fd4162acfd34fa904381d6b))
+
 ## [8.1.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.1...v8.1.2) (2021-08-05)
 
 
