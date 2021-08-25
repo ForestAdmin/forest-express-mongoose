@@ -3,6 +3,7 @@ import loadFixture from 'mongoose-fixture-loader';
 import Interface from 'forest-express';
 import ResourcesUpdater from '../../../src/services/resource-updater';
 import mongooseConnect from '../../utils/mongoose-connect';
+import Flattener from '../../../src/services/flattener';
 
 const user = { renderingId: 1 };
 const params = { timezone: 'Europe/Paris' };
@@ -86,5 +87,26 @@ describe('service > resources-updater', () => {
     const updater = new ResourcesUpdater(IslandModel, params, island, user);
 
     expect(await updater.perform()).toHaveProperty('name', 'Haiti');
+  });
+
+  it('should try to flatten the data', async () => {
+    expect.assertions(4);
+
+    const island = IslandModel({ _id: '56cb91bdc3464f14678934ca', name: 'Haiti' });
+    const updater = new ResourcesUpdater(IslandModel, params, island, user);
+
+    const spyFieldNameGetter = jest.spyOn(Flattener, 'getFlattenedFieldsName');
+    const spyFlattener = jest.spyOn(Flattener, 'flattenRecordDataForUpdates');
+
+    await updater.perform();
+
+    expect(spyFieldNameGetter).toHaveBeenCalledTimes(1);
+    expect(spyFieldNameGetter).toHaveBeenCalledWith([
+      { field: '_id', type: 'String' },
+      { field: 'name', type: 'String' },
+      { field: 'population', type: 'Number' },
+    ]);
+    expect(spyFlattener).toHaveBeenCalledTimes(1);
+    expect(spyFlattener).toHaveBeenCalledWith(island, null, []);
   });
 });

@@ -315,6 +315,8 @@ module.exports = async (model, opts) => {
     // TODO: Remove nameOld attribute once the lianas versions older than 2.0.0 are minority.
     nameOld: model.collection.name.replace(' ', ''),
     idField: '_id',
+    primaryKeys: ['_id'],
+    isCompositePrimary: false,
     fields,
   };
 };
