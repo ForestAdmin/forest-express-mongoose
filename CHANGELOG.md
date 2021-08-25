@@ -1,3 +1,10 @@
+## [8.1.8](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.7...v8.1.8) (2021-08-25)
+
+
+### Bug Fixes
+
+* **security:** patch ws dependency vulnerability ([#628](https://github.com/ForestAdmin/forest-express-mongoose/issues/628)) ([ade3202](https://github.com/ForestAdmin/forest-express-mongoose/commit/ade3202fc4cce1c6dd8d038af069b1254eb890c1))
+
 ## [8.1.7](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.6...v8.1.7) (2021-08-25)
 
 
