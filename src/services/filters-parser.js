@@ -2,6 +2,7 @@ import _ from 'lodash';
 import Interface, { BaseFiltersParser, BaseOperatorDateParser } from 'forest-express';
 import { NoMatchingOperatorError, InvalidFiltersFormatError } from './errors';
 import utils from '../utils/schema';
+import Flattener from './flattener';
 
 const AGGREGATOR_OPERATORS = ['and', 'or'];
 
@@ -89,7 +90,7 @@ function FiltersParser(model, timezone, options) {
     const formatedField = this.formatField(condition.field);
 
     return {
-      [formatedField]: await this.formatOperatorValue(
+      [Flattener.unflattenFieldName(formatedField)]: await this.formatOperatorValue(
         condition.field,
         condition.operator,
         condition.value,
@@ -226,7 +227,7 @@ function FiltersParser(model, timezone, options) {
     const newCondition = {
       operator: condition.operator,
       value: condition.value,
-      field: subFieldName,
+      field: Flattener.unflattenFieldName(subFieldName),
     };
     const query = await subModelFilterParser.perform(JSON.stringify(newCondition));
     const [, referencedKey] = field.reference.split('.');
@@ -242,7 +243,7 @@ function FiltersParser(model, timezone, options) {
       return {
         aggregator: 'or',
         conditions: [{
-          field: fieldName,
+          field: Flattener.unflattenFieldName(fieldName),
           operator: 'blank',
           value: null,
         }, resultCondition],

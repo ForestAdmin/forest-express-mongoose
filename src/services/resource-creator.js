@@ -1,6 +1,7 @@
 import { Schemas } from 'forest-express';
 import utils from '../utils/schema';
 import ResourceGetter from './resource-getter';
+import Flattener from './flattener';
 
 class ResourceCreator {
   constructor(model, params, body, user) {
@@ -9,6 +10,13 @@ class ResourceCreator {
     this._body = body;
     this._user = user;
     this._schema = Schemas.schemas[utils.getModelName(model)];
+
+    /*
+      We unflatten the attributes here, because the deserializer validates the fields'
+      name against the schema so we can not do it in the middleware, we have to unflatten
+      at the very end of the record creation flow.
+     */
+    Flattener.unflattenFieldNamesInObject(this._body);
   }
 
   async _create() {
