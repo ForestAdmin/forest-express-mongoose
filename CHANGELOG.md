@@ -1,3 +1,10 @@
+## [8.1.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.3...v8.1.4) (2021-08-25)
+
+
+### Bug Fixes
+
+* **charts:** objective charts now returns correct values ([#660](https://github.com/ForestAdmin/forest-express-mongoose/issues/660)) ([54459e2](https://github.com/ForestAdmin/forest-express-mongoose/commit/54459e2c06badb4b449ebbd55f1abd2b6c325c2b))
+
 ## [8.1.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.2...v8.1.3) (2021-08-17)
 
 
