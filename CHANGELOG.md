@@ -1,3 +1,10 @@
+## [8.1.7](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.6...v8.1.7) (2021-08-25)
+
+
+### Bug Fixes
+
+* **security:** patch color-string dependency vulnerability ([#629](https://github.com/ForestAdmin/forest-express-mongoose/issues/629)) ([43793a3](https://github.com/ForestAdmin/forest-express-mongoose/commit/43793a39042a603e4e8a31219ffdbffbfd141f93))
+
 ## [8.1.6](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.5...v8.1.6) (2021-08-25)
 
 
