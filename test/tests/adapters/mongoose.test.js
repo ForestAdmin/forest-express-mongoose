@@ -14,6 +14,22 @@ describe('adapters > schema-adapter', () => {
     done();
   });
 
+  describe('primaryKeys', () => {
+    it('should contain idField, primaryKeys and isCompositePrimary', async () => {
+      expect.assertions(3);
+      const schema = new mongoose.Schema({ foo: String });
+      const model = mongoose.model('Foo', schema);
+      const result = await createSchemaAdapter(model, {
+        Mongoose: mongoose,
+        connections: { mongoose },
+      });
+
+      expect(result.idField).toStrictEqual('_id');
+      expect(result.primaryKeys).toStrictEqual(['_id']);
+      expect(result.isCompositePrimary).toStrictEqual(false);
+    });
+  });
+
   describe('type Date', () => {
     it('should have the type Date', async () => {
       expect.assertions(3);
