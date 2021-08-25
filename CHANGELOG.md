@@ -1,3 +1,53 @@
+## [8.1.6](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.5...v8.1.6) (2021-08-25)
+
+
+### Bug Fixes
+
+* **security:** patch hosted-git-info dependency vulnerability ([#566](https://github.com/ForestAdmin/forest-express-mongoose/issues/566)) ([aea9087](https://github.com/ForestAdmin/forest-express-mongoose/commit/aea9087ea18baa56ebb8bf5475a038526000945e))
+
+## [8.1.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.4...v8.1.5) (2021-08-25)
+
+
+### Bug Fixes
+
+* **security:** patch handlebars dependency vulnerabilities (from 4.7.6 to 4.7.7) ([#565](https://github.com/ForestAdmin/forest-express-mongoose/issues/565)) ([289ab2c](https://github.com/ForestAdmin/forest-express-mongoose/commit/289ab2cc422a2f5fcdbea9f03d55b40e40c6c706))
+* **security:** patch tar dependency vulnerabilities ([#653](https://github.com/ForestAdmin/forest-express-mongoose/issues/653)) ([b51911d](https://github.com/ForestAdmin/forest-express-mongoose/commit/b51911dfac563ce8062b62d8e24af266db5102d2)), closes [#565](https://github.com/ForestAdmin/forest-express-mongoose/issues/565)
+
+## [8.1.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.3...v8.1.4) (2021-08-25)
+
+
+### Bug Fixes
+
+* **charts:** objective charts now returns correct values ([#660](https://github.com/ForestAdmin/forest-express-mongoose/issues/660)) ([54459e2](https://github.com/ForestAdmin/forest-express-mongoose/commit/54459e2c06badb4b449ebbd55f1abd2b6c325c2b))
+
+## [8.1.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.2...v8.1.3) (2021-08-17)
+
+
+### Bug Fixes
+
+* **smart-action:** single and bulk smart action can't be triggered due to runtime error ([#658](https://github.com/ForestAdmin/forest-express-mongoose/issues/658)) ([80491d4](https://github.com/ForestAdmin/forest-express-mongoose/commit/80491d40c679c87d2fd4162acfd34fa904381d6b))
+
+## [8.1.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.1...v8.1.2) (2021-08-05)
+
+
+### Bug Fixes
+
+* **exposed:** reduce number of mandatory parameters in records-getter and record-serializer ([#656](https://github.com/ForestAdmin/forest-express-mongoose/issues/656)) ([253bac9](https://github.com/ForestAdmin/forest-express-mongoose/commit/253bac907a45c606de71f8b58179db1556013752))
+
+## [8.1.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.0...v8.1.1) (2021-08-04)
+
+
+### Bug Fixes
+
+* **types:** add missing RecordSerializer ([#655](https://github.com/ForestAdmin/forest-express-mongoose/issues/655)) ([482c5ba](https://github.com/ForestAdmin/forest-express-mongoose/commit/482c5ba764ba5f372dc6edfb467903044ea1b464))
+
+# [8.1.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.3...v8.1.0) (2021-08-04)
+
+
+### Features
+
+* users can now flatten nested fields from model ([#641](https://github.com/ForestAdmin/forest-express-mongoose/issues/641)) ([d479eb9](https://github.com/ForestAdmin/forest-express-mongoose/commit/d479eb9ad50ae459d639f8ade3fbf030f6b85ced))
+
 ## [8.0.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.2...v8.0.3) (2021-07-27)
 
 

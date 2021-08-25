@@ -2,6 +2,8 @@
   "name": "Survey",
   "nameOld": "surveys",
   "idField": "_id",
+  "primaryKeys": ["_id"],
+  "isCompositePrimary": false,
   "fields": [
     {
       "field": "name",

@@ -2,6 +2,8 @@
   "name": "Foo",
   "nameOld": "foos",
   "idField": "_id",
+  "primaryKeys": ["_id"],
+  "isCompositePrimary": false,
   "fields": [
     {
       "field": "depth1",
