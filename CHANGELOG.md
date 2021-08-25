@@ -1,3 +1,11 @@
+## [8.1.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.4...v8.1.5) (2021-08-25)
+
+
+### Bug Fixes
+
+* **security:** patch handlebars dependency vulnerabilities (from 4.7.6 to 4.7.7) ([#565](https://github.com/ForestAdmin/forest-express-mongoose/issues/565)) ([289ab2c](https://github.com/ForestAdmin/forest-express-mongoose/commit/289ab2cc422a2f5fcdbea9f03d55b40e40c6c706))
+* **security:** patch tar dependency vulnerabilities ([#653](https://github.com/ForestAdmin/forest-express-mongoose/issues/653)) ([b51911d](https://github.com/ForestAdmin/forest-express-mongoose/commit/b51911dfac563ce8062b62d8e24af266db5102d2)), closes [#565](https://github.com/ForestAdmin/forest-express-mongoose/issues/565)
+
 ## [8.1.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.3...v8.1.4) (2021-08-25)
 
 
