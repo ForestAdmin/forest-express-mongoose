@@ -1,3 +1,10 @@
+## [8.1.6](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.5...v8.1.6) (2021-08-25)
+
+
+### Bug Fixes
+
+* **security:** patch hosted-git-info dependency vulnerability ([#566](https://github.com/ForestAdmin/forest-express-mongoose/issues/566)) ([aea9087](https://github.com/ForestAdmin/forest-express-mongoose/commit/aea9087ea18baa56ebb8bf5475a038526000945e))
+
 ## [8.1.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.4...v8.1.5) (2021-08-25)
 
 
