@@ -1,7 +1,7 @@
 {
   "name": "forest-express-mongoose",
   "description": "Official Express/Mongoose Liana for Forest",
-  "version": "8.0.3",
+  "version": "8.1.4",
   "author": "Sandro Munda <sandro@munda.me>",
   "contributors": [
     "Arnaud Besnier <arnaudibesnier@gmail.com>",
@@ -27,7 +27,7 @@
   "dependencies": {
     "@babel/runtime": "7.10.1",
     "bluebird": "2.9.25",
-    "forest-express": "9.0.3",
+    "forest-express": "9.1.2",
     "http-errors": "1.7.2",
     "lodash": "4.17.21",
     "moment": "2.24.0",

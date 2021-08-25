@@ -3,6 +3,7 @@ const Interface = require('forest-express');
 const createError = require('http-errors');
 const ResourcesGetter = require('./resources-getter');
 const utils = require('../utils/schema');
+const Flattener = require('./flattener');
 
 class ResourceUpdater {
   constructor(model, params, record, user) {
@@ -25,9 +26,11 @@ class ResourceUpdater {
     //         the _id in the $set. So we remove it. It is useless anyway.
     delete this._record._id;
 
+    const flattenedFields = Flattener.getFlattenedFieldsName(schema.fields);
+
     const query = this._model.findByIdAndUpdate(
       recordId,
-      { $set: this._record },
+      { $set: Flattener.flattenRecordDataForUpdates(this._record, null, flattenedFields) },
       { new: true, runValidators: true },
     );
 

@@ -4,6 +4,8 @@ import Interface from 'forest-express';
 import mongooseConnect from '../../utils/mongoose-connect';
 import QueryBuilder from '../../../src/services/query-builder';
 
+const FLATTEN_SEPARATOR = '@@@';
+
 describe('service > query-builder', () => {
   let TreeModel;
   let LumberJackModel;
@@ -147,6 +149,41 @@ describe('service > query-builder', () => {
         const joins = [];
         queryBuilder.addJoinToQuery(field, joins);
         expect(joins).toHaveLength(0);
+      });
+    });
+  });
+
+  describe('addSortToQuery function', () => {
+    describe('on basic field', () => {
+      it('should add the sort correctly', () => {
+        expect.assertions(1);
+        const queryBuilder = new QueryBuilder(TreeModel, {
+          timezone: 'Europe/Paris',
+          sort: 'age',
+        }, options);
+        const expectedSort = {
+          $sort: { age: 1 },
+        };
+        const jsonQuery = [];
+        queryBuilder.addSortToQuery(jsonQuery);
+        expect(jsonQuery[0])
+          .toStrictEqual(expectedSort);
+      });
+    });
+    describe('on flattened field', () => {
+      it('should unflatten the field and add the sort correctly', () => {
+        expect.assertions(1);
+        const queryBuilder = new QueryBuilder(TreeModel, {
+          timezone: 'Europe/Paris',
+          sort: `-some${FLATTEN_SEPARATOR}flattened${FLATTEN_SEPARATOR}field`,
+        }, options);
+        const expectedSort = {
+          $sort: { 'some.flattened.field': -1 },
+        };
+        const jsonQuery = [];
+        queryBuilder.addSortToQuery(jsonQuery);
+        expect(jsonQuery[0])
+          .toStrictEqual(expectedSort);
       });
     });
   });
