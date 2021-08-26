@@ -1,3 +1,32 @@
+## [8.1.8](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.7...v8.1.8) (2021-08-25)
+
+
+### Bug Fixes
+
+* **security:** patch ws dependency vulnerability ([#628](https://github.com/ForestAdmin/forest-express-mongoose/issues/628)) ([ade3202](https://github.com/ForestAdmin/forest-express-mongoose/commit/ade3202fc4cce1c6dd8d038af069b1254eb890c1))
+
+## [8.1.7](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.6...v8.1.7) (2021-08-25)
+
+
+### Bug Fixes
+
+* **security:** patch color-string dependency vulnerability ([#629](https://github.com/ForestAdmin/forest-express-mongoose/issues/629)) ([43793a3](https://github.com/ForestAdmin/forest-express-mongoose/commit/43793a39042a603e4e8a31219ffdbffbfd141f93))
+
+## [8.1.6](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.5...v8.1.6) (2021-08-25)
+
+
+### Bug Fixes
+
+* **security:** patch hosted-git-info dependency vulnerability ([#566](https://github.com/ForestAdmin/forest-express-mongoose/issues/566)) ([aea9087](https://github.com/ForestAdmin/forest-express-mongoose/commit/aea9087ea18baa56ebb8bf5475a038526000945e))
+
+## [8.1.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.4...v8.1.5) (2021-08-25)
+
+
+### Bug Fixes
+
+* **security:** patch handlebars dependency vulnerabilities (from 4.7.6 to 4.7.7) ([#565](https://github.com/ForestAdmin/forest-express-mongoose/issues/565)) ([289ab2c](https://github.com/ForestAdmin/forest-express-mongoose/commit/289ab2cc422a2f5fcdbea9f03d55b40e40c6c706))
+* **security:** patch tar dependency vulnerabilities ([#653](https://github.com/ForestAdmin/forest-express-mongoose/issues/653)) ([b51911d](https://github.com/ForestAdmin/forest-express-mongoose/commit/b51911dfac563ce8062b62d8e24af266db5102d2)), closes [#565](https://github.com/ForestAdmin/forest-express-mongoose/issues/565)
+
 ## [8.1.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.3...v8.1.4) (2021-08-25)
 
 
