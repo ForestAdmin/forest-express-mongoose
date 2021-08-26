@@ -1,3 +1,10 @@
+# [8.2.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.8...v8.2.0) (2021-08-26)
+
+
+### Features
+
+* include tags in the user data inside the request ([#663](https://github.com/ForestAdmin/forest-express-mongoose/issues/663)) ([d513bdc](https://github.com/ForestAdmin/forest-express-mongoose/commit/d513bdc9f6a865c88b5a8ac20af12b1f209f8acf))
+
 ## [8.1.8](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.7...v8.1.8) (2021-08-25)
 
 
