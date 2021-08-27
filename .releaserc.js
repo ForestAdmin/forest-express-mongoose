@@ -1,4 +1,5 @@
 module.exports = {
+  branches: ['main'],
   plugins: [
     [
       '@semantic-release/commit-analyzer', {
@@ -54,16 +55,16 @@ module.exports = {
     [
       "semantic-release-npm-deprecate-old-versions", {
         "rules": [
-          { 
-            "rule": "supportLatest", 
+          {
+            "rule": "supportLatest",
             "options": {
               "numberOfMajorReleases": 3,
               "numberOfMinorReleases": "all",
               "numberOfPatchReleases": "all"
             }
           },
-          { 
-            "rule": "supportPreReleaseIfNotReleased", 
+          {
+            "rule": "supportPreReleaseIfNotReleased",
             "options": {
               "numberOfPreReleases": 1,
             }
