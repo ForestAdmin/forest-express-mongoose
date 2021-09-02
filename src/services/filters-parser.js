@@ -173,7 +173,9 @@ function FiltersParser(model, timezone, options) {
       case 'equal':
         return parseFct(value);
       case 'in':
-        return { $in: parseFct(value) };
+        return (Array.isArray(value))
+          ? { $in: parseFct(value) }
+          : { $in: value.split(',').map((elem) => elem.trim()) };
       default:
         throw new NoMatchingOperatorError();
     }
