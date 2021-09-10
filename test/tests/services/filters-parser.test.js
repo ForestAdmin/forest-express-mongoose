@@ -127,10 +127,11 @@ describe('service > filters-parser', () => {
 
   describe('formatCondition function', () => {
     it('should format conditions correctly', async () => {
-      expect.assertions(3);
+      expect.assertions(4);
       expect(await defaultParser.formatCondition({ field: 'name', operator: 'starts_with', value: 'P' })).toStrictEqual({ name: new RegExp('^P.*') });
       expect(await defaultParser.formatCondition({ field: 'isBig', operator: 'equal', value: 'true' })).toStrictEqual({ isBig: true });
       expect(await defaultParser.formatCondition({ field: 'size', operator: 'greater_than', value: '56' })).toStrictEqual({ size: { $gt: 56 } });
+      expect(await defaultParser.formatCondition({ field: 'name', operator: 'in', value: 'Pyk, Dragonstone ' })).toStrictEqual({ name: { $in: ['Pyk', 'Dragonstone'] } });
     });
 
     describe('on empty condition', () => {
