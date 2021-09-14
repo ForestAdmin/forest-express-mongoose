@@ -156,84 +156,22 @@ describe('service > filters-parser', () => {
     });
 
     describe('on a smart field', () => {
-      describe('with filter method not defined', () => {
-        it('should throw an error', async () => {
-          expect.assertions(1);
+      it('should call formatOperatorValue', async () => {
+        expect.assertions(3);
 
-          const oldFields = islandForestSchema.fields;
-          islandForestSchema.fields = [{
-            field: 'smart name',
-            type: 'String',
-            isVirtual: true,
-            get() {},
-          }];
+        const formattedCondition = 'myFormattedCondition';
+        jest.spyOn(defaultParser, 'formatOperatorValue').mockReturnValue(formattedCondition);
 
-          await expect(defaultParser.formatCondition({
-            field: 'smart name',
-            operator: 'present',
-            value: null,
-          })).rejects.toThrow('"filter" method missing on smart field "smart name"');
+        const condition = {
+          field: 'smart name',
+          operator: 'present',
+          value: null,
+        };
+        expect(await defaultParser.formatCondition(condition, true))
+          .toStrictEqual(formattedCondition);
 
-          islandForestSchema.fields = oldFields;
-        });
-      });
-
-      describe('with filter method defined', () => {
-        describe('when filter method return null or undefined', () => {
-          it('should throw an error', async () => {
-            expect.assertions(1);
-
-            const oldFields = islandForestSchema.fields;
-            islandForestSchema.fields = [{
-              field: 'smart name',
-              type: 'String',
-              isVirtual: true,
-              get() {},
-              filter() {},
-            }];
-
-            await expect(defaultParser.formatCondition({
-              field: 'smart name',
-              operator: 'present',
-              value: null,
-            })).rejects.toThrow('"filter" method on smart field "smart name" must return a condition');
-
-            islandForestSchema.fields = oldFields;
-          });
-        });
-
-        describe('when filter method return a condition', () => {
-          it('should return the condition', async () => {
-            expect.assertions(4);
-
-            const where = { id: 1 };
-            const oldFields = islandForestSchema.fields;
-            islandForestSchema.fields = [{
-              field: 'smart name',
-              type: 'String',
-              isVirtual: true,
-              get() {},
-              filter: jest.fn(() => where),
-            }];
-
-            const condition = {
-              field: 'smart name',
-              operator: 'present',
-              value: null,
-            };
-            expect(await defaultParser.formatCondition(condition)).toStrictEqual(where);
-            expect(islandForestSchema.fields[0].filter.mock.calls).toHaveLength(1);
-            expect(islandForestSchema.fields[0].filter.mock.calls[0]).toHaveLength(1);
-            expect(islandForestSchema.fields[0].filter.mock.calls[0][0]).toStrictEqual({
-              where: {
-                $exists: true,
-                $ne: null,
-              },
-              condition,
-            });
-            islandForestSchema.fields = oldFields;
-          });
-        });
+        expect(defaultParser.formatOperatorValue).toHaveBeenCalledTimes(1);
+        expect(defaultParser.formatOperatorValue).toHaveBeenCalledWith('smart name', 'present', null);
       });
     });
   });

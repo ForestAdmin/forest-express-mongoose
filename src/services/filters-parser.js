@@ -34,57 +34,20 @@ function FiltersParser(model, timezone, options) {
   });
 
   this.perform = async (filtersString) => BaseFiltersParser
-    .perform(filtersString, this.formatAggregation, this.formatCondition);
+    .perform(filtersString, this.formatAggregation, this.formatCondition, modelSchema);
 
   this.formatAggregation = async (aggregator, formatedConditions) => {
     const aggregatorOperator = this.formatAggregatorOperator(aggregator);
     return { [aggregatorOperator]: formatedConditions };
   };
 
-  this._ensureIsValidCondition = (condition) => {
-    if (_.isEmpty(condition)) {
-      throw new InvalidFiltersFormatError('Empty condition in filter');
-    }
-    if (!_.isObject(condition)) {
-      throw new InvalidFiltersFormatError('Condition cannot be a raw value');
-    }
-    if (_.isArray(condition)) {
-      throw new InvalidFiltersFormatError('Filters cannot be a raw array');
-    }
-    if (!_.isString(condition.field)
-        || !_.isString(condition.operator)
-        || _.isUndefined(condition.value)) {
-      throw new InvalidFiltersFormatError('Invalid condition format');
-    }
-  };
-
-  this.getSmartFieldCondition = async (condition) => {
-    const fieldFound = modelSchema.fields.find((field) => field.field === condition.field);
-
-    if (!fieldFound.filter) {
-      throw new Error(`"filter" method missing on smart field "${fieldFound.field}"`);
-    }
-
-    const formattedCondition = await Promise.resolve(fieldFound
-      .filter({
-        where: await this.formatOperatorValue(
-          condition.field,
-          condition.operator,
-          condition.value,
-        ),
-        condition,
-      }));
-    if (!formattedCondition) {
-      throw new Error(`"filter" method on smart field "${fieldFound.field}" must return a condition`);
-    }
-    return formattedCondition;
-  };
-
-  this.formatCondition = async (condition) => {
-    this._ensureIsValidCondition(condition);
-
-    if (this.isSmartField(modelSchema, condition.field)) {
-      return this.getSmartFieldCondition(condition);
+  this.formatCondition = async (condition, isSmartField = false) => {
+    if (isSmartField) {
+      return this.formatOperatorValue(
+        condition.field,
+        condition.operator,
+        condition.value,
+      );
     }
 
     const formatedField = this.formatField(condition.field);
