@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import Interface, { BaseFiltersParser, BaseOperatorDateParser } from 'forest-express';
+import Interface, { BaseFiltersParser, BaseOperatorDateParser, SchemaUtils } from 'forest-express';
 import { NoMatchingOperatorError, InvalidFiltersFormatError } from './errors';
 import utils from '../utils/schema';
 import Flattener from './flattener';
@@ -76,7 +76,7 @@ function FiltersParser(model, timezone, options) {
     const [fieldName, subfieldName] = key.split(':');
 
     // NOTICE: Mongoose Aggregate don't parse the value automatically.
-    let field = _.find(modelSchema.fields, { field: fieldName });
+    let field = SchemaUtils.getField(modelSchema, fieldName);
 
     if (!field) {
       throw new InvalidFiltersFormatError(`Field '${fieldName}' not found on collection '${modelSchema.name}'`);
@@ -84,7 +84,7 @@ function FiltersParser(model, timezone, options) {
 
     const isEmbeddedField = !!field.type.fields;
     if (isEmbeddedField) {
-      field = _.find(field.type.fields, { field: subfieldName });
+      field = SchemaUtils.getField(field.type, subfieldName);
     }
 
     if (!field) return (val) => val;
@@ -146,11 +146,6 @@ function FiltersParser(model, timezone, options) {
 
   this.formatField = (field) => field.replace(':', '.');
 
-  this.isSmartField = (schema, fieldName) => {
-    const fieldFound = schema.fields.find((field) => field.field === fieldName);
-    return !!fieldFound && !!fieldFound.isVirtual;
-  };
-
   this.getAssociations = async (filtersString) => BaseFiltersParser.getAssociations(filtersString);
 
   this.formatAggregationForReferences = (aggregator, conditions) => ({ aggregator, conditions });
@@ -177,7 +172,7 @@ function FiltersParser(model, timezone, options) {
     }
 
     // Mongoose Aggregate don't parse the value automatically.
-    const field = _.find(modelSchema.fields, { field: fieldName });
+    const field = SchemaUtils.getField(modelSchema, fieldName);
 
     if (!field) {
       throw new InvalidFiltersFormatError(`Field '${fieldName}' not found on collection '${modelSchema.name}'`);
