@@ -38,8 +38,18 @@ describe('service > filters-parser', () => {
             comment: 'String',
           },
         },
+        {
+          field: 'ships',
+          type: {
+            fields: [{
+              field: 'weapon',
+              type: 'String',
+            }],
+          },
+        },
       ],
     };
+
 
     Interface.Schemas = {
       schemas: {
@@ -93,6 +103,29 @@ describe('service > filters-parser', () => {
   afterAll(() => mongoose.connection.close());
 
   afterEach(() => jest.restoreAllMocks());
+
+  describe('getParserForField', () => {
+    it('with an embedded field', async () => {
+      expect.assertions(6);
+
+      const fakeParser = jest.fn().mockReturnValue('parsedValue');
+      const spy = jest.spyOn(defaultParser, 'getParserForType').mockReturnValue(fakeParser);
+
+      const parserForField = await defaultParser.getParserForField('ships:weapon');
+
+      expect(defaultParser.getParserForType).toHaveBeenCalledTimes(1);
+      expect(defaultParser.getParserForType).toHaveBeenCalledWith('String');
+
+      expect(fakeParser).not.toHaveBeenCalled();
+
+      expect(parserForField('myValue')).toStrictEqual('parsedValue');
+
+      expect(fakeParser).toHaveBeenCalledTimes(1);
+      expect(fakeParser).toHaveBeenCalledWith('myValue');
+
+      spy.mockRestore();
+    });
+  });
 
   describe('formatAggregation function', () => {
     describe('on aggregated conditions', () => {
