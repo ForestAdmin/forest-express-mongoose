@@ -3,7 +3,7 @@ import loadFixture from 'mongoose-fixture-loader';
 import Interface from 'forest-express';
 import FiltersParser from '../../../src/services/filters-parser';
 import mongooseConnect from '../../utils/mongoose-connect';
-import { InvalidFiltersFormatError, NoMatchingOperatorError } from '../../../src/services/errors';
+import { NoMatchingOperatorError } from '../../../src/services/errors';
 
 describe('service > filters-parser', () => {
   let IslandModel;
