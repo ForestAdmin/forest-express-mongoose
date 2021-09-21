@@ -1,7 +1,7 @@
 {
   "name": "forest-express-mongoose",
   "description": "Official Express/Mongoose Liana for Forest",
-  "version": "8.3.0",
+  "version": "8.3.5",
   "author": "Sandro Munda <sandro@munda.me>",
   "contributors": [
     "Arnaud Besnier <arnaudibesnier@gmail.com>",
@@ -62,7 +62,7 @@
     "mongoose-fixture-loader": "1.0.2",
     "semantic-release": "17.4.7",
     "semantic-release-npm-deprecate-old-versions": "1.1.2",
-    "semantic-release-slack-bot": "1.6.2",
+    "semantic-release-slack-bot": "2.1.1",
     "simple-git": "1.65.0",
     "typescript": "4.3.3"
   },

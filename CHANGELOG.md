@@ -1,3 +1,40 @@
+## [8.3.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.4...v8.3.5) (2021-09-21)
+
+
+### Bug Fixes
+
+* **security:** patch glob-parent vulnerabilities ([#675](https://github.com/ForestAdmin/forest-express-mongoose/issues/675)) ([47a84d8](https://github.com/ForestAdmin/forest-express-mongoose/commit/47a84d89a4b4b07b33e4a4cedab3cb56336b1de4))
+
+## [8.3.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.3...v8.3.4) (2021-09-21)
+
+
+### Bug Fixes
+
+* **security:** patch jose dependency vulnerability ([#557](https://github.com/ForestAdmin/forest-express-mongoose/issues/557)) ([046da94](https://github.com/ForestAdmin/forest-express-mongoose/commit/046da94d3b0f60baf12a4cb0681b1679bd0eb26c))
+* **security:** patch path-parse dependency vulnerabilities ([#657](https://github.com/ForestAdmin/forest-express-mongoose/issues/657)) ([fd2e33a](https://github.com/ForestAdmin/forest-express-mongoose/commit/fd2e33aae760d63496eb170b2a367bf9e673d667))
+* **security:** patch tmpl dependency vulnerabilities ([#672](https://github.com/ForestAdmin/forest-express-mongoose/issues/672)) ([f19fb83](https://github.com/ForestAdmin/forest-express-mongoose/commit/f19fb83d632216466c2c2d1c782d2e0094bb6490))
+
+## [8.3.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.2...v8.3.3) (2021-09-21)
+
+
+### Bug Fixes
+
+* **security:** patch semantic-release-slack-bot vulnerabilities ([#674](https://github.com/ForestAdmin/forest-express-mongoose/issues/674)) ([433517a](https://github.com/ForestAdmin/forest-express-mongoose/commit/433517a50b5785a607b8167e36b4098ac10ee47d))
+
+## [8.3.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.1...v8.3.2) (2021-09-21)
+
+
+### Bug Fixes
+
+* **security:** patch dependencies of dependencies vulnerabilities ([#673](https://github.com/ForestAdmin/forest-express-mongoose/issues/673)) ([2188605](https://github.com/ForestAdmin/forest-express-mongoose/commit/21886057e4c3991afe3e5e55ff421b7482c51621))
+
+## [8.3.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.0...v8.3.1) (2021-09-21)
+
+
+### Bug Fixes
+
+* **security:** patch semantic-release dependency vulnerabilities ([#671](https://github.com/ForestAdmin/forest-express-mongoose/issues/671)) ([d411424](https://github.com/ForestAdmin/forest-express-mongoose/commit/d41142432689533f115e2ee0b35351041b880308))
+
 # [8.3.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.2.0...v8.3.0) (2021-09-10)
 
 
