@@ -1,3 +1,10 @@
+## [8.3.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.1...v8.3.2) (2021-09-21)
+
+
+### Bug Fixes
+
+* **security:** patch dependencies of dependencies vulnerabilities ([#673](https://github.com/ForestAdmin/forest-express-mongoose/issues/673)) ([2188605](https://github.com/ForestAdmin/forest-express-mongoose/commit/21886057e4c3991afe3e5e55ff421b7482c51621))
+
 ## [8.3.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.0...v8.3.1) (2021-09-21)
 
 
