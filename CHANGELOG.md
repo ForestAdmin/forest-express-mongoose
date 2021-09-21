@@ -1,3 +1,10 @@
+## [8.3.6](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.5...v8.3.6) (2021-09-21)
+
+
+### Bug Fixes
+
+* **security:** patch babel vulnerabilities ([#676](https://github.com/ForestAdmin/forest-express-mongoose/issues/676)) ([0195e2a](https://github.com/ForestAdmin/forest-express-mongoose/commit/0195e2ae4766a00a7c092807c741b635bf584263))
+
 ## [8.3.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.4...v8.3.5) (2021-09-21)
 
 
