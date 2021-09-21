@@ -1,3 +1,10 @@
+## [8.3.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.4...v8.3.5) (2021-09-21)
+
+
+### Bug Fixes
+
+* **security:** patch glob-parent vulnerabilities ([#675](https://github.com/ForestAdmin/forest-express-mongoose/issues/675)) ([47a84d8](https://github.com/ForestAdmin/forest-express-mongoose/commit/47a84d89a4b4b07b33e4a4cedab3cb56336b1de4))
+
 ## [8.3.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.3...v8.3.4) (2021-09-21)
 
 
