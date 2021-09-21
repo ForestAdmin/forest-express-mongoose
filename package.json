@@ -60,7 +60,7 @@
     "jest-extended": "0.11.5",
     "mongoose": "5.12.14",
     "mongoose-fixture-loader": "1.0.2",
-    "semantic-release": "17.4.2",
+    "semantic-release": "17.4.7",
     "semantic-release-npm-deprecate-old-versions": "1.1.2",
     "semantic-release-slack-bot": "1.6.2",
     "simple-git": "1.65.0",
