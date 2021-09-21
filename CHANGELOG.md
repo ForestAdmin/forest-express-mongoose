@@ -1,3 +1,10 @@
+## [8.3.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.2...v8.3.3) (2021-09-21)
+
+
+### Bug Fixes
+
+* **security:** patch semantic-release-slack-bot vulnerabilities ([#674](https://github.com/ForestAdmin/forest-express-mongoose/issues/674)) ([433517a](https://github.com/ForestAdmin/forest-express-mongoose/commit/433517a50b5785a607b8167e36b4098ac10ee47d))
+
 ## [8.3.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.1...v8.3.2) (2021-09-21)
 
 
