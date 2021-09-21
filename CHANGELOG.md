@@ -1,3 +1,12 @@
+## [8.3.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.3...v8.3.4) (2021-09-21)
+
+
+### Bug Fixes
+
+* **security:** patch jose dependency vulnerability ([#557](https://github.com/ForestAdmin/forest-express-mongoose/issues/557)) ([046da94](https://github.com/ForestAdmin/forest-express-mongoose/commit/046da94d3b0f60baf12a4cb0681b1679bd0eb26c))
+* **security:** patch path-parse dependency vulnerabilities ([#657](https://github.com/ForestAdmin/forest-express-mongoose/issues/657)) ([fd2e33a](https://github.com/ForestAdmin/forest-express-mongoose/commit/fd2e33aae760d63496eb170b2a367bf9e673d667))
+* **security:** patch tmpl dependency vulnerabilities ([#672](https://github.com/ForestAdmin/forest-express-mongoose/issues/672)) ([f19fb83](https://github.com/ForestAdmin/forest-express-mongoose/commit/f19fb83d632216466c2c2d1c782d2e0094bb6490))
+
 ## [8.3.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.2...v8.3.3) (2021-09-21)
 
 
