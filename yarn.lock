@@ -7397,7 +7397,6 @@ mongoose@5.13.9:
     sift "13.5.2"
     sliced "1.0.1"
 
-
 mpath@0.8.4:
   version "0.8.4"
   resolved "https://registry.yarnpkg.com/mpath/-/mpath-0.8.4.tgz#6b566d9581621d9e931dd3b142ed3618e7599313"
