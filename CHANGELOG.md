@@ -1,3 +1,10 @@
+## [8.3.7](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.6...v8.3.7) (2021-09-22)
+
+
+### Bug Fixes
+
+* **security:** patch mpath dependency vulnerability ([#670](https://github.com/ForestAdmin/forest-express-mongoose/issues/670)) ([1633c46](https://github.com/ForestAdmin/forest-express-mongoose/commit/1633c467b4578a07a7cc3e287123ff72ff257f56))
+
 ## [8.3.6](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.5...v8.3.6) (2021-09-21)
 
 
