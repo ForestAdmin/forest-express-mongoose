@@ -3,7 +3,7 @@ import loadFixture from 'mongoose-fixture-loader';
 import Interface from 'forest-express';
 import FiltersParser from '../../../src/services/filters-parser';
 import mongooseConnect from '../../utils/mongoose-connect';
-import { InvalidFiltersFormatError, NoMatchingOperatorError } from '../../../src/services/errors';
+import { NoMatchingOperatorError } from '../../../src/services/errors';
 
 describe('service > filters-parser', () => {
   let IslandModel;
@@ -38,8 +38,18 @@ describe('service > filters-parser', () => {
             comment: 'String',
           },
         },
+        {
+          field: 'ships',
+          type: {
+            fields: [{
+              field: 'weapon',
+              type: 'String',
+            }],
+          },
+        },
       ],
     };
+
 
     Interface.Schemas = {
       schemas: {
@@ -92,6 +102,33 @@ describe('service > filters-parser', () => {
 
   afterAll(() => mongoose.connection.close());
 
+  afterEach(() => jest.restoreAllMocks());
+
+  describe('getParserForField', () => {
+    describe('with an embedded field', () => {
+      it('should return the parser for the nested field', async () => {
+        expect.assertions(6);
+
+        const fakeParser = jest.fn().mockReturnValue('parsedValue');
+        const spy = jest.spyOn(defaultParser, 'getParserForType').mockReturnValue(fakeParser);
+
+        const parserForField = await defaultParser.getParserForField('ships:weapon');
+
+        expect(defaultParser.getParserForType).toHaveBeenCalledTimes(1);
+        expect(defaultParser.getParserForType).toHaveBeenCalledWith('String');
+
+        expect(fakeParser).not.toHaveBeenCalled();
+
+        expect(parserForField('myValue')).toStrictEqual('parsedValue');
+
+        expect(fakeParser).toHaveBeenCalledTimes(1);
+        expect(fakeParser).toHaveBeenCalledWith('myValue');
+
+        spy.mockRestore();
+      });
+    });
+  });
+
   describe('formatAggregation function', () => {
     describe('on aggregated conditions', () => {
       it('should format correctly', async () => {
@@ -134,106 +171,23 @@ describe('service > filters-parser', () => {
       expect(await defaultParser.formatCondition({ field: 'name', operator: 'in', value: 'Pyk, Dragonstone ' })).toStrictEqual({ name: { $in: ['Pyk', 'Dragonstone'] } });
     });
 
-    describe('on empty condition', () => {
-      it('should throw an error', async () => {
-        expect.assertions(2);
-        await expect(defaultParser.formatCondition()).rejects.toThrow(InvalidFiltersFormatError);
-        await expect(defaultParser.formatCondition({})).rejects.toThrow(InvalidFiltersFormatError);
-      });
-    });
-
-    describe('on badly formated condition', () => {
-      it('should throw an error', async () => {
-        expect.assertions(7);
-        await expect(defaultParser.formatCondition({ operator: 'contains', value: 'it' })).rejects.toThrow(InvalidFiltersFormatError);
-        await expect(defaultParser.formatCondition({ field: 'name', operator: 'contains' })).rejects.toThrow(InvalidFiltersFormatError);
-        await expect(defaultParser.formatCondition({ field: 'name', value: 'it' })).rejects.toThrow(InvalidFiltersFormatError);
-        await expect(defaultParser.formatCondition({ field: 'name', operator: 'con', value: 'it' })).rejects.toThrow(NoMatchingOperatorError);
-        await expect(defaultParser.formatCondition('toto')).rejects.toThrow(InvalidFiltersFormatError);
-        await expect(defaultParser.formatCondition(['toto'])).rejects.toThrow(InvalidFiltersFormatError);
-        await expect(defaultParser.formatCondition({ field: 'toto', operator: 'contains', value: 'it' })).rejects.toThrow(InvalidFiltersFormatError);
-      });
-    });
-
     describe('on a smart field', () => {
-      describe('with filter method not defined', () => {
-        it('should throw an error', async () => {
-          expect.assertions(1);
+      it('should call formatOperatorValue', async () => {
+        expect.assertions(3);
 
-          const oldFields = islandForestSchema.fields;
-          islandForestSchema.fields = [{
-            field: 'smart name',
-            type: 'String',
-            isVirtual: true,
-            get() {},
-          }];
+        const formattedCondition = 'myFormattedCondition';
+        jest.spyOn(defaultParser, 'formatOperatorValue').mockReturnValue(formattedCondition);
 
-          await expect(defaultParser.formatCondition({
-            field: 'smart name',
-            operator: 'present',
-            value: null,
-          })).rejects.toThrow('"filter" method missing on smart field "smart name"');
+        const condition = {
+          field: 'smart name',
+          operator: 'present',
+          value: null,
+        };
+        expect(await defaultParser.formatCondition(condition, true))
+          .toStrictEqual(formattedCondition);
 
-          islandForestSchema.fields = oldFields;
-        });
-      });
-
-      describe('with filter method defined', () => {
-        describe('when filter method return null or undefined', () => {
-          it('should throw an error', async () => {
-            expect.assertions(1);
-
-            const oldFields = islandForestSchema.fields;
-            islandForestSchema.fields = [{
-              field: 'smart name',
-              type: 'String',
-              isVirtual: true,
-              get() {},
-              filter() {},
-            }];
-
-            await expect(defaultParser.formatCondition({
-              field: 'smart name',
-              operator: 'present',
-              value: null,
-            })).rejects.toThrow('"filter" method on smart field "smart name" must return a condition');
-
-            islandForestSchema.fields = oldFields;
-          });
-        });
-
-        describe('when filter method return a condition', () => {
-          it('should return the condition', async () => {
-            expect.assertions(4);
-
-            const where = { id: 1 };
-            const oldFields = islandForestSchema.fields;
-            islandForestSchema.fields = [{
-              field: 'smart name',
-              type: 'String',
-              isVirtual: true,
-              get() {},
-              filter: jest.fn(() => where),
-            }];
-
-            const condition = {
-              field: 'smart name',
-              operator: 'present',
-              value: null,
-            };
-            expect(await defaultParser.formatCondition(condition)).toStrictEqual(where);
-            expect(islandForestSchema.fields[0].filter.mock.calls).toHaveLength(1);
-            expect(islandForestSchema.fields[0].filter.mock.calls[0]).toHaveLength(1);
-            expect(islandForestSchema.fields[0].filter.mock.calls[0][0]).toStrictEqual({
-              where: {
-                $exists: true,
-                $ne: null,
-              },
-              condition,
-            });
-            islandForestSchema.fields = oldFields;
-          });
-        });
+        expect(defaultParser.formatOperatorValue).toHaveBeenCalledTimes(1);
+        expect(defaultParser.formatOperatorValue).toHaveBeenCalledWith('smart name', 'present', null);
       });
     });
   });
@@ -282,45 +236,6 @@ describe('service > filters-parser', () => {
           await expect(defaultParser.formatOperatorValue('name', 'random', value))
             .rejects.toThrow(NoMatchingOperatorError);
         });
-      });
-    });
-  });
-
-  describe('isSmartField', () => {
-    describe('on a unknown field', () => {
-      it('should return false', () => {
-        expect.assertions(1);
-        const schemaToTest = { fields: [] };
-
-        expect(defaultParser.isSmartField(schemaToTest, 'unknown')).toBeFalse();
-      });
-    });
-
-    describe('on a non smart field', () => {
-      it('should return false', () => {
-        expect.assertions(1);
-        const schemaToTest = {
-          fields: [{
-            field: 'name',
-            isVirtual: false,
-          }],
-        };
-
-        expect(defaultParser.isSmartField(schemaToTest, 'name')).toBeFalse();
-      });
-    });
-
-    describe('on a smart field', () => {
-      it('should return true', () => {
-        expect.assertions(1);
-        const schemaToTest = {
-          fields: [{
-            field: 'name',
-            isVirtual: true,
-          }],
-        };
-
-        expect(defaultParser.isSmartField(schemaToTest, 'name')).toBeTrue();
       });
     });
   });
