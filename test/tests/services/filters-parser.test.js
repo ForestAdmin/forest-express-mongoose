@@ -105,25 +105,27 @@ describe('service > filters-parser', () => {
   afterEach(() => jest.restoreAllMocks());
 
   describe('getParserForField', () => {
-    it('with an embedded field', async () => {
-      expect.assertions(6);
+    describe('with an embedded field', () => {
+      it('should return the parser for the nested field', async () => {
+        expect.assertions(6);
 
-      const fakeParser = jest.fn().mockReturnValue('parsedValue');
-      const spy = jest.spyOn(defaultParser, 'getParserForType').mockReturnValue(fakeParser);
+        const fakeParser = jest.fn().mockReturnValue('parsedValue');
+        const spy = jest.spyOn(defaultParser, 'getParserForType').mockReturnValue(fakeParser);
 
-      const parserForField = await defaultParser.getParserForField('ships:weapon');
+        const parserForField = await defaultParser.getParserForField('ships:weapon');
 
-      expect(defaultParser.getParserForType).toHaveBeenCalledTimes(1);
-      expect(defaultParser.getParserForType).toHaveBeenCalledWith('String');
+        expect(defaultParser.getParserForType).toHaveBeenCalledTimes(1);
+        expect(defaultParser.getParserForType).toHaveBeenCalledWith('String');
 
-      expect(fakeParser).not.toHaveBeenCalled();
+        expect(fakeParser).not.toHaveBeenCalled();
 
-      expect(parserForField('myValue')).toStrictEqual('parsedValue');
+        expect(parserForField('myValue')).toStrictEqual('parsedValue');
 
-      expect(fakeParser).toHaveBeenCalledTimes(1);
-      expect(fakeParser).toHaveBeenCalledWith('myValue');
+        expect(fakeParser).toHaveBeenCalledTimes(1);
+        expect(fakeParser).toHaveBeenCalledWith('myValue');
 
-      spy.mockRestore();
+        spy.mockRestore();
+      });
     });
   });
 
