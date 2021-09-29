@@ -1,3 +1,10 @@
+## [8.3.8](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.7...v8.3.8) (2021-09-29)
+
+
+### Bug Fixes
+
+* **smart field:** fix filter on smart reference ([#669](https://github.com/ForestAdmin/forest-express-mongoose/issues/669)) ([18ab904](https://github.com/ForestAdmin/forest-express-mongoose/commit/18ab9047b8ce6f784a91752bae7a20ae7ea7288e))
+
 ## [8.3.7](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.6...v8.3.7) (2021-09-22)
 
 
