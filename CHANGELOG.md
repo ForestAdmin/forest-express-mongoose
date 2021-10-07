@@ -1,3 +1,10 @@
+## [8.3.9](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.8...v8.3.9) (2021-10-07)
+
+
+### Bug Fixes
+
+* fix hooks types to allow asynchronous hook ([#701](https://github.com/ForestAdmin/forest-express-mongoose/issues/701)) ([18b8d8b](https://github.com/ForestAdmin/forest-express-mongoose/commit/18b8d8bdb52490a48c63bbd1739b65a1c2e69f2f))
+
 ## [8.3.8](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.7...v8.3.8) (2021-09-29)
 
 
