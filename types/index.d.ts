@@ -288,7 +288,7 @@ export interface SmartActionLoadHookField extends SmartActionHookField {
 }
 
 export interface SmartActionLoadHook {
-  (context: { fields: SmartActionLoadHookField[], request: SmartActionLoadHookRequest }): SmartActionLoadHookField[]
+  (context: { fields: SmartActionLoadHookField[], request: SmartActionLoadHookRequest }): SmartActionLoadHookField[] | Promise<SmartActionLoadHookField[]>
 }
 
 export interface SmartActionChangeHookField extends SmartActionHookField {
@@ -296,7 +296,7 @@ export interface SmartActionChangeHookField extends SmartActionHookField {
 }
 
 export interface SmartActionChangeHook {
-  (context: { fields: SmartActionChangeHookField[], changedField: SmartActionChangeHookField, request: SmartActionChangeHookRequest }): SmartActionChangeHookField[]
+  (context: { fields: SmartActionChangeHookField[], changedField: SmartActionChangeHookField, request: SmartActionChangeHookRequest }): SmartActionChangeHookField[] | Promise<SmartActionChangeHookField[]>
 }
 
 export interface SmartActionHooks {
