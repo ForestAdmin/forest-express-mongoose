@@ -1,3 +1,10 @@
+## [8.3.10](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.9...v8.3.10) (2021-10-14)
+
+
+### Bug Fixes
+
+* **types:** add schemaDir property in LianaOptions type ([#709](https://github.com/ForestAdmin/forest-express-mongoose/issues/709)) ([e7d33ef](https://github.com/ForestAdmin/forest-express-mongoose/commit/e7d33ef146c70b94142d2d77a24f2e8043ba0fd6))
+
 ## [8.3.9](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.8...v8.3.9) (2021-10-07)
 
 
