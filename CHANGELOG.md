@@ -1,3 +1,10 @@
+# [8.4.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.10...v8.4.0) (2021-10-19)
+
+
+### Features
+
+* **perf:** do not send schema to Forest when unchanged ([#714](https://github.com/ForestAdmin/forest-express-mongoose/issues/714)) ([4efb724](https://github.com/ForestAdmin/forest-express-mongoose/commit/4efb7246c7939003a1d4c24d96359665e6200395))
+
 ## [8.3.10](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.9...v8.3.10) (2021-10-14)
 
 
