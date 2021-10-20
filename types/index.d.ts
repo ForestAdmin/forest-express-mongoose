@@ -232,7 +232,7 @@ export interface SmartFieldValueSetter<T = any> {
 }
 
 export interface SmartFieldSearcher {
-  (search: string): FilterQuery<any>;
+  (search: string): FilterQuery<any> | Promise<FilterQuery<any>>;
 }
 
 export interface SmartFieldFiltererFilter {
