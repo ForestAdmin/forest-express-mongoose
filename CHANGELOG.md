@@ -1,3 +1,10 @@
+## [8.4.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.4.0...v8.4.1) (2021-10-20)
+
+
+### Bug Fixes
+
+* **types:** smart field searcher is now declared to support asynchronous code ([#716](https://github.com/ForestAdmin/forest-express-mongoose/issues/716)) ([28bd190](https://github.com/ForestAdmin/forest-express-mongoose/commit/28bd1903d8c22be86baf6e9679c4760c9b3caf8e))
+
 # [8.4.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.10...v8.4.0) (2021-10-19)
 
 
