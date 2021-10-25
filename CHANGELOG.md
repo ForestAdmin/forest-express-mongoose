@@ -1,3 +1,10 @@
+## [8.4.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.4.2...v8.4.3) (2021-10-25)
+
+
+### Bug Fixes
+
+* add warning message when connections does not have any models ([#720](https://github.com/ForestAdmin/forest-express-mongoose/issues/720)) ([f3fff15](https://github.com/ForestAdmin/forest-express-mongoose/commit/f3fff15dcc5e7687950fcabc0d46a25c27fa15d4))
+
 ## [8.4.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.4.1...v8.4.2) (2021-10-25)
 
 
