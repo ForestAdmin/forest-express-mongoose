@@ -1,3 +1,10 @@
+## [8.4.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.4.1...v8.4.2) (2021-10-25)
+
+
+### Bug Fixes
+
+* **smart-actions:** skip scope validation for smart action on smart collection ([#719](https://github.com/ForestAdmin/forest-express-mongoose/issues/719)) ([9f238bf](https://github.com/ForestAdmin/forest-express-mongoose/commit/9f238bfee556c03322c305f748b24fc23d93cf74))
+
 ## [8.4.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.4.0...v8.4.1) (2021-10-20)
 
 
