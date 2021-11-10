@@ -16,13 +16,14 @@ function FiltersParser(model, timezone, options) {
     if (value === 'false') { return false; }
     return typeof value === 'boolean' ? value : null;
   };
-  const parseString = (value) => {
-    // NOTICE: Check if the value is a real ObjectID. By default, the isValid method returns true
-    //         for a random string with length 12 (example: 'Black Friday').
-    const { ObjectId } = options.Mongoose.Types;
-    if (ObjectId.isValid(value) && ObjectId(value).toString() === value) {
-      return ObjectId(value);
+  const parseString = (value, fieldName) => {
+    // This fix issue where using aggregation pipeline, mongoose does not
+    // automatically cast 'looking like' string value to ObjectId
+    // CF Github Issue https://github.com/Automattic/mongoose/issues/1399
+    if (model.schema.paths[fieldName] instanceof options.Mongoose.Schema.Types.ObjectId) {
+      return options.Mongoose.Types.ObjectId(value);
     }
+
     return value;
   };
   const parseArray = (value) => ({ $size: value });
@@ -93,9 +94,9 @@ function FiltersParser(model, timezone, options) {
 
     return (value) => {
       if (value && _.isArray(value)) {
-        return value.map(parse);
+        return value.map((v) => parse(v, fieldName));
       }
-      return parse(value);
+      return parse(value, fieldName);
     };
   };
 

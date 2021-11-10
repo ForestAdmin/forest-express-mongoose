@@ -122,7 +122,7 @@ describe('service > filters-parser', () => {
         expect(parserForField('myValue')).toStrictEqual('parsedValue');
 
         expect(fakeParser).toHaveBeenCalledTimes(1);
-        expect(fakeParser).toHaveBeenCalledWith('myValue');
+        expect(fakeParser).toHaveBeenCalledWith('myValue', 'ships');
 
         spy.mockRestore();
       });
