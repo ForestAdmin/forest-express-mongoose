@@ -16,12 +16,13 @@ function FiltersParser(model, timezone, options) {
     if (value === 'false') { return false; }
     return typeof value === 'boolean' ? value : null;
   };
-  const parseString = (value, fieldName) => {
+  const parseObjectId = (value) => {
     // This fix issue where using aggregation pipeline, mongoose does not
     // automatically cast 'looking like' string value to ObjectId
     // CF Github Issue https://github.com/Automattic/mongoose/issues/1399
-    if (model.schema.paths[fieldName] instanceof options.Mongoose.Schema.Types.ObjectId) {
-      return options.Mongoose.Types.ObjectId(value);
+    const { ObjectId } = options.Mongoose.Types;
+    if (ObjectId.isValid(value) && ObjectId(value).toString() === value) {
+      return ObjectId(value);
     }
 
     return value;
@@ -67,8 +68,8 @@ function FiltersParser(model, timezone, options) {
       case 'Number': return parseInteger;
       case 'Date': return parseDate;
       case 'Boolean': return parseBoolean;
-      case 'String': return parseString;
-      case _.isArray(type): return parseArray;
+      case 'ObjectId': return parseObjectId;
+      case Array.isArray(type): return parseArray;
       default: return parseOther;
     }
   };
@@ -78,6 +79,7 @@ function FiltersParser(model, timezone, options) {
 
     // NOTICE: Mongoose Aggregate don't parse the value automatically.
     let field = SchemaUtils.getField(modelSchema, fieldName);
+    let fieldDefinition = model.schema.paths[fieldName];
 
     if (!field) {
       throw new InvalidFiltersFormatError(`Field '${fieldName}' not found on collection '${modelSchema.name}'`);
@@ -86,17 +88,20 @@ function FiltersParser(model, timezone, options) {
     const isEmbeddedField = !!field.type.fields;
     if (isEmbeddedField) {
       field = SchemaUtils.getField(field.type, subfieldName);
+      fieldDefinition = fieldDefinition[subfieldName];
     }
 
     if (!field) return (val) => val;
 
-    const parse = this.getParserForType(field.type);
+    const { ObjectId } = options.Mongoose.Schema.Types;
+    const fieldType = fieldDefinition instanceof ObjectId ? 'ObjectId' : field.type;
+    const parse = this.getParserForType(fieldType);
 
     return (value) => {
-      if (value && _.isArray(value)) {
-        return value.map((v) => parse(v, fieldName));
+      if (value && Array.isArray(value)) {
+        return value.map(parse);
       }
-      return parse(value, fieldName);
+      return parse(value);
     };
   };
 
@@ -158,7 +163,7 @@ function FiltersParser(model, timezone, options) {
     if (!_.isObject(condition)) {
       throw new InvalidFiltersFormatError('Condition cannot be a raw value');
     }
-    if (_.isArray(condition)) {
+    if (Array.isArray(condition)) {
       throw new InvalidFiltersFormatError('Filters cannot be a raw array');
     }
     if (!_.isString(condition.field)
