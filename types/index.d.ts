@@ -325,6 +325,7 @@ export interface CollectionOptions {
   fields?: SmartFieldOptions[];
   actions?: SmartActionOptions[];
   segments?: SmartSegmentOptions[];
+  searchFields?: string[];
   fieldsToFlatten?: ({ field: string, level?: number } | string)[]
 }
 
