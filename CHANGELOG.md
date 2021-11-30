@@ -1,3 +1,10 @@
+## [8.4.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.4.3...v8.4.4) (2021-11-30)
+
+
+### Bug Fixes
+
+* add searchFields type in the collection options ([#733](https://github.com/ForestAdmin/forest-express-mongoose/issues/733)) ([f8656f6](https://github.com/ForestAdmin/forest-express-mongoose/commit/f8656f6740a78caafc8b6ac1c93e75942873581f))
+
 ## [8.4.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.4.2...v8.4.3) (2021-10-25)
 
 
