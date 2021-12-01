@@ -1,3 +1,11 @@
+## [8.4.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.4.4...v8.4.5) (2021-12-01)
+
+
+### Bug Fixes
+
+* clean implem and add coverage ([cad38c9](https://github.com/ForestAdmin/forest-express-mongoose/commit/cad38c9541ddd1e9377cd9b8a41f433578e7bccc))
+* prevent auto cast to objectId when customer forces a field to be a String ([aac5fd8](https://github.com/ForestAdmin/forest-express-mongoose/commit/aac5fd88a6084a68446b727dbbc0cc00ac81afa5))
+
 ## [8.4.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.4.3...v8.4.4) (2021-11-30)
 
 
