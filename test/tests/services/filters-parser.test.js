@@ -15,6 +15,7 @@ describe('service > filters-parser', () => {
     Mongoose: mongoose,
     connections: { mongoose },
   };
+  const { ObjectId } = mongoose.Types;
 
   beforeAll(async () => {
     islandForestSchema = {
@@ -25,6 +26,7 @@ describe('service > filters-parser', () => {
       searchFields: ['name'],
       fields: [
         { field: 'id', type: 'Number' },
+        { field: 'myObjectId', type: 'String' },
         { field: 'name', type: 'String' },
         { field: 'size', type: 'Number' },
         { field: 'isBig', type: 'Boolean' },
@@ -44,6 +46,9 @@ describe('service > filters-parser', () => {
             fields: [{
               field: 'weapon',
               type: 'String',
+            }, {
+              field: '_id',
+              type: 'ObjectId',
             }],
           },
         },
@@ -60,6 +65,7 @@ describe('service > filters-parser', () => {
     await mongooseConnect();
     const IslandSchema = new mongoose.Schema({
       id: { type: Number },
+      myObjectId: { type: ObjectId },
       name: { type: String },
       size: { type: Number },
       isBig: { type: Boolean },
@@ -74,6 +80,12 @@ describe('service > filters-parser', () => {
               comment: { type: String },
             },
           },
+        },
+      },
+      ships: {
+        type: {
+          weapon: { type: String },
+          _id: { type: ObjectId },
         },
       },
     });
@@ -104,6 +116,33 @@ describe('service > filters-parser', () => {
 
   afterEach(() => jest.restoreAllMocks());
 
+  describe('getParserForType', () => {
+    describe('with a String type', () => {
+      it('should not try to cast it to ObjectId', () => {
+        expect.assertions(3);
+
+        const parser = defaultParser.getParserForType('String');
+
+        expect(parser('53c2ae8528d75d572c06adbc')).toStrictEqual('53c2ae8528d75d572c06adbc');
+        expect(parser('Star Wars')).toStrictEqual('Star Wars');
+        expect(parser('20')).toStrictEqual('20');
+      });
+    });
+
+    describe('with an ObjectId type', () => {
+      it('should try to cast it to ObjectId', () => {
+        expect.assertions(4);
+
+        const parser = defaultParser.getParserForType('ObjectId');
+
+        expect(parser('53c2ae8528d75d572c06adbc')).toStrictEqual(ObjectId('53c2ae8528d75d572c06adbc'));
+        expect(parser('star wars with the same ')).toStrictEqual('star wars with the same ');
+        expect(parser('Star Wars')).toStrictEqual('Star Wars');
+        expect(parser('20')).toStrictEqual('20');
+      });
+    });
+  });
+
   describe('getParserForField', () => {
     describe('with an embedded field', () => {
       it('should return the parser for the nested field', async () => {
@@ -116,6 +155,75 @@ describe('service > filters-parser', () => {
 
         expect(defaultParser.getParserForType).toHaveBeenCalledTimes(1);
         expect(defaultParser.getParserForType).toHaveBeenCalledWith('String');
+
+        expect(fakeParser).not.toHaveBeenCalled();
+
+        expect(parserForField('myValue')).toStrictEqual('parsedValue');
+
+        expect(fakeParser).toHaveBeenCalledTimes(1);
+        expect(fakeParser).toHaveBeenCalledWith('myValue');
+
+        spy.mockRestore();
+      });
+
+      describe('with a nested ObjectId', () => {
+        it('should return the parser for the nested field', async () => {
+          expect.assertions(6);
+
+          const fakeParser = jest.fn().mockReturnValue('parsedValue');
+          const spy = jest.spyOn(defaultParser, 'getParserForType').mockReturnValue(fakeParser);
+
+          const parserForField = await defaultParser.getParserForField('ships:_id');
+
+          expect(defaultParser.getParserForType).toHaveBeenCalledTimes(1);
+          expect(defaultParser.getParserForType).toHaveBeenCalledWith('ObjectId');
+
+          expect(fakeParser).not.toHaveBeenCalled();
+
+          expect(parserForField('myValue')).toStrictEqual('parsedValue');
+
+          expect(fakeParser).toHaveBeenCalledTimes(1);
+          expect(fakeParser).toHaveBeenCalledWith('myValue');
+
+          spy.mockRestore();
+        });
+      });
+    });
+
+    describe('with a String', () => {
+      it('should return the string parser', async () => {
+        expect.assertions(6);
+
+        const fakeParser = jest.fn().mockReturnValue('parsedValue');
+        const spy = jest.spyOn(defaultParser, 'getParserForType').mockReturnValue(fakeParser);
+
+        const parserForField = await defaultParser.getParserForField('name');
+
+        expect(defaultParser.getParserForType).toHaveBeenCalledTimes(1);
+        expect(defaultParser.getParserForType).toHaveBeenCalledWith('String');
+
+        expect(fakeParser).not.toHaveBeenCalled();
+
+        expect(parserForField('myValue')).toStrictEqual('parsedValue');
+
+        expect(fakeParser).toHaveBeenCalledTimes(1);
+        expect(fakeParser).toHaveBeenCalledWith('myValue');
+
+        spy.mockRestore();
+      });
+    });
+
+    describe('with an ObjectId', () => {
+      it('should return the ObjectId parser', async () => {
+        expect.assertions(6);
+
+        const fakeParser = jest.fn().mockReturnValue('parsedValue');
+        const spy = jest.spyOn(defaultParser, 'getParserForType').mockReturnValue(fakeParser);
+
+        const parserForField = await defaultParser.getParserForField('myObjectId');
+
+        expect(defaultParser.getParserForType).toHaveBeenCalledTimes(1);
+        expect(defaultParser.getParserForType).toHaveBeenCalledWith('ObjectId');
 
         expect(fakeParser).not.toHaveBeenCalled();
 
