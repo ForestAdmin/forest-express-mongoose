@@ -61,7 +61,7 @@
     "mongoose": "5.13.9",
     "mongoose-fixture-loader": "1.0.2",
     "semantic-release": "17.4.7",
-    "semantic-release-npm-deprecate-old-versions": "1.1.2",
+    "semantic-release-npm-deprecate-old-versions": "1.1.6",
     "semantic-release-slack-bot": "2.1.1",
     "simple-git": "1.65.0",
     "typescript": "4.3.3"
