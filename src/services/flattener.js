@@ -103,6 +103,16 @@ module.exports = class Flattener {
   }
 
   static requestUnflattener(request, response, next) {
+    /*
+      The responsible of constructing the csv file is Forest Express. It needs to keep the exact
+      fields which has been demanded by the UI, that's why we can't unflatten them to preserve
+      integrity. The resources-exporter service will be in charge of fetching the database
+      flattened field correspond to the unflattened attribute demanded
+     */
+    if (request.originalUrl.includes('.csv?')) {
+      return next();
+    }
+
     try {
       if (!_.isEmpty(request.body?.data?.attributes)) {
         Flattener._unflattenAttributes(request);
@@ -117,8 +127,23 @@ module.exports = class Flattener {
       if (!_.isEmpty(request.query?.context)) {
         request.query.context.field = Flattener.unflattenFieldName(request.query.context.field);
       }
-      next();
-    } catch (error) { next(error); }
+      return next();
+    } catch (error) { return next(error); }
+  }
+
+  static paramsUnflattener(params) {
+    const unflattenedParams = JSON.parse(JSON.stringify(params));
+
+    if (unflattenedParams.fields) {
+      Object.entries(unflattenedParams.fields).forEach(([collection, requestedFields]) => {
+        if (Flattener._isFieldFlattened(requestedFields)) {
+          unflattenedParams
+            .fields[collection] = Flattener._unflattenCollectionFields(requestedFields);
+        }
+      });
+    }
+
+    return unflattenedParams;
   }
 
   validateOptions() {
@@ -229,6 +254,32 @@ module.exports = class Flattener {
     return flattenedRecord;
   }
 
+  static flattenRecordDataForExports(record, flattenComposedKey, flattenedFields) {
+    if (flattenedFields.length === 0) return record;
+
+    const flattenedRecord = {};
+
+    Object.keys(record).forEach((attribute) => {
+      if (typeof record[attribute] === 'object') {
+        const flattenedPath = (flattenComposedKey) ? `${flattenComposedKey}${FLATTEN_SEPARATOR}${attribute}` : attribute;
+
+        if (flattenedFields.find((flattenedField) => flattenedField === flattenedPath)) {
+          flattenedRecord[attribute] = record[attribute];
+        } else {
+          const flattenedNested = Flattener
+            .flattenRecordDataForUpdates(record[attribute], flattenedPath, flattenedFields);
+          Object.keys(flattenedNested).forEach((nestedAttribute) => {
+            flattenedRecord[`${attribute}->${nestedAttribute}`] = flattenedNested[nestedAttribute];
+          });
+        }
+      } else {
+        flattenedRecord[attribute] = record[attribute];
+      }
+    });
+
+    return flattenedRecord;
+  }
+
   static getFlattenedFieldsName(fields) {
     return fields
       .filter((field) => Flattener._isFieldFlattened(field.field))
@@ -248,5 +299,39 @@ module.exports = class Flattener {
 
     return flattenedReferences.filter((flattenedReference) =>
       collectionReferenceFields.some(({ field }) => field === flattenedReference));
+  }
+
+  static generateFlattenMapFromModelName(modelName) {
+    const flattenMap = {};
+    const modelFields = Interface.Schemas.schemas[modelName].fields;
+    const flattenedFields = modelFields.filter((field) => this._isFieldFlattened(field.field));
+
+    flattenedFields.forEach((field) => {
+      const [baseField, ...accessor] = this.splitOnSeparator(field.field);
+      if (!flattenMap[baseField]) {
+        flattenMap[baseField] = [accessor];
+      } else {
+        flattenMap[baseField].push(accessor);
+      }
+    });
+
+    return flattenMap;
+  }
+
+  static flattenRecordForExport(modelName, records) {
+    const flattenMap = this.generateFlattenMapFromModelName(modelName);
+
+    Object.entries(flattenMap).forEach(([field, accessors]) => {
+      records.forEach((record) => {
+        accessors.forEach((accessor) => {
+          const attribute = (field + FLATTEN_SEPARATOR).concat(accessor.join(FLATTEN_SEPARATOR));
+          record[attribute] = [field, ...accessor]
+            .reduce((a, prop) => (a ? a[prop] : null), record);
+        });
+        delete record[field];
+      });
+    });
+
+    return records;
   }
 };
