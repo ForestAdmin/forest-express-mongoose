@@ -64,17 +64,19 @@ class QueryBuilder {
       joinQuery.push({
         $lookup: {
           from: subModel.collection.name,
-          localField: field.field,
+          localField: Flattener.unflattenFieldName(field.field),
           foreignField: referencedKey,
-          as: field.field,
+          as: Flattener.unflattenFieldName(field.field),
         },
       });
 
-      const fieldPath = field.field && this._model.schema.path(field.field);
+      const fieldPath = field.field
+        && this._model.schema.path(Flattener.unflattenFieldName(field.field));
+
       if (fieldPath && fieldPath.instance !== 'Array') {
         joinQuery.push({
           $unwind: {
-            path: `$${field.field}`,
+            path: `$${Flattener.unflattenFieldName(field.field)}`,
             preserveNullAndEmptyArrays: true,
           },
         });
@@ -85,7 +87,12 @@ class QueryBuilder {
   }
 
   async joinAllReferences(jsonQuery, alreadyJoinedQuery) {
-    const fieldNames = await this.getFieldNamesRequested();
+    let fieldNames = await this.getFieldNamesRequested();
+    const flattenReferenceNames = Flattener
+      .getFlattenedReferenceFieldsFromParams(this._model.collection.name, this._params.fields);
+
+    fieldNames = [...fieldNames, ...flattenReferenceNames];
+
     this._schema.fields.forEach((field) => {
       if ((fieldNames && !fieldNames.includes(field.field))
           || QueryBuilder._joinAlreadyExists(field, alreadyJoinedQuery)) {

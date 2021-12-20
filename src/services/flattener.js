@@ -234,4 +234,23 @@ module.exports = class Flattener {
       .filter((field) => Flattener._isFieldFlattened(field.field))
       .map((field) => field.field);
   }
+
+  static getFlattenedReferenceFieldsFromParams(collectionName, fields) {
+    if (!collectionName || !fields) {
+      return [];
+    }
+
+    const flattenReferences = Object.keys(fields)
+      .filter((field) => Flattener._isFieldFlattened(field));
+
+    const collectionFields = Interface.Schemas.schemas[collectionName]?.fields || [];
+
+    return flattenReferences.filter((flattenReference) => {
+      const fieldFound = collectionFields
+        .find((collectionField) => collectionField.field === flattenReference
+          && collectionField.reference);
+
+      return fieldFound?.field;
+    });
+  }
 };
