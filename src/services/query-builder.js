@@ -70,8 +70,7 @@ class QueryBuilder {
         },
       });
 
-      const fieldPath = field.field
-        && this._model.schema.path(Flattener.unflattenFieldName(field.field));
+      const fieldPath = this._model.schema.path(Flattener.unflattenFieldName(field.field));
 
       if (fieldPath && fieldPath.instance !== 'Array') {
         joinQuery.push({
