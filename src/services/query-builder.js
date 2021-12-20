@@ -90,7 +90,7 @@ class QueryBuilder {
     const flattenReferenceNames = Flattener
       .getFlattenedReferenceFieldsFromParams(this._model.collection.name, this._params.fields);
 
-    fieldNames = [...fieldNames, ...flattenReferenceNames];
+    fieldNames = flattenReferenceNames.concat(fieldNames);
 
     this._schema.fields.forEach((field) => {
       if ((fieldNames && !fieldNames.includes(field.field))
