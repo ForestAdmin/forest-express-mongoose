@@ -798,7 +798,7 @@ describe('service > Flattener', () => {
       });
     });
 
-    describe('when references requested belongs to the collection', () => {
+    describe('when requested references belongs to the collection', () => {
       it('should include the references', () => {
         expect.assertions(1);
 
