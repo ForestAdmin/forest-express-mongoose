@@ -782,7 +782,7 @@ describe('service > Flattener', () => {
       });
     });
 
-    describe('when no reference requested is not part of the collection', () => {
+    describe('when requested reference is not part of the collection', () => {
       it('should not include the wrong reference', () => {
         expect.assertions(1);
 
@@ -818,8 +818,8 @@ describe('service > Flattener', () => {
       });
     });
 
-    describe('when references requested are actually not references', () => {
-      it('should not include the wrong references', () => {
+    describe('when requested references are actually not references', () => {
+      it('should not include non reference fields', () => {
         expect.assertions(1);
 
         const fields = {
