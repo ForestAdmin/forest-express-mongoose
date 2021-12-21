@@ -680,4 +680,159 @@ describe('service > Flattener', () => {
       expect(result).toStrictEqual([`engine${FLATTEN_SEPARATOR}horsePower`, `engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}manufacturer`]);
     });
   });
+
+  describe('getFlattenedReferenceFieldsFromFieldNames', () => {
+    beforeEach(() => {
+      Interface.Schemas.schemas = {
+        cars: {
+          fields: [{
+            field: 'name',
+            type: 'String',
+            defaultValue: null,
+            enums: null,
+            integration: null,
+            isFilterable: true,
+            isPrimaryKey: false,
+            isReadOnly: false,
+            isRequired: false,
+            isSortable: true,
+            isVirtual: false,
+            reference: null,
+            inverseOf: null,
+            validations: [],
+          }, {
+            field: 'engine@@@horsePower',
+            type: 'String',
+            defaultValue: null,
+            enums: null,
+            integration: null,
+            isFilterable: true,
+            isPrimaryKey: false,
+            isReadOnly: false,
+            isRequired: false,
+            isSortable: true,
+            isVirtual: false,
+            reference: null,
+            inverseOf: null,
+            validations: [],
+          }, {
+            field: 'engine@@@identification@@@manufacturer',
+            type: 'String',
+            defaultValue: null,
+            enums: null,
+            integration: null,
+            isFilterable: true,
+            isPrimaryKey: false,
+            isReadOnly: false,
+            isRequired: false,
+            isSortable: true,
+            isVirtual: false,
+            reference: 'companies._id',
+            inverseOf: null,
+            validations: [],
+          }, {
+            field: 'engine@@@owner',
+            type: 'String',
+            defaultValue: null,
+            enums: null,
+            integration: null,
+            isFilterable: true,
+            isPrimaryKey: false,
+            isReadOnly: false,
+            isRequired: false,
+            isSortable: true,
+            isVirtual: false,
+            reference: 'companies._id',
+            inverseOf: null,
+            validations: [],
+          }],
+        },
+      };
+    });
+
+    afterEach(() => {
+      Interface.Schemas = {};
+    });
+
+    describe('when not fields are actually present on the collection', () => {
+      it('should return an empty array', () => {
+        expect.assertions(1);
+
+        Interface.Schemas.schemas.cars.fields = [];
+
+        const referenceNestedFields = Flattener
+          .getFlattenedReferenceFieldsFromParams('cars', {});
+
+        expect(referenceNestedFields).toStrictEqual([]);
+      });
+    });
+
+    describe('when no references has been requested in the fields', () => {
+      it('should return an empty array', () => {
+        expect.assertions(1);
+
+        const fields = {
+          cars: ['name'],
+        };
+
+        const referenceNestedFields = Flattener
+          .getFlattenedReferenceFieldsFromParams('cars', fields);
+
+        expect(referenceNestedFields).toStrictEqual([]);
+      });
+    });
+
+    describe('when requested reference is not part of the collection', () => {
+      it('should not include the wrong reference', () => {
+        expect.assertions(1);
+
+        const fields = {
+          cars: ['name'],
+          'cars@@@notexisting': ['name'],
+        };
+
+        const referenceNestedFields = Flattener
+          .getFlattenedReferenceFieldsFromParams('cars', fields);
+
+        expect(referenceNestedFields).toStrictEqual([]);
+      });
+    });
+
+    describe('when requested references belongs to the collection', () => {
+      it('should include the references', () => {
+        expect.assertions(1);
+
+        const fields = {
+          cars: ['name'],
+          'engine@@@identification@@@manufacturer': ['name'],
+          'engine@@@owner': ['name'],
+        };
+
+        const referenceNestedFields = Flattener
+          .getFlattenedReferenceFieldsFromParams('cars', fields);
+
+        expect(referenceNestedFields).toStrictEqual([
+          'engine@@@identification@@@manufacturer',
+          'engine@@@owner',
+        ]);
+      });
+    });
+
+    describe('when requested references are actually not references', () => {
+      it('should not include non reference fields', () => {
+        expect.assertions(1);
+
+        const fields = {
+          cars: ['name'],
+          'engine@@@horsePower': ['name'],
+          'engine@@@owner': ['name'],
+        };
+
+        const referenceNestedFields = Flattener
+          .getFlattenedReferenceFieldsFromParams('cars', fields);
+
+        expect(referenceNestedFields).toStrictEqual(['engine@@@owner']);
+      });
+    });
+  });
 });

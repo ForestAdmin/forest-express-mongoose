@@ -55,26 +55,27 @@ class QueryBuilder {
 
   addJoinToQuery(field, joinQuery) {
     if (field.reference && !field.isVirtual && !field.integration) {
-      if (QueryBuilder._joinAlreadyExists(field, joinQuery)) {
-        return this;
-      }
+      if (QueryBuilder._joinAlreadyExists(field, joinQuery)) return this;
 
       const referencedKey = utils.getReferenceField(field.reference);
       const subModel = utils.getReferenceModel(this._opts, field.reference);
+      const unflattenedFieldName = Flattener.unflattenFieldName(field.field);
+
       joinQuery.push({
         $lookup: {
           from: subModel.collection.name,
-          localField: field.field,
+          localField: unflattenedFieldName,
           foreignField: referencedKey,
-          as: field.field,
+          as: unflattenedFieldName,
         },
       });
 
-      const fieldPath = field.field && this._model.schema.path(field.field);
+      const fieldPath = unflattenedFieldName && this._model.schema.path(unflattenedFieldName);
+
       if (fieldPath && fieldPath.instance !== 'Array') {
         joinQuery.push({
           $unwind: {
-            path: `$${field.field}`,
+            path: `$${unflattenedFieldName}`,
             preserveNullAndEmptyArrays: true,
           },
         });
@@ -85,7 +86,12 @@ class QueryBuilder {
   }
 
   async joinAllReferences(jsonQuery, alreadyJoinedQuery) {
-    const fieldNames = await this.getFieldNamesRequested();
+    let fieldNames = await this.getFieldNamesRequested();
+    const flattenReferenceNames = Flattener
+      .getFlattenedReferenceFieldsFromParams(this._model.collection.name, this._params.fields);
+
+    fieldNames = flattenReferenceNames.concat(fieldNames);
+
     this._schema.fields.forEach((field) => {
       if ((fieldNames && !fieldNames.includes(field.field))
           || QueryBuilder._joinAlreadyExists(field, alreadyJoinedQuery)) {

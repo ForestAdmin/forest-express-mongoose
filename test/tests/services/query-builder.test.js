@@ -9,6 +9,7 @@ const FLATTEN_SEPARATOR = '@@@';
 describe('service > query-builder', () => {
   let TreeModel;
   let LumberJackModel;
+  let CarsModel;
 
   const options = {
     Mongoose: mongoose,
@@ -18,6 +19,17 @@ describe('service > query-builder', () => {
   beforeAll(async () => {
     Interface.Schemas = {
       schemas: {
+        Cars: {
+          name: 'Cars',
+          idField: 'id',
+          primaryKeys: ['id'],
+          isCompositePrimary: false,
+          searchFields: ['name'],
+          fields: [
+            { field: 'engine@@@owner', type: 'String', reference: 'LumberJack._id' },
+            { field: 'name', type: 'String' },
+          ],
+        },
         LumberJack: {
           name: 'LumberJack',
           idField: 'id',
@@ -58,9 +70,17 @@ describe('service > query-builder', () => {
       age: { type: String },
       owner: { type: 'ObjectId' },
     });
+    const CarsSchema = new mongoose.Schema({
+      id: { type: Number },
+      name: { type: String },
+      engine: {
+        owner: { type: 'ObjectId' },
+      },
+    });
 
     LumberJackModel = mongoose.model('LumberJack', LumberJackSchema);
     TreeModel = mongoose.model('Tree', TreeSchema);
+    CarsModel = mongoose.model('Cars', CarsSchema);
 
     await Promise.all([LumberJackModel.deleteMany({}), TreeModel.deleteMany({})]);
     await Promise.all([
@@ -149,6 +169,36 @@ describe('service > query-builder', () => {
         const joins = [];
         queryBuilder.addJoinToQuery(field, joins);
         expect(joins).toHaveLength(0);
+      });
+    });
+
+    describe('on flattened reference field', () => {
+      it('should unflatten the field and add the join correctly', () => {
+        expect.assertions(1);
+        const queryBuilder = new QueryBuilder(CarsModel, {
+          timezone: 'Europe/Paris',
+        }, options);
+
+        const field = {
+          field: 'engine@@@owner',
+          displayName: 'engine@@@owner',
+          type: 'String',
+          reference: 'LumberJack._id',
+        };
+
+        const expectedJoin = {
+          $lookup: {
+            from: 'lumberjacks',
+            localField: 'engine.owner',
+            foreignField: '_id',
+            as: 'engine.owner',
+          },
+        };
+
+        const jsonQuery = [];
+        queryBuilder.addJoinToQuery(field, jsonQuery);
+        expect(jsonQuery[0])
+          .toStrictEqual(expectedJoin);
       });
     });
   });
