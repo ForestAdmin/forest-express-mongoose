@@ -240,21 +240,13 @@ module.exports = class Flattener {
       return [];
     }
 
-    const flattenReferences = Object.keys(fields)
+    const flattenedReferences = Object.keys(fields)
       .filter((field) => Flattener._isFieldFlattened(field));
 
-    const collectionFields = Interface.Schemas.schemas[collectionName]?.fields || [];
+    const collectionReferenceFields = (Interface.Schemas.schemas[collectionName]?.fields || [])
+      .filter(({ reference }) => reference);
 
-    return flattenReferences.reduce((referencesFound, flattenReference) => {
-      const fieldFound = collectionFields
-        .find((collectionField) => collectionField.field === flattenReference
-          && collectionField.reference);
-
-      if (fieldFound) {
-        referencesFound.push(fieldFound.field);
-      }
-
-      return referencesFound;
-    }, []);
+    return flattenedReferences.filter((flattenedReference) =>
+      collectionReferenceFields.some(({ field }) => field === flattenedReference));
   }
 };
