@@ -1,3 +1,10 @@
+## [8.4.6](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.4.5...v8.4.6) (2021-12-21)
+
+
+### Bug Fixes
+
+* **fields-flattener:** flattened nested references are now correctly fetched ([#749](https://github.com/ForestAdmin/forest-express-mongoose/issues/749)) ([9be668c](https://github.com/ForestAdmin/forest-express-mongoose/commit/9be668cd6ea2519f3aa08455edb0d8c850d8a808))
+
 ## [8.4.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.4.4...v8.4.5) (2021-12-01)
 
 
