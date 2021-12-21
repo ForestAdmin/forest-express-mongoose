@@ -55,27 +55,27 @@ class QueryBuilder {
 
   addJoinToQuery(field, joinQuery) {
     if (field.reference && !field.isVirtual && !field.integration) {
-      if (QueryBuilder._joinAlreadyExists(field, joinQuery)) {
-        return this;
-      }
+      if (QueryBuilder._joinAlreadyExists(field, joinQuery)) return this;
 
       const referencedKey = utils.getReferenceField(field.reference);
       const subModel = utils.getReferenceModel(this._opts, field.reference);
+      const unflattenedFieldName = Flattener.unflattenFieldName(field.field);
+
       joinQuery.push({
         $lookup: {
           from: subModel.collection.name,
-          localField: Flattener.unflattenFieldName(field.field),
+          localField: unflattenedFieldName,
           foreignField: referencedKey,
-          as: Flattener.unflattenFieldName(field.field),
+          as: unflattenedFieldName,
         },
       });
 
-      const fieldPath = this._model.schema.path(Flattener.unflattenFieldName(field.field));
+      const fieldPath = unflattenedFieldName && this._model.schema.path(unflattenedFieldName);
 
       if (fieldPath && fieldPath.instance !== 'Array') {
         joinQuery.push({
           $unwind: {
-            path: `$${Flattener.unflattenFieldName(field.field)}`,
+            path: `$${unflattenedFieldName}`,
             preserveNullAndEmptyArrays: true,
           },
         });
