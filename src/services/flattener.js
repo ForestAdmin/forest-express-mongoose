@@ -245,12 +245,16 @@ module.exports = class Flattener {
 
     const collectionFields = Interface.Schemas.schemas[collectionName]?.fields || [];
 
-    return flattenReferences.filter((flattenReference) => {
+    return flattenReferences.reduce((referencesFound, flattenReference) => {
       const fieldFound = collectionFields
         .find((collectionField) => collectionField.field === flattenReference
           && collectionField.reference);
 
-      return fieldFound?.field;
-    });
+      if (fieldFound) {
+        referencesFound.push(fieldFound.field);
+      }
+
+      return referencesFound;
+    }, []);
   }
 };

@@ -682,7 +682,7 @@ describe('service > Flattener', () => {
   });
 
   describe('getFlattenedReferenceFieldsFromFieldNames', () => {
-    beforeAll(() => {
+    beforeEach(() => {
       Interface.Schemas.schemas = {
         cars: {
           fields: [{
@@ -750,7 +750,7 @@ describe('service > Flattener', () => {
       };
     });
 
-    afterAll(() => {
+    afterEach(() => {
       Interface.Schemas = {};
     });
 
@@ -819,7 +819,7 @@ describe('service > Flattener', () => {
     });
 
     describe('when references requested are actually not references', () => {
-      it('should include the wrong references', () => {
+      it('should not include the wrong references', () => {
         expect.assertions(1);
 
         const fields = {
