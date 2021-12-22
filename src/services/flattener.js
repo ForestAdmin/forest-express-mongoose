@@ -254,32 +254,6 @@ module.exports = class Flattener {
     return flattenedRecord;
   }
 
-  static flattenRecordDataForExports(record, flattenComposedKey, flattenedFields) {
-    if (flattenedFields.length === 0) return record;
-
-    const flattenedRecord = {};
-
-    Object.keys(record).forEach((attribute) => {
-      if (typeof record[attribute] === 'object') {
-        const flattenedPath = (flattenComposedKey) ? `${flattenComposedKey}${FLATTEN_SEPARATOR}${attribute}` : attribute;
-
-        if (flattenedFields.find((flattenedField) => flattenedField === flattenedPath)) {
-          flattenedRecord[attribute] = record[attribute];
-        } else {
-          const flattenedNested = Flattener
-            .flattenRecordDataForUpdates(record[attribute], flattenedPath, flattenedFields);
-          Object.keys(flattenedNested).forEach((nestedAttribute) => {
-            flattenedRecord[`${attribute}->${nestedAttribute}`] = flattenedNested[nestedAttribute];
-          });
-        }
-      } else {
-        flattenedRecord[attribute] = record[attribute];
-      }
-    });
-
-    return flattenedRecord;
-  }
-
   static getFlattenedFieldsName(fields) {
     return fields
       .filter((field) => Flattener._isFieldFlattened(field.field))
