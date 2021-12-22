@@ -179,6 +179,42 @@ describe('service > Flattener', () => {
       .spyOn(Interface.logger, 'warn');
   });
 
+  describe('paramsUnflattener', () => {
+    const fieldParams = {
+      fields: {
+        cars: '_id,name,engine@@@owner,engine@@@identification@@@manufacturer,engine@@@horsePower',
+      },
+    };
+
+    it('should return a copy of the params', () => {
+      expect.assertions(1);
+
+      const unflattenedParams = Flattener.paramsUnflattener(fieldParams);
+
+      expect(unflattenedParams).not.toBe(fieldParams);
+    });
+
+    it('should not update unflattened fields', () => {
+      expect.assertions(2);
+
+      const unflattenedParams = Flattener.paramsUnflattener(fieldParams);
+
+      expect(unflattenedParams.fields.cars).toContain('_id');
+      expect(unflattenedParams.fields.cars).toContain('name');
+    });
+
+    it('should regroup flattened fields to their unflattened one', () => {
+      expect.assertions(4);
+
+      const unflattenedParams = Flattener.paramsUnflattener(fieldParams);
+
+      expect(unflattenedParams.fields.cars).toContain('engine');
+      expect(unflattenedParams.fields.cars).not.toContain('engine@@@owner');
+      expect(unflattenedParams.fields.cars).not.toContain('engine@@@identification@@@manufacturer');
+      expect(unflattenedParams.fields.cars).not.toContain('engine@@@horsePower');
+    });
+  });
+
   describe('validating the flatten property', () => {
     describe('when the flatten property is not an array', () => {
       it('should display an error message', () => {
