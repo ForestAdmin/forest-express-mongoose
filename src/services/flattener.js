@@ -301,35 +301,32 @@ module.exports = class Flattener {
       collectionReferenceFields.some(({ field }) => field === flattenedReference));
   }
 
-  static generateFlattenMapFromModelName(modelName) {
-    const flattenMap = {};
-    const modelFields = Interface.Schemas.schemas[modelName].fields;
-    const flattenedFields = modelFields.filter((field) => this._isFieldFlattened(field.field));
+  static generateNestedPathsFromModelName(modelName) {
+    if (!modelName) return [];
 
-    flattenedFields.forEach((field) => {
-      const [baseField, ...accessor] = this.splitOnSeparator(field.field);
-      if (!flattenMap[baseField]) {
-        flattenMap[baseField] = [accessor];
-      } else {
-        flattenMap[baseField].push(accessor);
-      }
-    });
+    const modelFields = Interface.Schemas.schemas[modelName]?.fields;
+    const flattenedFields = modelFields
+      .filter((field) => this._isFieldFlattened(field.field) && !Array.isArray(field.type));
 
-    return flattenMap;
+    return flattenedFields.map((field) => this.splitOnSeparator(field.field));
   }
 
   static flattenRecordForExport(modelName, records) {
-    const flattenMap = this.generateFlattenMapFromModelName(modelName);
+    const nestedPaths = this.generateNestedPathsFromModelName(modelName);
 
-    Object.entries(flattenMap).forEach(([field, accessors]) => {
-      records.forEach((record) => {
-        accessors.forEach((accessor) => {
-          const attribute = (field + FLATTEN_SEPARATOR).concat(accessor.join(FLATTEN_SEPARATOR));
-          record[attribute] = [field, ...accessor]
-            .reduce((a, prop) => (a ? a[prop] : null), record);
-        });
-        delete record[field];
+    if (!nestedPaths || nestedPaths.length === 0) return records;
+
+    records.forEach((record) => {
+      const flattenedFields = new Set();
+
+      nestedPaths.forEach((nestedPath) => {
+        const flattenFieldName = nestedPath.join(FLATTEN_SEPARATOR);
+        record[flattenFieldName] = nestedPath
+          .reduce((embedded, attribute) => (embedded ? embedded[attribute] : null), record);
+        flattenedFields.add(nestedPath[0]);
       });
+
+      flattenedFields.forEach((flattenedField) => delete record[flattenedField]);
     });
 
     return records;

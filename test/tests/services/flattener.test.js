@@ -7,6 +7,126 @@ describe('service > Flattener', () => {
   let errorLoggerSpy;
   let warnLoggerSpy;
 
+  const schemaFields = {
+    name: {
+      field: 'name',
+      type: 'String',
+      defaultValue: null,
+      enums: null,
+      integration: null,
+      isFilterable: true,
+      isPrimaryKey: false,
+      isReadOnly: false,
+      isRequired: false,
+      isSortable: true,
+      isVirtual: false,
+      reference: null,
+      inverseOf: null,
+      validations: [],
+    },
+    'engine@@@horsePower': {
+      field: 'engine@@@horsePower',
+      type: 'String',
+      defaultValue: null,
+      enums: null,
+      integration: null,
+      isFilterable: true,
+      isPrimaryKey: false,
+      isReadOnly: false,
+      isRequired: false,
+      isSortable: true,
+      isVirtual: false,
+      reference: null,
+      inverseOf: null,
+      validations: [],
+    },
+    'engine@@@identification@@@manufacturer': {
+      field: 'engine@@@identification@@@manufacturer',
+      type: 'String',
+      defaultValue: null,
+      enums: null,
+      integration: null,
+      isFilterable: true,
+      isPrimaryKey: false,
+      isReadOnly: false,
+      isRequired: false,
+      isSortable: true,
+      isVirtual: false,
+      reference: 'companies._id',
+      inverseOf: null,
+      validations: [],
+    },
+    'engine@@@owner': {
+      field: 'engine@@@owner',
+      type: 'String',
+      defaultValue: null,
+      enums: null,
+      integration: null,
+      isFilterable: true,
+      isPrimaryKey: false,
+      isReadOnly: false,
+      isRequired: false,
+      isSortable: true,
+      isVirtual: false,
+      reference: 'companies._id',
+      inverseOf: null,
+      validations: [],
+    },
+    'engine@@@partners': {
+      field: 'engine@@@partners',
+      type: ['String'],
+      defaultValue: null,
+      enums: null,
+      integration: null,
+      isFilterable: true,
+      isPrimaryKey: false,
+      isReadOnly: false,
+      isRequired: false,
+      isSortable: true,
+      isVirtual: false,
+      reference: 'companies._id',
+      inverseOf: null,
+      validations: [],
+    },
+    engine: {
+      field: 'engine',
+      type: {
+        fields: [{
+          field: 'identification',
+          type: {
+            fields: [{
+              field: 'manufacturer',
+              type: 'String',
+              reference: 'companies._id',
+            }],
+          },
+        },
+        {
+          field: 'owner',
+          type: 'String',
+          reference: 'companies._id',
+        }, {
+          field: 'partners',
+          type: ['String'],
+        }, {
+          field: 'horsePower',
+          type: 'String',
+        }],
+      },
+      defaultValue: null,
+      enums: null,
+      integration: null,
+      isFilterable: true,
+      isPrimaryKey: false,
+      isReadOnly: false,
+      isRequired: false,
+      isSortable: true,
+      isVirtual: false,
+      reference: null,
+      inverseOf: null,
+      validations: [],
+    },
+  };
   const generateEngineSchema = () => ({
     name: 'cars',
     fields: [{
@@ -37,9 +157,22 @@ describe('service > Flattener', () => {
       },
     }],
   });
-
+  const addFieldsToSchema = (fieldNames) => {
+    fieldNames.forEach((fieldName) => {
+      Interface.Schemas.schemas.cars.fields.push(schemaFields[fieldName]);
+    });
+  };
+  const addAllFieldsToSchema = () => {
+    addFieldsToSchema(Object.keys(schemaFields));
+  };
+  const addNonFlattenedFields = () => {
+    addFieldsToSchema(['name', 'engine']);
+  };
 
   beforeAll(() => {
+    Interface.Schemas.schemas.cars = {
+      fields: [],
+    };
     errorLoggerSpy = jest
       .spyOn(Interface.logger, 'error');
     warnLoggerSpy = jest
@@ -433,6 +566,7 @@ describe('service > Flattener', () => {
       const mockResponse = {};
       const mockNext = jest.fn();
       const request = {
+        originalUrl: '',
         query: {
           fields: {
             cars: `company,name,engine${FLATTEN_SEPARATOR}horsepower,engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}serialNumber,wheelSize`,
@@ -445,12 +579,10 @@ describe('service > Flattener', () => {
         expect.assertions(2);
         Flattener.requestUnflattener(request, mockResponse, mockNext);
 
-        expect(request).toStrictEqual({
-          query: {
-            fields: {
-              cars: 'company,name,engine,wheelSize',
-              company: 'name',
-            },
+        expect(request.query).toStrictEqual({
+          fields: {
+            cars: 'company,name,engine,wheelSize',
+            company: 'name',
           },
         });
         expect(mockNext).toHaveBeenCalledTimes(1);
@@ -461,6 +593,7 @@ describe('service > Flattener', () => {
       const mockResponse = {};
       const mockNext = jest.fn();
       const request = {
+        originalUrl: '',
         body: {
           data: {
             attributes: {
@@ -477,18 +610,16 @@ describe('service > Flattener', () => {
 
         Flattener.requestUnflattener(request, mockResponse, mockNext);
 
-        expect(request).toStrictEqual({
-          body: {
-            data: {
-              attributes: {
-                engine: {
-                  horsePower: '125cv',
-                  identification: {
-                    serialNumber: '1234567',
-                  },
+        expect(request.body).toStrictEqual({
+          data: {
+            attributes: {
+              engine: {
+                horsePower: '125cv',
+                identification: {
+                  serialNumber: '1234567',
                 },
-                name: 'Car',
               },
+              name: 'Car',
             },
           },
         });
@@ -500,6 +631,7 @@ describe('service > Flattener', () => {
       const mockResponse = {};
       const mockNext = jest.fn();
       const request = {
+        originalUrl: '',
         body: {
           data: {
             attributes: {
@@ -521,18 +653,16 @@ describe('service > Flattener', () => {
 
         Flattener.requestUnflattener(request, mockResponse, mockNext);
 
-        expect(request).toStrictEqual({
-          body: {
-            data: {
-              attributes: {
-                all_records_subset_query: {
-                  'fields[cars]': '_id,company,name,wheelSize,engine',
-                  'fields[company]': 'name',
-                  'page[number]': 1,
-                  'page[size]': 15,
-                  sort: '-_id',
-                  searchExtended: 0,
-                },
+        expect(request.body).toStrictEqual({
+          data: {
+            attributes: {
+              all_records_subset_query: {
+                'fields[cars]': '_id,company,name,wheelSize,engine',
+                'fields[company]': 'name',
+                'page[number]': 1,
+                'page[size]': 15,
+                sort: '-_id',
+                searchExtended: 0,
               },
             },
           },
@@ -545,6 +675,7 @@ describe('service > Flattener', () => {
       const mockResponse = {};
       const mockNext = jest.fn();
       const request = {
+        originalUrl: '',
         query: {
           timezone: 'Europe/Paris',
           context: {
@@ -564,21 +695,47 @@ describe('service > Flattener', () => {
 
         Flattener.requestUnflattener(request, mockResponse, mockNext);
 
-        expect(request).toStrictEqual({
-          query: {
-            timezone: 'Europe/Paris',
-            context: {
-              relationship: 'BelongsTo',
-              field: 'engine.identification.company',
-              collection: 'cars',
-              recordId: '5f928f4f1eedcfbce937bbce',
-            },
-            fields: { companies: 'name' },
-            search: 'Renault',
-            searchToEdit: 'true',
+        expect(request.query).toStrictEqual({
+          timezone: 'Europe/Paris',
+          context: {
+            relationship: 'BelongsTo',
+            field: 'engine.identification.company',
+            collection: 'cars',
+            recordId: '5f928f4f1eedcfbce937bbce',
           },
+          fields: { companies: 'name' },
+          search: 'Renault',
+          searchToEdit: 'true',
         });
         expect(mockNext).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('for a csv export request', () => {
+      const mockResponse = {};
+      const mockNext = jest.fn();
+      const request = {
+        originalUrl: 'http://localhost:3311/forest/cars.csv?',
+        query: {
+          timezone: 'Europe/Paris',
+          filename: 'cars',
+          header: 'id,engine->horse power,engine->owner',
+          fields: { cars: '_id,engine@@@horsePower,engine@@@owner' },
+        },
+      };
+
+      it('should not touch the request', () => {
+        expect.assertions(2);
+
+        Flattener.requestUnflattener(request, mockResponse, mockNext);
+
+        expect(mockNext).toHaveBeenCalledTimes(1);
+        expect(request.query).toStrictEqual({
+          timezone: 'Europe/Paris',
+          filename: 'cars',
+          header: 'id,engine->horse power,engine->owner',
+          fields: { cars: '_id,engine@@@horsePower,engine@@@owner' },
+        });
       });
     });
   });
@@ -683,82 +840,12 @@ describe('service > Flattener', () => {
 
   describe('getFlattenedReferenceFieldsFromFieldNames', () => {
     beforeEach(() => {
-      Interface.Schemas.schemas = {
-        cars: {
-          fields: [{
-            field: 'name',
-            type: 'String',
-            defaultValue: null,
-            enums: null,
-            integration: null,
-            isFilterable: true,
-            isPrimaryKey: false,
-            isReadOnly: false,
-            isRequired: false,
-            isSortable: true,
-            isVirtual: false,
-            reference: null,
-            inverseOf: null,
-            validations: [],
-          }, {
-            field: 'engine@@@horsePower',
-            type: 'String',
-            defaultValue: null,
-            enums: null,
-            integration: null,
-            isFilterable: true,
-            isPrimaryKey: false,
-            isReadOnly: false,
-            isRequired: false,
-            isSortable: true,
-            isVirtual: false,
-            reference: null,
-            inverseOf: null,
-            validations: [],
-          }, {
-            field: 'engine@@@identification@@@manufacturer',
-            type: 'String',
-            defaultValue: null,
-            enums: null,
-            integration: null,
-            isFilterable: true,
-            isPrimaryKey: false,
-            isReadOnly: false,
-            isRequired: false,
-            isSortable: true,
-            isVirtual: false,
-            reference: 'companies._id',
-            inverseOf: null,
-            validations: [],
-          }, {
-            field: 'engine@@@owner',
-            type: 'String',
-            defaultValue: null,
-            enums: null,
-            integration: null,
-            isFilterable: true,
-            isPrimaryKey: false,
-            isReadOnly: false,
-            isRequired: false,
-            isSortable: true,
-            isVirtual: false,
-            reference: 'companies._id',
-            inverseOf: null,
-            validations: [],
-          }],
-        },
-      };
-    });
-
-    afterEach(() => {
-      Interface.Schemas = {};
+      Interface.Schemas.schemas.cars.fields = [];
     });
 
     describe('when not fields are actually present on the collection', () => {
       it('should return an empty array', () => {
         expect.assertions(1);
-
-        Interface.Schemas.schemas.cars.fields = [];
 
         const referenceNestedFields = Flattener
           .getFlattenedReferenceFieldsFromParams('cars', {});
@@ -802,6 +889,8 @@ describe('service > Flattener', () => {
       it('should include the references', () => {
         expect.assertions(1);
 
+        addFieldsToSchema(['engine@@@identification@@@manufacturer', 'engine@@@owner']);
+
         const fields = {
           cars: ['name'],
           'engine@@@identification@@@manufacturer': ['name'],
@@ -822,6 +911,8 @@ describe('service > Flattener', () => {
       it('should not include non reference fields', () => {
         expect.assertions(1);
 
+        addFieldsToSchema(['engine@@@horsePower', 'engine@@@owner']);
+
         const fields = {
           cars: ['name'],
           'engine@@@horsePower': ['name'],
@@ -832,6 +923,164 @@ describe('service > Flattener', () => {
           .getFlattenedReferenceFieldsFromParams('cars', fields);
 
         expect(referenceNestedFields).toStrictEqual(['engine@@@owner']);
+      });
+    });
+  });
+
+  describe('generateNestedPathsFromModelName', () => {
+    beforeEach(() => {
+      addAllFieldsToSchema();
+    });
+
+    afterEach(() => {
+      Interface.Schemas.schemas.cars = { fields: [] };
+    });
+
+    describe('when no modelName is passed', () => {
+      it('should return undefined', () => {
+        expect.assertions(1);
+
+        const nestedPaths = Flattener.generateNestedPathsFromModelName(undefined);
+
+        expect(nestedPaths).toStrictEqual([]);
+      });
+    });
+
+    describe('when no fields have been defined', () => {
+      it('should return undefined', () => {
+        expect.assertions(1);
+
+        Interface.Schemas.schemas.cars.fields = [];
+
+        const nestedPaths = Flattener.generateNestedPathsFromModelName(undefined);
+
+        expect(nestedPaths).toStrictEqual([]);
+      });
+    });
+
+    describe('when no fields have been flattened', () => {
+      it('should return an empty array', () => {
+        expect.assertions(1);
+
+        Interface.Schemas.schemas.cars.fields = [];
+        addFieldsToSchema(['name']);
+
+        const nestedPaths = Flattener.generateNestedPathsFromModelName('cars');
+
+        expect(nestedPaths).toStrictEqual([]);
+      });
+    });
+
+    describe('when some fields have been flattened', () => {
+      it('should return an array of nestedPaths from flattened fields', () => {
+        expect.assertions(1);
+
+        const nestedPaths = Flattener.generateNestedPathsFromModelName('cars');
+
+        expect(nestedPaths).toStrictEqual([
+          ['engine', 'horsePower'],
+          ['engine', 'identification', 'manufacturer'],
+          ['engine', 'owner'],
+        ]);
+      });
+
+      it('should not take has many relationships into account', () => {
+        expect.assertions(1);
+
+        const nestedPaths = Flattener.generateNestedPathsFromModelName('cars');
+
+        expect(nestedPaths).not.toContain([
+          ['engine', 'partners'],
+        ]);
+      });
+    });
+  });
+
+  describe('flattenRecordForExport', () => {
+    let sampleCars;
+
+    beforeEach(() => {
+      Interface.Schemas.schemas.cars = {
+        fields: [],
+      };
+      sampleCars = [{
+        name: 'Golf',
+        engine: {
+          identification: {
+            manufacturer: '5fd78361f8e514b2abe7044b',
+          },
+          owner: '5f928f4f1eedcfbce937bbce',
+          partners: [
+            '5f928f4f1eedcfbce937bbce',
+            '5fd78361f8e514b2abe7044b',
+          ],
+          horsePower: '110cv',
+        },
+      }];
+    });
+
+    describe('when no fields have been flattened', () => {
+      it('should not change the record', () => {
+        expect.assertions(1);
+
+        addNonFlattenedFields();
+
+        Flattener.flattenRecordForExport('cars', sampleCars);
+
+        expect(sampleCars[0]).toStrictEqual({
+          name: 'Golf',
+          engine: {
+            identification: {
+              manufacturer: '5fd78361f8e514b2abe7044b',
+            },
+            owner: '5f928f4f1eedcfbce937bbce',
+            partners: [
+              '5f928f4f1eedcfbce937bbce',
+              '5fd78361f8e514b2abe7044b',
+            ],
+            horsePower: '110cv',
+          },
+        });
+      });
+    });
+
+    describe('when some fields have been flattened', () => {
+      beforeEach(() => {
+        addAllFieldsToSchema();
+      });
+
+      it('should flatten the flattened fields', () => {
+        expect.assertions(3);
+
+        Flattener.flattenRecordForExport('cars', sampleCars);
+
+        expect(sampleCars[0]['engine@@@owner']).toStrictEqual('5f928f4f1eedcfbce937bbce');
+        expect(sampleCars[0]['engine@@@horsePower']).toStrictEqual('110cv');
+        expect(sampleCars[0]['engine@@@identification@@@manufacturer']).toStrictEqual('5fd78361f8e514b2abe7044b');
+      });
+
+      it('should not flattened has many relationship', () => {
+        expect.assertions(1);
+
+        Flattener.flattenRecordForExport('cars', sampleCars);
+
+        expect(sampleCars[0]['engine@@@partners']).toBeUndefined();
+      });
+
+      it('should not change non flattened fields', () => {
+        expect.assertions(1);
+
+        Flattener.flattenRecordForExport('cars', sampleCars);
+
+        expect(sampleCars[0].name).toStrictEqual('Golf');
+      });
+
+      it('should clean the initial attribute which have been flattened', () => {
+        expect.assertions(1);
+
+        Flattener.flattenRecordForExport('cars', sampleCars);
+
+        expect(sampleCars[0].engine).toBeUndefined();
       });
     });
   });
