@@ -1032,7 +1032,7 @@ describe('service > Flattener', () => {
     });
   });
 
-  describe('flattenRecordForExport', () => {
+  describe('flattenRecordsForExport', () => {
     let sampleCars;
 
     beforeEach(() => {
@@ -1061,7 +1061,7 @@ describe('service > Flattener', () => {
 
         addNonFlattenedFields();
 
-        Flattener.flattenRecordForExport('cars', sampleCars);
+        Flattener.flattenRecordsForExport('cars', sampleCars);
 
         expect(sampleCars[0]).toStrictEqual({
           name: 'Golf',
@@ -1088,7 +1088,7 @@ describe('service > Flattener', () => {
       it('should flatten the flattened fields', () => {
         expect.assertions(3);
 
-        Flattener.flattenRecordForExport('cars', sampleCars);
+        Flattener.flattenRecordsForExport('cars', sampleCars);
 
         expect(sampleCars[0]['engine@@@owner']).toStrictEqual('5f928f4f1eedcfbce937bbce');
         expect(sampleCars[0]['engine@@@horsePower']).toStrictEqual('110cv');
@@ -1098,7 +1098,7 @@ describe('service > Flattener', () => {
       it('should not flattened has many relationship', () => {
         expect.assertions(1);
 
-        Flattener.flattenRecordForExport('cars', sampleCars);
+        Flattener.flattenRecordsForExport('cars', sampleCars);
 
         expect(sampleCars[0]['engine@@@partners']).toBeUndefined();
       });
@@ -1106,7 +1106,7 @@ describe('service > Flattener', () => {
       it('should not change non flattened fields', () => {
         expect.assertions(1);
 
-        Flattener.flattenRecordForExport('cars', sampleCars);
+        Flattener.flattenRecordsForExport('cars', sampleCars);
 
         expect(sampleCars[0].name).toStrictEqual('Golf');
       });
@@ -1114,7 +1114,7 @@ describe('service > Flattener', () => {
       it('should clean the initial attribute which have been flattened', () => {
         expect.assertions(1);
 
-        Flattener.flattenRecordForExport('cars', sampleCars);
+        Flattener.flattenRecordsForExport('cars', sampleCars);
 
         expect(sampleCars[0].engine).toBeUndefined();
       });

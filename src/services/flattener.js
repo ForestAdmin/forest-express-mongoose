@@ -285,7 +285,7 @@ module.exports = class Flattener {
     return flattenedFields.map((field) => this.splitOnSeparator(field.field));
   }
 
-  static flattenRecordForExport(modelName, records) {
+  static flattenRecordsForExport(modelName, records) {
     const nestedPaths = this.generateNestedPathsFromModelName(modelName);
 
     if (!nestedPaths || nestedPaths.length === 0) return records;
