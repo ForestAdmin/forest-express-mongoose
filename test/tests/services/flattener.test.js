@@ -914,7 +914,7 @@ describe('service > Flattener', () => {
     });
 
     describe('when no modelName is passed', () => {
-      it('should return undefined', () => {
+      it('should return an empty array', () => {
         expect.assertions(1);
 
         const nestedPaths = Flattener.generateNestedPathsFromModelName(undefined);
