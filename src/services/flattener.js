@@ -103,12 +103,6 @@ module.exports = class Flattener {
   }
 
   static requestUnflattener(request, response, next) {
-    /*
-      The responsible of constructing the csv file is Forest Express. It needs to keep the exact
-      fields which has been demanded by the UI, that's why we can't unflatten them to preserve
-      integrity. The resources-exporter service will be in charge of fetching the database
-      flattened field correspond to the unflattened attribute demanded
-     */
     if (request.originalUrl.includes('.csv?')) {
       return next();
     }

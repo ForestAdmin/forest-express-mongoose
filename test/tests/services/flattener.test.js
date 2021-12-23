@@ -7,8 +7,9 @@ describe('service > Flattener', () => {
   let errorLoggerSpy;
   let warnLoggerSpy;
 
-  const schemaFields = {
-    name: {
+  const generateFlattenedEngineSchema = () => ({
+    name: 'cars',
+    fields: [{
       field: 'name',
       type: 'String',
       defaultValue: null,
@@ -23,8 +24,7 @@ describe('service > Flattener', () => {
       reference: null,
       inverseOf: null,
       validations: [],
-    },
-    'engine@@@horsePower': {
+    }, {
       field: 'engine@@@horsePower',
       type: 'String',
       defaultValue: null,
@@ -39,8 +39,7 @@ describe('service > Flattener', () => {
       reference: null,
       inverseOf: null,
       validations: [],
-    },
-    'engine@@@identification@@@manufacturer': {
+    }, {
       field: 'engine@@@identification@@@manufacturer',
       type: 'String',
       defaultValue: null,
@@ -55,8 +54,7 @@ describe('service > Flattener', () => {
       reference: 'companies._id',
       inverseOf: null,
       validations: [],
-    },
-    'engine@@@owner': {
+    }, {
       field: 'engine@@@owner',
       type: 'String',
       defaultValue: null,
@@ -71,8 +69,7 @@ describe('service > Flattener', () => {
       reference: 'companies._id',
       inverseOf: null,
       validations: [],
-    },
-    'engine@@@partners': {
+    }, {
       field: 'engine@@@partners',
       type: ['String'],
       defaultValue: null,
@@ -87,87 +84,29 @@ describe('service > Flattener', () => {
       reference: 'companies._id',
       inverseOf: null,
       validations: [],
-    },
-    engine: {
-      field: 'engine',
-      type: {
-        fields: [{
-          field: 'identification',
-          type: {
-            fields: [{
-              field: 'manufacturer',
-              type: 'String',
-              reference: 'companies._id',
-            }],
-          },
-        },
-        {
-          field: 'owner',
-          type: 'String',
-          reference: 'companies._id',
-        }, {
-          field: 'partners',
-          type: ['String'],
-        }, {
-          field: 'horsePower',
-          type: 'String',
-        }],
-      },
-      defaultValue: null,
-      enums: null,
-      integration: null,
-      isFilterable: true,
-      isPrimaryKey: false,
-      isReadOnly: false,
-      isRequired: false,
-      isSortable: true,
-      isVirtual: false,
-      reference: null,
-      inverseOf: null,
-      validations: [],
-    },
-  };
-  const generateEngineSchema = () => ({
+    }],
+  });
+  const generateDefaultEngineSchema = () => ({
     name: 'cars',
     fields: [{
       field: 'engine',
       type: {
         fields: [
-          { field: 'horsepower', type: 'String' },
-          { field: 'cylinder', type: 'Number' },
+          { field: 'owner', type: 'String', reference: 'companies._id' },
+          { field: 'horsePower', type: 'String' },
           {
             field: 'identification',
             type: {
               fields: [
-                { field: 'manufacturer', type: 'String' },
-                {
-                  field: 'serialNumber',
-                  type: {
-                    fields: [
-                      { field: 'number', type: 'String' },
-                      { field: 'position', type: 'String' },
-                    ],
-                  },
-                },
+                { field: 'manufacturer', type: 'String', reference: 'companies._id' },
               ],
             },
           },
-          { field: 'company', type: 'String', reference: 'companies._id' },
+          { field: 'partners', type: ['String'], reference: 'companies._id' },
         ],
       },
     }],
   });
-  const addFieldsToSchema = (fieldNames) => {
-    fieldNames.forEach((fieldName) => {
-      Interface.Schemas.schemas.cars.fields.push(schemaFields[fieldName]);
-    });
-  };
-  const addAllFieldsToSchema = () => {
-    addFieldsToSchema(Object.keys(schemaFields));
-  };
-  const addNonFlattenedFields = () => {
-    addFieldsToSchema(['name', 'engine']);
-  };
 
   beforeAll(() => {
     Interface.Schemas.schemas.cars = {
@@ -316,7 +255,7 @@ describe('service > Flattener', () => {
         expect.assertions(2);
 
         jest.resetAllMocks();
-        const fieldsFlattener = new Flattener(generateEngineSchema(), [{ field: 'engine', level: null }]);
+        const fieldsFlattener = new Flattener(generateDefaultEngineSchema(), [{ field: 'engine', level: null }]);
         fieldsFlattener.validateOptions();
 
         expect(warnLoggerSpy).toHaveBeenCalledTimes(1);
@@ -328,7 +267,7 @@ describe('service > Flattener', () => {
 
         jest.resetAllMocks();
         const flatten = [{ field: 'engine', level: null }];
-        const fieldsFlattener = new Flattener(generateEngineSchema(), flatten);
+        const fieldsFlattener = new Flattener(generateDefaultEngineSchema(), flatten);
         fieldsFlattener.validateOptions();
 
         expect(flatten[0].level).not.toBeDefined();
@@ -340,12 +279,12 @@ describe('service > Flattener', () => {
     it(`should merge fields name with ${FLATTEN_SEPARATOR} as separator`, () => {
       expect.assertions(1);
 
-      const schema = generateEngineSchema();
+      const schema = generateDefaultEngineSchema();
 
       const fieldsFlattener = new Flattener(schema, ['engine']);
       fieldsFlattener.flattenFields();
 
-      expect(schema.fields[0].field).toStrictEqual(`engine${FLATTEN_SEPARATOR}horsepower`);
+      expect(schema.fields[0].field).toStrictEqual(`engine${FLATTEN_SEPARATOR}owner`);
     });
   });
 
@@ -353,12 +292,12 @@ describe('service > Flattener', () => {
     it('should flatten every nested fields until the end', () => {
       expect.assertions(1);
 
-      const schema = generateEngineSchema();
+      const schema = generateDefaultEngineSchema();
 
       const fieldsFlattener = new Flattener(schema, ['engine']);
       fieldsFlattener.flattenFields();
 
-      expect(schema.fields).toHaveLength(6);
+      expect(schema.fields).toHaveLength(4);
     });
   });
 
@@ -368,24 +307,24 @@ describe('service > Flattener', () => {
         it('should flatten every level until the end', () => {
           expect.assertions(1);
 
-          const schema = generateEngineSchema();
+          const schema = generateDefaultEngineSchema();
           const fieldsFlattener = new Flattener(schema, [{ field: 'engine', level: 100 }]);
 
           fieldsFlattener.flattenFields();
 
-          expect(schema.fields).toHaveLength(6);
+          expect(schema.fields).toHaveLength(4);
         });
       });
       describe('when the level property is lower than actual level', () => {
         it('should flatten only until specified level', () => {
           expect.assertions(1);
 
-          const schema = generateEngineSchema();
-          const fieldsFlattener = new Flattener(schema, [{ field: 'engine', level: 1 }]);
+          const schema = generateDefaultEngineSchema();
+          const fieldsFlattener = new Flattener(schema, [{ field: 'engine', level: 0 }]);
 
           fieldsFlattener.flattenFields();
 
-          expect(schema.fields).toHaveLength(5);
+          expect(schema.fields).toHaveLength(4);
         });
       });
     });
@@ -393,7 +332,7 @@ describe('service > Flattener', () => {
       it('should flatten only direct child field', () => {
         expect.assertions(1);
 
-        const schema = generateEngineSchema();
+        const schema = generateDefaultEngineSchema();
         const fieldsFlattener = new Flattener(schema, [{ field: 'engine', level: 0 }]);
 
         fieldsFlattener.flattenFields();
@@ -405,7 +344,7 @@ describe('service > Flattener', () => {
       it('should not flatten any field', () => {
         expect.assertions(1);
 
-        const schema = generateEngineSchema();
+        const schema = generateDefaultEngineSchema();
         const fieldsFlattener = new Flattener(schema, [{ field: 'engine', level: -2 }]);
 
         fieldsFlattener.flattenFields();
@@ -876,12 +815,14 @@ describe('service > Flattener', () => {
 
   describe('getFlattenedReferenceFieldsFromFieldNames', () => {
     beforeEach(() => {
-      Interface.Schemas.schemas.cars.fields = [];
+      Interface.Schemas.schemas.cars = generateFlattenedEngineSchema();
     });
 
-    describe('when not fields are actually present on the collection', () => {
+    describe('when no fields are actually present on the collection', () => {
       it('should return an empty array', () => {
         expect.assertions(1);
+
+        Interface.Schemas.schemas.cars.fields = [];
 
         const referenceNestedFields = Flattener
           .getFlattenedReferenceFieldsFromParams('cars', {});
@@ -925,8 +866,6 @@ describe('service > Flattener', () => {
       it('should include the references', () => {
         expect.assertions(1);
 
-        addFieldsToSchema(['engine@@@identification@@@manufacturer', 'engine@@@owner']);
-
         const fields = {
           cars: ['name'],
           'engine@@@identification@@@manufacturer': ['name'],
@@ -947,8 +886,6 @@ describe('service > Flattener', () => {
       it('should not include non reference fields', () => {
         expect.assertions(1);
 
-        addFieldsToSchema(['engine@@@horsePower', 'engine@@@owner']);
-
         const fields = {
           cars: ['name'],
           'engine@@@horsePower': ['name'],
@@ -965,7 +902,7 @@ describe('service > Flattener', () => {
 
   describe('generateNestedPathsFromModelName', () => {
     beforeEach(() => {
-      addAllFieldsToSchema();
+      Interface.Schemas.schemas.cars = generateFlattenedEngineSchema();
     });
 
     afterEach(() => {
@@ -998,8 +935,7 @@ describe('service > Flattener', () => {
       it('should return an empty array', () => {
         expect.assertions(1);
 
-        Interface.Schemas.schemas.cars.fields = [];
-        addFieldsToSchema(['name']);
+        Interface.Schemas.schemas.cars = generateDefaultEngineSchema();
 
         const nestedPaths = Flattener.generateNestedPathsFromModelName('cars');
 
@@ -1036,9 +972,7 @@ describe('service > Flattener', () => {
     let sampleCars;
 
     beforeEach(() => {
-      Interface.Schemas.schemas.cars = {
-        fields: [],
-      };
+      Interface.Schemas.schemas.cars = generateFlattenedEngineSchema();
       sampleCars = [{
         name: 'Golf',
         engine: {
@@ -1059,7 +993,7 @@ describe('service > Flattener', () => {
       it('should not change the record', () => {
         expect.assertions(1);
 
-        addNonFlattenedFields();
+        Interface.Schemas.schemas.cars = generateDefaultEngineSchema();
 
         Flattener.flattenRecordsForExport('cars', sampleCars);
 
@@ -1081,10 +1015,6 @@ describe('service > Flattener', () => {
     });
 
     describe('when some fields have been flattened', () => {
-      beforeEach(() => {
-        addAllFieldsToSchema();
-      });
-
       it('should flatten the flattened fields', () => {
         expect.assertions(3);
 
