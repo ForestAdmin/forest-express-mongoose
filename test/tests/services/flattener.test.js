@@ -541,7 +541,7 @@ describe('service > Flattener', () => {
       const mockResponse = {};
       const mockNext = jest.fn();
       const request = {
-        originalUrl: '',
+        originalUrl: 'http://localhost:3311/forest/cars',
         query: {
           fields: {
             cars: `company,name,engine${FLATTEN_SEPARATOR}horsepower,engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}serialNumber,wheelSize`,
@@ -568,7 +568,7 @@ describe('service > Flattener', () => {
       const mockResponse = {};
       const mockNext = jest.fn();
       const request = {
-        originalUrl: '',
+        originalUrl: 'http://localhost:3311/forest/cars',
         body: {
           data: {
             attributes: {
@@ -606,7 +606,7 @@ describe('service > Flattener', () => {
       const mockResponse = {};
       const mockNext = jest.fn();
       const request = {
-        originalUrl: '',
+        originalUrl: 'http://localhost:3311/forest/cars',
         body: {
           data: {
             attributes: {
@@ -649,13 +649,14 @@ describe('service > Flattener', () => {
     describe('for a belongsTo edit', () => {
       const mockResponse = {};
       const mockNext = jest.fn();
+      const fieldEdited = `engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}company`;
       const request = {
-        originalUrl: '',
+        originalUrl: `http://localhost:3311/forest/cars/1/${fieldEdited}`,
         query: {
           timezone: 'Europe/Paris',
           context: {
             relationship: 'BelongsTo',
-            field: `engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}company`,
+            field: fieldEdited,
             collection: 'cars',
             recordId: '5f928f4f1eedcfbce937bbce',
           },
