@@ -9,7 +9,7 @@ class ResourcesExporter {
   constructor(model, options, params, association, user) {
     this._model = model;
     this._options = options;
-    this._params = Flattener.paramsUnflattener(params);
+    this._params = Flattener.unflattenParams(params);
     this._association = association;
     this._user = user;
 

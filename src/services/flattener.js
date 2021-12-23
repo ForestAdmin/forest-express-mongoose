@@ -125,7 +125,7 @@ module.exports = class Flattener {
     } catch (error) { return next(error); }
   }
 
-  static paramsUnflattener(params) {
+  static unflattenParams(params) {
     const unflattenedParams = JSON.parse(JSON.stringify(params));
 
     if (unflattenedParams.fields) {

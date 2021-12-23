@@ -118,7 +118,7 @@ describe('service > Flattener', () => {
       .spyOn(Interface.logger, 'warn');
   });
 
-  describe('paramsUnflattener', () => {
+  describe('unflattenParams', () => {
     const fieldParams = {
       fields: {
         cars: '_id,name,engine@@@owner,engine@@@identification@@@manufacturer,engine@@@horsePower',
@@ -128,7 +128,7 @@ describe('service > Flattener', () => {
     it('should return a copy of the params', () => {
       expect.assertions(1);
 
-      const unflattenedParams = Flattener.paramsUnflattener(fieldParams);
+      const unflattenedParams = Flattener.unflattenParams(fieldParams);
 
       expect(unflattenedParams).not.toBe(fieldParams);
     });
@@ -136,7 +136,7 @@ describe('service > Flattener', () => {
     it('should not update unflattened fields', () => {
       expect.assertions(2);
 
-      const unflattenedParams = Flattener.paramsUnflattener(fieldParams);
+      const unflattenedParams = Flattener.unflattenParams(fieldParams);
 
       expect(unflattenedParams.fields.cars).toContain('_id');
       expect(unflattenedParams.fields.cars).toContain('name');
@@ -145,7 +145,7 @@ describe('service > Flattener', () => {
     it('should regroup flattened fields to their unflattened one', () => {
       expect.assertions(4);
 
-      const unflattenedParams = Flattener.paramsUnflattener(fieldParams);
+      const unflattenedParams = Flattener.unflattenParams(fieldParams);
 
       expect(unflattenedParams.fields.cars).toContain('engine');
       expect(unflattenedParams.fields.cars).not.toContain('engine@@@owner');
@@ -903,10 +903,6 @@ describe('service > Flattener', () => {
   describe('generateNestedPathsFromModelName', () => {
     beforeEach(() => {
       Interface.Schemas.schemas.cars = generateFlattenedEngineSchema();
-    });
-
-    afterEach(() => {
-      Interface.Schemas.schemas.cars = { fields: [] };
     });
 
     describe('when no modelName is passed', () => {
