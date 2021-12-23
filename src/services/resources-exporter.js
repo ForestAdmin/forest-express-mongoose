@@ -1,6 +1,6 @@
-const ResourcesGetter = require('./resources-getter');
-const HasManyGetter = require('./has-many-getter');
 const Flattener = require('./flattener');
+const HasManyGetter = require('./has-many-getter');
+const ResourcesGetter = require('./resources-getter');
 
 const BATCH_INITIAL_PAGE = 1;
 const BATCH_SIZE = 1000;
