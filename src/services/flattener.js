@@ -272,7 +272,7 @@ module.exports = class Flattener {
   static generateNestedPathsFromModelName(modelName) {
     if (!modelName) return [];
 
-    const modelFields = Interface.Schemas.schemas[modelName]?.fields;
+    const modelFields = (Interface.Schemas.schemas[modelName]?.fields || []);
     const flattenedFields = modelFields
       .filter((field) => this._isFieldFlattened(field.field) && !Array.isArray(field.type));
 

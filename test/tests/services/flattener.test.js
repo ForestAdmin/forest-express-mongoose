@@ -920,12 +920,12 @@ describe('service > Flattener', () => {
     });
 
     describe('when no fields have been defined', () => {
-      it('should return undefined', () => {
+      it('should return an empty array', () => {
         expect.assertions(1);
 
         Interface.Schemas.schemas.cars.fields = [];
 
-        const nestedPaths = Flattener.generateNestedPathsFromModelName(undefined);
+        const nestedPaths = Flattener.generateNestedPathsFromModelName('cars');
 
         expect(nestedPaths).toStrictEqual([]);
       });
