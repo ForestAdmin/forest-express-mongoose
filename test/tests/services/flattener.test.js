@@ -105,6 +105,9 @@ describe('service > Flattener', () => {
           { field: 'partners', type: ['String'], reference: 'companies._id' },
         ],
       },
+    }, {
+      field: 'name',
+      type: 'String',
     }],
   });
 
@@ -284,7 +287,11 @@ describe('service > Flattener', () => {
       const fieldsFlattener = new Flattener(schema, ['engine']);
       fieldsFlattener.flattenFields();
 
-      expect(schema.fields[0].field).toStrictEqual(`engine${FLATTEN_SEPARATOR}owner`);
+      expect(schema.fields).toContainEqual({
+        field: `engine${FLATTEN_SEPARATOR}owner`,
+        type: 'String',
+        reference: 'companies._id',
+      });
     });
   });
 
@@ -297,7 +304,7 @@ describe('service > Flattener', () => {
       const fieldsFlattener = new Flattener(schema, ['engine']);
       fieldsFlattener.flattenFields();
 
-      expect(schema.fields).toHaveLength(4);
+      expect(schema.fields).toHaveLength(5);
     });
   });
 
@@ -312,7 +319,7 @@ describe('service > Flattener', () => {
 
           fieldsFlattener.flattenFields();
 
-          expect(schema.fields).toHaveLength(4);
+          expect(schema.fields).toHaveLength(5);
         });
       });
       describe('when the level property is lower than actual level', () => {
@@ -324,7 +331,7 @@ describe('service > Flattener', () => {
 
           fieldsFlattener.flattenFields();
 
-          expect(schema.fields).toHaveLength(4);
+          expect(schema.fields).toHaveLength(5);
         });
       });
     });
@@ -337,7 +344,7 @@ describe('service > Flattener', () => {
 
         fieldsFlattener.flattenFields();
 
-        expect(schema.fields).toHaveLength(4);
+        expect(schema.fields).toHaveLength(5);
       });
     });
     describe('when the level property is under 0', () => {
@@ -349,7 +356,7 @@ describe('service > Flattener', () => {
 
         fieldsFlattener.flattenFields();
 
-        expect(schema.fields).toHaveLength(1);
+        expect(schema.fields).toHaveLength(2);
       });
     });
   });
@@ -966,11 +973,11 @@ describe('service > Flattener', () => {
   });
 
   describe('flattenRecordsForExport', () => {
-    let sampleCars;
+    let sampleCar;
 
     beforeEach(() => {
       Interface.Schemas.schemas.cars = generateFlattenedEngineSchema();
-      sampleCars = [{
+      sampleCar = {
         name: 'Golf',
         engine: {
           identification: {
@@ -983,7 +990,7 @@ describe('service > Flattener', () => {
           ],
           horsePower: '110cv',
         },
-      }];
+      };
     });
 
     describe('when no fields have been flattened', () => {
@@ -992,9 +999,9 @@ describe('service > Flattener', () => {
 
         Interface.Schemas.schemas.cars = generateDefaultEngineSchema();
 
-        Flattener.flattenRecordsForExport('cars', sampleCars);
+        Flattener.flattenRecordsForExport('cars', [sampleCar]);
 
-        expect(sampleCars[0]).toStrictEqual({
+        expect(sampleCar).toStrictEqual({
           name: 'Golf',
           engine: {
             identification: {
@@ -1015,35 +1022,35 @@ describe('service > Flattener', () => {
       it('should flatten the flattened fields', () => {
         expect.assertions(3);
 
-        Flattener.flattenRecordsForExport('cars', sampleCars);
+        Flattener.flattenRecordsForExport('cars', [sampleCar]);
 
-        expect(sampleCars[0]['engine@@@owner']).toStrictEqual('5f928f4f1eedcfbce937bbce');
-        expect(sampleCars[0]['engine@@@horsePower']).toStrictEqual('110cv');
-        expect(sampleCars[0]['engine@@@identification@@@manufacturer']).toStrictEqual('5fd78361f8e514b2abe7044b');
+        expect(sampleCar['engine@@@owner']).toStrictEqual('5f928f4f1eedcfbce937bbce');
+        expect(sampleCar['engine@@@horsePower']).toStrictEqual('110cv');
+        expect(sampleCar['engine@@@identification@@@manufacturer']).toStrictEqual('5fd78361f8e514b2abe7044b');
       });
 
       it('should not flattened has many relationship', () => {
         expect.assertions(1);
 
-        Flattener.flattenRecordsForExport('cars', sampleCars);
+        Flattener.flattenRecordsForExport('cars', [sampleCar]);
 
-        expect(sampleCars[0]['engine@@@partners']).toBeUndefined();
+        expect(sampleCar['engine@@@partners']).toBeUndefined();
       });
 
       it('should not change non flattened fields', () => {
         expect.assertions(1);
 
-        Flattener.flattenRecordsForExport('cars', sampleCars);
+        Flattener.flattenRecordsForExport('cars', [sampleCar]);
 
-        expect(sampleCars[0].name).toStrictEqual('Golf');
+        expect(sampleCar.name).toStrictEqual('Golf');
       });
 
       it('should clean the initial attribute which have been flattened', () => {
         expect.assertions(1);
 
-        Flattener.flattenRecordsForExport('cars', sampleCars);
+        Flattener.flattenRecordsForExport('cars', [sampleCar]);
 
-        expect(sampleCars[0].engine).toBeUndefined();
+        expect(sampleCar.engine).toBeUndefined();
       });
     });
   });
