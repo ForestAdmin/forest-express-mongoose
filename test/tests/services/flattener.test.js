@@ -959,16 +959,6 @@ describe('service > Flattener', () => {
           ['engine', 'owner'],
         ]);
       });
-
-      it('should not take has many relationships into account', () => {
-        expect.assertions(1);
-
-        const nestedPaths = Flattener.generateNestedPathsFromModelName('cars');
-
-        expect(nestedPaths).not.toContain([
-          ['engine', 'partners'],
-        ]);
-      });
     });
   });
 
