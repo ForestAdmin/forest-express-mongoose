@@ -103,6 +103,10 @@ module.exports = class Flattener {
   }
 
   static requestUnflattener(request, response, next) {
+    if (request.originalUrl.includes('.csv?')) {
+      return next();
+    }
+
     try {
       if (!_.isEmpty(request.body?.data?.attributes)) {
         Flattener._unflattenAttributes(request);
@@ -117,8 +121,23 @@ module.exports = class Flattener {
       if (!_.isEmpty(request.query?.context)) {
         request.query.context.field = Flattener.unflattenFieldName(request.query.context.field);
       }
-      next();
-    } catch (error) { next(error); }
+      return next();
+    } catch (error) { return next(error); }
+  }
+
+  static unflattenParams(params) {
+    const unflattenedParams = JSON.parse(JSON.stringify(params));
+
+    if (unflattenedParams.fields) {
+      Object.entries(unflattenedParams.fields).forEach(([collection, requestedFields]) => {
+        if (Flattener._isFieldFlattened(requestedFields)) {
+          unflattenedParams
+            .fields[collection] = Flattener._unflattenCollectionFields(requestedFields);
+        }
+      });
+    }
+
+    return unflattenedParams;
   }
 
   validateOptions() {
@@ -248,5 +267,36 @@ module.exports = class Flattener {
 
     return flattenedReferences.filter((flattenedReference) =>
       collectionReferenceFields.some(({ field }) => field === flattenedReference));
+  }
+
+  static generateNestedPathsFromModelName(modelName) {
+    if (!modelName) return [];
+
+    const modelFields = (Interface.Schemas.schemas[modelName]?.fields || []);
+    const flattenedFields = modelFields
+      .filter((field) => this._isFieldFlattened(field.field) && !Array.isArray(field.type));
+
+    return flattenedFields.map((field) => this.splitOnSeparator(field.field));
+  }
+
+  static flattenRecordsForExport(modelName, records) {
+    const nestedPaths = this.generateNestedPathsFromModelName(modelName);
+
+    if (!nestedPaths || nestedPaths.length === 0) return records;
+
+    records.forEach((record) => {
+      const flattenedFields = new Set();
+
+      nestedPaths.forEach((nestedPath) => {
+        const flattenFieldName = nestedPath.join(FLATTEN_SEPARATOR);
+        record[flattenFieldName] = nestedPath
+          .reduce((embedded, attribute) => (embedded ? embedded[attribute] : null), record);
+        flattenedFields.add(nestedPath[0]);
+      });
+
+      flattenedFields.forEach((flattenedField) => delete record[flattenedField]);
+    });
+
+    return records;
   }
 };
