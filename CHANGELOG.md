@@ -1,3 +1,10 @@
+## [8.4.7](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.4.6...v8.4.7) (2021-12-24)
+
+
+### Bug Fixes
+
+* **export:** flattened fields are now correctly exported ([#751](https://github.com/ForestAdmin/forest-express-mongoose/issues/751)) ([fac7ea4](https://github.com/ForestAdmin/forest-express-mongoose/commit/fac7ea4287fe1bdde4c040164dc115bf2e247d93))
+
 ## [8.4.6](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.4.5...v8.4.6) (2021-12-21)
 
 
