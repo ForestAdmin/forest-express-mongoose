@@ -1,3 +1,10 @@
+## [8.4.8](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.4.7...v8.4.8) (2021-12-27)
+
+
+### Bug Fixes
+
+* flattened array attributes are now correctly exported ([#753](https://github.com/ForestAdmin/forest-express-mongoose/issues/753)) ([be9f61f](https://github.com/ForestAdmin/forest-express-mongoose/commit/be9f61fd7b83aab14c51c1099500d5237509bb8d))
+
 ## [8.4.7](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.4.6...v8.4.7) (2021-12-24)
 
 
