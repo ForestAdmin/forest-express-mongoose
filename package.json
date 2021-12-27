@@ -25,7 +25,7 @@
   "main": "dist/index.js",
   "types": "./types/index.d.ts",
   "dependencies": {
-    "@babel/runtime": "7.15.4",
+    "@babel/runtime": "7.16.5",
     "bluebird": "2.9.25",
     "forest-express": "9.3.3",
     "http-errors": "1.7.2",
