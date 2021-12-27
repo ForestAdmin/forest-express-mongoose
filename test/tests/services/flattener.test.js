@@ -957,15 +957,6 @@ describe('service > Flattener', () => {
           ['engine', 'horsePower'],
           ['engine', 'identification', 'manufacturer'],
           ['engine', 'owner'],
-        ]);
-      });
-
-      it('should not take has many relationships into account', () => {
-        expect.assertions(1);
-
-        const nestedPaths = Flattener.generateNestedPathsFromModelName('cars');
-
-        expect(nestedPaths).not.toContain([
           ['engine', 'partners'],
         ]);
       });
@@ -1027,14 +1018,6 @@ describe('service > Flattener', () => {
         expect(sampleCar['engine@@@owner']).toStrictEqual('5f928f4f1eedcfbce937bbce');
         expect(sampleCar['engine@@@horsePower']).toStrictEqual('110cv');
         expect(sampleCar['engine@@@identification@@@manufacturer']).toStrictEqual('5fd78361f8e514b2abe7044b');
-      });
-
-      it('should not flattened has many relationship', () => {
-        expect.assertions(1);
-
-        Flattener.flattenRecordsForExport('cars', [sampleCar]);
-
-        expect(sampleCar['engine@@@partners']).toBeUndefined();
       });
 
       it('should not change non flattened fields', () => {

@@ -274,7 +274,7 @@ module.exports = class Flattener {
 
     const modelFields = (Interface.Schemas.schemas[modelName]?.fields || []);
     const flattenedFields = modelFields
-      .filter((field) => this._isFieldFlattened(field.field) && !Array.isArray(field.type));
+      .filter((field) => this._isFieldFlattened(field.field));
 
     return flattenedFields.map((field) => this.splitOnSeparator(field.field));
   }
