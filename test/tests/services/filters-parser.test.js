@@ -15,6 +15,7 @@ describe('service > filters-parser', () => {
     Mongoose: mongoose,
     connections: { mongoose },
   };
+  const { Types: schemaTypes } = mongoose.Schema;
   const { ObjectId } = mongoose.Types;
 
   beforeAll(async () => {
@@ -65,7 +66,7 @@ describe('service > filters-parser', () => {
     await mongooseConnect();
     const IslandSchema = new mongoose.Schema({
       id: { type: Number },
-      myObjectId: { type: ObjectId },
+      myObjectId: { type: schemaTypes.ObjectId },
       name: { type: String },
       size: { type: Number },
       isBig: { type: Boolean },
@@ -84,8 +85,8 @@ describe('service > filters-parser', () => {
       },
       ships: {
         type: {
-          weapon: { type: String },
-          _id: { type: ObjectId },
+          weapon: { type: 'String' },
+          _id: { type: schemaTypes.ObjectId },
         },
       },
     });
@@ -118,27 +119,132 @@ describe('service > filters-parser', () => {
 
   describe('getParserForType', () => {
     describe('with a String type', () => {
-      it('should not try to cast it to ObjectId', () => {
+      it('should return the default parser', () => {
         expect.assertions(3);
+
+        expect(defaultParser.getParserForType(String)('a string'))
+          .toStrictEqual('a string');
+        expect(defaultParser.getParserForType('String')('a string'))
+          .toStrictEqual('a string');
+        expect(defaultParser.getParserForType(schemaTypes.String)('a string'))
+          .toStrictEqual('a string');
+      });
+
+      it('should not try to cast it to ObjectId', () => {
+        expect.assertions(1);
 
         const parser = defaultParser.getParserForType('String');
 
         expect(parser('53c2ae8528d75d572c06adbc')).toStrictEqual('53c2ae8528d75d572c06adbc');
-        expect(parser('Star Wars')).toStrictEqual('Star Wars');
-        expect(parser('20')).toStrictEqual('20');
       });
     });
 
     describe('with an ObjectId type', () => {
+      it('should return the objectId parser', () => {
+        expect.assertions(2);
+
+        expect(defaultParser.getParserForType(schemaTypes.ObjectId)('53c2ae8528d75d572c06adbc'))
+          .toBeInstanceOf(mongoose.Types.ObjectId);
+        expect(defaultParser.getParserForType('ObjectId')('53c2ae8528d75d572c06adbc'))
+          .toBeInstanceOf(mongoose.Types.ObjectId);
+      });
+
       it('should try to cast it to ObjectId', () => {
         expect.assertions(4);
 
         const parser = defaultParser.getParserForType('ObjectId');
 
-        expect(parser('53c2ae8528d75d572c06adbc')).toStrictEqual(ObjectId('53c2ae8528d75d572c06adbc'));
-        expect(parser('star wars with the same ')).toStrictEqual('star wars with the same ');
-        expect(parser('Star Wars')).toStrictEqual('Star Wars');
-        expect(parser('20')).toStrictEqual('20');
+        expect(parser('53c2ae8528d75d572c06adbc')).toBeInstanceOf(mongoose.Types.ObjectId);
+        expect(parser(ObjectId('53c2ae8528d75d572c06adbc'))).toBeInstanceOf(mongoose.Types.ObjectId);
+        expect(parser('53c2ae8528d75d572c06adbcc')).not.toBeInstanceOf(mongoose.Types.ObjectId);
+        expect(parser('star wars with the same ')).not.toBeInstanceOf(mongoose.Types.ObjectId);
+      });
+    });
+
+    describe('with an Number type', () => {
+      it('should return the Number parser', () => {
+        expect.assertions(3);
+
+        expect(defaultParser.getParserForType(Number)('10'))
+          .toBeNumber();
+        expect(defaultParser.getParserForType('Number')('10'))
+          .toBeNumber();
+        expect(defaultParser.getParserForType(schemaTypes.Number)('10'))
+          .toBeNumber();
+      });
+
+      it('should parse the input to its Number', () => {
+        expect.assertions(1);
+
+        expect(defaultParser.getParserForType(Number)('10'))
+          .toBeNumber();
+      });
+    });
+
+    describe('with a Date type', () => {
+      it('should return the date parser', () => {
+        expect.assertions(3);
+
+        expect(defaultParser.getParserForType(Date)(Date.now()))
+          .toBeDate();
+        expect(defaultParser.getParserForType('Date')(Date.now()))
+          .toBeDate();
+        expect(defaultParser.getParserForType(schemaTypes.Date)(Date.now()))
+          .toBeDate();
+      });
+
+      it('should parse the date', () => {
+        expect.assertions(1);
+
+        const date = Date.now();
+        expect(defaultParser.getParserForType(Date)(date))
+          .toStrictEqual(new Date(date));
+      });
+    });
+
+    describe('with a Boolean type', () => {
+      it('should return the Boolean parser', () => {
+        expect.assertions(3);
+
+        expect(defaultParser.getParserForType(Boolean)('true'))
+          .toBeBoolean();
+        expect(defaultParser.getParserForType('Boolean')('true'))
+          .toBeBoolean();
+        expect(defaultParser.getParserForType(schemaTypes.Boolean)('true'))
+          .toBeBoolean();
+      });
+
+      it('should cast values to boolean', () => {
+        expect.assertions(5);
+
+        expect(defaultParser.getParserForType(Boolean)('true'))
+          .toBeBoolean();
+        expect(defaultParser.getParserForType(Boolean)('false'))
+          .toBeBoolean();
+        expect(defaultParser.getParserForType(Boolean)(true))
+          .toBeBoolean();
+        expect(defaultParser.getParserForType(Boolean)(false))
+          .toBeBoolean();
+        expect(defaultParser.getParserForType(Boolean)('not a boolean'))
+          .toBeNull();
+      });
+    });
+
+    describe('with any other type', () => {
+      it('should return the default parser', () => {
+        expect.assertions(5);
+
+        const map = new Map();
+        expect(defaultParser.getParserForType(Map)(map))
+          .toStrictEqual(map);
+        expect(defaultParser.getParserForType(Buffer)('test'))
+          .toStrictEqual('test');
+        expect(defaultParser.getParserForType(schemaTypes.Mixed)('test'))
+          .toStrictEqual('test');
+        expect(defaultParser.getParserForType(schemaTypes.Decimal128)('test'))
+          .toStrictEqual('test');
+        expect(defaultParser.getParserForType(['String'])('test'))
+          .toStrictEqual('test');
       });
     });
   });
@@ -176,7 +282,7 @@ describe('service > filters-parser', () => {
           const parserForField = await defaultParser.getParserForField('ships:_id');
 
           expect(defaultParser.getParserForType).toHaveBeenCalledTimes(1);
-          expect(defaultParser.getParserForType).toHaveBeenCalledWith('ObjectId');
+          expect(defaultParser.getParserForType).toHaveBeenCalledWith(schemaTypes.ObjectId);
 
           expect(fakeParser).not.toHaveBeenCalled();
 
@@ -200,7 +306,7 @@ describe('service > filters-parser', () => {
         const parserForField = await defaultParser.getParserForField('name');
 
         expect(defaultParser.getParserForType).toHaveBeenCalledTimes(1);
-        expect(defaultParser.getParserForType).toHaveBeenCalledWith('String');
+        expect(defaultParser.getParserForType).toHaveBeenCalledWith(String);
 
         expect(fakeParser).not.toHaveBeenCalled();
 
@@ -223,7 +329,7 @@ describe('service > filters-parser', () => {
         const parserForField = await defaultParser.getParserForField('myObjectId');
 
         expect(defaultParser.getParserForType).toHaveBeenCalledTimes(1);
-        expect(defaultParser.getParserForType).toHaveBeenCalledWith('ObjectId');
+        expect(defaultParser.getParserForType).toHaveBeenCalledWith(schemaTypes.ObjectId);
 
         expect(fakeParser).not.toHaveBeenCalled();
 

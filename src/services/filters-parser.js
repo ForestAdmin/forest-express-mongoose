@@ -27,7 +27,6 @@ function FiltersParser(model, timezone, options) {
 
     return value;
   };
-  const parseArray = (value) => ({ $size: value });
   const parseOther = (value) => value;
 
   this.operatorDateParser = new BaseOperatorDateParser({
@@ -64,12 +63,24 @@ function FiltersParser(model, timezone, options) {
   };
 
   this.getParserForType = (type) => {
+    const mongooseTypes = options.Mongoose.Schema.Types;
+
     switch (type) {
-      case 'Number': return parseInteger;
-      case 'Date': return parseDate;
-      case 'Boolean': return parseBoolean;
-      case 'ObjectId': return parseObjectId;
-      case Array.isArray(type): return parseArray;
+      case 'Number':
+      case Number:
+      case mongooseTypes.Number:
+        return parseInteger;
+      case 'Date':
+      case Date:
+      case mongooseTypes.Date:
+        return parseDate;
+      case 'Boolean':
+      case Boolean:
+      case mongooseTypes.Boolean:
+        return parseBoolean;
+      case 'ObjectId':
+      case mongooseTypes.ObjectId:
+        return parseObjectId;
       default: return parseOther;
     }
   };
@@ -77,24 +88,17 @@ function FiltersParser(model, timezone, options) {
   this.getParserForField = async (key) => {
     const [fieldName, subfieldName] = key.split(':');
 
-    // NOTICE: Mongoose Aggregate don't parse the value automatically.
-    let field = SchemaUtils.getField(modelSchema, fieldName);
-    let fieldDefinition = model.schema.paths[fieldName];
+    const field = SchemaUtils.getField(modelSchema, fieldName);
 
     if (!field) {
       throw new InvalidFiltersFormatError(`Field '${fieldName}' not found on collection '${modelSchema.name}'`);
     }
 
-    const isEmbeddedField = !!field.type.fields;
-    if (isEmbeddedField) {
-      field = SchemaUtils.getField(field.type, subfieldName);
-      fieldDefinition = fieldDefinition[subfieldName];
-    }
+    const fieldPath = subfieldName ? `${fieldName}.${subfieldName}` : fieldName;
+    const fieldType = utils.getNestedFieldType(model.schema, fieldPath);
 
-    if (!field) return (val) => val;
+    if (!fieldType) return (val) => val;
 
-    const { ObjectId } = options.Mongoose.Schema.Types;
-    const fieldType = fieldDefinition instanceof ObjectId ? 'ObjectId' : field.type;
     const parse = this.getParserForType(fieldType);
 
     return (value) => {
