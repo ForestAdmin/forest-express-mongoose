@@ -9025,10 +9025,10 @@ saxes@^5.0.1:
   dependencies:
     xmlchars "^2.2.0"
 
-semantic-release-npm-deprecate-old-versions@1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/semantic-release-npm-deprecate-old-versions/-/semantic-release-npm-deprecate-old-versions-1.3.1.tgz#6bed2d831b7476451c397343d67250e840fe5c18"
-  integrity sha512-fLLE6y5fpqnlV7bHBdLkedbYkobgQ06OkbkjRLxQnQRZsWp64XB9mPcWTuFJQkytnw45HV7yNMTD0S1lNw8f1A==
+semantic-release-npm-deprecate-old-versions@1.3.2:
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/semantic-release-npm-deprecate-old-versions/-/semantic-release-npm-deprecate-old-versions-1.3.2.tgz#42b5bf336074c6fd8ef6ba3354441f9eeb9ac0c9"
+  integrity sha512-N9gKDq4/Spv2W7bBwZX8KdcnP4yKeBIjJtd/OefbFGnrWgzJ/6+XDk3Tg6ctr6xlNP8sHRnCEQQea/sMNA8PuA==
   dependencies:
     execa "^4.1.0"
     node-fetch "^2.6.6"
