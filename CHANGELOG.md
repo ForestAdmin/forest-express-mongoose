@@ -1,3 +1,10 @@
+## [8.4.9](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.4.8...v8.4.9) (2022-01-07)
+
+
+### Bug Fixes
+
+* filters on nested fields now works correctly ([#763](https://github.com/ForestAdmin/forest-express-mongoose/issues/763)) ([2bb7ee8](https://github.com/ForestAdmin/forest-express-mongoose/commit/2bb7ee828bf2591fe4b7360c68a78210e2405773))
+
 ## [8.4.8](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.4.7...v8.4.8) (2021-12-27)
 
 
