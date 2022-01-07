@@ -40,6 +40,8 @@ describe('schema', () => {
     })).schema;
   });
 
+  afterAll(() => mongoose.connection.close());
+
   describe('when the nested field is from a subSchema', () => {
     describe('when the nested field is defined using a type', () => {
       it('should correctly detect the type', () => {
