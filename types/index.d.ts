@@ -332,3 +332,5 @@ export interface CollectionOptions {
 export function collection(name: string, options: CollectionOptions): void;
 
 export function errorHandler(): RequestHandler;
+
+export function requestUnflattener(): RequestHandler;
