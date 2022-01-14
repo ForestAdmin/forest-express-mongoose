@@ -23,6 +23,7 @@ exports.RecordCreator = Interface.RecordCreator;
 exports.RecordRemover = Interface.RecordRemover;
 exports.RecordsRemover = Interface.RecordsRemover;
 exports.RecordSerializer = Interface.RecordSerializer;
+exports.requestUnflattener = Flattener.requestUnflattener;
 
 exports.PUBLIC_ROUTES = Interface.PUBLIC_ROUTES;
 
