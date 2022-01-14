@@ -1,3 +1,10 @@
+# [8.5.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.4.9...v8.5.0) (2022-01-14)
+
+
+### Features
+
+* users can now use flattened fields with custom routes ([84302d1](https://github.com/ForestAdmin/forest-express-mongoose/commit/84302d1b02639226ddae8cd7dd3468bf04c43f5e))
+
 ## [8.4.9](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.4.8...v8.4.9) (2022-01-07)
 
 
