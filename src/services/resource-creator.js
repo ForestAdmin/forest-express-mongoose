@@ -1,7 +1,6 @@
 import { Schemas } from 'forest-express';
 import utils from '../utils/schema';
 import ResourceGetter from './resource-getter';
-import Flattener from './flattener';
 
 class ResourceCreator {
   constructor(model, params, body, user) {
@@ -16,7 +15,6 @@ class ResourceCreator {
       name against the schema so we can not do it in the middleware, we have to unflatten
       at the very end of the record creation flow.
      */
-    Flattener.unflattenFieldNamesInObject(this._body);
   }
 
   async _create() {
