@@ -40,6 +40,13 @@ describe('index', () => {
       expect(forestExpressMongoose.ResourceSerializer).toBeInstanceOf(Function);
     });
 
+    it('should export deactivate count middleware', () => {
+      expect.assertions(2);
+
+      expect(forestExpressMongoose.deactivateCountMiddleware).toBeDefined();
+      expect(forestExpressMongoose.deactivateCountMiddleware).toBeInstanceOf(Function);
+    });
+
     it('should export a list of records functions', () => {
       expect.assertions(20);
 

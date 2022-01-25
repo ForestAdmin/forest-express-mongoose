@@ -14,6 +14,7 @@ exports.StatSerializer = Interface.StatSerializer;
 exports.ResourceSerializer = Interface.ResourceSerializer;
 
 exports.PermissionMiddlewareCreator = Interface.PermissionMiddlewareCreator;
+exports.deactivateCountMiddleware = Interface.deactivateCountMiddleware;
 exports.RecordsCounter = Interface.RecordsCounter;
 exports.RecordsExporter = Interface.RecordsExporter;
 exports.RecordsGetter = Interface.RecordsGetter;
