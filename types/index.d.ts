@@ -158,6 +158,11 @@ export class RecordSerializer<T> {
   serialize(records: Record<string, any> | Record<string, any>[]): Promise<RecordsSerialized>;
 }
 
+// Optional middleware(s) related to the perf
+
+export function deactivateCountMiddleware(request: Request, response: Response, next: NextFunction): void;
+
+
 // Everything related to Forest permissions
 
 export class PermissionMiddlewareCreator {
