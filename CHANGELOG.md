@@ -1,3 +1,10 @@
+# [8.6.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.5.0...v8.6.0) (2022-02-08)
+
+
+### Features
+
+* **count:** add middleware to deactivate count ([#780](https://github.com/ForestAdmin/forest-express-mongoose/issues/780)) ([64fa7b2](https://github.com/ForestAdmin/forest-express-mongoose/commit/64fa7b2f5e409aadfba4e48e8197645eba70fe3c))
+
 # [8.5.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.4.9...v8.5.0) (2022-01-14)
 
 
