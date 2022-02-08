@@ -160,7 +160,7 @@ export class RecordSerializer<T> {
 
 // Optional middleware(s) related to the perf
 
-export const deactivateCountMiddleware: RequestHandler;
+export function deactivateCountMiddleware(request: Request, response: Response, next: NextFunction): void;
 
 
 // Everything related to Forest permissions
