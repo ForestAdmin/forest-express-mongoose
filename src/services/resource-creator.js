@@ -9,12 +9,6 @@ class ResourceCreator {
     this._body = body;
     this._user = user;
     this._schema = Schemas.schemas[utils.getModelName(model)];
-
-    /*
-      We unflatten the attributes here, because the deserializer validates the fields'
-      name against the schema so we can not do it in the middleware, we have to unflatten
-      at the very end of the record creation flow.
-     */
   }
 
   async _create() {
