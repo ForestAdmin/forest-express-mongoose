@@ -637,7 +637,12 @@ describe('service > Flattener', () => {
 
         expect(attributes.engine.identification.company).toStrictEqual('5fd78361f8e514b2abe7044b');
         expect(relationships['engine@@@identification@@@company']).toBeUndefined();
-        expect(relationships.company).toStrictEqual('5fd78361f8e514b2abe7044b');
+        expect(relationships.company).toStrictEqual({
+          data: {
+            type: 'companies',
+            id: '5fd78361f8e514b2abe7044b',
+          },
+        });
         expect(mockNext).toHaveBeenCalledTimes(1);
       });
     });
