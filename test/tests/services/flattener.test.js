@@ -572,39 +572,72 @@ describe('service > Flattener', () => {
     });
 
     describe('for a POST request', () => {
-      const mockResponse = {};
-      const mockNext = jest.fn();
-      const request = {
-        originalUrl: 'http://localhost:3311/forest/cars',
-        body: {
-          data: {
-            attributes: {
-              [`engine${FLATTEN_SEPARATOR}horsePower`]: '125cv',
-              [`engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}serialNumber`]: '1234567',
-              name: 'Car',
+      let mockResponse;
+      let mockNext;
+      let request;
+
+      beforeEach(() => {
+        mockResponse = {};
+        mockNext = jest.fn();
+        request = {
+          originalUrl: 'http://localhost:3311/forest/cars',
+          body: {
+            data: {
+              attributes: {
+                [`engine${FLATTEN_SEPARATOR}horsePower`]: '125cv',
+                [`engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}serialNumber`]: '1234567',
+                name: 'Car',
+              },
+              relationships: {
+                'engine@@@identification@@@company': {
+                  data: {
+                    type: 'companies',
+                    id: '5fd78361f8e514b2abe7044b',
+                  },
+                },
+                company: {
+                  data: {
+                    type: 'companies',
+                    id: '5fd78361f8e514b2abe7044b',
+                  },
+                },
+              },
             },
+            type: 'cars',
           },
-        },
-      };
+        };
+      });
 
       it('should unflatten the attributes in the body', () => {
         expect.assertions(2);
 
         Flattener.requestUnflattener(request, mockResponse, mockNext);
 
-        expect(request.body).toStrictEqual({
-          data: {
-            attributes: {
-              engine: {
-                horsePower: '125cv',
-                identification: {
-                  serialNumber: '1234567',
-                },
-              },
-              name: 'Car',
+        const { attributes } = request.body.data;
+
+        expect(attributes).toStrictEqual({
+          engine: {
+            horsePower: '125cv',
+            identification: {
+              company: '5fd78361f8e514b2abe7044b',
+              serialNumber: '1234567',
             },
           },
+          name: 'Car',
         });
+        expect(mockNext).toHaveBeenCalledTimes(1);
+      });
+
+      it('should move flattened relationships in the original attribute', () => {
+        expect.assertions(4);
+
+        Flattener.requestUnflattener(request, mockResponse, mockNext);
+
+        const { attributes, relationships } = request.body.data;
+
+        expect(attributes.engine.identification.company).toStrictEqual('5fd78361f8e514b2abe7044b');
+        expect(relationships['engine@@@identification@@@company']).toBeUndefined();
+        expect(relationships.company).toStrictEqual('5fd78361f8e514b2abe7044b');
         expect(mockNext).toHaveBeenCalledTimes(1);
       });
     });
