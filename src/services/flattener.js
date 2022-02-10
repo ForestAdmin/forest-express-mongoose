@@ -80,24 +80,23 @@ module.exports = class Flattener {
   }
 
   static _unwrapFlattenedReferences(request) {
-    if (!request.body.data?.relationships) {
+    const { attributes, relationships } = request.body.data;
+
+    if (!relationships) {
       return;
     }
-
-    const extractedRelationships = {};
 
     Object.entries(request.body.data.relationships)
       .filter(([attributeName]) => Flattener._isFieldFlattened(attributeName))
       .forEach(([attributeName, value]) => {
-        Flattener._unflattenAttribute(
+        const { parentObjectName, unflattenedObject } = Flattener._unflattenAttribute(
           attributeName,
           value.data?.id,
-          request.body.data.attributes,
+          attributes,
         );
-        delete request.body.data.relationships[attributeName];
+        attributes[parentObjectName] = _.merge(attributes[parentObjectName], unflattenedObject);
+        delete relationships[attributeName];
       });
-
-    request.body.data.attributes = _.merge(request.body.data.attributes, extractedRelationships);
   }
 
   static _unflattenAttributes(request) {
@@ -131,11 +130,13 @@ module.exports = class Flattener {
     try {
       if (!_.isEmpty(request.body?.data?.attributes)) {
         Flattener._unflattenAttributes(request);
-        Flattener._unwrapFlattenedReferences(request);
 
         if (!_.isEmpty(request.body.data.attributes.all_records_subset_query)) {
           Flattener._unflattenSubsetQuery(request);
         }
+      }
+      if (!_.isEmpty(request.body?.data?.relationships)) {
+        Flattener._unwrapFlattenedReferences(request);
       }
       if (!_.isEmpty(request.query?.fields)) {
         Flattener._unflattenFields(request);

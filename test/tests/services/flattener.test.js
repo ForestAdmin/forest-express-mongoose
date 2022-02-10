@@ -628,22 +628,73 @@ describe('service > Flattener', () => {
         expect(mockNext).toHaveBeenCalledTimes(1);
       });
 
-      it('should move flattened relationships in the original attribute', () => {
-        expect.assertions(4);
+      describe('handling relationships', () => {
+        let relationshipUnWrapperSpy;
 
-        Flattener.requestUnflattener(request, mockResponse, mockNext);
-
-        const { attributes, relationships } = request.body.data;
-
-        expect(attributes.engine.identification.company).toStrictEqual('5fd78361f8e514b2abe7044b');
-        expect(relationships['engine@@@identification@@@company']).toBeUndefined();
-        expect(relationships.company).toStrictEqual({
-          data: {
-            type: 'companies',
-            id: '5fd78361f8e514b2abe7044b',
-          },
+        beforeEach(() => {
+          relationshipUnWrapperSpy = jest.spyOn(Flattener, '_unwrapFlattenedReferences');
         });
-        expect(mockNext).toHaveBeenCalledTimes(1);
+
+        afterEach(() => {
+          relationshipUnWrapperSpy.mockRestore();
+        });
+
+        it('should not change the request if no relationship exits', () => {
+          expect.assertions(2);
+
+          request.body.data.relationships = {};
+          const originalRequest = Object.assign(request);
+
+          Flattener.requestUnflattener(request, mockResponse, mockNext);
+
+          expect(originalRequest).toStrictEqual(request);
+          expect(relationshipUnWrapperSpy).not.toHaveBeenCalled();
+        });
+
+        it('should not change the request if relationships are not flattened ones', () => {
+          expect.assertions(2);
+
+          delete request.body.data.relationships['engine@@@identification@@@company'];
+          const originalRequest = Object.assign(request);
+
+          Flattener.requestUnflattener(request, mockResponse, mockNext);
+
+          expect(originalRequest).toStrictEqual(request);
+          expect(relationshipUnWrapperSpy).toHaveBeenCalledTimes(1);
+        });
+
+        it('should move flattened relationships in the original attribute', () => {
+          expect.assertions(4);
+
+          Flattener.requestUnflattener(request, mockResponse, mockNext);
+
+          const { attributes, relationships } = request.body.data;
+
+          expect(attributes.engine?.identification?.company).toStrictEqual('5fd78361f8e514b2abe7044b');
+          expect(relationships['engine@@@identification@@@company']).toBeUndefined();
+          expect(relationships.company).toStrictEqual({
+            data: {
+              type: 'companies',
+              id: '5fd78361f8e514b2abe7044b',
+            },
+          });
+          expect(mockNext).toHaveBeenCalledTimes(1);
+        });
+
+        it('should correctly unwrap relationship even if original object is not present', () => {
+          expect.assertions(2);
+
+          request.body.data.attributes = {
+            name: 'Car',
+          };
+
+          Flattener.requestUnflattener(request, mockResponse, mockNext);
+
+          const { attributes, relationships } = request.body.data;
+
+          expect(attributes.engine.identification.company).toStrictEqual('5fd78361f8e514b2abe7044b');
+          expect(relationships['engine@@@identification@@@scompany']).toBeUndefined();
+        });
       });
     });
 
