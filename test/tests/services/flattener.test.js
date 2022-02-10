@@ -572,42 +572,37 @@ describe('service > Flattener', () => {
     });
 
     describe('for a POST request', () => {
-      const setupTest = () => {
-        jest.resetAllMocks();
-
-        return {
-          mockResponse: {},
-          mockNext: jest.fn(),
-          relationshipUnWrapperSpy: jest.spyOn(Flattener, '_unwrapFlattenedReferences'),
-          request: {
-            originalUrl: 'http://localhost:3311/forest/cars',
-            body: {
-              data: {
-                attributes: {
-                  [`engine${FLATTEN_SEPARATOR}horsePower`]: '125cv',
-                  [`engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}serialNumber`]: '1234567',
-                  name: 'Car',
-                },
-                relationships: {
-                  [`engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}company`]: {
-                    data: {
-                      type: 'companies',
-                      id: '5fd78361f8e514b2abe7044b',
-                    },
+      const setupTest = () => ({
+        mockResponse: {},
+        mockNext: jest.fn(),
+        request: {
+          originalUrl: 'http://localhost:3311/forest/cars',
+          body: {
+            data: {
+              attributes: {
+                [`engine${FLATTEN_SEPARATOR}horsePower`]: '125cv',
+                [`engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}serialNumber`]: '1234567',
+                name: 'Car',
+              },
+              relationships: {
+                [`engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}company`]: {
+                  data: {
+                    type: 'companies',
+                    id: '5fd78361f8e514b2abe7044b',
                   },
-                  company: {
-                    data: {
-                      type: 'companies',
-                      id: '5fd78361f8e514b2abe7044b',
-                    },
+                },
+                company: {
+                  data: {
+                    type: 'companies',
+                    id: '5fd78361f8e514b2abe7044b',
                   },
                 },
               },
-              type: 'cars',
             },
+            type: 'cars',
           },
-        };
-      };
+        },
+      });
 
       it('should unflatten the attributes in the body', () => {
         expect.assertions(2);
@@ -635,9 +630,9 @@ describe('service > Flattener', () => {
         it('should not change the request if no relationship exits', () => {
           expect.assertions(2);
 
+          const relationshipUnWrapperSpy = jest.spyOn(Flattener, '_unwrapFlattenedReferences');
           const {
             request,
-            relationshipUnWrapperSpy,
             mockResponse,
             mockNext,
           } = setupTest();
@@ -649,14 +644,16 @@ describe('service > Flattener', () => {
 
           expect(originalRequest).toStrictEqual(request);
           expect(relationshipUnWrapperSpy).not.toHaveBeenCalled();
+
+          relationshipUnWrapperSpy.mockClear();
         });
 
         it('should not change the request if relationships are not flattened ones', () => {
           expect.assertions(2);
 
+          const relationshipUnWrapperSpy = jest.spyOn(Flattener, '_unwrapFlattenedReferences');
           const {
             request,
-            relationshipUnWrapperSpy,
             mockResponse,
             mockNext,
           } = setupTest();
@@ -668,6 +665,8 @@ describe('service > Flattener', () => {
 
           expect(originalRequest).toStrictEqual(request);
           expect(relationshipUnWrapperSpy).toHaveBeenCalledTimes(1);
+
+          relationshipUnWrapperSpy.mockClear();
         });
 
         it('should move flattened relationships in the original attribute', () => {
@@ -685,10 +684,12 @@ describe('service > Flattener', () => {
 
           expect(attributes.engine.identification.company).toStrictEqual('5fd78361f8e514b2abe7044b');
           expect(relationships[`engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}company`]).toBeUndefined();
-          expect(relationships.company).toStrictEqual({
-            data: {
-              type: 'companies',
-              id: '5fd78361f8e514b2abe7044b',
+          expect(relationships).toStrictEqual({
+            company: {
+              data: {
+                type: 'companies',
+                id: '5fd78361f8e514b2abe7044b',
+              },
             },
           });
           expect(mockNext).toHaveBeenCalledTimes(1);

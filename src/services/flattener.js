@@ -80,7 +80,9 @@ module.exports = class Flattener {
   }
 
   static _unwrapFlattenedReferences(request) {
-    const { attributes = {}, relationships = {} } = request.body.data;
+    if (!request.body.data.attributes) request.body.data.attributes = {};
+
+    const { attributes, relationships } = request.body.data;
 
     Object.entries(relationships)
       .filter(([attributeName]) => Flattener._isFieldFlattened(attributeName))
@@ -93,8 +95,6 @@ module.exports = class Flattener {
         attributes[parentObjectName] = _.merge(attributes[parentObjectName], unflattenedObject);
         delete relationships[attributeName];
       });
-
-    request.body.data.attributes = attributes;
   }
 
   static _unflattenAttributes(request) {
