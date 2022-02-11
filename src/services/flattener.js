@@ -79,6 +79,24 @@ module.exports = class Flattener {
     return { parentObjectName, unflattenedObject };
   }
 
+  static _unwrapFlattenedReferences(request) {
+    if (!request.body.data.attributes) request.body.data.attributes = {};
+
+    const { attributes, relationships } = request.body.data;
+
+    Object.entries(relationships)
+      .filter(([attributeName]) => Flattener._isFieldFlattened(attributeName))
+      .forEach(([attributeName, value]) => {
+        const { parentObjectName, unflattenedObject } = Flattener._unflattenAttribute(
+          attributeName,
+          value.data?.id,
+          attributes,
+        );
+        attributes[parentObjectName] = _.merge(attributes[parentObjectName], unflattenedObject);
+        delete relationships[attributeName];
+      });
+  }
+
   static _unflattenAttributes(request) {
     Object.entries(request.body.data.attributes).forEach(([attributeName, value]) => {
       if (Flattener._isFieldFlattened(attributeName)) {
@@ -114,6 +132,9 @@ module.exports = class Flattener {
         if (!_.isEmpty(request.body.data.attributes.all_records_subset_query)) {
           Flattener._unflattenSubsetQuery(request);
         }
+      }
+      if (!_.isEmpty(request.body?.data?.relationships)) {
+        Flattener._unwrapFlattenedReferences(request);
       }
       if (!_.isEmpty(request.query?.fields)) {
         Flattener._unflattenFields(request);

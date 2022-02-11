@@ -572,40 +572,168 @@ describe('service > Flattener', () => {
     });
 
     describe('for a POST request', () => {
-      const mockResponse = {};
-      const mockNext = jest.fn();
-      const request = {
-        originalUrl: 'http://localhost:3311/forest/cars',
-        body: {
-          data: {
-            attributes: {
-              [`engine${FLATTEN_SEPARATOR}horsePower`]: '125cv',
-              [`engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}serialNumber`]: '1234567',
-              name: 'Car',
+      const setupTest = () => ({
+        mockResponse: {},
+        mockNext: jest.fn(),
+        request: {
+          originalUrl: 'http://localhost:3311/forest/cars',
+          body: {
+            data: {
+              attributes: {
+                [`engine${FLATTEN_SEPARATOR}horsePower`]: '125cv',
+                [`engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}serialNumber`]: '1234567',
+                name: 'Car',
+              },
+              relationships: {
+                [`engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}company`]: {
+                  data: {
+                    type: 'companies',
+                    id: '5fd78361f8e514b2abe7044b',
+                  },
+                },
+                company: {
+                  data: {
+                    type: 'companies',
+                    id: '5fd78361f8e514b2abe7044b',
+                  },
+                },
+              },
             },
+            type: 'cars',
           },
         },
-      };
+      });
 
       it('should unflatten the attributes in the body', () => {
         expect.assertions(2);
 
+        const { request, mockResponse, mockNext } = setupTest();
+
         Flattener.requestUnflattener(request, mockResponse, mockNext);
 
-        expect(request.body).toStrictEqual({
-          data: {
-            attributes: {
-              engine: {
-                horsePower: '125cv',
-                identification: {
-                  serialNumber: '1234567',
-                },
-              },
-              name: 'Car',
+        const { attributes } = request.body.data;
+
+        expect(attributes).toStrictEqual({
+          engine: {
+            horsePower: '125cv',
+            identification: {
+              company: '5fd78361f8e514b2abe7044b',
+              serialNumber: '1234567',
             },
           },
+          name: 'Car',
         });
         expect(mockNext).toHaveBeenCalledTimes(1);
+      });
+
+      describe('handling relationships', () => {
+        it('should not change the request if no relationship exits', () => {
+          expect.assertions(2);
+
+          const relationshipUnWrapperSpy = jest.spyOn(Flattener, '_unwrapFlattenedReferences');
+          const {
+            request,
+            mockResponse,
+            mockNext,
+          } = setupTest();
+
+          request.body.data.relationships = {};
+          const originalRequest = Object.assign(request);
+
+          Flattener.requestUnflattener(request, mockResponse, mockNext);
+
+          expect(originalRequest).toStrictEqual(request);
+          expect(relationshipUnWrapperSpy).not.toHaveBeenCalled();
+
+          relationshipUnWrapperSpy.mockClear();
+        });
+
+        it('should not change the request if relationships are not flattened ones', () => {
+          expect.assertions(2);
+
+          const relationshipUnWrapperSpy = jest.spyOn(Flattener, '_unwrapFlattenedReferences');
+          const {
+            request,
+            mockResponse,
+            mockNext,
+          } = setupTest();
+
+          delete request.body.data.relationships[`engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}company`];
+          const originalRequest = Object.assign(request);
+
+          Flattener.requestUnflattener(request, mockResponse, mockNext);
+
+          expect(originalRequest).toStrictEqual(request);
+          expect(relationshipUnWrapperSpy).toHaveBeenCalledTimes(1);
+
+          relationshipUnWrapperSpy.mockClear();
+        });
+
+        it('should move flattened relationships in the original attribute', () => {
+          expect.assertions(4);
+
+          const {
+            request,
+            mockResponse,
+            mockNext,
+          } = setupTest();
+
+          Flattener.requestUnflattener(request, mockResponse, mockNext);
+
+          const { attributes, relationships } = request.body.data;
+
+          expect(attributes.engine.identification.company).toStrictEqual('5fd78361f8e514b2abe7044b');
+          expect(relationships[`engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}company`]).toBeUndefined();
+          expect(relationships).toStrictEqual({
+            company: {
+              data: {
+                type: 'companies',
+                id: '5fd78361f8e514b2abe7044b',
+              },
+            },
+          });
+          expect(mockNext).toHaveBeenCalledTimes(1);
+        });
+
+        it('should correctly unwrap relationship even if original object is not present', () => {
+          expect.assertions(2);
+
+          const {
+            request,
+            mockResponse,
+            mockNext,
+          } = setupTest();
+
+          request.body.data.attributes = {
+            name: 'Car',
+          };
+
+          Flattener.requestUnflattener(request, mockResponse, mockNext);
+
+          const { attributes, relationships } = request.body.data;
+
+          expect(attributes.engine.identification.company).toStrictEqual('5fd78361f8e514b2abe7044b');
+          expect(relationships[`engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}company`]).toBeUndefined();
+        });
+
+        it('should correctly unwrap relationship even if no attributes has been set', () => {
+          expect.assertions(2);
+
+          const {
+            request,
+            mockResponse,
+            mockNext,
+          } = setupTest();
+
+          request.body.data.attributes = undefined;
+
+          Flattener.requestUnflattener(request, mockResponse, mockNext);
+
+          const { attributes, relationships } = request.body.data;
+
+          expect(attributes.engine.identification.company).toStrictEqual('5fd78361f8e514b2abe7044b');
+          expect(relationships[`engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}company`]).toBeUndefined();
+        });
       });
     });
 
