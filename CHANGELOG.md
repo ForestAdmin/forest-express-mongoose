@@ -1,3 +1,10 @@
+## [8.6.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.6.0...v8.6.1) (2022-02-11)
+
+
+### Bug Fixes
+
+* unflatten relationships in their original attribute ([#790](https://github.com/ForestAdmin/forest-express-mongoose/issues/790)) ([c915f86](https://github.com/ForestAdmin/forest-express-mongoose/commit/c915f861bbf21fba70f5413ee3a0154e3458abee))
+
 # [8.6.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.5.0...v8.6.0) (2022-02-08)
 
 
