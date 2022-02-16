@@ -1,3 +1,10 @@
+## [8.6.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.6.1...v8.6.2) (2022-02-16)
+
+
+### Bug Fixes
+
+* **flattener:** fields null assignment is now properly handled ([#796](https://github.com/ForestAdmin/forest-express-mongoose/issues/796)) ([499c8db](https://github.com/ForestAdmin/forest-express-mongoose/commit/499c8db4c624818b54d2fe50b82416a5ee5a27f7))
+
 ## [8.6.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.6.0...v8.6.1) (2022-02-11)
 
 
