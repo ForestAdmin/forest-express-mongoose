@@ -249,7 +249,7 @@ module.exports = class Flattener {
     const flattenedRecord = {};
 
     Object.keys(record).forEach((attribute) => {
-      if (typeof record[attribute] === 'object') {
+      if (typeof record[attribute] === 'object' && record[attribute] !== null) {
         const flattenedPath = (flattenComposedKey) ? `${flattenComposedKey}${FLATTEN_SEPARATOR}${attribute}` : attribute;
 
         if (flattenedFields.find((flattenedField) => flattenedField === flattenedPath)) {
