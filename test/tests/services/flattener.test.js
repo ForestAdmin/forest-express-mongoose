@@ -898,8 +898,7 @@ describe('service > Flattener', () => {
         engine: {
           horsePower: '78',
           identification: {
-            manufacturer: 'Renault'
-              + '',
+            manufacturer: 'Renault',
           },
         },
         name: 'Car',
@@ -916,6 +915,33 @@ describe('service > Flattener', () => {
         'engine.horsePower': '78',
         'engine.identification.manufacturer': 'Renault',
         name: 'Car',
+      });
+    });
+
+    it('should correctly set values to null', () => {
+      expect.assertions(1);
+
+      const record = {
+        engine: {
+          horsePower: '78',
+          identification: {
+            manufacturer: null,
+          },
+        },
+        name: null,
+      };
+
+      const flattenedFields = [
+        `engine${FLATTEN_SEPARATOR}horsePower`,
+        `engine${FLATTEN_SEPARATOR}identification${FLATTEN_SEPARATOR}manufacturer`,
+      ];
+
+      const flattenedRecord = Flattener.flattenRecordDataForUpdates(record, null, flattenedFields);
+
+      expect(flattenedRecord).toStrictEqual({
+        'engine.horsePower': '78',
+        'engine.identification.manufacturer': null,
+        name: null,
       });
     });
   });
