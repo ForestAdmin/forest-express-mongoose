@@ -159,7 +159,7 @@ export class RecordsRemover<M extends Model<any>> extends AbstractRecordTool<M> 
 
 export class RecordSerializer<T> {
   constructor(model: { name: string } | Model<T>, user?: User, query?: Query);
-  serialize(records: Document<T> | Document<T>[], meta: Meta): Promise<RecordsSerialized>;
+  serialize(records: Record<string, any> | Record<string, any>[], meta: Meta): Promise<RecordsSerialized>;
 }
 
 // Optional middleware(s) related to the perf
