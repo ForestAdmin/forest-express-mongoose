@@ -1,3 +1,10 @@
+## [8.6.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.6.2...v8.6.3) (2022-02-24)
+
+
+### Bug Fixes
+
+* **search:** search extended on collection with array of numbers ([#792](https://github.com/ForestAdmin/forest-express-mongoose/issues/792)) ([444f4ca](https://github.com/ForestAdmin/forest-express-mongoose/commit/444f4ca9a95b3949b1eeb698378998eb687535ad))
+
 ## [8.6.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.6.1...v8.6.2) (2022-02-16)
 
 
