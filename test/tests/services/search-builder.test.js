@@ -6,117 +6,117 @@ import SearchBuilderClass from '../../../src/services/search-builder';
 let AnimalModel;
 
 describe('searchBuilder', () => {
-  describe('filter with number array', () => {
-    beforeAll(() => {
-      const AnimalSchema = new mongoose.Schema({
-        id: { type: 'ObjectId' },
-        name: { type: String },
-        arrayOfNumber: {
-          type: ['Number'],
-        },
-        arrayOfString: {
-          type: ['Number'],
-        },
-        embedded: {
-          field: 'embedded',
-          type: [
-            { species: { type: 'String' } },
-            { cousins: { type: 'Number' } },
-          ],
-        },
-      });
-      AnimalModel = mongoose.model('Animal', AnimalSchema);
-
-      Interface.Schemas = {
-        schemas: {
-          Animal: {
-            name: 'animals',
-            nameOld: 'animals',
-            idField: '_id',
-            primaryKeys: ['_id'],
-            isCompositePrimary: false,
-            fields: [
-              {
-                field: 'name',
-                type: 'String',
-              },
-              {
-                field: 'arrayOfNumber',
-                type: ['Number'],
-                defaultValue: null,
-                isRequired: false,
-                isPrimaryKey: false,
-                isReadOnly: false,
-                isSortable: true,
-                isFilterable: true,
-                isVirtual: false,
-                description: null,
-                reference: null,
-                inverseOf: null,
-                relationships: null,
-                enums: null,
-                validations: [],
-                integration: null,
-              },
-              {
-                field: 'arrayOfString',
-                type: ['String'],
-                defaultValue: null,
-                isRequired: false,
-                isPrimaryKey: false,
-                isReadOnly: false,
-                isSortable: true,
-                isFilterable: true,
-                isVirtual: false,
-                description: null,
-                reference: null,
-                inverseOf: null,
-                relationships: null,
-                enums: null,
-                validations: [],
-                integration: null,
-              },
-              {
-                field: 'embedded',
-                type: [
-                  {
-                    fields: [
-                      { field: 'species', type: 'String' },
-                      { field: 'cousins', type: 'Number' },
-                    ],
-                  },
-                ],
-                isRequired: false,
-                isPrimaryKey: false,
-                isReadOnly: false,
-                isSortable: true,
-                isFilterable: true,
-                isVirtual: false,
-              },
-              {
-                field: '_id',
-                type: 'String',
-                isPrimaryKey: true,
-                defaultValue: null,
-                isRequired: false,
-                isReadOnly: false,
-                isSortable: true,
-                isFilterable: true,
-                isVirtual: false,
-              },
-            ],
-            isSearchable: true,
-            actions: [],
-            segments: [],
-            onlyForRelationships: false,
-            isVirtual: false,
-            isReadOnly: false,
-            paginationType: 'page',
-          },
-        },
-      };
+  beforeAll(() => {
+    const AnimalSchema = new mongoose.Schema({
+      id: { type: 'ObjectId' },
+      name: { type: String },
+      arrayOfNumber: {
+        type: ['Number'],
+      },
+      arrayOfString: {
+        type: ['Number'],
+      },
+      embedded: {
+        field: 'embedded',
+        type: [
+          { species: { type: 'String' } },
+          { cousins: { type: 'Number' } },
+        ],
+      },
     });
-    it('should add the number to the elemMatch', async () => {
+    AnimalModel = mongoose.model('Animal', AnimalSchema);
+
+    Interface.Schemas = {
+      schemas: {
+        Animal: {
+          name: 'animals',
+          nameOld: 'animals',
+          idField: '_id',
+          primaryKeys: ['_id'],
+          isCompositePrimary: false,
+          fields: [
+            {
+              field: 'name',
+              type: 'String',
+            },
+            {
+              field: 'arrayOfNumber',
+              type: ['Number'],
+              defaultValue: null,
+              isRequired: false,
+              isPrimaryKey: false,
+              isReadOnly: false,
+              isSortable: true,
+              isFilterable: true,
+              isVirtual: false,
+              description: null,
+              reference: null,
+              inverseOf: null,
+              relationships: null,
+              enums: null,
+              validations: [],
+              integration: null,
+            },
+            {
+              field: 'arrayOfString',
+              type: ['String'],
+              defaultValue: null,
+              isRequired: false,
+              isPrimaryKey: false,
+              isReadOnly: false,
+              isSortable: true,
+              isFilterable: true,
+              isVirtual: false,
+              description: null,
+              reference: null,
+              inverseOf: null,
+              relationships: null,
+              enums: null,
+              validations: [],
+              integration: null,
+            },
+            {
+              field: 'embedded',
+              type: [
+                {
+                  fields: [
+                    { field: 'species', type: 'String' },
+                    { field: 'cousins', type: 'Number' },
+                  ],
+                },
+              ],
+              isRequired: false,
+              isPrimaryKey: false,
+              isReadOnly: false,
+              isSortable: true,
+              isFilterable: true,
+              isVirtual: false,
+            },
+            {
+              field: '_id',
+              type: 'String',
+              isPrimaryKey: true,
+              defaultValue: null,
+              isRequired: false,
+              isReadOnly: false,
+              isSortable: true,
+              isFilterable: true,
+              isVirtual: false,
+            },
+          ],
+          isSearchable: true,
+          actions: [],
+          segments: [],
+          onlyForRelationships: false,
+          isVirtual: false,
+          isReadOnly: false,
+          paginationType: 'page',
+        },
+      },
+    };
+  });
+  describe('when searching a number', () => {
+    it('should add the elemMatch for nested number', async () => {
       expect.assertions(1);
 
       const params = {
@@ -154,8 +154,10 @@ describe('searchBuilder', () => {
         ],
       });
     });
+  });
 
-    it('should add the string to the elemMatch', async () => {
+  describe('when searching a string', () => {
+    it('should add the elemMatch for nested string', async () => {
       expect.assertions(1);
 
       const params = {
