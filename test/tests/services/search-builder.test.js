@@ -3,36 +3,29 @@ import mongoose from 'mongoose';
 
 import SearchBuilderClass from '../../../src/services/search-builder';
 
+let AnimalModel;
+
 describe('searchBuilder', () => {
   describe('filter with number array', () => {
-    it('should add the number to the elemMatch', async () => {
-      expect.assertions(1);
-
+    beforeAll(() => {
       const AnimalSchema = new mongoose.Schema({
         id: { type: 'ObjectId' },
         name: { type: String },
         arrayOfNumber: {
           type: ['Number'],
         },
+        arrayOfString: {
+          type: ['Number'],
+        },
         embedded: {
           field: 'embedded',
           type: [
-            { species: { type: 'String', ref: 'species' } },
+            { species: { type: 'String' } },
             { cousins: { type: 'Number' } },
           ],
         },
       });
-      const AnimalModel = mongoose.model('Animal', AnimalSchema);
-      const params = {
-        timezone: 'Europe/Paris',
-        fields: { animals: '_id,name,nbAlive,deadNumber,arrayOfNumber' },
-        page: { number: '1', size: '15' },
-        search: '23',
-        searchExtended: '1',
-        sort: '-_id',
-        filters: undefined,
-      };
-      const searchFields = undefined;
+      AnimalModel = mongoose.model('Animal', AnimalSchema);
 
       Interface.Schemas = {
         schemas: {
@@ -50,6 +43,24 @@ describe('searchBuilder', () => {
               {
                 field: 'arrayOfNumber',
                 type: ['Number'],
+                defaultValue: null,
+                isRequired: false,
+                isPrimaryKey: false,
+                isReadOnly: false,
+                isSortable: true,
+                isFilterable: true,
+                isVirtual: false,
+                description: null,
+                reference: null,
+                inverseOf: null,
+                relationships: null,
+                enums: null,
+                validations: [],
+                integration: null,
+              },
+              {
+                field: 'arrayOfString',
+                type: ['String'],
                 defaultValue: null,
                 isRequired: false,
                 isPrimaryKey: false,
@@ -104,23 +115,73 @@ describe('searchBuilder', () => {
           },
         },
       };
+    });
+    it('should add the number to the elemMatch', async () => {
+      expect.assertions(1);
+
+      const params = {
+        timezone: 'Europe/Paris',
+        fields: { animals: '_id,name,nbAlive,deadNumber,arrayOfNumber,arrayOfString' },
+        page: { number: '1', size: '15' },
+        search: '23',
+        searchExtended: '1',
+        sort: '-_id',
+        filters: undefined,
+      };
+      const searchFields = undefined;
 
       const searchBuilder = new SearchBuilderClass(AnimalModel, undefined, params, searchFields);
-      //   searchBuilder.hasSmartFieldSearch = false;
-      //   searchBuilder.getFieldsSearched = jest.mock();
-
-      //  await searchBuilder.getConditions();
 
       expect(await searchBuilder.getConditions()).toStrictEqual({
         $or: [
           { name: /.*23.*/i },
           { arrayOfNumber: 23 },
+          { arrayOfString: /.*23.*/i },
           {
             embedded: {
               $elemMatch: {
                 $or: [
                   {
+                    species: /.*23.*/i,
+                  },
+                  {
                     cousins: 23,
+                  },
+                ],
+              },
+            },
+          },
+        ],
+      });
+    });
+
+    it('should add the string to the elemMatch', async () => {
+      expect.assertions(1);
+
+      const params = {
+        timezone: 'Europe/Paris',
+        fields: { animals: '_id,name,nbAlive,deadNumber,arrayOfNumber,arrayOfString' },
+        page: { number: '1', size: '15' },
+        search: 'gorillas',
+        searchExtended: '1',
+        sort: '-_id',
+        filters: undefined,
+      };
+      const searchFields = undefined;
+
+      const searchBuilder = new SearchBuilderClass(AnimalModel, undefined, params, searchFields);
+
+      expect(await searchBuilder.getConditions()).toStrictEqual({
+        $or: [
+
+          { name: /.*gorillas.*/i },
+          { arrayOfString: /.*gorillas.*/i },
+          {
+            embedded: {
+              $elemMatch: {
+                $or: [
+                  {
+                    species: /.*gorillas.*/i,
                   },
                 ],
               },
