@@ -115,6 +115,7 @@ interface RecordsSerialized {
 
 interface Meta {
   count: number,
+  [k: string]: any,
 }
 
 export class AbstractRecordTool<T> {
