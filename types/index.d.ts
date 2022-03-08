@@ -113,9 +113,14 @@ interface RecordsSerialized {
   included: Record<string, unknown>[],
 }
 
+interface Meta {
+  count: number,
+  [k: string]: any,
+}
+
 export class AbstractRecordTool<T> {
   constructor(model: Model<T>, user: User, query: Record<string, any>)
-  serialize(records: Document<T> | Document<T>[]): Promise<RecordsSerialized>;
+  serialize(records: Document<T> | Document<T>[], meta?: Meta): Promise<RecordsSerialized>;
 }
 
 export class RecordGetter<T> extends AbstractRecordTool<T> {
@@ -155,7 +160,7 @@ export class RecordsRemover<M extends Model<any>> extends AbstractRecordTool<M> 
 
 export class RecordSerializer<T> {
   constructor(model: { name: string } | Model<T>, user?: User, query?: Query);
-  serialize(records: Record<string, any> | Record<string, any>[]): Promise<RecordsSerialized>;
+  serialize(records: Record<string, any> | Record<string, any>[], meta?: Meta): Promise<RecordsSerialized>;
 }
 
 // Optional middleware(s) related to the perf
