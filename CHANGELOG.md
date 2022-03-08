@@ -1,3 +1,10 @@
+## [8.6.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.6.3...v8.6.4) (2022-03-08)
+
+
+### Bug Fixes
+
+* **types:** serializers now take optional meta as second argument ([#798](https://github.com/ForestAdmin/forest-express-mongoose/issues/798)) ([bfa0f71](https://github.com/ForestAdmin/forest-express-mongoose/commit/bfa0f719867bccb1a06b0edf3c34b04caf512d3d))
+
 ## [8.6.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.6.2...v8.6.3) (2022-02-24)
 
 
