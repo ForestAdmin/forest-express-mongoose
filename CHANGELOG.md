@@ -1,3 +1,10 @@
+## [8.6.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.6.4...v8.6.5) (2022-03-11)
+
+
+### Bug Fixes
+
+* prevent deactivate count middleware to throw ([#806](https://github.com/ForestAdmin/forest-express-mongoose/issues/806)) ([dcf9e9c](https://github.com/ForestAdmin/forest-express-mongoose/commit/dcf9e9cdbbc64a365e3580e922bb1c165f71786a))
+
 ## [8.6.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.6.3...v8.6.4) (2022-03-08)
 
 
