@@ -4170,9 +4170,10 @@ expect@^26.6.2:
     jest-message-util "^26.6.2"
     jest-regex-util "^26.0.0"
 
-"express-jwt@git+https://github.com/auth0/express-jwt.git#c7881ad378063236d85b1e1b0f4a252b63b8e75b":
+"express-jwt@https://github.com/auth0/express-jwt.git#c7881ad378063236d85b1e1b0f4a252b63b8e75b":
   version "6.1.1"
-  resolved "git+https://github.com/auth0/express-jwt.git#c7881ad378063236d85b1e1b0f4a252b63b8e75b"
+  uid c7881ad378063236d85b1e1b0f4a252b63b8e75b
+  resolved "https://github.com/auth0/express-jwt.git#c7881ad378063236d85b1e1b0f4a252b63b8e75b"
   dependencies:
     async "^3.2.2"
     express-unless "^1.0.0"
@@ -9654,10 +9655,10 @@ typedarray-to-buffer@^3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
-typescript@4.3.3:
-  version "4.3.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.3.3.tgz#5401db69bd3203daf1851a1a74d199cb3112c11a"
-  integrity sha512-rUvLW0WtF7PF2b9yenwWUi9Da9euvDRhmH7BLyBG4DCFfOJ850LGNknmRpp8Z8kXNUPObdZQEfKOiHtXuQHHKA==
+typescript@4.6.3:
+  version "4.6.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.6.3.tgz#eefeafa6afdd31d725584c67a0eaba80f6fc6c6c"
+  integrity sha512-yNIatDa5iaofVozS/uQJEl3JRWLKKGJKh6Yaiv0GLGSuhpFJe7P3SbHZ8/yjAHRQwKRoA6YZqlfjXWmVzoVSMw==
 
 uglify-js@^3.1.4:
   version "3.15.4"
