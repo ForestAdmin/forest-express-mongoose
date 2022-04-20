@@ -608,6 +608,29 @@ describe('adapters > schema-adapter', () => {
       // eslint-disable-next-line global-require
       expect(result).toStrictEqual(require('./expected-results/deep-nested-object'));
     });
+
+    it('should set _id fields as primary key on nested objects', async () => {
+      expect.assertions(2);
+      const schema = new mongoose.Schema({
+        depth1: {
+          depth2: {
+            _id: mongoose.Schema.Types.ObjectId,
+          },
+        },
+      });
+      const model = mongoose.model('Foo', schema);
+
+      const result = await createSchemaAdapter(model, {
+        Mongoose: mongoose,
+        connections: { mongoose },
+      });
+
+      const depth2Field = result.fields[0].type.fields[0];
+      const depth2IdField = depth2Field.type.fields[0];
+
+      expect(depth2Field.field).toStrictEqual('depth2');
+      expect(depth2IdField).toHaveProperty('isPrimaryKey', true);
+    });
   });
 
   describe('deep nested schema', () => {
