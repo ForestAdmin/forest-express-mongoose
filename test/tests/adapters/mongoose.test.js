@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Interface = require('forest-express');
 const createSchemaAdapter = require('../../../src/adapters/mongoose');
 
 const { Schema } = mongoose;
@@ -670,7 +671,7 @@ describe('adapters > schema-adapter', () => {
   });
 
   describe('hasOne relationship', () => {
-    it('should have the ref attribute set', async () => {
+    it('should have the ref attribute set if any', async () => {
       expect.assertions(2);
       mongoose.model('Bar', new mongoose.Schema());
       const schema = new mongoose.Schema({
@@ -684,6 +685,23 @@ describe('adapters > schema-adapter', () => {
       });
       expect(result).toHaveProperty('fields');
       expect(result.fields[0]).toHaveProperty('reference', 'Bar._id');
+    });
+
+    it('should not set the ref attribute if it does not exist', async () => {
+      expect.assertions(3);
+      const warnSpy = jest.spyOn(Interface.logger, 'warn');
+      const schema = new mongoose.Schema({
+        foo: { type: String, ref: 'Bar' },
+      });
+      const model = mongoose.model('Foo', schema);
+      const result = await createSchemaAdapter(model, {
+        Mongoose: mongoose,
+        connections: { mongoose },
+      });
+
+      expect(warnSpy).toHaveBeenCalledWith('Cannot find the reference "Bar" on the model "Foo".');
+      expect(result).toHaveProperty('fields');
+      expect(result.fields[0]).not.toHaveProperty('reference', 'Bar._id');
     });
   });
 

@@ -20,11 +20,13 @@ class FieldAnalyser {
   _detectReference(fieldInfo) {
     if (fieldInfo.options) {
       if (fieldInfo.options.ref && fieldInfo.options.type) {
-        return `${this._formatRef(fieldInfo.options.ref)}._id`;
+        const ref = this._formatRef(fieldInfo.options.ref);
+        return ref ? `${ref}._id` : null;
       }
       if (_.isArray(fieldInfo.options.type) && fieldInfo.options.type.length
         && fieldInfo.options.type[0].ref && fieldInfo.options.type[0].type) {
-        return `${this._formatRef(fieldInfo.options.type[0].ref)}._id`;
+        const ref = this._formatRef(fieldInfo.options.type[0].ref);
+        return ref ? `${ref}._id` : null;
       }
     }
     return null;
