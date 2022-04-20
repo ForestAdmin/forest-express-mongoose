@@ -205,6 +205,25 @@ describe('adapters > schema-adapter', () => {
     });
   });
 
+  describe('enums', () => {
+    it('should consider enums if any', async () => {
+      expect.assertions(3);
+      const schema = new mongoose.Schema({
+        category: { type: String, enum: ['one', 'two'] },
+      });
+      const model = mongoose.model('Foo', schema);
+
+      const result = await createSchemaAdapter(model, {
+        Mongoose: mongoose,
+        connections: { mongoose },
+      });
+
+      expect(result).toHaveProperty('fields');
+      expect(result.fields[0]).toHaveProperty('type', 'Enum');
+      expect(result.fields[0]).toHaveProperty('enums', ['one', 'two']);
+    });
+  });
+
   describe('array of dates', () => {
     it('should have the type [\'Date\']', async () => {
       expect.assertions(3);
