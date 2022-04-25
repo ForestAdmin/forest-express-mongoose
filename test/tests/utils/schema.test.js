@@ -148,7 +148,7 @@ describe('schema', () => {
       samplesModel = mongoose.model('samples', schema);
     });
 
-    describe('when the flattened field does not exist in schema', () => {
+    describe('when the field does not exist in schema', () => {
       it('should return null', () => {
         expect.assertions(1);
 
@@ -158,7 +158,7 @@ describe('schema', () => {
       });
     });
 
-    describe('when the flattened field exists in schema', () => {
+    describe('when the field exists in schema', () => {
       describe('when the field is from a subDocument (subSchema)', () => {
         it('should return the field info', () => {
           expect.assertions(1);
