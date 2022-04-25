@@ -39,3 +39,6 @@ const getNestedFieldType = (mongooseSchema, nestedFieldPath) => {
 };
 
 exports.getNestedFieldType = getNestedFieldType;
+
+exports.getMongooseSchemaFromFieldPath = (fieldPath, model) => model.schema.paths[fieldPath]
+  || model.schema.singleNestedPaths[fieldPath] || null;
