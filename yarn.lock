@@ -4170,9 +4170,10 @@ expect@^26.6.2:
     jest-message-util "^26.6.2"
     jest-regex-util "^26.0.0"
 
-"express-jwt@git+https://github.com/auth0/express-jwt.git#c7881ad378063236d85b1e1b0f4a252b63b8e75b":
-  version "6.1.1"
-  resolved "git+https://github.com/auth0/express-jwt.git#c7881ad378063236d85b1e1b0f4a252b63b8e75b"
+express-jwt@6.1.2:
+  version "6.1.2"
+  resolved "https://registry.yarnpkg.com/express-jwt/-/express-jwt-6.1.2.tgz#4a6cc11d1dcff6f23126dd79ec5b2b441333e78b"
+  integrity sha512-l5dlf5lNM/1EODMsJGfHn1VnrhhsUYEetzrKFStJZLjFQXtR+HGdBiW+jUNZ+ISsFe+h7Wl/hQKjLrY2TX0Qkg==
   dependencies:
     async "^3.2.2"
     express-unless "^1.0.0"
@@ -4444,10 +4445,10 @@ for-in@^1.0.2:
   resolved "https://registry.yarnpkg.com/for-in/-/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
   integrity sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=
 
-forest-express@9.4.6:
-  version "9.4.6"
-  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-9.4.6.tgz#77b4dbea2f93fd2cb4ad0ee3899dc2ea69eaafe5"
-  integrity sha512-wB+3ZHyeYASQ9MYJ0iuxt0/GVVnwqsm0aWo2MYMBkQv69Fn27SEqMpfnVlG8xqc4YupwZPB6B4aqdlpRcChKmg==
+forest-express@9.4.7:
+  version "9.4.7"
+  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-9.4.7.tgz#0246c563fc27fec3d870bf5e7a6547e5c29c3771"
+  integrity sha512-+F9wpuecIVTS1n1pvGSA1Q9ZEyMlEfAZ3bap3wFukYojm3sdecZ1vFU1KzwxkXBlyHh6v/uuHhceBJnP0S/DIA==
   dependencies:
     "@babel/runtime" "7.10.1"
     "@forestadmin/context" "1.31.0"
@@ -4459,7 +4460,7 @@ forest-express@9.4.6:
     cors "2.8.5"
     csv-stringify "1.0.4"
     express "4.17.1"
-    express-jwt "https://github.com/auth0/express-jwt.git#c7881ad378063236d85b1e1b0f4a252b63b8e75b"
+    express-jwt "6.1.2"
     forest-ip-utils "1.0.1"
     http-errors "1.7.3"
     inflected "2.0.4"
