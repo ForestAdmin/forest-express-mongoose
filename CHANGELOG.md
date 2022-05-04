@@ -1,3 +1,10 @@
+## [8.6.9](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.6.8...v8.6.9) (2022-05-04)
+
+
+### Bug Fixes
+
+* **security:** patch express-jwt to stable candidate ([#845](https://github.com/ForestAdmin/forest-express-mongoose/issues/845)) ([596ac84](https://github.com/ForestAdmin/forest-express-mongoose/commit/596ac8480e8bc94b8b2292db191184ccce2476b8))
+
 ## [8.6.8](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.6.7...v8.6.8) (2022-05-03)
 
 ## [8.6.7](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.6.6...v8.6.7) (2022-04-19)
