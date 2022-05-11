@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Interface = require('forest-express');
 const createSchemaAdapter = require('../../../src/adapters/mongoose');
 
 const { Schema } = mongoose;
@@ -201,6 +202,25 @@ describe('adapters > schema-adapter', () => {
       expect(result.fields[0].type).toStrictEqual('Json');
       expect(result.fields[1].field).toStrictEqual('foo2');
       expect(result.fields[1].type).toStrictEqual('Json');
+    });
+  });
+
+  describe('enums', () => {
+    it('should consider enums if any', async () => {
+      expect.assertions(3);
+      const schema = new mongoose.Schema({
+        category: { type: String, enum: ['one', 'two'] },
+      });
+      const model = mongoose.model('Foo', schema);
+
+      const result = await createSchemaAdapter(model, {
+        Mongoose: mongoose,
+        connections: { mongoose },
+      });
+
+      expect(result).toHaveProperty('fields');
+      expect(result.fields[0]).toHaveProperty('type', 'Enum');
+      expect(result.fields[0]).toHaveProperty('enums', ['one', 'two']);
     });
   });
 
@@ -588,6 +608,29 @@ describe('adapters > schema-adapter', () => {
       // eslint-disable-next-line global-require
       expect(result).toStrictEqual(require('./expected-results/deep-nested-object'));
     });
+
+    it('should set _id fields as primary key on nested objects', async () => {
+      expect.assertions(2);
+      const schema = new mongoose.Schema({
+        depth1: {
+          depth2: {
+            _id: mongoose.Schema.Types.ObjectId,
+          },
+        },
+      });
+      const model = mongoose.model('Foo', schema);
+
+      const result = await createSchemaAdapter(model, {
+        Mongoose: mongoose,
+        connections: { mongoose },
+      });
+
+      const depth2Field = result.fields[0].type.fields[0];
+      const depth2IdField = depth2Field.type.fields[0];
+
+      expect(depth2Field.field).toStrictEqual('depth2');
+      expect(depth2IdField).toHaveProperty('isPrimaryKey', true);
+    });
   });
 
   describe('deep nested schema', () => {
@@ -670,7 +713,7 @@ describe('adapters > schema-adapter', () => {
   });
 
   describe('hasOne relationship', () => {
-    it('should have the ref attribute set', async () => {
+    it('should have the ref attribute set if any', async () => {
       expect.assertions(2);
       mongoose.model('Bar', new mongoose.Schema());
       const schema = new mongoose.Schema({
@@ -684,6 +727,23 @@ describe('adapters > schema-adapter', () => {
       });
       expect(result).toHaveProperty('fields');
       expect(result.fields[0]).toHaveProperty('reference', 'Bar._id');
+    });
+
+    it('should not set the ref attribute if it does not exist', async () => {
+      expect.assertions(3);
+      const warnSpy = jest.spyOn(Interface.logger, 'warn');
+      const schema = new mongoose.Schema({
+        foo: { type: String, ref: 'Bar' },
+      });
+      const model = mongoose.model('Foo', schema);
+      const result = await createSchemaAdapter(model, {
+        Mongoose: mongoose,
+        connections: { mongoose },
+      });
+
+      expect(warnSpy).toHaveBeenCalledWith('Cannot find the reference "Bar" on the model "Foo".');
+      expect(result).toHaveProperty('fields');
+      expect(result.fields[0]).not.toHaveProperty('reference');
     });
   });
 
