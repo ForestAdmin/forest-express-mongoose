@@ -1,3 +1,10 @@
+## [8.6.10](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.6.9...v8.6.10) (2022-05-11)
+
+
+### Bug Fixes
+
+* **schema-analyser:** handle references correctly when they can not be found ([#830](https://github.com/ForestAdmin/forest-express-mongoose/issues/830)) ([8ff6a78](https://github.com/ForestAdmin/forest-express-mongoose/commit/8ff6a7836ade5958352278ade5fe0292c170a742))
+
 ## [8.6.9](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.6.8...v8.6.9) (2022-05-04)
 
 
