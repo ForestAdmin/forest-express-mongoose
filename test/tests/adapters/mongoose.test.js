@@ -743,7 +743,7 @@ describe('adapters > schema-adapter', () => {
 
       expect(warnSpy).toHaveBeenCalledWith('Cannot find the reference "Bar" on the model "Foo".');
       expect(result).toHaveProperty('fields');
-      expect(result.fields[0]).not.toHaveProperty('reference', 'Bar._id');
+      expect(result.fields[0]).not.toHaveProperty('reference');
     });
   });
 
