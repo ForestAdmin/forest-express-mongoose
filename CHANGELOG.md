@@ -1,3 +1,10 @@
+# [8.7.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.6.10...v8.7.0) (2022-05-12)
+
+
+### Features
+
+* **flattener:** native flattened fields are now entirely introspected ([#833](https://github.com/ForestAdmin/forest-express-mongoose/issues/833)) ([f7081c1](https://github.com/ForestAdmin/forest-express-mongoose/commit/f7081c1f7a58f73a960fdcab1602513d4129d931))
+
 ## [8.6.10](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.6.9...v8.6.10) (2022-05-11)
 
 
