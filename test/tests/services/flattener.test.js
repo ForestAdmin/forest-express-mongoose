@@ -1,5 +1,7 @@
 import Interface from 'forest-express';
+import mongoose from 'mongoose';
 import Flattener from '../../../src/services/flattener';
+import mongooseConnect from '../../utils/mongoose-connect';
 
 const FLATTEN_SEPARATOR = '@@@';
 
@@ -7,6 +9,21 @@ describe('service > Flattener', () => {
   let errorLoggerSpy;
   let warnLoggerSpy;
 
+  const companiesSchema = mongoose.Schema({
+    name: String,
+  });
+  const carsSchema = mongoose.Schema({
+    name: String,
+    engine: {
+      horsePower: { type: String, default: '110cv', enum: ['110cv', '115cv', '130cv'] },
+      identification: {
+        manufacturer: { type: mongoose.Schema.Types.ObjectId, ref: 'companies' },
+      },
+      owner: { type: mongoose.Schema.Types.ObjectId, ref: 'companies' },
+      partners: [{ type: mongoose.Schema.Types.ObjectId, ref: 'companies' }],
+    },
+  });
+  let carsModel;
   const generateFlattenedEngineSchema = () => ({
     name: 'cars',
     fields: [{
@@ -110,8 +127,12 @@ describe('service > Flattener', () => {
       type: 'String',
     }],
   });
+  const lianaOptions = {
+    connections: {},
+    mongoose,
+  };
 
-  beforeAll(() => {
+  beforeAll(async () => {
     Interface.Schemas.schemas.cars = {
       fields: [],
     };
@@ -119,6 +140,17 @@ describe('service > Flattener', () => {
       .spyOn(Interface.logger, 'error');
     warnLoggerSpy = jest
       .spyOn(Interface.logger, 'warn');
+
+    await mongooseConnect();
+
+    lianaOptions.connections.default = mongoose.connection;
+    mongoose.model('cars', carsSchema);
+    mongoose.model('companies', companiesSchema);
+    carsModel = lianaOptions.connections.default.models.cars;
+  });
+
+  afterAll(async () => {
+    await mongoose.connection.close();
   });
 
   describe('unflattenParams', () => {
@@ -163,7 +195,7 @@ describe('service > Flattener', () => {
         expect.assertions(2);
 
         jest.resetAllMocks();
-        const fieldsFlattener = new Flattener({ name: 'cars' }, { });
+        const fieldsFlattener = new Flattener({ name: 'cars' }, { }, carsModel, lianaOptions);
         fieldsFlattener.validateOptions();
 
         expect(errorLoggerSpy).toHaveBeenCalledTimes(1);
@@ -174,7 +206,7 @@ describe('service > Flattener', () => {
         expect.assertions(1);
 
         jest.resetAllMocks();
-        const fieldsFlattener = new Flattener({ name: 'cars' }, { });
+        const fieldsFlattener = new Flattener({ name: 'cars' }, { }, carsModel, lianaOptions);
 
         expect(() => { fieldsFlattener.validateOptions(); }).not.toThrow();
       });
@@ -187,7 +219,7 @@ describe('service > Flattener', () => {
 
           beforeAll(() => {
             jest.resetAllMocks();
-            fieldsFlattener = new Flattener({ fields: [] }, ['test']);
+            fieldsFlattener = new Flattener({ fields: [] }, ['test'], carsModel, lianaOptions);
             fieldsFlattener.validateOptions();
           });
 
@@ -210,7 +242,7 @@ describe('service > Flattener', () => {
 
           beforeAll(() => {
             jest.resetAllMocks();
-            fieldsFlattener = new Flattener({ fields: [] }, [{ field: 'test' }]);
+            fieldsFlattener = new Flattener({ fields: [] }, [{ field: 'test' }], carsModel, lianaOptions);
             fieldsFlattener.validateOptions();
           });
 
@@ -234,7 +266,7 @@ describe('service > Flattener', () => {
 
         beforeAll(() => {
           jest.resetAllMocks();
-          fieldsFlattener = new Flattener({ fields: [] }, [{ }]);
+          fieldsFlattener = new Flattener({ fields: [] }, [{ }], carsModel, lianaOptions);
           fieldsFlattener.validateOptions();
         });
 
@@ -258,7 +290,12 @@ describe('service > Flattener', () => {
         expect.assertions(2);
 
         jest.resetAllMocks();
-        const fieldsFlattener = new Flattener(generateDefaultEngineSchema(), [{ field: 'engine', level: null }]);
+        const fieldsFlattener = new Flattener(
+          generateDefaultEngineSchema(),
+          [{ field: 'engine', level: null }],
+          carsModel,
+          lianaOptions,
+        );
         fieldsFlattener.validateOptions();
 
         expect(warnLoggerSpy).toHaveBeenCalledTimes(1);
@@ -270,7 +307,12 @@ describe('service > Flattener', () => {
 
         jest.resetAllMocks();
         const flatten = [{ field: 'engine', level: null }];
-        const fieldsFlattener = new Flattener(generateDefaultEngineSchema(), flatten);
+        const fieldsFlattener = new Flattener(
+          generateDefaultEngineSchema(),
+          flatten,
+          carsModel,
+          lianaOptions,
+        );
         fieldsFlattener.validateOptions();
 
         expect(flatten[0].level).not.toBeDefined();
@@ -279,12 +321,27 @@ describe('service > Flattener', () => {
   });
 
   describe('flattening a field', () => {
+    it('should deeply introspect mongoose schema for native fields', () => {
+      expect.assertions(2);
+
+      const schema = generateDefaultEngineSchema();
+
+      const fieldsFlattener = new Flattener(schema, ['engine'], carsModel, lianaOptions);
+      fieldsFlattener.flattenFields();
+
+      const horsePowerField = schema.fields
+        .find((field) => field.field === 'engine@@@horsePower');
+
+      expect(horsePowerField.defaultValue).toStrictEqual('110cv');
+      expect(horsePowerField.enums).toStrictEqual(['110cv', '115cv', '130cv']);
+    });
+
     it(`should merge fields name with ${FLATTEN_SEPARATOR} as separator`, () => {
       expect.assertions(1);
 
       const schema = generateDefaultEngineSchema();
 
-      const fieldsFlattener = new Flattener(schema, ['engine']);
+      const fieldsFlattener = new Flattener(schema, ['engine'], carsModel, lianaOptions);
       fieldsFlattener.flattenFields();
 
       expect(schema.fields).toContainEqual({
@@ -301,7 +358,7 @@ describe('service > Flattener', () => {
 
       const schema = generateDefaultEngineSchema();
 
-      const fieldsFlattener = new Flattener(schema, ['engine']);
+      const fieldsFlattener = new Flattener(schema, ['engine'], carsModel, lianaOptions);
       fieldsFlattener.flattenFields();
 
       expect(schema.fields).toHaveLength(5);
@@ -315,7 +372,7 @@ describe('service > Flattener', () => {
           expect.assertions(1);
 
           const schema = generateDefaultEngineSchema();
-          const fieldsFlattener = new Flattener(schema, [{ field: 'engine', level: 100 }]);
+          const fieldsFlattener = new Flattener(schema, [{ field: 'engine', level: 100 }], carsModel, lianaOptions);
 
           fieldsFlattener.flattenFields();
 
@@ -327,7 +384,7 @@ describe('service > Flattener', () => {
           expect.assertions(1);
 
           const schema = generateDefaultEngineSchema();
-          const fieldsFlattener = new Flattener(schema, [{ field: 'engine', level: 0 }]);
+          const fieldsFlattener = new Flattener(schema, [{ field: 'engine', level: 0 }], carsModel, lianaOptions);
 
           fieldsFlattener.flattenFields();
 
@@ -340,7 +397,7 @@ describe('service > Flattener', () => {
         expect.assertions(1);
 
         const schema = generateDefaultEngineSchema();
-        const fieldsFlattener = new Flattener(schema, [{ field: 'engine', level: 0 }]);
+        const fieldsFlattener = new Flattener(schema, [{ field: 'engine', level: 0 }], carsModel, lianaOptions);
 
         fieldsFlattener.flattenFields();
 
@@ -352,7 +409,7 @@ describe('service > Flattener', () => {
         expect.assertions(1);
 
         const schema = generateDefaultEngineSchema();
-        const fieldsFlattener = new Flattener(schema, [{ field: 'engine', level: -2 }]);
+        const fieldsFlattener = new Flattener(schema, [{ field: 'engine', level: -2 }], carsModel, lianaOptions);
 
         fieldsFlattener.flattenFields();
 

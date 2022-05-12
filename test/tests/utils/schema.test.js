@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import mongooseConnect from '../../utils/mongoose-connect';
-import { getNestedFieldType } from '../../../src/utils/schema';
+import { getNestedFieldType, getMongooseSchemaFromFieldPath } from '../../../src/utils/schema';
 
 describe('schema', () => {
   let nestedModelSchema;
@@ -125,6 +125,72 @@ describe('schema', () => {
       expect(
         getNestedFieldType(nestedModelSchema, 'engineNestedPath.notExisting'),
       ).toBeUndefined();
+    });
+  });
+
+  describe('getMongooseSchemaFromFieldPath', () => {
+    let samplesModel;
+
+    beforeAll(() => {
+      const schema = new mongoose.Schema({
+        subDocument: new mongoose.Schema({
+          attribute1: String,
+          attribute2: Number,
+          nestedPath: {
+            attribute3: String,
+          },
+        }),
+        nestedPath: {
+          attribute1: String,
+          attribute2: Number,
+        },
+      });
+      samplesModel = mongoose.model('samples', schema);
+    });
+
+    describe('when the field does not exist in schema', () => {
+      it('should return null', () => {
+        expect.assertions(1);
+
+        const result = getMongooseSchemaFromFieldPath('subDocument.notExisting', samplesModel);
+
+        expect(result).toBeNull();
+      });
+    });
+
+    describe('when the field exists in schema', () => {
+      describe('when the field is from a subDocument (subSchema)', () => {
+        it('should return the field info', () => {
+          expect.assertions(1);
+
+          const fieldName = 'subDocument.attribute1';
+          const fieldInfo = getMongooseSchemaFromFieldPath(fieldName, samplesModel);
+
+          expect(fieldInfo).toBeDefined();
+        });
+      });
+
+      describe('when the field is from a nestPath (nestedObject)', () => {
+        it('should return the field info', () => {
+          expect.assertions(1);
+
+          const fieldName = 'nestedPath.attribute1';
+          const fieldInfo = getMongooseSchemaFromFieldPath(fieldName, samplesModel);
+
+          expect(fieldInfo).toBeDefined();
+        });
+      });
+
+      describe('when the field is from both nestedPath and embeddedDocument', () => {
+        it('should return the field info', () => {
+          expect.assertions(1);
+
+          const fieldName = 'subDocument.nestedPath.attribute3';
+          const fieldInfo = getMongooseSchemaFromFieldPath(fieldName, samplesModel);
+
+          expect(fieldInfo).toBeDefined();
+        });
+      });
     });
   });
 });

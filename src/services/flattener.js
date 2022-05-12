@@ -1,12 +1,16 @@
 import _ from 'lodash';
 import Interface from 'forest-express';
+import FieldIntrospector from '../utils/field-analyser';
+import { getMongooseSchemaFromFieldPath } from '../utils/schema';
 
 const FLATTEN_SEPARATOR = '@@@';
 
 module.exports = class Flattener {
-  constructor(schema, flatten) {
+  constructor(schema, flatten, model, lianaOptions) {
     this.schema = schema;
     this.flatten = flatten;
+    this.model = model;
+    this.lianaOptions = lianaOptions;
   }
 
   _removeWrongFlattenConfiguration(index) {
@@ -202,7 +206,20 @@ module.exports = class Flattener {
       });
     } else {
       schema.field = parentFieldName;
-      newFields.push(schema);
+
+      const fieldInfo = getMongooseSchemaFromFieldPath(
+        schema.field.split(FLATTEN_SEPARATOR).join('.'),
+        this.model,
+      );
+
+      if (typeof schema.type === 'string' && fieldInfo) {
+        const introspectedSchema = new FieldIntrospector(this.model, this.lianaOptions)
+          .getFieldSchema(schema.field, fieldInfo);
+
+        newFields.push(introspectedSchema);
+      } else {
+        newFields.push(schema);
+      }
     }
   }
 
