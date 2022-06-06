@@ -1,3 +1,10 @@
+## [8.7.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.0...v8.7.1) (2022-06-06)
+
+
+### Bug Fixes
+
+* **types:** declare correctly user in requests ([#870](https://github.com/ForestAdmin/forest-express-mongoose/issues/870)) ([9434ce2](https://github.com/ForestAdmin/forest-express-mongoose/commit/9434ce2a909eabec9ffa67459c1c768602522949))
+
 # [8.7.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.6.10...v8.7.0) (2022-05-12)
 
 
