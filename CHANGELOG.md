@@ -1,3 +1,10 @@
+## [8.7.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.1...v8.7.2) (2022-06-29)
+
+
+### Bug Fixes
+
+* **types:** load and change hook are now optional on smart action ([#886](https://github.com/ForestAdmin/forest-express-mongoose/issues/886)) ([03e5c7d](https://github.com/ForestAdmin/forest-express-mongoose/commit/03e5c7dfa3a1218a07e67d1eb1162fd4183e9bd3))
+
 ## [8.7.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.0...v8.7.1) (2022-06-06)
 
 
