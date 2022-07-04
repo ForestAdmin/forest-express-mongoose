@@ -1,3 +1,11 @@
+## [8.7.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.2...v8.7.3) (2022-07-04)
+
+
+### Bug Fixes
+
+* **security:** patch semantic-release dependency vulnerability ([#876](https://github.com/ForestAdmin/forest-express-mongoose/issues/876)) ([add0ecf](https://github.com/ForestAdmin/forest-express-mongoose/commit/add0ecfd424a443242c0fc78f11d991966829a7c))
+* **security:** patch semver-regex dependency vulnerability ([#869](https://github.com/ForestAdmin/forest-express-mongoose/issues/869)) ([fe640de](https://github.com/ForestAdmin/forest-express-mongoose/commit/fe640de91b44491349bcef0e11aa9e1c0a6194e7))
+
 ## [8.7.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.1...v8.7.2) (2022-06-29)
 
 
