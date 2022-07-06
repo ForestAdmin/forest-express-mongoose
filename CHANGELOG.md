@@ -1,3 +1,10 @@
+## [8.7.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.3...v8.7.4) (2022-07-06)
+
+
+### Bug Fixes
+
+* **reference:** fix join of references when model name is different from table name ([#892](https://github.com/ForestAdmin/forest-express-mongoose/issues/892)) ([5208e18](https://github.com/ForestAdmin/forest-express-mongoose/commit/5208e18ec2e1937ebc61b92dcde9106202cf7730))
+
 ## [8.7.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.2...v8.7.3) (2022-07-04)
 
 
