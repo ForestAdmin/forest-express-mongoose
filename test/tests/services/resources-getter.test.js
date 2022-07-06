@@ -25,7 +25,7 @@ describe('service > resources-getter', () => {
 
     Interface.Schemas = {
       schemas: {
-        Order: {
+        MyOrders: {
           name: 'Order',
           idField: '_id',
           primaryKeys: ['_id'],
@@ -90,7 +90,7 @@ describe('service > resources-getter', () => {
       rating: { type: Number },
     });
 
-    OrderModel = mongoose.model('Order', OrderSchema);
+    OrderModel = mongoose.model('MyOrders', OrderSchema, 'Order');
     UserModel = mongoose.model('User', UserSchema);
     FilmModel = mongoose.model('Film', FilmSchema);
 
