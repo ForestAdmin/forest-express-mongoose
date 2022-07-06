@@ -26,7 +26,7 @@ class QueryBuilder {
   }
 
   async getFieldNamesRequested() {
-    if (!this._params.fields || !this._params.fields[this._model.collection.name]) { return null; }
+    if (!this._params.fields || !this._params.fields[this._model.modelName]) { return null; }
 
     // NOTICE: Populate the necessary associations for filters
     const associations = this._params.filters
@@ -42,7 +42,7 @@ class QueryBuilder {
     }
 
     return _.union(
-      this._params.fields[this._model.collection.name].split(','),
+      this._params.fields[this._model.modelName].split(','),
       associations,
     );
   }
@@ -88,7 +88,7 @@ class QueryBuilder {
   async joinAllReferences(jsonQuery, alreadyJoinedQuery) {
     let fieldNames = await this.getFieldNamesRequested();
     const flattenReferenceNames = Flattener
-      .getFlattenedReferenceFieldsFromParams(this._model.collection.name, this._params.fields);
+      .getFlattenedReferenceFieldsFromParams(this._model.modelName, this._params.fields);
 
     fieldNames = flattenReferenceNames.concat(fieldNames);
 
