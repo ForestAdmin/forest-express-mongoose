@@ -25,7 +25,7 @@ describe('service > resources-getter', () => {
 
     Interface.Schemas = {
       schemas: {
-        Order: {
+        MyOrders: {
           name: 'Order',
           idField: '_id',
           primaryKeys: ['_id'],
@@ -90,9 +90,9 @@ describe('service > resources-getter', () => {
       rating: { type: Number },
     });
 
-    OrderModel = mongoose.model('Order', OrderSchema);
-    UserModel = mongoose.model('User', UserSchema);
-    FilmModel = mongoose.model('Film', FilmSchema);
+    OrderModel = mongoose.model('MyOrders', OrderSchema, 'Order');
+    UserModel = mongoose.model('User', UserSchema, 'users');
+    FilmModel = mongoose.model('Film', FilmSchema, 'films');
 
     await Promise.all([
       OrderModel.deleteMany({}), UserModel.deleteMany({}), FilmModel.deleteMany({}),
@@ -335,7 +335,7 @@ describe('service > resources-getter', () => {
       it('should return all fields', async () => {
         expect.assertions(3);
         const parameters = {
-          fields: { films: 'description' },
+          fields: { Film: 'description' },
           page: { number: '1', size: '15' },
           searchExtended: '0',
           timezone: 'Europe/Paris',
@@ -354,7 +354,7 @@ describe('service > resources-getter', () => {
       it('should return only selected fields', async () => {
         expect.assertions(3);
         const parameters = {
-          fields: { films: 'title' },
+          fields: { Film: 'title' },
           page: { number: '1', size: '15' },
           searchExtended: '0',
           timezone: 'Europe/Paris',
@@ -374,7 +374,7 @@ describe('service > resources-getter', () => {
         expect.assertions(1);
 
         const parameters = {
-          fields: { films: 'title' },
+          fields: { Film: 'title' },
           page: { number: '1', size: '15' },
           filters: '{"field":"rating","operator":"present","value":null}',
           timezone: 'Europe/Paris',
@@ -389,7 +389,7 @@ describe('service > resources-getter', () => {
         expect.assertions(3);
 
         const parameters = {
-          fields: { films: 'title' },
+          fields: { Film: 'title' },
           page: { number: '1', size: '15' },
           sort: 'rating',
           timezone: 'Europe/Paris',
@@ -406,7 +406,7 @@ describe('service > resources-getter', () => {
         expect.assertions(3);
 
         const parameters = {
-          fields: { films: 'title' },
+          fields: { Film: 'title' },
           page: { number: '1', size: '15' },
           sort: '-rating',
           timezone: 'Europe/Paris',
