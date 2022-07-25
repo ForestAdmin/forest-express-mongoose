@@ -1,3 +1,10 @@
+## [8.7.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.4...v8.7.5) (2022-07-25)
+
+
+### Bug Fixes
+
+* **security:** upgrade moment to 2.29.4 to fix a vulnerability ([#901](https://github.com/ForestAdmin/forest-express-mongoose/issues/901)) ([4241e13](https://github.com/ForestAdmin/forest-express-mongoose/commit/4241e13d8b6863e0e5902545c2ba581e080716b5))
+
 ## [8.7.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.3...v8.7.4) (2022-07-06)
 
 
