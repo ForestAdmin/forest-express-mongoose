@@ -1,3 +1,10 @@
+## [8.7.6](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.5...v8.7.6) (2022-07-29)
+
+
+### Bug Fixes
+
+* **flattener:** smart action availability now works properly on segments ([#906](https://github.com/ForestAdmin/forest-express-mongoose/issues/906)) ([59e93ba](https://github.com/ForestAdmin/forest-express-mongoose/commit/59e93ba896c5c433d4ab9d749edc90de8665002f))
+
 ## [8.7.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.4...v8.7.5) (2022-07-25)
 
 
