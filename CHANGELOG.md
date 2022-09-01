@@ -1,3 +1,10 @@
+## [8.7.7](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.6...v8.7.7) (2022-09-01)
+
+
+### Bug Fixes
+
+* **charts:** user with permissions level that allows charts creation or edition should always be allow to perform charts requests ([#922](https://github.com/ForestAdmin/forest-express-mongoose/issues/922)) ([aa18ad3](https://github.com/ForestAdmin/forest-express-mongoose/commit/aa18ad3cb6dfc534d2e424a84553e260d4d42b33))
+
 ## [8.7.6](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.5...v8.7.6) (2022-07-29)
 
 
