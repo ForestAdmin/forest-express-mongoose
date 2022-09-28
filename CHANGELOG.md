@@ -1,3 +1,10 @@
+## [8.7.8](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.7...v8.7.8) (2022-09-28)
+
+
+### Bug Fixes
+
+* **type:** add "isSortable" to SmartFieldOptions interface ([#936](https://github.com/ForestAdmin/forest-express-mongoose/issues/936)) ([73e17eb](https://github.com/ForestAdmin/forest-express-mongoose/commit/73e17ebe989ab89c7e47727fac9bd96bdd7f74d0))
+
 ## [8.7.7](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.6...v8.7.7) (2022-09-01)
 
 
