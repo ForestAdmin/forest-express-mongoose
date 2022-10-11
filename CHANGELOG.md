@@ -1,3 +1,10 @@
+## [7.9.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.9.3...v7.9.4) (2022-10-11)
+
+
+### Bug Fixes
+
+* **has many:** fix link of has many ([#945](https://github.com/ForestAdmin/forest-express-mongoose/issues/945)) ([04cd2aa](https://github.com/ForestAdmin/forest-express-mongoose/commit/04cd2aaf46a49fff02a4020725d6ab369d7fb8d6))
+
 ## [7.9.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.9.2...v7.9.3) (2022-09-01)
 
 
