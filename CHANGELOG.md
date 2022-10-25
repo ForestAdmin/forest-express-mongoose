@@ -1,3 +1,10 @@
+## [8.7.9](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.8...v8.7.9) (2022-10-25)
+
+
+### Bug Fixes
+
+* **type:** add generic for SmartActionRequestBody ([#949](https://github.com/ForestAdmin/forest-express-mongoose/issues/949)) ([5630cd4](https://github.com/ForestAdmin/forest-express-mongoose/commit/5630cd415ea4e7fc00376978df9cb664d3a44ac3))
+
 ## [8.7.8](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.7...v8.7.8) (2022-09-28)
 
 
