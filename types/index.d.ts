@@ -59,9 +59,9 @@ interface ActionRequestBody {
 }
 
 // Base body from requests for classic smart action routes
-interface SmartActionRequestBody {
+interface SmartActionRequestBody<T extends Record<string, any> = Record<string, any>> {
   data: {
-    attributes: ActionRequestAttributes & { values: Record<string, any> },
+    attributes: ActionRequestAttributes & { values: T },
     type: 'custom-action-requests',
   },
 }
@@ -78,8 +78,8 @@ interface SmartActionHookRequestBody {
 }
 
 // Concrete smart action request for classic smart action routes
-export interface SmartActionRequest extends ForestRequest {
-  body: SmartActionRequestBody,
+export interface SmartActionRequest<T extends Record<string, any> = Record<string, any>> extends ForestRequest {
+  body: SmartActionRequestBody<T>,
 }
 
 // Request passed to smart action load hooks
