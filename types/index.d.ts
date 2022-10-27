@@ -19,6 +19,7 @@ export interface LianaOptions {
   includedModels?: string[];
   excludedModels?: string[];
   configDir?: string;
+  schemaDir?: string;
 }
 
 export function init(options: LianaOptions): Promise<Application>;
@@ -58,9 +59,9 @@ interface ActionRequestBody {
 }
 
 // Base body from requests for classic smart action routes
-interface SmartActionRequestBody {
+interface SmartActionRequestBody<T extends Record<string, any> = Record<string, any>> {
   data: {
-    attributes: ActionRequestAttributes & { values: Record<string, any> },
+    attributes: ActionRequestAttributes & { values: T },
     type: 'custom-action-requests',
   },
 }
@@ -77,8 +78,8 @@ interface SmartActionHookRequestBody {
 }
 
 // Concrete smart action request for classic smart action routes
-export interface SmartActionRequest extends ForestRequest {
-  body: SmartActionRequestBody,
+export interface SmartActionRequest<T extends Record<string, any> = Record<string, any>> extends ForestRequest {
+  body: SmartActionRequestBody<T>,
 }
 
 // Request passed to smart action load hooks
@@ -95,8 +96,21 @@ export interface SmartActionChangeHookRequest extends ForestRequest {
 
 export function ensureAuthenticated(request: Request, response: Response, next: NextFunction): void;
 
+export interface UserTag {
+  key: string,
+  value: string,
+}
+
 export interface User {
+  email: string,
+  firstName: string,
+  lastName: string,
+  team: string,
+  role: string,
+  tags: UserTag[],
   renderingId: number;
+  iat: number,
+  exp: number,
 }
 
 // Everything related to Forest constants
@@ -112,9 +126,14 @@ interface RecordsSerialized {
   included: Record<string, unknown>[],
 }
 
+interface Meta {
+  count: number,
+  [k: string]: any,
+}
+
 export class AbstractRecordTool<T> {
   constructor(model: Model<T>, user: User, query: Record<string, any>)
-  serialize(records: Document<T> | Document<T>[]): Promise<RecordsSerialized>;
+  serialize(records: Document<T> | Document<T>[], meta?: Meta): Promise<RecordsSerialized>;
 }
 
 export class RecordGetter<T> extends AbstractRecordTool<T> {
@@ -122,7 +141,7 @@ export class RecordGetter<T> extends AbstractRecordTool<T> {
 }
 
 export class RecordsGetter<T> extends AbstractRecordTool<T> {
-  getAll(query: Query): Promise<(T & Document)[]>;
+  getAll(queryExtra?: Query): Promise<(T & Document)[]>;
   getIdsFromRequest(request: SmartActionRequest | SmartActionLoadHookRequest | SmartActionChangeHookRequest): Promise<string[]>;
 }
 
@@ -151,6 +170,16 @@ export class RecordRemover<M extends Model<any>> extends AbstractRecordTool<M> {
 export class RecordsRemover<M extends Model<any>> extends AbstractRecordTool<M> {
   remove(recordIds: RecordId[]): Promise<void>;
 }
+
+export class RecordSerializer<T> {
+  constructor(model: { name: string } | Model<T>, user?: User, query?: Query);
+  serialize(records: Record<string, any> | Record<string, any>[], meta?: Meta): Promise<RecordsSerialized>;
+}
+
+// Optional middleware(s) related to the perf
+
+export function deactivateCountMiddleware(request: Request, response: Response, next: NextFunction): void;
+
 
 // Everything related to Forest permissions
 
@@ -226,7 +255,7 @@ export interface SmartFieldValueSetter<T = any> {
 }
 
 export interface SmartFieldSearcher {
-  (search: string): FilterQuery<any>;
+  (search: string): FilterQuery<any> | Promise<FilterQuery<any>>;
 }
 
 export interface SmartFieldFiltererFilter {
@@ -251,6 +280,7 @@ export interface SmartFieldOptions {
   description?: string;
   type: FieldType;
   isFilterable?: boolean;
+  isSortable?: boolean;
   isReadOnly?: boolean;
   isRequired?: boolean;
   reference?: string;
@@ -283,7 +313,7 @@ export interface SmartActionLoadHookField extends SmartActionHookField {
 }
 
 export interface SmartActionLoadHook {
-  (context: { fields: SmartActionLoadHookField[], request: SmartActionLoadHookRequest }): SmartActionLoadHookField[]
+  (context: { fields: SmartActionLoadHookField[], request: SmartActionLoadHookRequest }): SmartActionLoadHookField[] | Promise<SmartActionLoadHookField[]>
 }
 
 export interface SmartActionChangeHookField extends SmartActionHookField {
@@ -291,12 +321,12 @@ export interface SmartActionChangeHookField extends SmartActionHookField {
 }
 
 export interface SmartActionChangeHook {
-  (context: { fields: SmartActionChangeHookField[], changedField: SmartActionChangeHookField, request: SmartActionChangeHookRequest }): SmartActionChangeHookField[]
+  (context: { fields: SmartActionChangeHookField[], changedField: SmartActionChangeHookField, request: SmartActionChangeHookRequest }): SmartActionChangeHookField[] | Promise<SmartActionChangeHookField[]>
 }
 
 export interface SmartActionHooks {
-  load: SmartActionLoadHook;
-  change: Record<string, SmartActionChangeHook>;
+  load?: SmartActionLoadHook;
+  change?: Record<string, SmartActionChangeHook>;
 }
 
 export interface SmartActionOptions {
@@ -319,8 +349,12 @@ export interface CollectionOptions {
   fields?: SmartFieldOptions[];
   actions?: SmartActionOptions[];
   segments?: SmartSegmentOptions[];
+  searchFields?: string[];
+  fieldsToFlatten?: ({ field: string, level?: number } | string)[]
 }
 
 export function collection(name: string, options: CollectionOptions): void;
 
 export function errorHandler(): RequestHandler;
+
+export function requestUnflattener(): RequestHandler;

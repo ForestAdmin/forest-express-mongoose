@@ -1,3 +1,5 @@
+import Flattener from './flattener';
+
 class HasManyAssociator {
   constructor(model, association, opts, params, data) {
     this._model = model;
@@ -7,7 +9,7 @@ class HasManyAssociator {
 
   perform() {
     const updateParams = {};
-    updateParams[this._params.associationName] = {
+    updateParams[Flattener.unflattenFieldName(this._params.associationName)] = {
       $each: this._data.data.map((document) => document.id),
     };
 

@@ -5,6 +5,7 @@ import Orm from '../utils/orm';
 import SearchBuilder from './search-builder';
 import FiltersParser from './filters-parser';
 import ProjectionBuilder from './projection-builder';
+import Flattener from './flattener';
 
 class QueryBuilder {
   constructor(model, params, opts) {
@@ -25,7 +26,7 @@ class QueryBuilder {
   }
 
   async getFieldNamesRequested() {
-    if (!this._params.fields || !this._params.fields[this._model.collection.name]) { return null; }
+    if (!this._params.fields || !this._params.fields[this._model.modelName]) { return null; }
 
     // NOTICE: Populate the necessary associations for filters
     const associations = this._params.filters
@@ -41,7 +42,7 @@ class QueryBuilder {
     }
 
     return _.union(
-      this._params.fields[this._model.collection.name].split(','),
+      this._params.fields[this._model.modelName].split(','),
       associations,
     );
   }
@@ -54,26 +55,27 @@ class QueryBuilder {
 
   addJoinToQuery(field, joinQuery) {
     if (field.reference && !field.isVirtual && !field.integration) {
-      if (QueryBuilder._joinAlreadyExists(field, joinQuery)) {
-        return this;
-      }
+      if (QueryBuilder._joinAlreadyExists(field, joinQuery)) return this;
 
       const referencedKey = utils.getReferenceField(field.reference);
       const subModel = utils.getReferenceModel(this._opts, field.reference);
+      const unflattenedFieldName = Flattener.unflattenFieldName(field.field);
+
       joinQuery.push({
         $lookup: {
           from: subModel.collection.name,
-          localField: field.field,
+          localField: unflattenedFieldName,
           foreignField: referencedKey,
-          as: field.field,
+          as: unflattenedFieldName,
         },
       });
 
-      const fieldPath = field.field && this._model.schema.path(field.field);
+      const fieldPath = unflattenedFieldName && this._model.schema.path(unflattenedFieldName);
+
       if (fieldPath && fieldPath.instance !== 'Array') {
         joinQuery.push({
           $unwind: {
-            path: `$${field.field}`,
+            path: `$${unflattenedFieldName}`,
             preserveNullAndEmptyArrays: true,
           },
         });
@@ -84,7 +86,12 @@ class QueryBuilder {
   }
 
   async joinAllReferences(jsonQuery, alreadyJoinedQuery) {
-    const fieldNames = await this.getFieldNamesRequested();
+    let fieldNames = await this.getFieldNamesRequested();
+    const flattenReferenceNames = Flattener
+      .getFlattenedReferenceFieldsFromParams(this._model.modelName, this._params.fields);
+
+    fieldNames = flattenReferenceNames.concat(fieldNames);
+
     this._schema.fields.forEach((field) => {
       if ((fieldNames && !fieldNames.includes(field.field))
           || QueryBuilder._joinAlreadyExists(field, alreadyJoinedQuery)) {
@@ -109,6 +116,7 @@ class QueryBuilder {
       const [association] = this._params.sort.split('.');
       this.addJoinToQuery(association, jsonQuery);
     }
+    if (Flattener._isFieldFlattened(sortParam)) sortParam = Flattener.unflattenFieldName(sortParam);
     jsonQuery.push({ $sort: { [sortParam]: order } });
 
     return this;

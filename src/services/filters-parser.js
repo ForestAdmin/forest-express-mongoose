@@ -1,7 +1,8 @@
 import _ from 'lodash';
-import Interface, { BaseFiltersParser, BaseOperatorDateParser } from 'forest-express';
+import Interface, { BaseFiltersParser, BaseOperatorDateParser, SchemaUtils } from 'forest-express';
 import { NoMatchingOperatorError, InvalidFiltersFormatError } from './errors';
 import utils from '../utils/schema';
+import Flattener from './flattener';
 
 const AGGREGATOR_OPERATORS = ['and', 'or'];
 
@@ -15,16 +16,17 @@ function FiltersParser(model, timezone, options) {
     if (value === 'false') { return false; }
     return typeof value === 'boolean' ? value : null;
   };
-  const parseString = (value) => {
-    // NOTICE: Check if the value is a real ObjectID. By default, the isValid method returns true
-    //         for a random string with length 12 (example: 'Black Friday').
+  const parseObjectId = (value) => {
+    // This fix issue where using aggregation pipeline, mongoose does not
+    // automatically cast 'looking like' string value to ObjectId
+    // CF Github Issue https://github.com/Automattic/mongoose/issues/1399
     const { ObjectId } = options.Mongoose.Types;
     if (ObjectId.isValid(value) && ObjectId(value).toString() === value) {
       return ObjectId(value);
     }
+
     return value;
   };
-  const parseArray = (value) => ({ $size: value });
   const parseOther = (value) => value;
 
   this.operatorDateParser = new BaseOperatorDateParser({
@@ -33,63 +35,26 @@ function FiltersParser(model, timezone, options) {
   });
 
   this.perform = async (filtersString) => BaseFiltersParser
-    .perform(filtersString, this.formatAggregation, this.formatCondition);
+    .perform(filtersString, this.formatAggregation, this.formatCondition, modelSchema);
 
   this.formatAggregation = async (aggregator, formatedConditions) => {
     const aggregatorOperator = this.formatAggregatorOperator(aggregator);
     return { [aggregatorOperator]: formatedConditions };
   };
 
-  this._ensureIsValidCondition = (condition) => {
-    if (_.isEmpty(condition)) {
-      throw new InvalidFiltersFormatError('Empty condition in filter');
-    }
-    if (!_.isObject(condition)) {
-      throw new InvalidFiltersFormatError('Condition cannot be a raw value');
-    }
-    if (_.isArray(condition)) {
-      throw new InvalidFiltersFormatError('Filters cannot be a raw array');
-    }
-    if (!_.isString(condition.field)
-        || !_.isString(condition.operator)
-        || _.isUndefined(condition.value)) {
-      throw new InvalidFiltersFormatError('Invalid condition format');
-    }
-  };
-
-  this.getSmartFieldCondition = async (condition) => {
-    const fieldFound = modelSchema.fields.find((field) => field.field === condition.field);
-
-    if (!fieldFound.filter) {
-      throw new Error(`"filter" method missing on smart field "${fieldFound.field}"`);
-    }
-
-    const formattedCondition = await Promise.resolve(fieldFound
-      .filter({
-        where: await this.formatOperatorValue(
-          condition.field,
-          condition.operator,
-          condition.value,
-        ),
-        condition,
-      }));
-    if (!formattedCondition) {
-      throw new Error(`"filter" method on smart field "${fieldFound.field}" must return a condition`);
-    }
-    return formattedCondition;
-  };
-
-  this.formatCondition = async (condition) => {
-    this._ensureIsValidCondition(condition);
-
-    if (this.isSmartField(modelSchema, condition.field)) {
-      return this.getSmartFieldCondition(condition);
+  this.formatCondition = async (condition, isSmartField = false) => {
+    if (isSmartField) {
+      return this.formatOperatorValue(
+        condition.field,
+        condition.operator,
+        condition.value,
+      );
     }
 
     const formatedField = this.formatField(condition.field);
 
     return {
-      [formatedField]: await this.formatOperatorValue(
+      [Flattener.unflattenFieldName(formatedField)]: await this.formatOperatorValue(
         condition.field,
         condition.operator,
         condition.value,
@@ -98,12 +63,24 @@ function FiltersParser(model, timezone, options) {
   };
 
   this.getParserForType = (type) => {
+    const mongooseTypes = options.Mongoose.Schema.Types;
+
     switch (type) {
-      case 'Number': return parseInteger;
-      case 'Date': return parseDate;
-      case 'Boolean': return parseBoolean;
-      case 'String': return parseString;
-      case _.isArray(type): return parseArray;
+      case 'Number':
+      case Number:
+      case mongooseTypes.Number:
+        return parseInteger;
+      case 'Date':
+      case Date:
+      case mongooseTypes.Date:
+        return parseDate;
+      case 'Boolean':
+      case Boolean:
+      case mongooseTypes.Boolean:
+        return parseBoolean;
+      case 'ObjectId':
+      case mongooseTypes.ObjectId:
+        return parseObjectId;
       default: return parseOther;
     }
   };
@@ -111,24 +88,21 @@ function FiltersParser(model, timezone, options) {
   this.getParserForField = async (key) => {
     const [fieldName, subfieldName] = key.split(':');
 
-    // NOTICE: Mongoose Aggregate don't parse the value automatically.
-    let field = _.find(modelSchema.fields, { field: fieldName });
+    const field = SchemaUtils.getField(modelSchema, fieldName);
 
     if (!field) {
       throw new InvalidFiltersFormatError(`Field '${fieldName}' not found on collection '${modelSchema.name}'`);
     }
 
-    const isEmbeddedField = !!field.type.fields;
-    if (isEmbeddedField) {
-      field = _.find(field.type.fields, { field: subfieldName });
-    }
+    const fieldPath = subfieldName ? `${fieldName}.${subfieldName}` : fieldName;
+    const fieldType = utils.getNestedFieldType(model.schema, fieldPath);
 
-    if (!field) return (val) => val;
+    if (!fieldType) return (val) => val;
 
-    const parse = this.getParserForType(field.type);
+    const parse = this.getParserForType(fieldType);
 
     return (value) => {
-      if (value && _.isArray(value)) {
+      if (value && Array.isArray(value)) {
         return value.map(parse);
       }
       return parse(value);
@@ -172,18 +146,15 @@ function FiltersParser(model, timezone, options) {
       case 'equal':
         return parseFct(value);
       case 'in':
-        return { $in: parseFct(value) };
+        return (Array.isArray(value))
+          ? { $in: parseFct(value) }
+          : { $in: value.split(',').map((elem) => elem.trim()) };
       default:
         throw new NoMatchingOperatorError();
     }
   };
 
   this.formatField = (field) => field.replace(':', '.');
-
-  this.isSmartField = (schema, fieldName) => {
-    const fieldFound = schema.fields.find((field) => field.field === fieldName);
-    return !!fieldFound && !!fieldFound.isVirtual;
-  };
 
   this.getAssociations = async (filtersString) => BaseFiltersParser.getAssociations(filtersString);
 
@@ -196,7 +167,7 @@ function FiltersParser(model, timezone, options) {
     if (!_.isObject(condition)) {
       throw new InvalidFiltersFormatError('Condition cannot be a raw value');
     }
-    if (_.isArray(condition)) {
+    if (Array.isArray(condition)) {
       throw new InvalidFiltersFormatError('Filters cannot be a raw array');
     }
     if (!_.isString(condition.field)
@@ -211,7 +182,7 @@ function FiltersParser(model, timezone, options) {
     }
 
     // Mongoose Aggregate don't parse the value automatically.
-    const field = _.find(modelSchema.fields, { field: fieldName });
+    const field = SchemaUtils.getField(modelSchema, fieldName);
 
     if (!field) {
       throw new InvalidFiltersFormatError(`Field '${fieldName}' not found on collection '${modelSchema.name}'`);
@@ -226,7 +197,7 @@ function FiltersParser(model, timezone, options) {
     const newCondition = {
       operator: condition.operator,
       value: condition.value,
-      field: subFieldName,
+      field: Flattener.unflattenFieldName(subFieldName),
     };
     const query = await subModelFilterParser.perform(JSON.stringify(newCondition));
     const [, referencedKey] = field.reference.split('.');
@@ -242,7 +213,7 @@ function FiltersParser(model, timezone, options) {
       return {
         aggregator: 'or',
         conditions: [{
-          field: fieldName,
+          field: Flattener.unflattenFieldName(fieldName),
           operator: 'blank',
           value: null,
         }, resultCondition],

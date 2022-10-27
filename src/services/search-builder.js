@@ -20,7 +20,8 @@ function SearchBuilder(model, opts, params, searchFields) {
     }
 
     _.each(model.schema.paths, (value, key) => {
-      if (searchFields && !searchFields.includes(value.path)) {
+      if ((searchFields && !searchFields.includes(value.path))
+      || value.path === model.schema.options.versionKey) {
         return;
       }
 
@@ -44,28 +45,35 @@ function SearchBuilder(model, opts, params, searchFields) {
         pushCondition(condition, key);
       } else if (value.instance === 'Array') {
         const field = _.find(schema.fields, { field: key });
-        if (field && _.isArray(field.type) && field.type[0] === 'String'
-          && !field.reference) {
-          condition[key] = searchRegexp;
-          pushCondition(condition, key);
-        } else if (field && _.isArray(field.type)
-          && !field.reference && Number.parseInt(params.searchExtended, 10)) {
-          const elemMatch = { $elemMatch: { $or: [] } };
-
-          field.type[0].fields.forEach((subField) => {
-            const query = {};
-            if (subField.type === 'String'
-              && !value.schema.obj[subField.field].ref) {
-              query[subField.field] = searchRegexp;
-              elemMatch.$elemMatch.$or.push(query);
-            } else if (subField.type === 'Number'
-              && Number.parseInt(params.search, 10)) {
-              query[subField.field] = Number.parseInt(params.search, 10);
-              elemMatch.$elemMatch.$or.push(query);
+        if (_.isArray(field?.type) && !field.reference) {
+          if (field.type[0] === 'String') {
+            condition[key] = searchRegexp;
+            pushCondition(condition, key);
+          } else if (field.type[0] === 'Number') {
+            const searchNumber = Number(params.search);
+            if (!Number.isNaN(searchNumber)) {
+              condition[key] = searchNumber;
+              pushCondition(condition, key);
             }
-          });
-          condition[key] = elemMatch;
-          pushCondition(condition, key);
+          } else if (field.type[0].fields && Number.parseInt(params.searchExtended, 10)) {
+            const elemMatch = { $elemMatch: { $or: [] } };
+            field.type[0].fields.forEach((subField) => {
+              const query = {};
+              if (subField.type === 'String'
+                && !value.schema.obj[subField.field].ref) {
+                query[subField.field] = searchRegexp;
+                elemMatch.$elemMatch.$or.push(query);
+              } else if (subField.type === 'Number') {
+                const searchNumber = Number(params.search);
+                if (!Number.isNaN(searchNumber)) {
+                  query[subField.field] = searchNumber;
+                  elemMatch.$elemMatch.$or.push(query);
+                }
+              }
+            });
+            condition[key] = elemMatch;
+            pushCondition(condition, key);
+          }
         }
       }
     });

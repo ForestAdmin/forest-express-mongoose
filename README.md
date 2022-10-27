@@ -1,7 +1,7 @@
 # Forest Admin in Nodejs (Express.js & Mongoose)
 
 [![npm package](https://badge.fury.io/js/forest-express-mongoose.svg)](https://badge.fury.io/js/forest-express-mongoose)
-[![CI status](https://github.com/ForestAdmin/forest-express-mongoose/workflows/Build,%20Test%20and%20Deploy/badge.svg?branch=master)](https://github.com/ForestAdmin/forest-express-mongoose/actions)
+[![CI status](https://github.com/ForestAdmin/forest-express-mongoose/workflows/Build,%20Test%20and%20Deploy/badge.svg?branch=main)](https://github.com/ForestAdmin/forest-express-mongoose/actions)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/4881f8b0b3cb806cd472/test_coverage)](https://codeclimate.com/github/ForestAdmin/forest-express-mongoose/test_coverage)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
@@ -15,7 +15,7 @@ This project has been designed with scalability in mind to fit requirements from
 - [Carbon Health](https://carbonhealth.com)
 - [Ebanx](https://www.ebanx.com)
 - [First circle](https://www.firstcircle.ph)
-- [Forest Admin](https://www.forestadmin) of course :-)
+- [Forest Admin](https://www.forestadmin.com) of course :-)
 - [Heetch](https://www.heetch.com)
 - [Lunchr](https://www.lunchr.co)
 - [Pillow](https://www.pillow.com)
@@ -25,7 +25,7 @@ This project has been designed with scalability in mind to fit requirements from
 
 ## Getting started
 
-[https://docs.forestadmin.com/documentation/getting-started/installation](https://docs.forestadmin.com/documentation/getting-started/installation)
+[https://docs.forestadmin.com/documentation/how-tos/setup/install](https://docs.forestadmin.com/documentation/how-tos/setup/install)
 
 ## Documentation
 

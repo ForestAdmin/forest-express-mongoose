@@ -1,3 +1,412 @@
+## [8.7.9](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.8...v8.7.9) (2022-10-25)
+
+
+### Bug Fixes
+
+* **type:** add generic for SmartActionRequestBody ([#949](https://github.com/ForestAdmin/forest-express-mongoose/issues/949)) ([5630cd4](https://github.com/ForestAdmin/forest-express-mongoose/commit/5630cd415ea4e7fc00376978df9cb664d3a44ac3))
+
+## [8.7.8](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.7...v8.7.8) (2022-09-28)
+
+
+### Bug Fixes
+
+* **type:** add "isSortable" to SmartFieldOptions interface ([#936](https://github.com/ForestAdmin/forest-express-mongoose/issues/936)) ([73e17eb](https://github.com/ForestAdmin/forest-express-mongoose/commit/73e17ebe989ab89c7e47727fac9bd96bdd7f74d0))
+
+## [8.7.7](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.6...v8.7.7) (2022-09-01)
+
+
+### Bug Fixes
+
+* **charts:** user with permissions level that allows charts creation or edition should always be allow to perform charts requests ([#922](https://github.com/ForestAdmin/forest-express-mongoose/issues/922)) ([aa18ad3](https://github.com/ForestAdmin/forest-express-mongoose/commit/aa18ad3cb6dfc534d2e424a84553e260d4d42b33))
+
+## [8.7.6](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.5...v8.7.6) (2022-07-29)
+
+
+### Bug Fixes
+
+* **flattener:** smart action availability now works properly on segments ([#906](https://github.com/ForestAdmin/forest-express-mongoose/issues/906)) ([59e93ba](https://github.com/ForestAdmin/forest-express-mongoose/commit/59e93ba896c5c433d4ab9d749edc90de8665002f))
+
+## [8.7.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.4...v8.7.5) (2022-07-25)
+
+
+### Bug Fixes
+
+* **security:** upgrade moment to 2.29.4 to fix a vulnerability ([#901](https://github.com/ForestAdmin/forest-express-mongoose/issues/901)) ([4241e13](https://github.com/ForestAdmin/forest-express-mongoose/commit/4241e13d8b6863e0e5902545c2ba581e080716b5))
+
+## [8.7.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.3...v8.7.4) (2022-07-06)
+
+
+### Bug Fixes
+
+* **reference:** fix join of references when model name is different from table name ([#892](https://github.com/ForestAdmin/forest-express-mongoose/issues/892)) ([5208e18](https://github.com/ForestAdmin/forest-express-mongoose/commit/5208e18ec2e1937ebc61b92dcde9106202cf7730))
+
+## [8.7.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.2...v8.7.3) (2022-07-04)
+
+
+### Bug Fixes
+
+* **security:** patch semantic-release dependency vulnerability ([#876](https://github.com/ForestAdmin/forest-express-mongoose/issues/876)) ([add0ecf](https://github.com/ForestAdmin/forest-express-mongoose/commit/add0ecfd424a443242c0fc78f11d991966829a7c))
+* **security:** patch semver-regex dependency vulnerability ([#869](https://github.com/ForestAdmin/forest-express-mongoose/issues/869)) ([fe640de](https://github.com/ForestAdmin/forest-express-mongoose/commit/fe640de91b44491349bcef0e11aa9e1c0a6194e7))
+
+## [8.7.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.1...v8.7.2) (2022-06-29)
+
+
+### Bug Fixes
+
+* **types:** load and change hook are now optional on smart action ([#886](https://github.com/ForestAdmin/forest-express-mongoose/issues/886)) ([03e5c7d](https://github.com/ForestAdmin/forest-express-mongoose/commit/03e5c7dfa3a1218a07e67d1eb1162fd4183e9bd3))
+
+## [8.7.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.0...v8.7.1) (2022-06-06)
+
+
+### Bug Fixes
+
+* **types:** declare correctly user in requests ([#870](https://github.com/ForestAdmin/forest-express-mongoose/issues/870)) ([9434ce2](https://github.com/ForestAdmin/forest-express-mongoose/commit/9434ce2a909eabec9ffa67459c1c768602522949))
+
+# [8.7.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.6.10...v8.7.0) (2022-05-12)
+
+
+### Features
+
+* **flattener:** native flattened fields are now entirely introspected ([#833](https://github.com/ForestAdmin/forest-express-mongoose/issues/833)) ([f7081c1](https://github.com/ForestAdmin/forest-express-mongoose/commit/f7081c1f7a58f73a960fdcab1602513d4129d931))
+
+## [8.6.10](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.6.9...v8.6.10) (2022-05-11)
+
+
+### Bug Fixes
+
+* **schema-analyser:** handle references correctly when they can not be found ([#830](https://github.com/ForestAdmin/forest-express-mongoose/issues/830)) ([8ff6a78](https://github.com/ForestAdmin/forest-express-mongoose/commit/8ff6a7836ade5958352278ade5fe0292c170a742))
+
+## [8.6.9](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.6.8...v8.6.9) (2022-05-04)
+
+
+### Bug Fixes
+
+* **security:** patch express-jwt to stable candidate ([#845](https://github.com/ForestAdmin/forest-express-mongoose/issues/845)) ([596ac84](https://github.com/ForestAdmin/forest-express-mongoose/commit/596ac8480e8bc94b8b2292db191184ccce2476b8))
+
+## [8.6.8](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.6.7...v8.6.8) (2022-05-03)
+
+## [8.6.7](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.6.6...v8.6.7) (2022-04-19)
+
+## [8.6.6](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.6.5...v8.6.6) (2022-04-19)
+
+## [8.6.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.6.4...v8.6.5) (2022-03-11)
+
+
+### Bug Fixes
+
+* prevent deactivate count middleware to throw ([#806](https://github.com/ForestAdmin/forest-express-mongoose/issues/806)) ([dcf9e9c](https://github.com/ForestAdmin/forest-express-mongoose/commit/dcf9e9cdbbc64a365e3580e922bb1c165f71786a))
+
+## [8.6.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.6.3...v8.6.4) (2022-03-08)
+
+
+### Bug Fixes
+
+* **types:** serializers now take optional meta as second argument ([#798](https://github.com/ForestAdmin/forest-express-mongoose/issues/798)) ([bfa0f71](https://github.com/ForestAdmin/forest-express-mongoose/commit/bfa0f719867bccb1a06b0edf3c34b04caf512d3d))
+
+## [8.6.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.6.2...v8.6.3) (2022-02-24)
+
+
+### Bug Fixes
+
+* **search:** search extended on collection with array of numbers ([#792](https://github.com/ForestAdmin/forest-express-mongoose/issues/792)) ([444f4ca](https://github.com/ForestAdmin/forest-express-mongoose/commit/444f4ca9a95b3949b1eeb698378998eb687535ad))
+
+## [8.6.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.6.1...v8.6.2) (2022-02-16)
+
+
+### Bug Fixes
+
+* **flattener:** fields null assignment is now properly handled ([#796](https://github.com/ForestAdmin/forest-express-mongoose/issues/796)) ([499c8db](https://github.com/ForestAdmin/forest-express-mongoose/commit/499c8db4c624818b54d2fe50b82416a5ee5a27f7))
+
+## [8.6.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.6.0...v8.6.1) (2022-02-11)
+
+
+### Bug Fixes
+
+* unflatten relationships in their original attribute ([#790](https://github.com/ForestAdmin/forest-express-mongoose/issues/790)) ([c915f86](https://github.com/ForestAdmin/forest-express-mongoose/commit/c915f861bbf21fba70f5413ee3a0154e3458abee))
+
+# [8.6.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.5.0...v8.6.0) (2022-02-08)
+
+
+### Features
+
+* **count:** add middleware to deactivate count ([#780](https://github.com/ForestAdmin/forest-express-mongoose/issues/780)) ([64fa7b2](https://github.com/ForestAdmin/forest-express-mongoose/commit/64fa7b2f5e409aadfba4e48e8197645eba70fe3c))
+
+# [8.5.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.4.9...v8.5.0) (2022-01-14)
+
+
+### Features
+
+* users can now use flattened fields with custom routes ([84302d1](https://github.com/ForestAdmin/forest-express-mongoose/commit/84302d1b02639226ddae8cd7dd3468bf04c43f5e))
+
+## [8.4.9](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.4.8...v8.4.9) (2022-01-07)
+
+
+### Bug Fixes
+
+* filters on nested fields now works correctly ([#763](https://github.com/ForestAdmin/forest-express-mongoose/issues/763)) ([2bb7ee8](https://github.com/ForestAdmin/forest-express-mongoose/commit/2bb7ee828bf2591fe4b7360c68a78210e2405773))
+
+## [8.4.8](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.4.7...v8.4.8) (2021-12-27)
+
+
+### Bug Fixes
+
+* flattened array attributes are now correctly exported ([#753](https://github.com/ForestAdmin/forest-express-mongoose/issues/753)) ([be9f61f](https://github.com/ForestAdmin/forest-express-mongoose/commit/be9f61fd7b83aab14c51c1099500d5237509bb8d))
+
+## [8.4.7](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.4.6...v8.4.7) (2021-12-24)
+
+
+### Bug Fixes
+
+* **export:** flattened fields are now correctly exported ([#751](https://github.com/ForestAdmin/forest-express-mongoose/issues/751)) ([fac7ea4](https://github.com/ForestAdmin/forest-express-mongoose/commit/fac7ea4287fe1bdde4c040164dc115bf2e247d93))
+
+## [8.4.6](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.4.5...v8.4.6) (2021-12-21)
+
+
+### Bug Fixes
+
+* **fields-flattener:** flattened nested references are now correctly fetched ([#749](https://github.com/ForestAdmin/forest-express-mongoose/issues/749)) ([9be668c](https://github.com/ForestAdmin/forest-express-mongoose/commit/9be668cd6ea2519f3aa08455edb0d8c850d8a808))
+
+## [8.4.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.4.4...v8.4.5) (2021-12-01)
+
+
+### Bug Fixes
+
+* clean implem and add coverage ([cad38c9](https://github.com/ForestAdmin/forest-express-mongoose/commit/cad38c9541ddd1e9377cd9b8a41f433578e7bccc))
+* prevent auto cast to objectId when customer forces a field to be a String ([aac5fd8](https://github.com/ForestAdmin/forest-express-mongoose/commit/aac5fd88a6084a68446b727dbbc0cc00ac81afa5))
+
+## [8.4.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.4.3...v8.4.4) (2021-11-30)
+
+
+### Bug Fixes
+
+* add searchFields type in the collection options ([#733](https://github.com/ForestAdmin/forest-express-mongoose/issues/733)) ([f8656f6](https://github.com/ForestAdmin/forest-express-mongoose/commit/f8656f6740a78caafc8b6ac1c93e75942873581f))
+
+## [8.4.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.4.2...v8.4.3) (2021-10-25)
+
+
+### Bug Fixes
+
+* add warning message when connections does not have any models ([#720](https://github.com/ForestAdmin/forest-express-mongoose/issues/720)) ([f3fff15](https://github.com/ForestAdmin/forest-express-mongoose/commit/f3fff15dcc5e7687950fcabc0d46a25c27fa15d4))
+
+## [8.4.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.4.1...v8.4.2) (2021-10-25)
+
+
+### Bug Fixes
+
+* **smart-actions:** skip scope validation for smart action on smart collection ([#719](https://github.com/ForestAdmin/forest-express-mongoose/issues/719)) ([9f238bf](https://github.com/ForestAdmin/forest-express-mongoose/commit/9f238bfee556c03322c305f748b24fc23d93cf74))
+
+## [8.4.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.4.0...v8.4.1) (2021-10-20)
+
+
+### Bug Fixes
+
+* **types:** smart field searcher is now declared to support asynchronous code ([#716](https://github.com/ForestAdmin/forest-express-mongoose/issues/716)) ([28bd190](https://github.com/ForestAdmin/forest-express-mongoose/commit/28bd1903d8c22be86baf6e9679c4760c9b3caf8e))
+
+# [8.4.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.10...v8.4.0) (2021-10-19)
+
+
+### Features
+
+* **perf:** do not send schema to Forest when unchanged ([#714](https://github.com/ForestAdmin/forest-express-mongoose/issues/714)) ([4efb724](https://github.com/ForestAdmin/forest-express-mongoose/commit/4efb7246c7939003a1d4c24d96359665e6200395))
+
+## [8.3.10](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.9...v8.3.10) (2021-10-14)
+
+
+### Bug Fixes
+
+* **types:** add schemaDir property in LianaOptions type ([#709](https://github.com/ForestAdmin/forest-express-mongoose/issues/709)) ([e7d33ef](https://github.com/ForestAdmin/forest-express-mongoose/commit/e7d33ef146c70b94142d2d77a24f2e8043ba0fd6))
+
+## [8.3.9](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.8...v8.3.9) (2021-10-07)
+
+
+### Bug Fixes
+
+* fix hooks types to allow asynchronous hook ([#701](https://github.com/ForestAdmin/forest-express-mongoose/issues/701)) ([18b8d8b](https://github.com/ForestAdmin/forest-express-mongoose/commit/18b8d8bdb52490a48c63bbd1739b65a1c2e69f2f))
+
+## [8.3.8](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.7...v8.3.8) (2021-09-29)
+
+
+### Bug Fixes
+
+* **smart field:** fix filter on smart reference ([#669](https://github.com/ForestAdmin/forest-express-mongoose/issues/669)) ([18ab904](https://github.com/ForestAdmin/forest-express-mongoose/commit/18ab9047b8ce6f784a91752bae7a20ae7ea7288e))
+
+## [8.3.7](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.6...v8.3.7) (2021-09-22)
+
+
+### Bug Fixes
+
+* **security:** patch mpath dependency vulnerability ([#670](https://github.com/ForestAdmin/forest-express-mongoose/issues/670)) ([1633c46](https://github.com/ForestAdmin/forest-express-mongoose/commit/1633c467b4578a07a7cc3e287123ff72ff257f56))
+
+## [8.3.6](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.5...v8.3.6) (2021-09-21)
+
+
+### Bug Fixes
+
+* **security:** patch babel vulnerabilities ([#676](https://github.com/ForestAdmin/forest-express-mongoose/issues/676)) ([0195e2a](https://github.com/ForestAdmin/forest-express-mongoose/commit/0195e2ae4766a00a7c092807c741b635bf584263))
+
+## [8.3.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.4...v8.3.5) (2021-09-21)
+
+
+### Bug Fixes
+
+* **security:** patch glob-parent vulnerabilities ([#675](https://github.com/ForestAdmin/forest-express-mongoose/issues/675)) ([47a84d8](https://github.com/ForestAdmin/forest-express-mongoose/commit/47a84d89a4b4b07b33e4a4cedab3cb56336b1de4))
+
+## [8.3.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.3...v8.3.4) (2021-09-21)
+
+
+### Bug Fixes
+
+* **security:** patch jose dependency vulnerability ([#557](https://github.com/ForestAdmin/forest-express-mongoose/issues/557)) ([046da94](https://github.com/ForestAdmin/forest-express-mongoose/commit/046da94d3b0f60baf12a4cb0681b1679bd0eb26c))
+* **security:** patch path-parse dependency vulnerabilities ([#657](https://github.com/ForestAdmin/forest-express-mongoose/issues/657)) ([fd2e33a](https://github.com/ForestAdmin/forest-express-mongoose/commit/fd2e33aae760d63496eb170b2a367bf9e673d667))
+* **security:** patch tmpl dependency vulnerabilities ([#672](https://github.com/ForestAdmin/forest-express-mongoose/issues/672)) ([f19fb83](https://github.com/ForestAdmin/forest-express-mongoose/commit/f19fb83d632216466c2c2d1c782d2e0094bb6490))
+
+## [8.3.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.2...v8.3.3) (2021-09-21)
+
+
+### Bug Fixes
+
+* **security:** patch semantic-release-slack-bot vulnerabilities ([#674](https://github.com/ForestAdmin/forest-express-mongoose/issues/674)) ([433517a](https://github.com/ForestAdmin/forest-express-mongoose/commit/433517a50b5785a607b8167e36b4098ac10ee47d))
+
+## [8.3.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.1...v8.3.2) (2021-09-21)
+
+
+### Bug Fixes
+
+* **security:** patch dependencies of dependencies vulnerabilities ([#673](https://github.com/ForestAdmin/forest-express-mongoose/issues/673)) ([2188605](https://github.com/ForestAdmin/forest-express-mongoose/commit/21886057e4c3991afe3e5e55ff421b7482c51621))
+
+## [8.3.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.3.0...v8.3.1) (2021-09-21)
+
+
+### Bug Fixes
+
+* **security:** patch semantic-release dependency vulnerabilities ([#671](https://github.com/ForestAdmin/forest-express-mongoose/issues/671)) ([d411424](https://github.com/ForestAdmin/forest-express-mongoose/commit/d41142432689533f115e2ee0b35351041b880308))
+
+# [8.3.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.2.0...v8.3.0) (2021-09-10)
+
+
+### Features
+
+* **filter:** add "is in" filter ([#666](https://github.com/ForestAdmin/forest-express-mongoose/issues/666)) ([d957bb5](https://github.com/ForestAdmin/forest-express-mongoose/commit/d957bb52d51adf9e21815ea09593aebd9b896815))
+
+# [8.2.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.8...v8.2.0) (2021-08-26)
+
+
+### Features
+
+* include tags in the user data inside the request ([#663](https://github.com/ForestAdmin/forest-express-mongoose/issues/663)) ([d513bdc](https://github.com/ForestAdmin/forest-express-mongoose/commit/d513bdc9f6a865c88b5a8ac20af12b1f209f8acf))
+
+## [8.1.8](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.7...v8.1.8) (2021-08-25)
+
+
+### Bug Fixes
+
+* **security:** patch ws dependency vulnerability ([#628](https://github.com/ForestAdmin/forest-express-mongoose/issues/628)) ([ade3202](https://github.com/ForestAdmin/forest-express-mongoose/commit/ade3202fc4cce1c6dd8d038af069b1254eb890c1))
+
+## [8.1.7](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.6...v8.1.7) (2021-08-25)
+
+
+### Bug Fixes
+
+* **security:** patch color-string dependency vulnerability ([#629](https://github.com/ForestAdmin/forest-express-mongoose/issues/629)) ([43793a3](https://github.com/ForestAdmin/forest-express-mongoose/commit/43793a39042a603e4e8a31219ffdbffbfd141f93))
+
+## [8.1.6](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.5...v8.1.6) (2021-08-25)
+
+
+### Bug Fixes
+
+* **security:** patch hosted-git-info dependency vulnerability ([#566](https://github.com/ForestAdmin/forest-express-mongoose/issues/566)) ([aea9087](https://github.com/ForestAdmin/forest-express-mongoose/commit/aea9087ea18baa56ebb8bf5475a038526000945e))
+
+## [8.1.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.4...v8.1.5) (2021-08-25)
+
+
+### Bug Fixes
+
+* **security:** patch handlebars dependency vulnerabilities (from 4.7.6 to 4.7.7) ([#565](https://github.com/ForestAdmin/forest-express-mongoose/issues/565)) ([289ab2c](https://github.com/ForestAdmin/forest-express-mongoose/commit/289ab2cc422a2f5fcdbea9f03d55b40e40c6c706))
+* **security:** patch tar dependency vulnerabilities ([#653](https://github.com/ForestAdmin/forest-express-mongoose/issues/653)) ([b51911d](https://github.com/ForestAdmin/forest-express-mongoose/commit/b51911dfac563ce8062b62d8e24af266db5102d2)), closes [#565](https://github.com/ForestAdmin/forest-express-mongoose/issues/565)
+
+## [8.1.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.3...v8.1.4) (2021-08-25)
+
+
+### Bug Fixes
+
+* **charts:** objective charts now returns correct values ([#660](https://github.com/ForestAdmin/forest-express-mongoose/issues/660)) ([54459e2](https://github.com/ForestAdmin/forest-express-mongoose/commit/54459e2c06badb4b449ebbd55f1abd2b6c325c2b))
+
+## [8.1.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.2...v8.1.3) (2021-08-17)
+
+
+### Bug Fixes
+
+* **smart-action:** single and bulk smart action can't be triggered due to runtime error ([#658](https://github.com/ForestAdmin/forest-express-mongoose/issues/658)) ([80491d4](https://github.com/ForestAdmin/forest-express-mongoose/commit/80491d40c679c87d2fd4162acfd34fa904381d6b))
+
+## [8.1.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.1...v8.1.2) (2021-08-05)
+
+
+### Bug Fixes
+
+* **exposed:** reduce number of mandatory parameters in records-getter and record-serializer ([#656](https://github.com/ForestAdmin/forest-express-mongoose/issues/656)) ([253bac9](https://github.com/ForestAdmin/forest-express-mongoose/commit/253bac907a45c606de71f8b58179db1556013752))
+
+## [8.1.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.1.0...v8.1.1) (2021-08-04)
+
+
+### Bug Fixes
+
+* **types:** add missing RecordSerializer ([#655](https://github.com/ForestAdmin/forest-express-mongoose/issues/655)) ([482c5ba](https://github.com/ForestAdmin/forest-express-mongoose/commit/482c5ba764ba5f372dc6edfb467903044ea1b464))
+
+# [8.1.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.3...v8.1.0) (2021-08-04)
+
+
+### Features
+
+* users can now flatten nested fields from model ([#641](https://github.com/ForestAdmin/forest-express-mongoose/issues/641)) ([d479eb9](https://github.com/ForestAdmin/forest-express-mongoose/commit/d479eb9ad50ae459d639f8ade3fbf030f6b85ced))
+
+## [8.0.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.2...v8.0.3) (2021-07-27)
+
+
+### Bug Fixes
+
+* **update:** fix update record regression ([#643](https://github.com/ForestAdmin/forest-express-mongoose/issues/643)) ([cc39aeb](https://github.com/ForestAdmin/forest-express-mongoose/commit/cc39aebaaa421124c41b33a207dbd1211e3aa02d))
+
+## [8.0.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.1...v8.0.2) (2021-07-26)
+
+
+### Bug Fixes
+
+* **actions:** fix regression on the bulk delete action ([#640](https://github.com/ForestAdmin/forest-express-mongoose/issues/640)) ([6880156](https://github.com/ForestAdmin/forest-express-mongoose/commit/6880156e1b7a6a2cc0b545c9122982c6fbb96dc2))
+
+## [8.0.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.0...v8.0.1) (2021-07-22)
+
+
+### Bug Fixes
+
+* **related-data:** sequelize related data are not displayed ([#639](https://github.com/ForestAdmin/forest-express-mongoose/issues/639)) ([20febff](https://github.com/ForestAdmin/forest-express-mongoose/commit/20febfff103ad72a8ac7fa8faf8bcb0de4707cec))
+
+# [8.0.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v7.9.2...v8.0.0) (2021-07-19)
+
+
+### Bug Fixes
+
+* abstractRecord type ([#624](https://github.com/ForestAdmin/forest-express-mongoose/issues/624)) ([56fbac3](https://github.com/ForestAdmin/forest-express-mongoose/commit/56fbac359c57a7e572de227a9ca2eb85d6496487))
+* broken value charts due to missing user on ValueStatGetter constructor ([#609](https://github.com/ForestAdmin/forest-express-mongoose/issues/609)) ([0b52930](https://github.com/ForestAdmin/forest-express-mongoose/commit/0b52930dd6ced63bf3defe7c3263b27a8cb8f793))
+* fix types ([7e2d7f2](https://github.com/ForestAdmin/forest-express-mongoose/commit/7e2d7f220abbcfff79a1f33e3635da5df65c041d))
+
+
+### Features
+
+* allow hooks for global and bulk smart action ([#622](https://github.com/ForestAdmin/forest-express-mongoose/issues/622)) ([2c5c7d1](https://github.com/ForestAdmin/forest-express-mongoose/commit/2c5c7d19cd6887b66014c255dd032c20b7bc54df))
+* **security:** secure segments queries ([#616](https://github.com/ForestAdmin/forest-express-mongoose/issues/616)) ([f09990a](https://github.com/ForestAdmin/forest-express-mongoose/commit/f09990a64ec27a882e9560007e068ae068bf562f))
+* **smart-action:** user can add dynamically field with hook on smart action form ([#593](https://github.com/ForestAdmin/forest-express-mongoose/issues/593)) ([90b4330](https://github.com/ForestAdmin/forest-express-mongoose/commit/90b4330e073c78da79a2ebbbbb2055e9e459a940))
+
+
+* feat(scopes)!: enforce scopes restrictions on a wider range of requests (#586) ([2ce0904](https://github.com/ForestAdmin/forest-express-mongoose/commit/2ce09043f0115a791f0b831ab49b08c534c50f2e)), closes [#586](https://github.com/ForestAdmin/forest-express-mongoose/issues/586)
+
+
+### BREAKING CHANGES
+
+* record is no longer send to the hook middleware & values option on smart action is no longer supported
+* **smart-action:** fields parameters on hook function is no longer a map of field, it is now an array.
+change hook is no longer choosen by the field name, field need to have hook defined inside it definition by addin a props hook.
+* the public API of forest-express has changed to include the parameters which are needed to evaluate scope filters. This includes PermissionMiddlewareCreator, all classes on the /exposed folder and most services. Many routes now require providing the current user timezone.
+
 # [8.0.0-beta.9](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.0-beta.8...v8.0.0-beta.9) (2021-07-19)
 
 # [8.0.0-beta.8](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.0.0-beta.7...v8.0.0-beta.8) (2021-07-19)

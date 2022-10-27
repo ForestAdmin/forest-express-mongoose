@@ -1,5 +1,6 @@
-const ResourcesGetter = require('./resources-getter');
+const Flattener = require('./flattener');
 const HasManyGetter = require('./has-many-getter');
+const ResourcesGetter = require('./resources-getter');
 
 const BATCH_INITIAL_PAGE = 1;
 const BATCH_SIZE = 1000;
@@ -8,7 +9,7 @@ class ResourcesExporter {
   constructor(model, options, params, association, user) {
     this._model = model;
     this._options = options;
-    this._params = params;
+    this._params = Flattener.unflattenParams(params);
     this._association = association;
     this._user = user;
 

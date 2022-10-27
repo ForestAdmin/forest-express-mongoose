@@ -3,6 +3,7 @@ const P = require('bluebird');
 const Interface = require('forest-express');
 const utils = require('./utils/schema');
 const orm = require('./utils/orm');
+const Flattener = require('./services/flattener');
 
 const REGEX_VERSION = /(\d+\.)?(\d+\.)?(\*|\d+)/;
 
@@ -13,6 +14,7 @@ exports.StatSerializer = Interface.StatSerializer;
 exports.ResourceSerializer = Interface.ResourceSerializer;
 
 exports.PermissionMiddlewareCreator = Interface.PermissionMiddlewareCreator;
+exports.deactivateCountMiddleware = Interface.deactivateCountMiddleware;
 exports.RecordsCounter = Interface.RecordsCounter;
 exports.RecordsExporter = Interface.RecordsExporter;
 exports.RecordsGetter = Interface.RecordsGetter;
@@ -22,6 +24,7 @@ exports.RecordCreator = Interface.RecordCreator;
 exports.RecordRemover = Interface.RecordRemover;
 exports.RecordsRemover = Interface.RecordsRemover;
 exports.RecordSerializer = Interface.RecordSerializer;
+exports.requestUnflattener = Flattener.requestUnflattener;
 
 exports.PUBLIC_ROUTES = Interface.PUBLIC_ROUTES;
 
@@ -79,6 +82,8 @@ exports.init = (opts) => {
   exports.LineStatGetter = require('./services/line-stat-getter');
 
   exports.RecordsDecorator = require('./utils/records-decorator');
+
+  exports.Flattener = Flattener;
 
   exports.Stripe = {
     getCustomer(customerModel, customerField, customerId) {

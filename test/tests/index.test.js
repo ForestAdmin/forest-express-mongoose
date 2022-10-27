@@ -2,6 +2,13 @@ const forestExpressMongoose = require('../../src/index');
 
 describe('index', () => {
   describe('exported Interface', () => {
+    it('should export the request unflattener', () => {
+      expect.assertions(2);
+
+      expect(forestExpressMongoose.requestUnflattener).toBeDefined();
+      expect(forestExpressMongoose.requestUnflattener).toBeInstanceOf(Function);
+    });
+
     it('should export a collection function', () => {
       expect.assertions(2);
 
@@ -31,6 +38,13 @@ describe('index', () => {
 
       expect(forestExpressMongoose.ResourceSerializer).toBeDefined();
       expect(forestExpressMongoose.ResourceSerializer).toBeInstanceOf(Function);
+    });
+
+    it('should export deactivate count middleware', () => {
+      expect.assertions(2);
+
+      expect(forestExpressMongoose.deactivateCountMiddleware).toBeDefined();
+      expect(forestExpressMongoose.deactivateCountMiddleware).toBeInstanceOf(Function);
     });
 
     it('should export a list of records functions', () => {
