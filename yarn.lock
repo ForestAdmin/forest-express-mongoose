@@ -1135,10 +1135,10 @@
   resolved "https://registry.yarnpkg.com/@forestadmin/context/-/context-1.31.0.tgz#b4b5a3b589e52d337a1f45807db22c2860e640a7"
   integrity sha512-RQkDBkq+6ySMv+YNezz9VWSyCsqD7fj/+bXrXhQ6lJ62nbRUIUheH7ApvXwfnwFR1u55oT6Yhar11t6DaiE9Ig==
 
-"@forestadmin/forestadmin-client@1.0.0-alpha.1":
-  version "1.0.0-alpha.1"
-  resolved "https://registry.yarnpkg.com/@forestadmin/forestadmin-client/-/forestadmin-client-1.0.0-alpha.1.tgz#9845443ad86698ab16f2c302d0ee2cdd7060daf0"
-  integrity sha512-vmLOwZXkk5Ff50IeEaqir4cM6cZPXvNW/rMUH5CcTh7xlcpjjRjZVld6FGns/HDKWNlQBsrpMCBPTTdtW4LLLA==
+"@forestadmin/forestadmin-client@1.0.0-alpha.2":
+  version "1.0.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/@forestadmin/forestadmin-client/-/forestadmin-client-1.0.0-alpha.2.tgz#84e9aabb5d5b8c0fd021d372c40c63991a9d20a7"
+  integrity sha512-Y4IE7Hyxo8z+LtM9zvRrN1K8jUI9ZlwFhbIP4P4phpnJ6hthU0NVxraYwvVWcM/Z0q3efGjC8ciG8yJnZ/RFVg==
   dependencies:
     jsonwebtoken "^8.5.1"
     lru-cache "^7.3.1"
@@ -4474,14 +4474,14 @@ for-in@^1.0.2:
   resolved "https://registry.yarnpkg.com/for-in/-/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
   integrity sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=
 
-forest-express@10.0.0-beta.1:
-  version "10.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-10.0.0-beta.1.tgz#d28ce6903c371eec3b1024a597c45234a8272a1c"
-  integrity sha512-aZVLFFHEd5Lk1hy9Wc+DlvDsz2YCIvFTz3jDSJEULHHA6jWb7z7LW7KRvcMUi9tR9IriyXNzzXjJU2EYr7xYOw==
+forest-express@10.0.0-beta.2:
+  version "10.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-10.0.0-beta.2.tgz#19789d5f6f4de5ebbd8e60a91738bc68fec7c920"
+  integrity sha512-ouzfdcCy88+8lGQKb8qcd+iCRbvJFNc8FTTLEGbxFLrtXZE9r9Qi/yEzbkqZuA9yYgOqYu8QN1l2mZWAwxB1sw==
   dependencies:
     "@babel/runtime" "7.19.0"
     "@forestadmin/context" "1.31.0"
-    "@forestadmin/forestadmin-client" "1.0.0-alpha.1"
+    "@forestadmin/forestadmin-client" "1.0.0-alpha.2"
     base32-encode "1.1.1"
     bitwise-xor "0.0.0"
     bluebird "3.7.1"

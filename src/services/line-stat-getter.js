@@ -105,9 +105,9 @@ class LineStatGetter {
     const timezoneOffset = timezone * 60 * 60 * 1000;
     const queryBuilder = new QueryBuilder(this._model, params, this._opts);
 
-    const populateGroupByField = this._getReference(params.group_by_field);
+    const populateGroupByField = this._getReference(params.groupByFieldName);
     const groupByFieldName = populateGroupByField
-      ? params.group_by_field.replace(':', '.') : params.group_by_field;
+      ? params.groupByFieldName.replace(':', '.') : params.groupByFieldName;
 
     const jsonQuery = await queryBuilder.getQueryWithFiltersAndJoins(null);
     if (populateGroupByField) {
@@ -121,68 +121,68 @@ class LineStatGetter {
       groupBy._id = `$${groupByFieldName}`;
     }
 
-    if (params.group_by_date_field) {
-      switch (params.time_range) {
+    if (params.groupByFieldName) {
+      switch (params.timeRange) {
         case 'Day':
           groupBy.year = {
             $year: [{
-              $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
+              $subtract: [`$${params.groupByFieldName}`, timezoneOffset],
             }],
           };
           groupBy.month = {
             $month: [{
-              $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
+              $subtract: [`$${params.groupByFieldName}`, timezoneOffset],
             }],
           };
           groupBy.day = {
             $dayOfMonth: [{
-              $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
+              $subtract: [`$${params.groupByFieldName}`, timezoneOffset],
             }],
           };
           break;
         case 'Week':
           groupBy.week = {
             $week: [{
-              $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
+              $subtract: [`$${params.groupByFieldName}`, timezoneOffset],
             }],
           };
           groupBy.year = {
             $year: [{
-              $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
+              $subtract: [`$${params.groupByFieldName}`, timezoneOffset],
             }],
           };
           break;
         case 'Year':
           groupBy.year = {
             $year: [{
-              $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
+              $subtract: [`$${params.groupByFieldName}`, timezoneOffset],
             }],
           };
           break;
         default: // Month
           groupBy.month = {
             $month: [{
-              $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
+              $subtract: [`$${params.groupByFieldName}`, timezoneOffset],
             }],
           };
           groupBy.year = {
             $year: [{
-              $subtract: [`$${params.group_by_date_field}`, timezoneOffset],
+              $subtract: [`$${params.groupByFieldName}`, timezoneOffset],
             }],
           };
       }
-      sort[params.group_by_date_field] = 1;
+      sort[params.groupByFieldName] = 1;
     }
 
     let sum = 1;
-    if (params.aggregate_field) {
-      sum = `$${params.aggregate_field}`;
+    if (params.aggregateFieldName) {
+      sum = `$${params.aggregateFieldName}`;
     }
 
-    if (params.group_by_date_field) {
+    if (params.groupByFieldName) {
       jsonQuery.push({
         $match: {
-          [params.group_by_date_field]: { $ne: null },
+          [params.groupByFieldName]: { $ne: null },
         },
       });
     }
@@ -191,7 +191,7 @@ class LineStatGetter {
       jsonQuery.push({
         $group: {
           _id: groupBy,
-          [params.group_by_date_field]: { $first: `$${params.group_by_date_field}` },
+          [params.groupByFieldName]: { $first: `$${params.groupByFieldName}` },
           count: { $sum: sum },
         },
       });
@@ -204,7 +204,7 @@ class LineStatGetter {
       .exec();
 
     if (!records.length) { return { value: [] }; }
-    const momentRange = params.time_range.toLowerCase();
+    const momentRange = params.timeRange.toLowerCase();
     const firstDate = LineStatGetter._setDate(records[0], momentRange);
     const lastDate = LineStatGetter._setDate(records[records.length - 1], momentRange);
 

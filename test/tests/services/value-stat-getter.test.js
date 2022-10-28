@@ -69,7 +69,7 @@ describe('service > value-stat-getter', () => {
 
     await loadFixture(ReviewModel, [{ rating: 10 }]);
 
-    const params = { ...baseParams, aggregate_field: 'rating' };
+    const params = { ...baseParams, aggregateFieldName: 'rating' };
     const getter = new ValueStatGetter(ReviewModel, params, options, user);
     expect(await getter.perform()).toStrictEqual({ value: { countCurrent: 10 } });
   });

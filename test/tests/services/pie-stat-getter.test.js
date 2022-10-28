@@ -8,8 +8,8 @@ import mongooseConnect from '../../utils/mongoose-connect';
 const user = { renderingId: 1 };
 const options = { Mongoose: mongoose, connections: { mongoose } };
 const baseParams = {
-  aggregate: 'Count',
-  group_by_field: 'rating',
+  aggregator: 'Count',
+  groupByFieldName: 'rating',
   timezone: 'Europe/Paris',
 };
 
@@ -88,7 +88,7 @@ describe('service > pie-stat-getter', () => {
       { rating: 66 },
     ]);
 
-    const params = { ...baseParams, aggregate_field: 'rating' };
+    const params = { ...baseParams, aggregateFieldName: 'rating' };
     const getter = new PieStatGetter(ReviewModel, params, options, user);
     expect(await getter.perform()).toStrictEqual({
       value: [
@@ -108,8 +108,8 @@ describe('service > pie-stat-getter', () => {
 
     const params = {
       ...baseParams,
-      group_by_field: 'createdAt',
-      aggregate_field: 'rating',
+      groupByFieldName: 'createdAt',
+      aggregateFieldName: 'rating',
     };
 
     const getter = new PieStatGetter(ReviewModel, params, options, user);
