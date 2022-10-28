@@ -152,26 +152,4 @@ describe('service > line-stat-getter', () => {
       });
     });
   });
-
-  describe('with a groupByFieldName', () => {
-    it('should work grouping by color', async () => {
-      expect.assertions(1);
-
-      await loadFixture(ReviewModel, [
-        { rating: 10, createdAt: new Date('2016-11-10'), color: 'green' },
-        { rating: 10, createdAt: new Date('2016-11-14'), color: 'green' },
-        { rating: 15, createdAt: new Date('2017-01-01'), color: 'red' },
-      ]);
-
-      const params = { ...baseParams, groupByFieldName: 'color' };
-      const getter = new LineStatGetter(ReviewModel, params, options, user);
-      expect(await getter.perform()).toStrictEqual({
-        value: [
-          { label: 'Nov 16', values: { value: 20 } },
-          { label: 'Dec 16', values: { value: 0 } },
-          { label: 'Jan 17', values: { value: 15 } },
-        ],
-      });
-    });
-  });
 });

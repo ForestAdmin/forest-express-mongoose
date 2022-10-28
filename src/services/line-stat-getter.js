@@ -105,21 +105,10 @@ class LineStatGetter {
     const timezoneOffset = timezone * 60 * 60 * 1000;
     const queryBuilder = new QueryBuilder(this._model, params, this._opts);
 
-    const populateGroupByField = this._getReference(params.groupByFieldName);
-    const groupByFieldName = populateGroupByField
-      ? params.groupByFieldName.replace(':', '.') : params.groupByFieldName;
-
     const jsonQuery = await queryBuilder.getQueryWithFiltersAndJoins(null);
-    if (populateGroupByField) {
-      queryBuilder.addJoinToQuery(populateGroupByField, jsonQuery);
-    }
 
     const groupBy = {};
     const sort = {};
-
-    if (groupByFieldName) {
-      groupBy._id = `$${groupByFieldName}`;
-    }
 
     if (params.groupByFieldName) {
       switch (params.timeRange) {
