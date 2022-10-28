@@ -1,3 +1,17 @@
+# [9.0.0-beta.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.9...v9.0.0-beta.1) (2022-10-28)
+
+
+### Bug Fixes
+
+* **security:** validate that smart action approvals are launched with the same parameters than the initial trigger ([#954](https://github.com/ForestAdmin/forest-express-mongoose/issues/954)) ([05be76d](https://github.com/ForestAdmin/forest-express-mongoose/commit/05be76da5092f4008fb1cc85c0a5b30adc7874c7))
+
+
+### BREAKING CHANGES
+
+* **security:** drop support of projects that are not using roles
+    
+Co-authored-by: Guillaume Gautreau <guillaumeg@forestadmin.com>, Morgan Perre <morganperre@gmail.com>
+
 ## [8.7.9](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.8...v8.7.9) (2022-10-25)
 
 
