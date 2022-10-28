@@ -51,7 +51,7 @@ describe('service > value-stat-getter', () => {
 
     const params = baseParams;
     const getter = new ValueStatGetter(ReviewModel, params, options, user);
-    expect(await getter.perform()).toStrictEqual({ value: 0 });
+    expect(await getter.perform()).toStrictEqual({ value: { countCurrent: 0 } });
   });
 
   it('should perform a count', async () => {
@@ -61,7 +61,7 @@ describe('service > value-stat-getter', () => {
 
     const params = baseParams;
     const getter = new ValueStatGetter(ReviewModel, params, options, user);
-    expect(await getter.perform()).toStrictEqual({ value: 1 });
+    expect(await getter.perform()).toStrictEqual({ value: { countCurrent: 1 } });
   });
 
   it('should perform a sum', async () => {
@@ -71,6 +71,6 @@ describe('service > value-stat-getter', () => {
 
     const params = { ...baseParams, aggregate_field: 'rating' };
     const getter = new ValueStatGetter(ReviewModel, params, options, user);
-    expect(await getter.perform()).toStrictEqual({ value: 10 });
+    expect(await getter.perform()).toStrictEqual({ value: { countCurrent: 10 } });
   });
 });
