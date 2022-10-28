@@ -1,3 +1,10 @@
+# [9.0.0-beta.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.0.0-beta.1...v9.0.0-beta.2) (2022-10-28)
+
+
+### Features
+
+* **chart:** add support for objective chart ([#955](https://github.com/ForestAdmin/forest-express-mongoose/issues/955)) ([7b8a3aa](https://github.com/ForestAdmin/forest-express-mongoose/commit/7b8a3aa5efceced2b6b3c0296ed18d2d97ba30ac))
+
 # [9.0.0-beta.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.9...v9.0.0-beta.1) (2022-10-28)
 
 
