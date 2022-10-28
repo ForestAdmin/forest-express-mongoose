@@ -25,10 +25,10 @@ class ValueStatGetter {
       .exec();
 
     if (!records || !records.length) {
-      return { value: 0 };
+      return { value: { countCurrent: 0 } };
     }
 
-    return { value: records[0].total };
+    return { value: { countCurrent: records[0].total } };
   }
 }
 
