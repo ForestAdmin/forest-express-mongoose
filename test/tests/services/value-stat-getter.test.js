@@ -69,8 +69,20 @@ describe('service > value-stat-getter', () => {
 
     await loadFixture(ReviewModel, [{ rating: 10 }]);
 
-    const params = { ...baseParams, aggregate_field: 'rating' };
+    const params = { ...baseParams, aggregateFieldName: 'rating' };
     const getter = new ValueStatGetter(ReviewModel, params, options, user);
     expect(await getter.perform()).toStrictEqual({ value: { countCurrent: 10 } });
+  });
+
+  describe('with a filter', () => {
+    it('should filter the result', async () => {
+      expect.assertions(1);
+
+      await loadFixture(ReviewModel, [{ rating: 10 }, { rating: 11 }]);
+
+      const params = { ...baseParams, filter: { aggregator: 'and', conditions: [{ field: 'rating', operator: 'equal', value: 10 }] } };
+      const getter = new ValueStatGetter(ReviewModel, params, options, user);
+      expect(await getter.perform()).toStrictEqual({ value: { countCurrent: 1 } });
+    });
   });
 });

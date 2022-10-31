@@ -22,11 +22,11 @@ class PieStatGetter {
 
   async perform() {
     const params = await getScopedParams(this._params, this._model, this._user);
-    const field = _.find(this._schema.fields, { field: params.group_by_field });
+    const field = _.find(this._schema.fields, { field: params.groupByFieldName });
     const queryBuilder = new QueryBuilder(this._model, params, this._opts);
-    const populateGroupByField = this._getReference(params.group_by_field);
+    const populateGroupByField = this._getReference(params.groupByFieldName);
     const groupByFieldName = populateGroupByField
-      ? params.group_by_field.replace(':', '.') : params.group_by_field;
+      ? params.groupByFieldName.replace(':', '.') : params.groupByFieldName;
 
     const jsonQuery = await queryBuilder.getQueryWithFiltersAndJoins(null);
     if (populateGroupByField) {
@@ -36,8 +36,8 @@ class PieStatGetter {
     const query = this._model.aggregate(jsonQuery);
 
     let sum = 1;
-    if (params.aggregate_field) {
-      sum = `$${params.aggregate_field}`;
+    if (params.aggregateFieldName) {
+      sum = `$${params.aggregateFieldName}`;
     }
 
     const records = {

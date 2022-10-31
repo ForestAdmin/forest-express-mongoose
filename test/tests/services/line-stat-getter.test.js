@@ -7,10 +7,10 @@ import mongooseConnect from '../../utils/mongoose-connect';
 const user = { renderingId: 1 };
 const options = { Mongoose: mongoose, connections: { mongoose } };
 const baseParams = {
-  aggregate: 'Sum',
-  aggregate_field: 'rating',
-  group_by_date_field: 'createdAt',
-  time_range: 'Month',
+  aggregator: 'Sum',
+  aggregateFieldName: 'rating',
+  groupByFieldName: 'createdAt',
+  timeRange: 'Month',
   timezone: 'Europe/Paris',
 };
 
@@ -82,7 +82,7 @@ describe('service > line-stat-getter', () => {
         { rating: 15, createdAt: new Date('2016-11-13') },
       ]);
 
-      const params = { ...baseParams, time_range: 'Day' };
+      const params = { ...baseParams, timeRange: 'Day' };
       const getter = new LineStatGetter(ReviewModel, params, options, user);
       expect(await getter.perform()).toStrictEqual({
         value: [
@@ -103,7 +103,7 @@ describe('service > line-stat-getter', () => {
         { rating: 15, createdAt: new Date('2016-11-17') },
       ]);
 
-      const params = { ...baseParams, time_range: 'Week' };
+      const params = { ...baseParams, timeRange: 'Week' };
       const getter = new LineStatGetter(ReviewModel, params, options, user);
       expect(await getter.perform()).toStrictEqual({
         value: [
@@ -122,7 +122,7 @@ describe('service > line-stat-getter', () => {
         { rating: 15, createdAt: new Date('2017-01-01') },
       ]);
 
-      const params = { ...baseParams, time_range: 'Month' };
+      const params = { ...baseParams, timeRange: 'Month' };
       const getter = new LineStatGetter(ReviewModel, params, options, user);
       expect(await getter.perform()).toStrictEqual({
         value: [
@@ -142,34 +142,12 @@ describe('service > line-stat-getter', () => {
         { rating: 15, createdAt: new Date('2017-01-01') },
       ]);
 
-      const params = { ...baseParams, time_range: 'Year' };
+      const params = { ...baseParams, timeRange: 'Year' };
       const getter = new LineStatGetter(ReviewModel, params, options, user);
       expect(await getter.perform()).toStrictEqual({
         value: [
           { label: '2016', values: { value: 20 } },
           { label: '2017', values: { value: 15 } },
-        ],
-      });
-    });
-  });
-
-  describe('with a group_by_field', () => {
-    it('should work grouping by color', async () => {
-      expect.assertions(1);
-
-      await loadFixture(ReviewModel, [
-        { rating: 10, createdAt: new Date('2016-11-10'), color: 'green' },
-        { rating: 10, createdAt: new Date('2016-11-14'), color: 'green' },
-        { rating: 15, createdAt: new Date('2017-01-01'), color: 'red' },
-      ]);
-
-      const params = { ...baseParams, group_by_field: 'color' };
-      const getter = new LineStatGetter(ReviewModel, params, options, user);
-      expect(await getter.perform()).toStrictEqual({
-        value: [
-          { label: 'Nov 16', values: { value: 20 } },
-          { label: 'Dec 16', values: { value: 0 } },
-          { label: 'Jan 17', values: { value: 15 } },
         ],
       });
     });
