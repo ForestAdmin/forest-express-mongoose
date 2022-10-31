@@ -1,3 +1,10 @@
+# [9.0.0-beta.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.0.0-beta.2...v9.0.0-beta.3) (2022-10-31)
+
+
+### Bug Fixes
+
+* **chart:** improve security on chart and rename charts' properties ([#956](https://github.com/ForestAdmin/forest-express-mongoose/issues/956)) ([8b1891f](https://github.com/ForestAdmin/forest-express-mongoose/commit/8b1891f836b303a19fa9a61346e69dc0046dadb3))
+
 # [9.0.0-beta.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.0.0-beta.1...v9.0.0-beta.2) (2022-10-28)
 
 
