@@ -1,3 +1,10 @@
+# [9.0.0-beta.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.0.0-beta.3...v9.0.0-beta.4) (2022-11-02)
+
+
+### Features
+
+* **chart:** add support for context variables used by Workspaces ([#957](https://github.com/ForestAdmin/forest-express-mongoose/issues/957)) ([39e7c4a](https://github.com/ForestAdmin/forest-express-mongoose/commit/39e7c4aa8cc7750da0cc15af4d5211ae5f650f32))
+
 # [9.0.0-beta.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.0.0-beta.2...v9.0.0-beta.3) (2022-10-31)
 
 
