@@ -215,11 +215,19 @@ describe('service > filters-parser', () => {
       });
 
       it('should cast values to boolean', () => {
-        expect.assertions(5);
+        expect.assertions(9);
 
         expect(defaultParser.getParserForType(Boolean)('true'))
           .toBeBoolean();
         expect(defaultParser.getParserForType(Boolean)('false'))
+          .toBeBoolean();
+        expect(defaultParser.getParserForType(Boolean)('yes'))
+          .toBeBoolean();
+        expect(defaultParser.getParserForType(Boolean)('no'))
+          .toBeBoolean();
+        expect(defaultParser.getParserForType(Boolean)('1'))
+          .toBeBoolean();
+        expect(defaultParser.getParserForType(Boolean)('0'))
           .toBeBoolean();
         expect(defaultParser.getParserForType(Boolean)(true))
           .toBeBoolean();
