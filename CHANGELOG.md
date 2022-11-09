@@ -1,3 +1,38 @@
+# [9.0.0-beta.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.0.0-beta.3...v9.0.0-beta.4) (2022-11-02)
+
+
+### Features
+
+* **chart:** add support for context variables used by Workspaces ([#957](https://github.com/ForestAdmin/forest-express-mongoose/issues/957)) ([39e7c4a](https://github.com/ForestAdmin/forest-express-mongoose/commit/39e7c4aa8cc7750da0cc15af4d5211ae5f650f32))
+
+# [9.0.0-beta.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.0.0-beta.2...v9.0.0-beta.3) (2022-10-31)
+
+
+### Bug Fixes
+
+* **chart:** improve security on chart and rename charts' properties ([#956](https://github.com/ForestAdmin/forest-express-mongoose/issues/956)) ([8b1891f](https://github.com/ForestAdmin/forest-express-mongoose/commit/8b1891f836b303a19fa9a61346e69dc0046dadb3))
+
+# [9.0.0-beta.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.0.0-beta.1...v9.0.0-beta.2) (2022-10-28)
+
+
+### Features
+
+* **chart:** add support for objective chart ([#955](https://github.com/ForestAdmin/forest-express-mongoose/issues/955)) ([7b8a3aa](https://github.com/ForestAdmin/forest-express-mongoose/commit/7b8a3aa5efceced2b6b3c0296ed18d2d97ba30ac))
+
+# [9.0.0-beta.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.9...v9.0.0-beta.1) (2022-10-28)
+
+
+### Bug Fixes
+
+* **security:** validate that smart action approvals are launched with the same parameters than the initial trigger ([#954](https://github.com/ForestAdmin/forest-express-mongoose/issues/954)) ([05be76d](https://github.com/ForestAdmin/forest-express-mongoose/commit/05be76da5092f4008fb1cc85c0a5b30adc7874c7))
+
+
+### BREAKING CHANGES
+
+* **security:** drop support of projects that are not using roles
+    
+Co-authored-by: Guillaume Gautreau <guillaumeg@forestadmin.com>, Morgan Perre <morganperre@gmail.com>
+
 ## [8.7.9](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.8...v8.7.9) (2022-10-25)
 
 

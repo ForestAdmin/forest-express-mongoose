@@ -8,7 +8,7 @@ import utils from './schema';
  */
 export default async function getScopedParams(params, model, user) {
   const scopedFilters = await Interface.scopeManager.appendScopeForUser(
-    params.filters,
+    params.filters || (params.filter && JSON.stringify(params.filter)),
     user,
     utils.getModelName(model),
   );

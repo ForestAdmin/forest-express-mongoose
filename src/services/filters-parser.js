@@ -12,8 +12,9 @@ function FiltersParser(model, timezone, options) {
   const parseInteger = (value) => Number.parseInt(value, 10);
   const parseDate = (value) => new Date(value);
   const parseBoolean = (value) => {
-    if (value === 'true') { return true; }
-    if (value === 'false') { return false; }
+    if (['true', 'yes', '1'].includes(value)) { return true; }
+    if (['false', 'no', '0'].includes(value)) { return false; }
+
     return typeof value === 'boolean' ? value : null;
   };
   const parseObjectId = (value) => {

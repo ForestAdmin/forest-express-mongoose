@@ -14,8 +14,8 @@ class ValueStatGetter {
     const queryBuilder = new QueryBuilder(this._model, params, this._opts);
 
     let sum = 1;
-    if (params.aggregate_field) {
-      sum = `$${params.aggregate_field}`;
+    if (params.aggregateFieldName) {
+      sum = `$${params.aggregateFieldName}`;
     }
 
     const jsonQuery = await queryBuilder.getQueryWithFiltersAndJoins(null);
@@ -25,10 +25,10 @@ class ValueStatGetter {
       .exec();
 
     if (!records || !records.length) {
-      return { value: 0 };
+      return { value: { countCurrent: 0 } };
     }
 
-    return { value: records[0].total };
+    return { value: { countCurrent: records[0].total } };
   }
 }
 
