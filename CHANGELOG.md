@@ -1,3 +1,10 @@
+## [9.0.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.0.0...v9.0.1) (2022-11-23)
+
+
+### Bug Fixes
+
+* **types:** remove unused and incorrect exported type related to aggregation ([#970](https://github.com/ForestAdmin/forest-express-mongoose/issues/970)) ([97e4271](https://github.com/ForestAdmin/forest-express-mongoose/commit/97e4271674546badefd3d30a70ed926b3621d7f5))
+
 # [9.0.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v8.7.9...v9.0.0) (2022-11-09)
 
 
