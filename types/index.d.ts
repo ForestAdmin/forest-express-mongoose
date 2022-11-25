@@ -254,7 +254,7 @@ export interface SmartFieldFiltererFilter {
 }
 
 export interface SmartFieldFilterer {
-  (filter: SmartFieldFiltererFilter): FilterQuery<any>;
+  (filter: SmartFieldFiltererFilter): FilterQuery<any> | Promise<FilterQuery<any>>;
 }
 
 export interface SegmentAggregationCreator<T = any> {
