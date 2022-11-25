@@ -1,3 +1,10 @@
+## [9.0.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.0.1...v9.0.2) (2022-11-25)
+
+
+### Bug Fixes
+
+* **types:** smart field filter can now also returns a promise ([#971](https://github.com/ForestAdmin/forest-express-mongoose/issues/971)) ([f28ecab](https://github.com/ForestAdmin/forest-express-mongoose/commit/f28ecabb332bdcb06575d51deca1712fb711e2b2))
+
 ## [9.0.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.0.0...v9.0.1) (2022-11-23)
 
 
