@@ -218,9 +218,45 @@ export interface Page {
   size: number;
 }
 
+export enum FilterOperator {
+  //Classic
+  NOT = "not",
+  GREATER_THAN = "greater_than",
+  LESS_THAN = "less_than",
+  AFTER = "after",
+  BEFORE = "before",
+  CONTAINS = "contains",
+  STARTS_WITH = "starts_with",
+  ENDS_WITH = "ends_with",
+  NOT_CONTAINS = "not_contains",
+  PRESENT = "present",
+  BLANK = "blank",
+  NOT_EQUAL = "not_equal",
+  EQUAL = "equal",
+  INCLUDES_ALL = "includes_all",
+  IN = "in",
+  //Date
+  TODAY = "today",
+  YESTERDAY = "yesterday",
+  PREVIOUS_WEEK = "previous_week",
+  PREVIOUS_MONTH = "previous_month",
+  PREVIOUS_QUATER = "previous_quater",
+  PREVIOUS_YEAR = "previous_year",
+  PREVIOUS_WEEK_TO_DATE = "previous_week_to_date",
+  PREVIOUS_MONTH_TO_DATE = "previous_month_to_date",
+  PREVIOUS_QUARTER_TO_DATE = "previous_quarter_to_date",
+  PREVIOUS_YEAR_TO_DATE = "previous_year_to_date",
+  PREVIOUS_X_DAYS = "previous_x_days",
+  PREVIOUS_X_DAYS_TO_DATE = "previous_x_days_to_date",
+  PAST = "past",
+  FUTURE = "future",
+  BEFORE_X_HOURS_AGO = "before_x_hours_ago",
+  AFTER_X_HOURS_AGO = "after_x_hours_ago",
+}
+
 export interface Filter {
   field: string;
-  operator: string;
+  operator: FilterOperator;
   value: string;
 }
 
