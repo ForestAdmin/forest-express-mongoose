@@ -1,3 +1,10 @@
+## [9.0.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.0.2...v9.0.3) (2022-11-28)
+
+
+### Bug Fixes
+
+* **types:** add FilterOperator enum ([#972](https://github.com/ForestAdmin/forest-express-mongoose/issues/972)) ([4dec1a3](https://github.com/ForestAdmin/forest-express-mongoose/commit/4dec1a32443a7170bc499f9c891ae0269a16f0b3))
+
 ## [9.0.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.0.1...v9.0.2) (2022-11-25)
 
 
