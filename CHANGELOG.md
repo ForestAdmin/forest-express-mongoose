@@ -1,3 +1,10 @@
+## [9.0.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.0.3...v9.0.4) (2022-12-06)
+
+
+### Bug Fixes
+
+* add attribute reverse list word by upgrading forest-express ([#979](https://github.com/ForestAdmin/forest-express-mongoose/issues/979)) ([dab7b01](https://github.com/ForestAdmin/forest-express-mongoose/commit/dab7b017831ceeef1085a02f855be6b9140a2fc2))
+
 ## [9.0.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.0.2...v9.0.3) (2022-11-28)
 
 
