@@ -1,3 +1,10 @@
+## [9.0.6](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.0.5...v9.0.6) (2022-12-21)
+
+
+### Bug Fixes
+
+* **typing:** remove invalid enum from typing file ([#984](https://github.com/ForestAdmin/forest-express-mongoose/issues/984)) ([e83a609](https://github.com/ForestAdmin/forest-express-mongoose/commit/e83a609eec4ffbc1bec4fede966f622249e4a067))
+
 ## [9.0.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.0.4...v9.0.5) (2022-12-12)
 
 ## [9.0.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.0.3...v9.0.4) (2022-12-06)
