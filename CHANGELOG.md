@@ -1,3 +1,10 @@
+## [9.1.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.1.0...v9.1.1) (2022-12-23)
+
+
+### Bug Fixes
+
+* revert "feat(smart-actions): add support for data-based conditions on smart action trigger, approval requirement and authorization to approve" ([#989](https://github.com/ForestAdmin/forest-express-mongoose/issues/989)) ([d45894d](https://github.com/ForestAdmin/forest-express-mongoose/commit/d45894d8889a9060ec3fb4b6cc43844eadb9e7db))
+
 # [9.1.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.0.6...v9.1.0) (2022-12-23)
 
 
