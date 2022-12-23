@@ -1135,10 +1135,10 @@
   resolved "https://registry.yarnpkg.com/@forestadmin/context/-/context-1.31.0.tgz#b4b5a3b589e52d337a1f45807db22c2860e640a7"
   integrity sha512-RQkDBkq+6ySMv+YNezz9VWSyCsqD7fj/+bXrXhQ6lJ62nbRUIUheH7ApvXwfnwFR1u55oT6Yhar11t6DaiE9Ig==
 
-"@forestadmin/forestadmin-client@1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@forestadmin/forestadmin-client/-/forestadmin-client-1.0.3.tgz#4394a4103abe0f55e9f4fd71ad5e578473a18b89"
-  integrity sha512-y7RsKl9EyS/4vPYSFnhCjDDHQZ8XXpFGi+cASeFZL8ordpbmbD62AIPBQ9AYxTgjqMxeFwNaHKM8R4V9dKi4UQ==
+"@forestadmin/forestadmin-client@1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@forestadmin/forestadmin-client/-/forestadmin-client-1.1.2.tgz#eef982fd8ea235611ebd7830c49654da13e35b28"
+  integrity sha512-102R+wjXPILwVWJ04su2a1W1/hCDuJNMFUJS/VAvxLVIL875GAhFUPYxSkZnBYECRWzDCRu5IdXtjs2NBUcSWQ==
   dependencies:
     json-api-serializer "^2.6.6"
     jsonwebtoken "^8.5.1"
@@ -4476,14 +4476,14 @@ for-in@^1.0.2:
   resolved "https://registry.yarnpkg.com/for-in/-/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
   integrity sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=
 
-forest-express@10.0.2:
-  version "10.0.2"
-  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-10.0.2.tgz#77bc820168a0165e7b558b7c3cc1168e74f49a3e"
-  integrity sha512-zLl/MaunTmfro7bixEtH0c+uPspoTxu9XMsnVi6TufCvk7AdarpHE3CZq4uA8uxoOU9n0OiGKuizioOQZ/o1Cg==
+forest-express@10.1.0:
+  version "10.1.0"
+  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-10.1.0.tgz#b4de736335b5d0818d390c0b3d3d1376c3b6c768"
+  integrity sha512-Itz9RGeP4L/OekSR7MHKcep5pUQKIkxmA3K0HMqvBYbu7trpnue5m6HRqylrCyqcorURdo/oevFGdZh9e09jcw==
   dependencies:
     "@babel/runtime" "7.19.0"
     "@forestadmin/context" "1.31.0"
-    "@forestadmin/forestadmin-client" "1.0.3"
+    "@forestadmin/forestadmin-client" "1.1.2"
     base32-encode "1.1.1"
     bitwise-xor "0.0.0"
     bluebird "3.7.1"
@@ -4503,6 +4503,7 @@ forest-express@10.0.2:
     lodash "4.17.21"
     moment "2.29.4"
     moment-timezone "0.5.34"
+    object-hash "^3.0.0"
     openid-client "4.2.0"
     otplib "11.0.1"
     require-all "3.0.0"
