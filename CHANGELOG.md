@@ -1,3 +1,10 @@
+# [9.2.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.1.1...v9.2.0) (2022-12-28)
+
+
+### Features
+
+* **smart-actions:** allow to define data-based conditions on approval requests ([#990](https://github.com/ForestAdmin/forest-express-mongoose/issues/990)) ([5def492](https://github.com/ForestAdmin/forest-express-mongoose/commit/5def4921a63138c7c0df1e3b428a92a2396e0d45))
+
 ## [9.1.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.1.0...v9.1.1) (2022-12-23)
 
 
