@@ -1,3 +1,10 @@
+## [9.2.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.2.2...v9.2.3) (2023-01-20)
+
+
+### Bug Fixes
+
+* revert forest-express instable dependency ([#1004](https://github.com/ForestAdmin/forest-express-mongoose/issues/1004)) ([f89a345](https://github.com/ForestAdmin/forest-express-mongoose/commit/f89a345aeeb3fba2fec07f6157b106895b2c27b9))
+
 ## [9.2.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.2.1...v9.2.2) (2023-01-19)
 
 
