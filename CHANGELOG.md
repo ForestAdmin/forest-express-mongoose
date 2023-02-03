@@ -1,3 +1,10 @@
+## [9.2.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.2.4...v9.2.5) (2023-02-03)
+
+
+### Bug Fixes
+
+* **security:** patch http-cache-semantics dependencies vulnerabilities ([#1011](https://github.com/ForestAdmin/forest-express-mongoose/issues/1011)) ([33e6647](https://github.com/ForestAdmin/forest-express-mongoose/commit/33e66473f381abfb6bc7b1b820e19218935e5d00))
+
 ## [9.2.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.2.3...v9.2.4) (2023-01-24)
 
 
