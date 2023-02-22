@@ -1,3 +1,10 @@
+## [9.2.7](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.2.6...v9.2.7) (2023-02-22)
+
+
+### Bug Fixes
+
+* **middlewares:** users should be able to execute a smart action on a smart collection ([#1020](https://github.com/ForestAdmin/forest-express-mongoose/issues/1020)) ([6d0074d](https://github.com/ForestAdmin/forest-express-mongoose/commit/6d0074d3f3ec92bb05be443ceb26172455865f2a))
+
 ## [9.2.6](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.2.5...v9.2.6) (2023-02-03)
 
 
