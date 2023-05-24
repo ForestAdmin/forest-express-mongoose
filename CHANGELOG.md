@@ -1,3 +1,10 @@
+## [9.2.9](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.2.8...v9.2.9) (2023-05-24)
+
+
+### Bug Fixes
+
+* **init-options:** liana options should be taken into account correctly ([#1038](https://github.com/ForestAdmin/forest-express-mongoose/issues/1038)) ([e894b20](https://github.com/ForestAdmin/forest-express-mongoose/commit/e894b207f8f29c62abc62c3449c35db5f28f86ab))
+
 ## [9.2.8](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.2.7...v9.2.8) (2023-03-01)
 
 ## [9.2.7](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.2.6...v9.2.7) (2023-02-22)
