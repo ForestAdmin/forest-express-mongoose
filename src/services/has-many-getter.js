@@ -78,7 +78,7 @@ class HasManyGetter {
   async _getRecordsAndRecordIds() {
     let id = this._params.recordId;
     if (OBJECTID_REGEXP.test(this._params.recordId)) {
-      id = this._opts.Mongoose.Types.ObjectId(id);
+      id = new this._opts.Mongoose.Types.ObjectId(id);
     }
 
     const parentRecords = await this._parentModel
@@ -117,7 +117,7 @@ class HasManyGetter {
       // NOTICE: Convert values to strings, so ObjectIds could be easily searched and compared.
       const recordIdStrings = childRecordIds.map((recordId) => String(recordId));
       // NOTICE: indexOf could be improved by making a Map from record-ids to their index.
-          recordsSorted = _.sortBy(childRecords, record => recordIdStrings.indexOf(String(record._id))); // eslint-disable-line
+      recordsSorted = _.sortBy(childRecords, record => recordIdStrings.indexOf(String(record._id))); // eslint-disable-line
     }
 
     let sortedChildRecords = descending ? recordsSorted.reverse() : recordsSorted;

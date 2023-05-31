@@ -22,8 +22,8 @@ function FiltersParser(model, timezone, options) {
     // automatically cast 'looking like' string value to ObjectId
     // CF Github Issue https://github.com/Automattic/mongoose/issues/1399
     const { ObjectId } = options.Mongoose.Types;
-    if (ObjectId.isValid(value) && ObjectId(value).toString() === value) {
-      return ObjectId(value);
+    if (ObjectId.isValid(value) && new ObjectId(value).toString() === value) {
+      return new ObjectId(value);
     }
 
     return value;
@@ -172,8 +172,8 @@ function FiltersParser(model, timezone, options) {
       throw new InvalidFiltersFormatError('Filters cannot be a raw array');
     }
     if (!_.isString(condition.field)
-        || !_.isString(condition.operator)
-        || _.isUndefined(condition.value)) {
+      || !_.isString(condition.operator)
+      || _.isUndefined(condition.value)) {
       throw new InvalidFiltersFormatError('Invalid condition format');
     }
 

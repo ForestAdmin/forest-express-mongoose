@@ -148,7 +148,7 @@ class FieldAnalyser {
     if (fieldInfo.enumValues && fieldInfo.enumValues.length) {
       return 'Enum';
     }
-    if (fieldInfo.instance === 'ObjectID') {
+    if (fieldInfo.instance === 'ObjectID' || fieldInfo.instance === 'ObjectId') {
       // Deal with ObjectID
       return 'String';
     }

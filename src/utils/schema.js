@@ -21,12 +21,14 @@ const getNestedFieldType = (mongooseSchema, nestedFieldPath) => {
 
   let nestedFieldDeclaration;
 
-  if (mongooseSchema.tree) {
+  if (mongooseSchema.tree?.[currentFieldName]) {
     nestedFieldDeclaration = mongooseSchema.tree[currentFieldName];
-  } else if (mongooseSchema.type) {
+  } else if (mongooseSchema.type?.[currentFieldName]) {
     nestedFieldDeclaration = mongooseSchema.type[currentFieldName];
-  } else {
+  } else if (mongooseSchema[currentFieldName]) {
     nestedFieldDeclaration = mongooseSchema[currentFieldName];
+  } else if (mongooseSchema.type?.tree?.[currentFieldName]) {
+    nestedFieldDeclaration = mongooseSchema.type?.tree?.[currentFieldName];
   }
 
   if (!nestedFieldDeclaration) return undefined;
