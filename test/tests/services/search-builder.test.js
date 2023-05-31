@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import SearchBuilderClass from '../../../src/services/search-builder';
 
 let AnimalModel;
+let Mongoose;
 
 describe('searchBuilder', () => {
   beforeAll(() => {
@@ -25,6 +26,12 @@ describe('searchBuilder', () => {
       },
     });
     AnimalModel = mongoose.model('Animal', AnimalSchema);
+
+    Mongoose = {
+      Types: {
+        ObjectId: mongoose.Types.ObjectId,
+      },
+    };
 
     Interface.Schemas = {
       schemas: {
@@ -189,6 +196,48 @@ describe('searchBuilder', () => {
               },
             },
           },
+        ],
+      });
+    });
+  });
+
+  // Romain: I'm adding this test to please CI while handling support of mongoose 7.
+  // I did not investigate why id is added twice in the $or array
+  // I don't know if it is on purpose and why the fieldname is 'id' instead of '_id'
+  describe('when searching an objectid', () => {
+    it('should add the elemMatch for the objectif', async () => {
+      expect.assertions(1);
+
+      const params = {
+        timezone: 'Europe/Paris',
+        fields: { animals: '_id,name,nbAlive,deadNumber,arrayOfNumber,arrayOfString' },
+        page: { number: '1', size: '15' },
+        search: '507f191e810c19729de860ea',
+        searchExtended: '1',
+        sort: '-_id',
+        filters: undefined,
+      };
+      const searchFields = undefined;
+
+      const searchBuilder = new SearchBuilderClass(AnimalModel, { Mongoose }, params, searchFields);
+
+      expect(await searchBuilder.getConditions()).toStrictEqual({
+        $or: [
+          { id: new mongoose.Types.ObjectId('507f191e810c19729de860ea') },
+          { name: /.*507f191e810c19729de860ea.*/i },
+          { arrayOfString: /.*507f191e810c19729de860ea.*/i },
+          {
+            embedded: {
+              $elemMatch: {
+                $or: [
+                  {
+                    species: /.*507f191e810c19729de860ea.*/i,
+                  },
+                ],
+              },
+            },
+          },
+          { _id: new mongoose.Types.ObjectId('507f191e810c19729de860ea') },
         ],
       });
     });
