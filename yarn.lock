@@ -1174,11 +1174,12 @@
   resolved "https://registry.yarnpkg.com/@forestadmin/context/-/context-1.31.0.tgz#b4b5a3b589e52d337a1f45807db22c2860e640a7"
   integrity sha512-RQkDBkq+6ySMv+YNezz9VWSyCsqD7fj/+bXrXhQ6lJ62nbRUIUheH7ApvXwfnwFR1u55oT6Yhar11t6DaiE9Ig==
 
-"@forestadmin/forestadmin-client@1.1.5":
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/@forestadmin/forestadmin-client/-/forestadmin-client-1.1.5.tgz#0b9e29df678a8ca65a4617b201290b0b48b74a10"
-  integrity sha512-YjBZMdy/4zwXXnllLd+NCKBc8/em56ovQWtrZZPldcgiP+RoLiDqqQBmtZW9ZZS+y1QZKCJ/4Jszm6+/zU4Kyw==
+"@forestadmin/forestadmin-client@1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@forestadmin/forestadmin-client/-/forestadmin-client-1.2.1.tgz#5ee07fa73096ae55880d1d19cae449c4fb182ba6"
+  integrity sha512-4ZvvERcH2IDsWOWrmN0SBx88aFvfj6vJt1xTGIrwXkGY/agod7TH5kn9XqbYtmyOxLApmwrd5+08Bq6t4mDKug==
   dependencies:
+    eventsource "2.0.2"
     json-api-serializer "^2.6.6"
     jsonwebtoken "^9.0.0"
     lru-cache "^7.14.1"
@@ -4141,6 +4142,11 @@ etag@~1.8.1:
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha512-aIL5Fx7mawVa300al2BnEE4iNvo1qETxLrPI/o05L7z6go7fCw1J6EQmbK4FmJ2AS7kgVF/KEZWufBfdClMcPg==
 
+eventsource@2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/eventsource/-/eventsource-2.0.2.tgz#76dfcc02930fb2ff339520b6d290da573a9e8508"
+  integrity sha512-IzUmBGPR3+oUG9dUeXynyNmf91/3zUSJg1lCktzKw47OXuhco54U3r9B7O4XX+Rb1Itm9OZ2b0RkTs10bICOxA==
+
 exec-sh@^0.3.2:
   version "0.3.6"
   resolved "https://registry.yarnpkg.com/exec-sh/-/exec-sh-0.3.6.tgz#ff264f9e325519a60cb5e273692943483cca63bc"
@@ -4502,14 +4508,14 @@ for-in@^1.0.2:
   resolved "https://registry.yarnpkg.com/for-in/-/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
   integrity sha512-7EwmXrOjyL+ChxMhmG5lnW9MPt1aIeZEwKhQzoBUdTV0N3zuwWDZYVJatDvZ2OyzPUvdIAZDsCetk3coyMfcnQ==
 
-forest-express@10.1.12:
-  version "10.1.12"
-  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-10.1.12.tgz#5744836de5b68cf238e1642bfe5b546375a1f94c"
-  integrity sha512-8mg9v1Vk2o0SdoUYlBuuBALmWigrz0Oq+uXOz2LOoWuoIq/YS6K47fiwOvYoFb2TSmjH7TCtNRRp4BZvm2VzRQ==
+forest-express@10.2.1:
+  version "10.2.1"
+  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-10.2.1.tgz#d302994fbde8c6c815d89527220d03ab7d4927db"
+  integrity sha512-QTakiPkwsW27p3Fj0lzbDnvAtmnmXokmckBT9TXcVjMz0hEbLJv5qgR3diiXm6sZh+Vd3JIe62g/UvdNVMS+Qw==
   dependencies:
     "@babel/runtime" "7.19.0"
     "@forestadmin/context" "1.31.0"
-    "@forestadmin/forestadmin-client" "1.1.5"
+    "@forestadmin/forestadmin-client" "1.2.1"
     base32-encode "1.1.1"
     bitwise-xor "0.0.0"
     bluebird "3.7.1"
