@@ -1,3 +1,10 @@
+## [9.2.10](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.2.9...v9.2.10) (2023-06-07)
+
+
+### Bug Fixes
+
+* **compatibility:** fix mongoose 7 compatibility ([#1040](https://github.com/ForestAdmin/forest-express-mongoose/issues/1040)) ([857cf1e](https://github.com/ForestAdmin/forest-express-mongoose/commit/857cf1e4ebc3be3bb647530b2ce043a852dcf942))
+
 ## [9.2.9](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.2.8...v9.2.9) (2023-05-24)
 
 
