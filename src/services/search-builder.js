@@ -21,7 +21,7 @@ function SearchBuilder(model, opts, params, searchFields) {
 
     _.each(model.schema.paths, (value, key) => {
       if ((searchFields && !searchFields.includes(value.path))
-      || value.path === model.schema.options.versionKey) {
+        || value.path === model.schema.options.versionKey) {
         return;
       }
 
@@ -29,9 +29,9 @@ function SearchBuilder(model, opts, params, searchFields) {
       const searchValue = params.search.replace(/[-[\]{}()*+!<=:?./\\^$|#\s,]/g, '\\$&');
       const searchRegexp = new RegExp(`.*${searchValue}.*`, 'i');
 
-      if (value.instance === 'ObjectID') {
+      if (value.instance === 'ObjectID' || value.instance === 'ObjectId') {
         if (new RegExp('^[0-9a-fA-F]{24}$').test(params.search)) {
-          condition[key] = opts.Mongoose.Types.ObjectId(params.search);
+          condition[key] = new opts.Mongoose.Types.ObjectId(params.search);
           pushCondition(condition, key);
         }
       } else if (value.instance === 'Number') {

@@ -155,7 +155,7 @@ describe('service > filters-parser', () => {
         const parser = defaultParser.getParserForType('ObjectId');
 
         expect(parser('53c2ae8528d75d572c06adbc')).toBeInstanceOf(mongoose.Types.ObjectId);
-        expect(parser(ObjectId('53c2ae8528d75d572c06adbc'))).toBeInstanceOf(mongoose.Types.ObjectId);
+        expect(parser(new ObjectId('53c2ae8528d75d572c06adbc'))).toBeInstanceOf(mongoose.Types.ObjectId);
         expect(parser('53c2ae8528d75d572c06adbcc')).not.toBeInstanceOf(mongoose.Types.ObjectId);
         expect(parser('star wars with the same ')).not.toBeInstanceOf(mongoose.Types.ObjectId);
       });

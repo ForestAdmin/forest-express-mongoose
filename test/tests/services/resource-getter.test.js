@@ -64,7 +64,7 @@ describe('service > resource-getter', () => {
     const getter = new ResourceGetter(ReviewModel, params, options, user);
     expect(await getter.perform()).toStrictEqual({
       __v: 0, // mongoose version
-      _id: mongoose.Types.ObjectId('507f1f77bcf86cd799439011'),
+      _id: new mongoose.Types.ObjectId('507f1f77bcf86cd799439011'),
       rating: 0,
     });
   });

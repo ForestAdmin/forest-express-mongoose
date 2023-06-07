@@ -7,11 +7,15 @@ const { Schema } = mongoose;
 describe('adapters > schema-adapter', () => {
   afterEach((done) => {
     delete mongoose.models.Foo;
-    delete mongoose.modelSchemas.Foo;
     delete mongoose.models.User;
-    delete mongoose.modelSchemas.User;
     delete mongoose.models.Bar;
-    delete mongoose.modelSchemas.Bar;
+
+    // For older mongoose versions
+    if (mongoose.modelSchemas) {
+      delete mongoose.modelSchemas.Foo;
+      delete mongoose.modelSchemas.User;
+      delete mongoose.modelSchemas.Bar;
+    }
     done();
   });
 
