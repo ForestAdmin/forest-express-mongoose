@@ -1,3 +1,10 @@
+# [9.3.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.2.10...v9.3.0) (2023-06-12)
+
+
+### Features
+
+* **events-subscription:** allow to instantly refresh permissions when they change ([#1039](https://github.com/ForestAdmin/forest-express-mongoose/issues/1039)) ([6bb5e5e](https://github.com/ForestAdmin/forest-express-mongoose/commit/6bb5e5ef49ae902ad94c929de10e36aa12f7331c))
+
 ## [9.2.10](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.2.9...v9.2.10) (2023-06-07)
 
 
