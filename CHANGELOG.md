@@ -1,3 +1,10 @@
+## [9.3.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.1...v9.3.2) (2023-07-07)
+
+
+### Bug Fixes
+
+* **event-source:** gracefully close the app on exit by removing server events subscription ([#1042](https://github.com/ForestAdmin/forest-express-mongoose/issues/1042)) ([22808c3](https://github.com/ForestAdmin/forest-express-mongoose/commit/22808c3a9619e883e471ae61791da4fcac629867))
+
 ## [9.3.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.0...v9.3.1) (2023-06-23)
 
 
