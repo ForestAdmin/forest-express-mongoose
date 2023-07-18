@@ -53,12 +53,13 @@ class ResourcesGetter {
       }
     }
 
+    await queryBuilder.addProjection(jsonQuery);
+    queryBuilder.addSkipAndLimitToQuery(jsonQuery);
+
     if (params.sort) {
       queryBuilder.addSortToQuery(jsonQuery);
     }
 
-    await queryBuilder.addProjection(jsonQuery);
-    queryBuilder.addSkipAndLimitToQuery(jsonQuery);
     await queryBuilder.joinAllReferences(jsonQuery);
 
     const records = await this._model.aggregate(jsonQuery);
