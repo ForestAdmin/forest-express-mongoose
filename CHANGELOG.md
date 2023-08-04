@@ -1,3 +1,10 @@
+## [9.3.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.2...v9.3.3) (2023-08-04)
+
+
+### Bug Fixes
+
+* upgrade node version for the ci build ([c375232](https://github.com/ForestAdmin/forest-express-mongoose/commit/c37523221d6fb86b8f657a2ebad46eb52765b9a3))
+
 ## [9.3.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.1...v9.3.2) (2023-07-07)
 
 
