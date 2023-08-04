@@ -7388,10 +7388,10 @@ mongodb-connection-string-url@^2.6.0:
     "@types/whatwg-url" "^8.2.1"
     whatwg-url "^11.0.0"
 
-mongodb@5.5.0:
-  version "5.5.0"
-  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-5.5.0.tgz#5d213ef68f6b48610909d98d537059f2d7f374a1"
-  integrity sha512-XgrkUgAAdfnZKQfk5AsYL8j7O99WHd4YXPxYxnh8dZxD+ekYWFRA3JktUsBnfg+455Smf75/+asoU/YLwNGoQQ==
+mongodb@5.6.0:
+  version "5.6.0"
+  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-5.6.0.tgz#caff5278341bfc0f1ef6f394bb403d207de03d1e"
+  integrity sha512-z8qVs9NfobHJm6uzK56XBZF8XwM9H294iRnB7wNjF0SnY93si5HPziIJn+qqvUR5QOff/4L0gCD6SShdR/GtVQ==
   dependencies:
     bson "^5.3.0"
     mongodb-connection-string-url "^2.6.0"
@@ -7404,14 +7404,14 @@ mongoose-fixture-loader@1.0.2:
   resolved "https://registry.yarnpkg.com/mongoose-fixture-loader/-/mongoose-fixture-loader-1.0.2.tgz#f2daf6d8072398e555b582d751feeea462d142ac"
   integrity sha1-8tr22AcjmOVVtYLXUf7upGLRQqw=
 
-mongoose@7.2.2:
-  version "7.2.2"
-  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-7.2.2.tgz#5e4c9b87f20b0ef74382706da810bad292fa0f03"
-  integrity sha512-JPBMTF+oYfLGVFWbHSZ/H+f1GajNanGLYH6c/P0nE3bNJfwGhX573vieGR0kNlNhj3cZk8WCPrnVsTNeUmFUag==
+mongoose@7.3.3:
+  version "7.3.3"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-7.3.3.tgz#4e9cce706d3c5628998f59875c5c2d60ee0c6d9c"
+  integrity sha512-g4NrRGIUEUYLeScaSChQR8i4Dlk9lR0UJzkK3r6TPJyqJ6ZWdRVP3oXfOG9Yn+hNeKcCJKfVEHo+jsU1rh3YTA==
   dependencies:
     bson "^5.3.0"
     kareem "2.5.1"
-    mongodb "5.5.0"
+    mongodb "5.6.0"
     mpath "0.9.0"
     mquery "5.0.0"
     ms "2.1.3"
