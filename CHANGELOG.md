@@ -1,3 +1,10 @@
+## [9.3.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.3...v9.3.4) (2023-08-04)
+
+
+### Bug Fixes
+
+* **security:** patch semver dependency vulnerabilities ([#1046](https://github.com/ForestAdmin/forest-express-mongoose/issues/1046)) ([d8909df](https://github.com/ForestAdmin/forest-express-mongoose/commit/d8909df56a0199ba3e3878ea042a36c2454b612e))
+
 ## [9.3.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.2...v9.3.3) (2023-08-04)
 
 
