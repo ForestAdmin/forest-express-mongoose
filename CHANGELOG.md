@@ -1,3 +1,11 @@
+## [9.3.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.4...v9.3.5) (2023-08-04)
+
+
+### Bug Fixes
+
+* **security:** patch tough-cookie dependency vulnerabilities ([#1047](https://github.com/ForestAdmin/forest-express-mongoose/issues/1047)) ([6ff6e91](https://github.com/ForestAdmin/forest-express-mongoose/commit/6ff6e918543858a4c653503c867002b235f74783))
+* **security:** patch word-wrap dependency vulnerabilities ([#1048](https://github.com/ForestAdmin/forest-express-mongoose/issues/1048)) ([d4c187e](https://github.com/ForestAdmin/forest-express-mongoose/commit/d4c187e52709eace3e2aadf1696d00318f559b6f))
+
 ## [9.3.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.3...v9.3.4) (2023-08-04)
 
 
