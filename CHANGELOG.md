@@ -1,3 +1,10 @@
+## [9.3.7](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.6...v9.3.7) (2023-08-09)
+
+
+### Bug Fixes
+
+* warn in the console when the schema is not updated because of NODE_ENV ([#1050](https://github.com/ForestAdmin/forest-express-mongoose/issues/1050)) ([63dbd33](https://github.com/ForestAdmin/forest-express-mongoose/commit/63dbd337a1e61d9935ca87283a0c5df80e408111))
+
 ## [9.3.6](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.5...v9.3.6) (2023-08-04)
 
 
