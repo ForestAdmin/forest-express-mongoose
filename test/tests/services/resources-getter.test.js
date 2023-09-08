@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Mongoose } from 'mongoose';
 import loadFixture from 'mongoose-fixture-loader';
 import Interface from 'forest-express';
 import ResourcesGetter from '../../../src/services/resources-getter';
@@ -71,27 +71,28 @@ describe('service > resources-getter', () => {
 
     await mongooseConnect();
 
-    const OrderSchema = new mongoose.Schema({
-      amount: { type: Number },
-      comment: { type: String },
-      giftMessage: { type: String },
-      orderer: { type: 'ObjectId' },
-      receiver: { type: 'ObjectId' },
-    });
     const UserSchema = new mongoose.Schema({
       _id: { type: 'ObjectId' },
       name: { type: String },
       age: { type: Number },
     });
+    UserModel = mongoose.model('User', UserSchema, 'users');
+
+    const OrderSchema = new mongoose.Schema({
+      amount: { type: Number },
+      comment: { type: String },
+      giftMessage: { type: String },
+      orderer: { type: Mongoose.Schema.Types.ObjectId, ref: 'User' },
+      receiver: { type: Mongoose.Schema.Types.ObjectId, ref: 'User' },
+    });
+    OrderModel = mongoose.model('MyOrders', OrderSchema, 'Order');
+
     const FilmSchema = new mongoose.Schema({
       _id: { type: 'ObjectId' },
       title: { type: String },
       duration: { type: Number },
       rating: { type: Number },
     });
-
-    OrderModel = mongoose.model('MyOrders', OrderSchema, 'Order');
-    UserModel = mongoose.model('User', UserSchema, 'users');
     FilmModel = mongoose.model('Film', FilmSchema, 'films');
 
     await Promise.all([
@@ -99,6 +100,18 @@ describe('service > resources-getter', () => {
     ]);
 
     await Promise.all([
+      loadFixture(UserModel, [
+        {
+          _id: '41224d776a326fb40f000001',
+          age: 49,
+          name: 'Rust Cohle',
+        },
+        {
+          _id: '41224d776a326fb40f000002',
+          age: 30,
+          name: 'Jacco Gardner',
+        },
+      ]),
       loadFixture(OrderModel, [
         {
           // _id: 100,
@@ -127,17 +140,6 @@ describe('service > resources-getter', () => {
           comment: 'Don\'t touch this',
           giftMessage: null,
           orderer: null,
-        },
-      ]), loadFixture(UserModel, [
-        {
-          _id: '41224d776a326fb40f000001',
-          age: 49,
-          name: 'Rust Cohle',
-        },
-        {
-          _id: '41224d776a326fb40f000002',
-          age: 30,
-          name: 'Jacco Gardner',
         },
       ]),
       loadFixture(FilmModel, [
