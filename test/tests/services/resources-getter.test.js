@@ -223,6 +223,21 @@ describe('service > resources-getter', () => {
     });
   });
 
+  describe('with a referenced field', () => {
+    it('should filter correctly', async () => {
+      expect.assertions(3);
+      const parameters = {
+        ...baseParams,
+        filters: JSON.stringify({ field: 'orderer:_id', operator: 'equal', value: '41224d776a326fb40f000001' }),
+      };
+
+      const result = await new ResourcesGetter(OrderModel, options, parameters, user).perform();
+      expect(result[0]).toHaveLength(1);
+      expect(result[0][0].giftMessage).toMatch(/^Thank you/);
+      expect(result[0][0].comment).toMatch(/this is a gift/);
+    });
+  });
+
   describe('with basic \'and\' aggregator', () => {
     it('should filter correctly', async () => {
       expect.assertions(2);

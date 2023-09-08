@@ -51,6 +51,7 @@ class HasManyGetter {
       if (field.reference) {
         query.populate({
           path: field.field,
+          strictPopulate: false,
         });
       }
     });

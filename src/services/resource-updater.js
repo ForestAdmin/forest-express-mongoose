@@ -35,7 +35,7 @@ class ResourceUpdater {
     );
 
     _.each(schema.fields, (field) => {
-      if (field.reference) { query.populate(field.field); }
+      if (field.reference) { query.populate({ path: field.field, strictPopulate: false }); }
     });
 
     try {
