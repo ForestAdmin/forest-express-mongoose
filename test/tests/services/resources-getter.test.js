@@ -1,4 +1,4 @@
-import mongoose, { Mongoose } from 'mongoose';
+import mongoose from 'mongoose';
 import loadFixture from 'mongoose-fixture-loader';
 import Interface from 'forest-express';
 import ResourcesGetter from '../../../src/services/resources-getter';
@@ -82,8 +82,8 @@ describe('service > resources-getter', () => {
       amount: { type: Number },
       comment: { type: String },
       giftMessage: { type: String },
-      orderer: { type: Mongoose.Schema.Types.ObjectId, ref: 'User' },
-      receiver: { type: Mongoose.Schema.Types.ObjectId, ref: 'User' },
+      orderer: { type: 'ObjectId', ref: 'User' },
+      receiver: { type: 'ObjectId', ref: 'User' },
     });
     OrderModel = mongoose.model('MyOrders', OrderSchema, 'Order');
 
