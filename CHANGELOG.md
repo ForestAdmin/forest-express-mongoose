@@ -1,3 +1,10 @@
+## [9.3.9](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.8...v9.3.9) (2023-09-08)
+
+
+### Bug Fixes
+
+* **mongoose:** smart has many relationships for mongoose major versions 6 and 7 ([#1053](https://github.com/ForestAdmin/forest-express-mongoose/issues/1053)) ([3c090dc](https://github.com/ForestAdmin/forest-express-mongoose/commit/3c090dc8622f0afe00119be8127b95cf721c276a))
+
 ## [9.3.8](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.7...v9.3.8) (2023-09-01)
 
 

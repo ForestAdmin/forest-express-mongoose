@@ -1,7 +1,7 @@
 {
   "name": "forest-express-mongoose",
   "description": "Official Express/Mongoose Liana for Forest",
-  "version": "9.3.8",
+  "version": "9.3.9",
   "author": "Sandro Munda <sandro@munda.me>",
   "contributors": [
     "Arnaud Besnier <arnaudibesnier@gmail.com>",
