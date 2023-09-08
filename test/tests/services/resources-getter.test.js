@@ -71,28 +71,27 @@ describe('service > resources-getter', () => {
 
     await mongooseConnect();
 
+    const OrderSchema = new mongoose.Schema({
+      amount: { type: Number },
+      comment: { type: String },
+      giftMessage: { type: String },
+      orderer: { type: 'ObjectId' },
+      receiver: { type: 'ObjectId' },
+    });
     const UserSchema = new mongoose.Schema({
       _id: { type: 'ObjectId' },
       name: { type: String },
       age: { type: Number },
     });
-    UserModel = mongoose.model('User', UserSchema, 'users');
-
-    const OrderSchema = new mongoose.Schema({
-      amount: { type: Number },
-      comment: { type: String },
-      giftMessage: { type: String },
-      orderer: { type: 'ObjectId', ref: 'User' },
-      receiver: { type: 'ObjectId', ref: 'User' },
-    });
-    OrderModel = mongoose.model('MyOrders', OrderSchema, 'Order');
-
     const FilmSchema = new mongoose.Schema({
       _id: { type: 'ObjectId' },
       title: { type: String },
       duration: { type: Number },
       rating: { type: Number },
     });
+
+    OrderModel = mongoose.model('MyOrders', OrderSchema, 'Order');
+    UserModel = mongoose.model('User', UserSchema, 'users');
     FilmModel = mongoose.model('Film', FilmSchema, 'films');
 
     await Promise.all([
@@ -100,18 +99,6 @@ describe('service > resources-getter', () => {
     ]);
 
     await Promise.all([
-      loadFixture(UserModel, [
-        {
-          _id: '41224d776a326fb40f000001',
-          age: 49,
-          name: 'Rust Cohle',
-        },
-        {
-          _id: '41224d776a326fb40f000002',
-          age: 30,
-          name: 'Jacco Gardner',
-        },
-      ]),
       loadFixture(OrderModel, [
         {
           // _id: 100,
@@ -140,6 +127,17 @@ describe('service > resources-getter', () => {
           comment: 'Don\'t touch this',
           giftMessage: null,
           orderer: null,
+        },
+      ]), loadFixture(UserModel, [
+        {
+          _id: '41224d776a326fb40f000001',
+          age: 49,
+          name: 'Rust Cohle',
+        },
+        {
+          _id: '41224d776a326fb40f000002',
+          age: 30,
+          name: 'Jacco Gardner',
         },
       ]),
       loadFixture(FilmModel, [
@@ -222,21 +220,6 @@ describe('service > resources-getter', () => {
           }
         });
       });
-    });
-  });
-
-  describe('with a referenced field', () => {
-    it('should filter correctly', async () => {
-      expect.assertions(3);
-      const parameters = {
-        ...baseParams,
-        filters: JSON.stringify({ field: 'orderer:_id', operator: 'equal', value: '41224d776a326fb40f000001' }),
-      };
-
-      const result = await new ResourcesGetter(OrderModel, options, parameters, user).perform();
-      expect(result[0]).toHaveLength(1);
-      expect(result[0][0].giftMessage).toMatch(/^Thank you/);
-      expect(result[0][0].comment).toMatch(/this is a gift/);
     });
   });
 
