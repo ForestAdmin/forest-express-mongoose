@@ -15,7 +15,7 @@ class ResourceGetter {
     const schema = Interface.Schemas.schemas[utils.getModelName(this._model)];
     _.each(schema.fields, (field) => {
       if (field.reference) {
-        query.populate(field.field);
+        query.populate({ path: field.field, strictPopulate: false });
       }
     });
   }
