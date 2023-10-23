@@ -1,3 +1,10 @@
+## [9.3.11](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.10...v9.3.11) (2023-10-23)
+
+
+### Bug Fixes
+
+* **security:** patch @babel/traverse dependency vulnerabilities ([#1057](https://github.com/ForestAdmin/forest-express-mongoose/issues/1057)) ([4c0e7fc](https://github.com/ForestAdmin/forest-express-mongoose/commit/4c0e7fcc5af6d9ea41ed1eaad548b8d5c124cd13))
+
 ## [9.3.10](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.9...v9.3.10) (2023-10-23)
 
 
