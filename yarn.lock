@@ -4728,10 +4728,10 @@ for-in@^1.0.2:
   resolved "https://registry.yarnpkg.com/for-in/-/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
   integrity sha512-7EwmXrOjyL+ChxMhmG5lnW9MPt1aIeZEwKhQzoBUdTV0N3zuwWDZYVJatDvZ2OyzPUvdIAZDsCetk3coyMfcnQ==
 
-forest-express@10.2.7:
-  version "10.2.7"
-  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-10.2.7.tgz#68e7512e0ae8a3d78512462277243031a191f696"
-  integrity sha512-L6FS4SkknjxzIgwM4uZRMls4QhQ+AyC4UL+1V0Ue9CQvBqT1RAMmP83nmEOtQgvr1tVFvuQOtYd58ann+5xNAA==
+forest-express@10.2.10:
+  version "10.2.10"
+  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-10.2.10.tgz#bcfabcacaa043b8b290fa7870e51dc4031336729"
+  integrity sha512-Gzb0qGxcpfO2+E5rUH07y+AJ5qpjrtaA8BdA3P/uPHHPV9q0yGoHREUG6bA4wQM2V4qQNDicJNftmYl68A1DBw==
   dependencies:
     "@babel/runtime" "7.19.0"
     "@forestadmin/context" "1.31.0"
