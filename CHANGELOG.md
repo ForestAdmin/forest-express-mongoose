@@ -1,3 +1,10 @@
+## [9.3.12](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.11...v9.3.12) (2023-11-08)
+
+
+### Bug Fixes
+
+* **serialiser:** serialiser does not compute hidden smart fields anymore ([#1067](https://github.com/ForestAdmin/forest-express-mongoose/issues/1067)) ([41af9eb](https://github.com/ForestAdmin/forest-express-mongoose/commit/41af9eb422d8ee20cfb886a3013881452cf24045))
+
 ## [9.3.11](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.10...v9.3.11) (2023-10-23)
 
 
