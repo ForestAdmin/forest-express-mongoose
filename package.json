@@ -42,7 +42,7 @@
     "@babel/plugin-transform-runtime": "7.15.0",
     "@babel/preset-env": "7.15.6",
     "@babel/register": "7.15.3",
-    "@commitlint/cli": "17.4.2",
+    "@commitlint/cli": "18.4.0",
     "@commitlint/config-conventional": "17.4.2",
     "@semantic-release/changelog": "6.0.1",
     "@semantic-release/git": "10.0.1",
