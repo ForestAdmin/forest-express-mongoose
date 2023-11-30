@@ -14,10 +14,14 @@ exports.getModelName = (model) => model.modelName;
 // TODO: Remove nameOld attribute once the lianas versions older than 2.0.0 are minority
 exports.getModelNameOld = (model) => model.collection.name.replace(' ', '');
 
+const Flattener = require('../services/flattener');
+
+const { FLATTEN_SEPARATOR } = Flattener;
+
 const getNestedFieldType = (mongooseSchema, nestedFieldPath) => {
   if (!mongooseSchema || !nestedFieldPath) return undefined;
 
-  const [currentFieldName, ...deepNestedFieldPath] = nestedFieldPath.split('.');
+  const [currentFieldName, ...deepNestedFieldPath] = nestedFieldPath.split(FLATTEN_SEPARATOR);
 
   let nestedFieldDeclaration;
 
@@ -37,7 +41,7 @@ const getNestedFieldType = (mongooseSchema, nestedFieldPath) => {
     return nestedFieldDeclaration.type || nestedFieldDeclaration;
   }
 
-  return getNestedFieldType(nestedFieldDeclaration, deepNestedFieldPath?.join('.'));
+  return getNestedFieldType(nestedFieldDeclaration, deepNestedFieldPath?.join(FLATTEN_SEPARATOR));
 };
 
 exports.getNestedFieldType = getNestedFieldType;
