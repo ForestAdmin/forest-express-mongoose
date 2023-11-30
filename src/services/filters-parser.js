@@ -96,7 +96,9 @@ function FiltersParser(model, timezone, options) {
     }
 
     const fieldPath = subfieldName ? `${fieldName}.${subfieldName}` : fieldName;
-    const fieldType = utils.getNestedFieldType(model.schema, fieldPath);
+    const fieldType = field.isVirtual
+      ? field.type
+      : utils.getNestedFieldType(model.schema, fieldPath);
 
     if (!fieldType) return (val) => val;
 
