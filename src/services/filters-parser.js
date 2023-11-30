@@ -6,6 +6,8 @@ import Flattener from './flattener';
 
 const AGGREGATOR_OPERATORS = ['and', 'or'];
 
+const { FLATTEN_SEPARATOR } = Flattener;
+
 function FiltersParser(model, timezone, options) {
   const modelSchema = Interface.Schemas.schemas[utils.getModelName(model)];
 
@@ -95,7 +97,7 @@ function FiltersParser(model, timezone, options) {
       throw new InvalidFiltersFormatError(`Field '${fieldName}' not found on collection '${modelSchema.name}'`);
     }
 
-    const fieldPath = subfieldName ? `${fieldName}.${subfieldName}` : fieldName;
+    const fieldPath = subfieldName ? `${fieldName}${FLATTEN_SEPARATOR}${subfieldName}` : fieldName;
     const fieldType = utils.getNestedFieldType(model.schema, fieldPath);
 
     if (!fieldType) return (val) => val;
