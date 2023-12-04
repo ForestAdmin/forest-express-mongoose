@@ -47,10 +47,10 @@ describe('schema', () => {
       it('should correctly detect the type', () => {
         expect.assertions(2);
         expect(
-          getNestedFieldType(nestedModelSchema, 'engineSubSchemaAndType._id'),
+          getNestedFieldType(nestedModelSchema, 'engineSubSchemaAndType@@@_id'),
         ).toStrictEqual(mongoose.Schema.Types.ObjectId);
         expect(
-          getNestedFieldType(nestedModelSchema, 'engineSubSchemaAndType.horsePower'),
+          getNestedFieldType(nestedModelSchema, 'engineSubSchemaAndType@@@horsePower'),
         ).toStrictEqual(String);
       });
     });
@@ -58,10 +58,10 @@ describe('schema', () => {
       it('should correctly detect the type', () => {
         expect.assertions(2);
         expect(
-          getNestedFieldType(nestedModelSchema, 'engineSubSchema._id'),
+          getNestedFieldType(nestedModelSchema, 'engineSubSchema@@@_id'),
         ).toStrictEqual(mongoose.Schema.Types.ObjectId);
         expect(
-          getNestedFieldType(nestedModelSchema, 'engineSubSchema.horsePower'),
+          getNestedFieldType(nestedModelSchema, 'engineSubSchema@@@horsePower'),
         ).toStrictEqual(String);
       });
     });
@@ -72,10 +72,10 @@ describe('schema', () => {
       it('should correctly detect the type', () => {
         expect.assertions(2);
         expect(
-          getNestedFieldType(nestedModelSchema, 'engineNestedDocumentAndType._id'),
+          getNestedFieldType(nestedModelSchema, 'engineNestedDocumentAndType@@@_id'),
         ).toStrictEqual(mongoose.Schema.Types.ObjectId);
         expect(
-          getNestedFieldType(nestedModelSchema, 'engineNestedDocumentAndType.horsePower'),
+          getNestedFieldType(nestedModelSchema, 'engineNestedDocumentAndType@@@horsePower'),
         ).toStrictEqual(String);
       });
     });
@@ -83,10 +83,10 @@ describe('schema', () => {
       it('should correctly detect the type', () => {
         expect.assertions(2);
         expect(
-          getNestedFieldType(nestedModelSchema, 'engineNestedDocument._id'),
+          getNestedFieldType(nestedModelSchema, 'engineNestedDocument@@@_id'),
         ).toStrictEqual(mongoose.Schema.Types.ObjectId);
         expect(
-          getNestedFieldType(nestedModelSchema, 'engineNestedDocument.horsePower'),
+          getNestedFieldType(nestedModelSchema, 'engineNestedDocument@@@horsePower'),
         ).toStrictEqual(String);
       });
     });
@@ -98,10 +98,10 @@ describe('schema', () => {
       it('should correctly detect the type', () => {
         expect.assertions(2);
         expect(
-          getNestedFieldType(nestedModelSchema, 'engineNestedPathAndType._id'),
+          getNestedFieldType(nestedModelSchema, 'engineNestedPathAndType@@@_id'),
         ).toStrictEqual(mongoose.Schema.Types.ObjectId);
         expect(
-          getNestedFieldType(nestedModelSchema, 'engineNestedPathAndType.horsePower'),
+          getNestedFieldType(nestedModelSchema, 'engineNestedPathAndType@@@horsePower'),
         ).toStrictEqual(String);
       });
     });
@@ -109,10 +109,10 @@ describe('schema', () => {
       it('should correctly detect the type', () => {
         expect.assertions(2);
         expect(
-          getNestedFieldType(nestedModelSchema, 'engineNestedPath._id'),
+          getNestedFieldType(nestedModelSchema, 'engineNestedPath@@@_id'),
         ).toStrictEqual(mongoose.Schema.Types.ObjectId);
         expect(
-          getNestedFieldType(nestedModelSchema, 'engineNestedPath.horsePower'),
+          getNestedFieldType(nestedModelSchema, 'engineNestedPath@@@horsePower'),
         ).toStrictEqual(String);
       });
     });
@@ -123,7 +123,7 @@ describe('schema', () => {
       expect.assertions(1);
 
       expect(
-        getNestedFieldType(nestedModelSchema, 'engineNestedPath.notExisting'),
+        getNestedFieldType(nestedModelSchema, 'engineNestedPath@@@notExisting'),
       ).toBeUndefined();
     });
   });
