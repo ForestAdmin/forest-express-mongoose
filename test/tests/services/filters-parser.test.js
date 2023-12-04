@@ -349,6 +349,23 @@ describe('service > filters-parser', () => {
         spy.mockRestore();
       });
     });
+    describe('with a virtual field', () => {
+      it('should return the field type', async () => {
+        expect.hasAssertions();
+        const fakeParser = jest.fn().mockReturnValue('parsedValue');
+        const spy = jest.spyOn(defaultParser, 'getParserForType').mockReturnValue(fakeParser);
+        const type = Symbol('type');
+        jest.spyOn(Interface.SchemaUtils, 'getField').mockReturnValue({ isVirtual: true, type });
+
+
+        await defaultParser.getParserForField('mySmartField');
+
+        expect(defaultParser.getParserForType).toHaveBeenCalledTimes(1);
+        expect(defaultParser.getParserForType).toHaveBeenCalledWith(type);
+
+        spy.mockRestore();
+      });
+    });
   });
 
   describe('formatAggregation function', () => {

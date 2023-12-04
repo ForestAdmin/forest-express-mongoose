@@ -1,3 +1,10 @@
+## [9.3.13](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.12...v9.3.13) (2023-12-04)
+
+
+### Bug Fixes
+
+* allow filtering on date on smart field ([#1080](https://github.com/ForestAdmin/forest-express-mongoose/issues/1080)) ([9cd4f59](https://github.com/ForestAdmin/forest-express-mongoose/commit/9cd4f594414362086b0ee2dcdb14e10443115ee3))
+
 ## [9.3.12](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.11...v9.3.12) (2023-11-08)
 
 
