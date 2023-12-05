@@ -13,6 +13,8 @@ module.exports = class Flattener {
     this.lianaOptions = lianaOptions;
   }
 
+  static FLATTEN_SEPARATOR = FLATTEN_SEPARATOR;
+
   _removeWrongFlattenConfiguration(index) {
     this.flatten.splice(index, 1);
   }
@@ -146,6 +148,8 @@ module.exports = class Flattener {
       if (!_.isEmpty(request.query?.context)) {
         request.query.context.field = Flattener.unflattenFieldName(request.query.context.field);
       }
+      // Note: filter and sorts are not unflattened here because
+      // they are checked against forest schema later on
       return next();
     } catch (error) { return next(error); }
   }

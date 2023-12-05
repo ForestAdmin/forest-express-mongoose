@@ -3,8 +3,9 @@ import loadFixture from 'mongoose-fixture-loader';
 import Interface from 'forest-express';
 import mongooseConnect from '../../utils/mongoose-connect';
 import QueryBuilder from '../../../src/services/query-builder';
+import Flattener from '../../../src/services/flattener';
 
-const FLATTEN_SEPARATOR = '@@@';
+const { FLATTEN_SEPARATOR } = Flattener;
 
 describe('service > query-builder', () => {
   let TreeModel;
