@@ -1,3 +1,11 @@
+## [9.3.14](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.13...v9.3.14) (2023-12-07)
+
+
+### Bug Fixes
+
+* allow filtering on exact date on flattened field ([#1079](https://github.com/ForestAdmin/forest-express-mongoose/issues/1079)) ([9ad89fe](https://github.com/ForestAdmin/forest-express-mongoose/commit/9ad89fed142f17b4ab2ae20bc45bfd0ac0607aa2))
+* release flattened field filtering fix ([#1081](https://github.com/ForestAdmin/forest-express-mongoose/issues/1081)) ([0610526](https://github.com/ForestAdmin/forest-express-mongoose/commit/06105264f5e5e600ffdbb1981e690cd46396c113))
+
 ## [9.3.13](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.12...v9.3.13) (2023-12-04)
 
 
