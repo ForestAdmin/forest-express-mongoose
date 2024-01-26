@@ -1,3 +1,10 @@
+## [9.3.15](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.14...v9.3.15) (2024-01-26)
+
+
+### Bug Fixes
+
+* **security:** patch lodash.set dependency vulnerabilities ([#1094](https://github.com/ForestAdmin/forest-express-mongoose/issues/1094)) ([5dd09fa](https://github.com/ForestAdmin/forest-express-mongoose/commit/5dd09fa6f4be34e531f9c0faf326ed5d38ad7c39))
+
 ## [9.3.14](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.13...v9.3.14) (2023-12-07)
 
 
