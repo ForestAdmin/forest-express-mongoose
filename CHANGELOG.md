@@ -1,3 +1,10 @@
+## [9.3.16](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.15...v9.3.16) (2024-02-22)
+
+
+### Bug Fixes
+
+* **security:** patch ip dependency vulnerabilities ([#1095](https://github.com/ForestAdmin/forest-express-mongoose/issues/1095)) ([e33b979](https://github.com/ForestAdmin/forest-express-mongoose/commit/e33b979b6f8ec1a3996aa2ea8a25d156af897c04))
+
 ## [9.3.15](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.14...v9.3.15) (2024-01-26)
 
 
