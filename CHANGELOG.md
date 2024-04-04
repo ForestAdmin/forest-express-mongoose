@@ -1,3 +1,10 @@
+## [9.3.18](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.17...v9.3.18) (2024-04-04)
+
+
+### Bug Fixes
+
+* **security:** patch express dependency vulnerabilities ([#1097](https://github.com/ForestAdmin/forest-express-mongoose/issues/1097)) ([e013bdc](https://github.com/ForestAdmin/forest-express-mongoose/commit/e013bdc9f0229be9d60cc4fe0d64ccd3f8efd96a))
+
 ## [9.3.17](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.16...v9.3.17) (2024-03-11)
 
 
