@@ -1,3 +1,10 @@
+## [9.3.19](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.18...v9.3.19) (2024-04-09)
+
+
+### Bug Fixes
+
+* typo in an error message when users are not authorized to perform an action ([#1098](https://github.com/ForestAdmin/forest-express-mongoose/issues/1098)) ([226f3d2](https://github.com/ForestAdmin/forest-express-mongoose/commit/226f3d29932f469087740746afd6531bd8407a61))
+
 ## [9.3.18](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.17...v9.3.18) (2024-04-04)
 
 
