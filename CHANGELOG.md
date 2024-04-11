@@ -1,3 +1,10 @@
+## [9.3.20](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.19...v9.3.20) (2024-04-11)
+
+
+### Bug Fixes
+
+* typo in error message ([#1099](https://github.com/ForestAdmin/forest-express-mongoose/issues/1099)) ([187c426](https://github.com/ForestAdmin/forest-express-mongoose/commit/187c426ed5c98920164e50ef17eb7ce3cb971e56))
+
 ## [9.3.19](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.18...v9.3.19) (2024-04-09)
 
 
