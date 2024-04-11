@@ -1295,16 +1295,16 @@
   resolved "https://registry.yarnpkg.com/@forestadmin/context/-/context-1.31.0.tgz#b4b5a3b589e52d337a1f45807db22c2860e640a7"
   integrity sha512-RQkDBkq+6ySMv+YNezz9VWSyCsqD7fj/+bXrXhQ6lJ62nbRUIUheH7ApvXwfnwFR1u55oT6Yhar11t6DaiE9Ig==
 
-"@forestadmin/forestadmin-client@1.25.1":
-  version "1.25.1"
-  resolved "https://registry.yarnpkg.com/@forestadmin/forestadmin-client/-/forestadmin-client-1.25.1.tgz#1fcc1adccaee5da42a0a47e1a40c8b72fe7a8cf7"
-  integrity sha512-ReGXq+/g7FyQoELWANPrTxSNjbzkCJMnVWb2tbm3wlm8zTEa/KuKQra5Z22rwONCWM2YgwHbRw+wQ47ZK80DBA==
+"@forestadmin/forestadmin-client@1.26.2":
+  version "1.26.2"
+  resolved "https://registry.yarnpkg.com/@forestadmin/forestadmin-client/-/forestadmin-client-1.26.2.tgz#4831eec2b073c377a3672f622e6c8603ec2625dd"
+  integrity sha512-FIDt+2TGR0vcjob5zkErMhodFQeKhXiqWOzDvETskXToOW1x9wV+NBY/7npoY7uvUk4tF3Bx+ZCoerTZAEIZUg==
   dependencies:
     eventsource "2.0.2"
     json-api-serializer "^2.6.6"
     jsonwebtoken "^9.0.0"
     object-hash "^3.0.0"
-    openid-client "^5.3.1"
+    openid-client "^5.6.4"
     superagent "^8.0.6"
 
 "@gar/promisify@^1.1.3":
@@ -4749,14 +4749,14 @@ for-in@^1.0.2:
   resolved "https://registry.yarnpkg.com/for-in/-/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
   integrity sha512-7EwmXrOjyL+ChxMhmG5lnW9MPt1aIeZEwKhQzoBUdTV0N3zuwWDZYVJatDvZ2OyzPUvdIAZDsCetk3coyMfcnQ==
 
-forest-express@10.2.16:
-  version "10.2.16"
-  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-10.2.16.tgz#2649996bcf3cff3ba625a95ebb111d6a7b178a2c"
-  integrity sha512-rzRnd7xdNmrO5dd++KHkTY826z49FmQ7LfG0EhLCXvcxQFrgJjTd3k00BdoGd3j2ynfOaTtxKoxtmgukWSbwtw==
+forest-express@10.2.17:
+  version "10.2.17"
+  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-10.2.17.tgz#b8bc6f1f10aed43dd3976a5e6991f01b1fe34853"
+  integrity sha512-bs/8cKfEGLOIkEBGQoT0sNVEpC6lRRLySAI9QDOF/iN6bAVb3r1CPF2N7gvx677W25hGmz8mfuoP8seMbLUcbA==
   dependencies:
     "@babel/runtime" "7.19.0"
     "@forestadmin/context" "1.31.0"
-    "@forestadmin/forestadmin-client" "1.25.1"
+    "@forestadmin/forestadmin-client" "1.26.2"
     base32-encode "1.1.1"
     bitwise-xor "0.0.0"
     bluebird "3.7.1"
@@ -6411,7 +6411,7 @@ jose@^2.0.2:
   dependencies:
     "@panva/asn1.js" "^1.0.0"
 
-jose@^4.10.0:
+jose@^4.15.5:
   version "4.15.5"
   resolved "https://registry.yarnpkg.com/jose/-/jose-4.15.5.tgz#6475d0f467ecd3c630a1b5dadd2735a7288df706"
   integrity sha512-jc7BFxgKPKi94uOvEmzlSWFFe2+vASyXaKUpdQKatWAESU2MWjDfFf0fdfc83CDKcA5QecabZeNLyfhe3yKNkg==
@@ -7940,7 +7940,7 @@ object-copy@^0.1.0:
     define-property "^0.2.5"
     kind-of "^3.0.3"
 
-object-hash@^2.0.1:
+object-hash@^2.0.1, object-hash@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/object-hash/-/object-hash-2.2.0.tgz#5ad518581eefc443bd763472b8ff2e9c2c0d54a5"
   integrity sha512-gScRMn0bS5fH+IuwyIFgnh9zBdo4DV+6GhygmWM9HyNJSgS0hScp1f5vjtm7oIIOiT9trXrShAkLFSc2IqKNgw==
@@ -8002,10 +8002,15 @@ object.values@^1.1.0:
     define-properties "^1.1.3"
     es-abstract "^1.19.1"
 
-oidc-token-hash@^5.0.0, oidc-token-hash@^5.0.1:
+oidc-token-hash@^5.0.0:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/oidc-token-hash/-/oidc-token-hash-5.0.1.tgz#ae6beec3ec20f0fd885e5400d175191d6e2f10c6"
   integrity sha512-EvoOtz6FIEBzE+9q253HsLCVRiK/0doEJ2HCvvqMQb3dHZrP3WlJKYtJ55CRTw4jmYomzH4wkPuCj/I3ZvpKxQ==
+
+oidc-token-hash@^5.0.3:
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/oidc-token-hash/-/oidc-token-hash-5.0.3.tgz#9a229f0a1ce9d4fc89bcaee5478c97a889e7b7b6"
+  integrity sha512-IF4PcGgzAr6XXSff26Sk/+P4KZFJVuHAJZj3wgO3vX2bMdNVp/QXTP3P7CEm9V1IdG8lDLY3HhiqpsE/nOwpPw==
 
 on-finished@2.4.1:
   version "2.4.1"
@@ -8052,15 +8057,15 @@ openid-client@4.2.0:
     oidc-token-hash "^5.0.0"
     p-any "^3.0.0"
 
-openid-client@^5.3.1:
-  version "5.3.2"
-  resolved "https://registry.yarnpkg.com/openid-client/-/openid-client-5.3.2.tgz#fcc2c16f9681fa5f03ee0581b0935f88fc49f11f"
-  integrity sha512-nXXt+cna0XHOw+WqjMZOmuXw/YZEMwfWD2lD7tCsFtsBjMQGVXA+NZABA3upYBET1suhIsmfd7GnxG4jCAnvYQ==
+openid-client@^5.6.4:
+  version "5.6.5"
+  resolved "https://registry.yarnpkg.com/openid-client/-/openid-client-5.6.5.tgz#c149ad07b9c399476dc347097e297bbe288b8b00"
+  integrity sha512-5P4qO9nGJzB5PI0LFlhj4Dzg3m4odt0qsJTfyEtZyOlkgpILwEioOhVVJOrS1iVH494S4Ee5OCjjg6Bf5WOj3w==
   dependencies:
-    jose "^4.10.0"
+    jose "^4.15.5"
     lru-cache "^6.0.0"
-    object-hash "^2.0.1"
-    oidc-token-hash "^5.0.1"
+    object-hash "^2.2.0"
+    oidc-token-hash "^5.0.3"
 
 optionator@^0.8.1, optionator@^0.8.3:
   version "0.8.3"
