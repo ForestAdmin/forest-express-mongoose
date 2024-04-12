@@ -1,3 +1,10 @@
+## [9.3.21](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.20...v9.3.21) (2024-04-12)
+
+
+### Bug Fixes
+
+* **security:** patch tar dependency vulnerabilities ([#1100](https://github.com/ForestAdmin/forest-express-mongoose/issues/1100)) ([9e0c235](https://github.com/ForestAdmin/forest-express-mongoose/commit/9e0c2350436afd3c4192a60d9de875bf2115d4b9))
+
 ## [9.3.20](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.19...v9.3.20) (2024-04-11)
 
 
