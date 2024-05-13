@@ -1,3 +1,10 @@
+## [9.3.22](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.21...v9.3.22) (2024-05-13)
+
+
+### Bug Fixes
+
+* incorrect mongoose type used for ConnectOptions ([#1101](https://github.com/ForestAdmin/forest-express-mongoose/issues/1101)) ([290276a](https://github.com/ForestAdmin/forest-express-mongoose/commit/290276a382a8dba551b1fd23a1bcd1558f5a207e))
+
 ## [9.3.21](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.20...v9.3.21) (2024-04-12)
 
 
