@@ -3756,12 +3756,10 @@ cssstyle@^2.3.0:
   dependencies:
     cssom "~0.3.6"
 
-csv-stringify@1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/csv-stringify/-/csv-stringify-1.0.4.tgz#bc18bab9ad4cef3195fd257980b58b479c42d3e5"
-  integrity sha512-j4gF49AfBfWmzMkxsuQHVbGFaPB8Z/5tFUfyeqjeT6HCu/YjD+tPtUcGao2sTRykTQ95QmiQnEMBaF/bANYMiA==
-  dependencies:
-    lodash.get "^4.0.0"
+csv-stringify@5.6.5:
+  version "5.6.5"
+  resolved "https://registry.yarnpkg.com/csv-stringify/-/csv-stringify-5.6.5.tgz#c6d74badda4b49a79bf4e72f91cce1e33b94de00"
+  integrity sha512-PjiQ659aQ+fUTQqSrd1XEDnOr52jh30RBurfzkscaE2tPaFsDH5wOAHJiw8XAHphRknCwMUE9KRayc4K/NbO8A==
 
 dargs@^7.0.0:
   version "7.0.0"
@@ -4749,10 +4747,10 @@ for-in@^1.0.2:
   resolved "https://registry.yarnpkg.com/for-in/-/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
   integrity sha512-7EwmXrOjyL+ChxMhmG5lnW9MPt1aIeZEwKhQzoBUdTV0N3zuwWDZYVJatDvZ2OyzPUvdIAZDsCetk3coyMfcnQ==
 
-forest-express@10.2.17:
-  version "10.2.17"
-  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-10.2.17.tgz#b8bc6f1f10aed43dd3976a5e6991f01b1fe34853"
-  integrity sha512-bs/8cKfEGLOIkEBGQoT0sNVEpC6lRRLySAI9QDOF/iN6bAVb3r1CPF2N7gvx677W25hGmz8mfuoP8seMbLUcbA==
+forest-express@10.2.20:
+  version "10.2.20"
+  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-10.2.20.tgz#852ef5c55d57bfba0422dbdd2b17ab1b2b6492f7"
+  integrity sha512-dDvQG2Z+3Dc1+eKWfYU8p6VGDxBmGSyuLJ4D9QuW3fqnbQ7xxs4JQvb1qIeTAyMprH2gMBW7MVywHTGewEaScQ==
   dependencies:
     "@babel/runtime" "7.19.0"
     "@forestadmin/context" "1.31.0"
@@ -4763,7 +4761,7 @@ forest-express@10.2.17:
     body-parser "^1.20.1"
     compose-middleware "5.0.1"
     cors "2.8.5"
-    csv-stringify "1.0.4"
+    csv-stringify "5.6.5"
     express "^4.18.2"
     express-jwt "8.4.1"
     forest-ip-utils "1.0.1"
@@ -6882,11 +6880,6 @@ lodash.escaperegexp@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/lodash.escaperegexp/-/lodash.escaperegexp-4.1.2.tgz#64762c48618082518ac3df4ccf5d5886dae20347"
   integrity sha512-TM9YBvyC84ZxE3rgfefxUWiQKLilstD6k7PTGt6wfbtXF8ixIJLOL3VYyV/z+ZiPLsVxAsKAFVwWlWeb2Y8Yyw==
-
-lodash.get@^4.0.0:
-  version "4.4.2"
-  resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
-  integrity sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==
 
 lodash.isfunction@^3.0.9:
   version "3.0.9"
