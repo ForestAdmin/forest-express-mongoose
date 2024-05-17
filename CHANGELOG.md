@@ -1,3 +1,10 @@
+## [9.3.23](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.22...v9.3.23) (2024-05-17)
+
+
+### Performance Improvements
+
+* improve memory usage during export ([#1102](https://github.com/ForestAdmin/forest-express-mongoose/issues/1102)) ([03a94d5](https://github.com/ForestAdmin/forest-express-mongoose/commit/03a94d5e939acdde2424430cff3937478b083175))
+
 ## [9.3.22](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.21...v9.3.22) (2024-05-13)
 
 
