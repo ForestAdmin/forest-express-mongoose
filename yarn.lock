@@ -3756,10 +3756,10 @@ cssstyle@^2.3.0:
   dependencies:
     cssom "~0.3.6"
 
-csv-stringify@6.5.0:
-  version "6.5.0"
-  resolved "https://registry.yarnpkg.com/csv-stringify/-/csv-stringify-6.5.0.tgz#7b1491893c917e018a97de9bf9604e23b88647c2"
-  integrity sha512-edlXFVKcUx7r8Vx5zQucsuMg4wb/xT6qyz+Sr1vnLrdXqlLD1+UKyWNyZ9zn6mUW1ewmGxrpVwAcChGF0HQ/2Q==
+csv-stringify@5.6.5:
+  version "5.6.5"
+  resolved "https://registry.yarnpkg.com/csv-stringify/-/csv-stringify-5.6.5.tgz#c6d74badda4b49a79bf4e72f91cce1e33b94de00"
+  integrity sha512-PjiQ659aQ+fUTQqSrd1XEDnOr52jh30RBurfzkscaE2tPaFsDH5wOAHJiw8XAHphRknCwMUE9KRayc4K/NbO8A==
 
 dargs@^7.0.0:
   version "7.0.0"
@@ -4747,10 +4747,10 @@ for-in@^1.0.2:
   resolved "https://registry.yarnpkg.com/for-in/-/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
   integrity sha512-7EwmXrOjyL+ChxMhmG5lnW9MPt1aIeZEwKhQzoBUdTV0N3zuwWDZYVJatDvZ2OyzPUvdIAZDsCetk3coyMfcnQ==
 
-forest-express@10.2.19:
-  version "10.2.19"
-  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-10.2.19.tgz#09939bb259904df4b901ac7ca7e0abea68fae36f"
-  integrity sha512-Pm6ceqlMSxeNGWPAUWAs7Ze9nxd632OQnxHvqS3wmOch4vBnFI91lqQfMvPc+ZfhhjmpNVrfqxNulF6xLKscCA==
+forest-express@10.2.20:
+  version "10.2.20"
+  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-10.2.20.tgz#852ef5c55d57bfba0422dbdd2b17ab1b2b6492f7"
+  integrity sha512-dDvQG2Z+3Dc1+eKWfYU8p6VGDxBmGSyuLJ4D9QuW3fqnbQ7xxs4JQvb1qIeTAyMprH2gMBW7MVywHTGewEaScQ==
   dependencies:
     "@babel/runtime" "7.19.0"
     "@forestadmin/context" "1.31.0"
@@ -4761,7 +4761,7 @@ forest-express@10.2.19:
     body-parser "^1.20.1"
     compose-middleware "5.0.1"
     cors "2.8.5"
-    csv-stringify "6.5.0"
+    csv-stringify "5.6.5"
     express "^4.18.2"
     express-jwt "8.4.1"
     forest-ip-utils "1.0.1"
