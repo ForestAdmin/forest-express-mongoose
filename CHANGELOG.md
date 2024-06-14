@@ -1,3 +1,10 @@
+## [9.3.24](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.23...v9.3.24) (2024-06-14)
+
+
+### Bug Fixes
+
+* **security:** patch braces dependency vulnerabilities ([#1103](https://github.com/ForestAdmin/forest-express-mongoose/issues/1103)) ([2076629](https://github.com/ForestAdmin/forest-express-mongoose/commit/2076629380989f32661b551ef5d0ff98d5ce005d))
+
 ## [9.3.23](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.22...v9.3.23) (2024-05-17)
 
 
