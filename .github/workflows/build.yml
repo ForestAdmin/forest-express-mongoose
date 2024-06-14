@@ -23,7 +23,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v2
         with:
-          node-version: 14.21.3
+          node-version: 18.20.1
       - uses: actions/cache@v2
         with:
           path: '**/node_modules'
@@ -69,7 +69,7 @@ jobs:
           persist-credentials: false # GITHUB_TOKEN must not be set for the semantic release
       - uses: actions/setup-node@v2
         with:
-          node-version: 12.13.0
+          node-version: 18.20.1
       - uses: actions/cache@v2
         with:
           path: '**/node_modules'
