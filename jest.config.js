@@ -4,6 +4,6 @@ module.exports = {
     'src/**/*.{ts,js}',
   ],
   setupFilesAfterEnv: [
-    'jest-extended',
+    'jest-extended/all',
   ],
 };

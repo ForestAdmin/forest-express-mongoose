@@ -12,7 +12,9 @@ module.exports = {
     node: true,
   },
   ignorePatterns: [
-    'dist/**'
+    'dist/**',
+    '.eslintrc.js',
+    'jest.config.js'
   ],
   rules: {
     'implicit-arrow-linebreak': 0,
