@@ -1,3 +1,10 @@
+## [9.3.26](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.25...v9.3.26) (2024-09-05)
+
+
+### Bug Fixes
+
+* **security:** patch micromatch dependency vulnerabilities ([#1105](https://github.com/ForestAdmin/forest-express-mongoose/issues/1105)) ([331e712](https://github.com/ForestAdmin/forest-express-mongoose/commit/331e712b3c022c3e2a7d0f4bd16043c6a7c166a1))
+
 ## [9.3.25](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.24...v9.3.25) (2024-06-14)
 
 
