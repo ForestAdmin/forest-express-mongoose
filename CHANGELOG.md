@@ -1,3 +1,10 @@
+## [9.3.28](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.27...v9.3.28) (2024-09-12)
+
+
+### Bug Fixes
+
+* **security:** patch body-parser dependency vulnerabilities ([#1107](https://github.com/ForestAdmin/forest-express-mongoose/issues/1107)) ([272a816](https://github.com/ForestAdmin/forest-express-mongoose/commit/272a8169d3dfc6ae9a398696048a097664ca6df4))
+
 ## [9.3.27](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.26...v9.3.27) (2024-09-12)
 
 
