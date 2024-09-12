@@ -1,3 +1,10 @@
+## [9.3.27](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.26...v9.3.27) (2024-09-12)
+
+
+### Bug Fixes
+
+* **security:** patch path-to-regexp dependency vulnerabilities ([#1106](https://github.com/ForestAdmin/forest-express-mongoose/issues/1106)) ([bbdd5a6](https://github.com/ForestAdmin/forest-express-mongoose/commit/bbdd5a64759d983a3de65ccf978c6745b7b35b20))
+
 ## [9.3.26](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.25...v9.3.26) (2024-09-05)
 
 
