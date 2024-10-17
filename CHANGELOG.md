@@ -1,3 +1,10 @@
+# [9.4.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.28...v9.4.0) (2024-10-17)
+
+
+### Features
+
+* support action form layout description and button labels ([#1108](https://github.com/ForestAdmin/forest-express-mongoose/issues/1108)) ([cc039e3](https://github.com/ForestAdmin/forest-express-mongoose/commit/cc039e3802d2bdcf4485ca662c5b17ad007f854a))
+
 ## [9.3.28](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.27...v9.3.28) (2024-09-12)
 
 
