@@ -1,3 +1,10 @@
+## [9.4.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.4.0...v9.4.1) (2024-10-17)
+
+
+### Bug Fixes
+
+* **security:** patch cookie dependency vulnerabilities ([#1109](https://github.com/ForestAdmin/forest-express-mongoose/issues/1109)) ([506c45b](https://github.com/ForestAdmin/forest-express-mongoose/commit/506c45bed31507dea3d8fc9b4cbdadc475a0f564))
+
 # [9.4.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.3.28...v9.4.0) (2024-10-17)
 
 
