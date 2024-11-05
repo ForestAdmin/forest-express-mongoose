@@ -339,6 +339,8 @@ export interface SmartActionOptions {
   endpoint?: string;
   httpMethod?: string;
   hooks?: SmartActionHooks;
+  submitButtonLabel?: string,
+  description?: string,
 }
 
 export interface SmartSegmentOptions {
