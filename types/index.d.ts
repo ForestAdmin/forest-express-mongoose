@@ -1,10 +1,4 @@
-import {
-  Application,
-  NextFunction,
-  Request,
-  RequestHandler,
-  Response,
-} from "express";
+import { Application, NextFunction, Request, RequestHandler, Response } from 'express';
 import {
   ConnectOptions,
   Mongoose,
@@ -31,100 +25,92 @@ export interface LianaOptions {
 export function init(options: LianaOptions): Promise<Application>;
 
 export interface DatabaseConfiguration {
-  name: string;
-  modelsDir: string;
+  name: string,
+  modelsDir: string,
   connection: {
-    url: string;
-    options: ConnectOptions;
-  };
+    url: string,
+    options: ConnectOptions,
+  }
 }
 
 export interface ForestRequest extends Request {
-  user: User;
+  user: User,
 }
 
 // Base attributes for actions requests (content of request.data.body.attributes)
 interface ActionRequestAttributes {
-  collection_name: string;
-  ids: string[];
-  parent_collection_name: string;
-  parent_collection_id: string;
-  parent_association_name: string;
-  all_records: boolean;
-  all_records_subset_query: Query;
-  all_records_ids_excluded: string[];
-  smart_action_id: string;
+  collection_name: string,
+  ids: string[],
+  parent_collection_name: string,
+  parent_collection_id: string,
+  parent_association_name: string,
+  all_records: boolean,
+  all_records_subset_query: Query,
+  all_records_ids_excluded: string[],
+  smart_action_id: string,
 }
 
 // Base body from requests for action routes / hooks
 interface ActionRequestBody {
   data: {
-    attributes: ActionRequestAttributes;
-    type: "action-requests";
-  };
+    attributes: ActionRequestAttributes,
+    type: 'action-requests',
+  },
 }
 
 // Base body from requests for classic smart action routes
-interface SmartActionRequestBody<
-  T extends Record<string, any> = Record<string, any>
-> {
+interface SmartActionRequestBody<T extends Record<string, any> = Record<string, any>> {
   data: {
-    attributes: ActionRequestAttributes & { values: T };
-    type: "custom-action-requests";
-  };
+    attributes: ActionRequestAttributes & { values: T },
+    type: 'custom-action-requests',
+  },
 }
 
 // Base body from requests for smart action hooks
 interface SmartActionHookRequestBody {
   data: {
     attributes: ActionRequestAttributes & {
-      fields: SmartActionChangeHookField[];
-      changedField: string;
-    };
-    type: "custom-action-hook-requests";
-  };
+      fields: SmartActionChangeHookField[],
+      changedField: string,
+    },
+    type: 'custom-action-hook-requests',
+  },
 }
 
 // Concrete smart action request for classic smart action routes
-export interface SmartActionRequest<
-  T extends Record<string, any> = Record<string, any>
-> extends ForestRequest {
-  body: SmartActionRequestBody<T>;
+export interface SmartActionRequest<T extends Record<string, any> = Record<string, any>> extends ForestRequest {
+  body: SmartActionRequestBody<T>,
 }
 
 // Request passed to smart action load hooks
 export interface SmartActionLoadHookRequest extends ForestRequest {
-  body: ActionRequestBody;
+  body: ActionRequestBody,
 }
 
 // Request passed to smart action change hooks
 export interface SmartActionChangeHookRequest extends ForestRequest {
-  body: SmartActionHookRequestBody;
+  body: SmartActionHookRequestBody,
 }
 
 // Everything related to Forest Authentication
 
-export function ensureAuthenticated(
-  request: Request,
-  response: Response,
-  next: NextFunction
-): void;
+export function ensureAuthenticated(request: Request, response: Response, next: NextFunction): void;
 
 export interface UserTag {
-  key: string;
-  value: string;
+  key: string,
+  value: string,
 }
 
 export interface User {
-  email: string;
-  firstName: string;
-  lastName: string;
-  team: string;
-  role: string;
-  tags: UserTag[];
+  email: string,
+  firstName: string,
+  lastName: string,
+  team: string,
+  role: string,
+  tags: UserTag[],
   renderingId: number;
-  iat: number;
-  exp: number;
+  iat: number,
+  exp: number,
 }
 
 // Everything related to Forest constants
@@ -136,21 +122,18 @@ export const PUBLIC_ROUTES: string[];
 type RecordId = Types.ObjectId | string | number;
 
 interface RecordsSerialized {
-  data: Record<string, unknown>[];
-  included: Record<string, unknown>[];
+  data: Record<string, unknown>[],
+  included: Record<string, unknown>[],
 }
 
 interface Meta {
-  count: number;
-  [k: string]: any;
+  count: number,
+  [k: string]: any,
 }
 
 export class AbstractRecordTool<T> {
-  constructor(model: Model<T>, user: User, query: Record<string, any>);
-  serialize(
-    records: Document<T> | Document<T>[],
-    meta?: Meta
-  ): Promise<RecordsSerialized>;
+  constructor(model: Model<T>, user: User, query: Record<string, any>)
+  serialize(records: Document<T> | Document<T>[], meta?: Meta): Promise<RecordsSerialized>;
 }
 
 export class RecordGetter<T> extends AbstractRecordTool<T> {
@@ -159,23 +142,14 @@ export class RecordGetter<T> extends AbstractRecordTool<T> {
 
 export class RecordsGetter<T> extends AbstractRecordTool<T> {
   getAll(queryExtra?: Query): Promise<(T & Document)[]>;
-  getIdsFromRequest(
-    request:
-      | SmartActionRequest
-      | SmartActionLoadHookRequest
-      | SmartActionChangeHookRequest
-  ): Promise<string[]>;
+  getIdsFromRequest(request: SmartActionRequest | SmartActionLoadHookRequest | SmartActionChangeHookRequest): Promise<string[]>;
 }
 
-export class RecordsCounter<
-  M extends Model<any>
-> extends AbstractRecordTool<M> {
+export class RecordsCounter<M extends Model<any>> extends AbstractRecordTool<M> {
   count(): Promise<number>;
 }
 
-export class RecordsExporter<
-  M extends Model<any>
-> extends AbstractRecordTool<M> {
+export class RecordsExporter<M extends Model<any>> extends AbstractRecordTool<M> {
   streamExport(response: Response): Promise<void>;
 }
 
@@ -193,32 +167,24 @@ export class RecordRemover<M extends Model<any>> extends AbstractRecordTool<M> {
   remove(recordId: RecordId): Promise<void>;
 }
 
-export class RecordsRemover<
-  M extends Model<any>
-> extends AbstractRecordTool<M> {
+export class RecordsRemover<M extends Model<any>> extends AbstractRecordTool<M> {
   remove(recordIds: RecordId[]): Promise<void>;
 }
 
 export class RecordSerializer<T> {
   constructor(model: { name: string } | Model<T>, user?: User, query?: Query);
-  serialize(
-    records: Record<string, any> | Record<string, any>[],
-    meta?: Meta
-  ): Promise<RecordsSerialized>;
+  serialize(records: Record<string, any> | Record<string, any>[], meta?: Meta): Promise<RecordsSerialized>;
 }
 
 // Optional middleware(s) related to the perf
 
-export function deactivateCountMiddleware(
-  request: Request,
-  response: Response,
-  next: NextFunction
-): void;
+export function deactivateCountMiddleware(request: Request, response: Response, next: NextFunction): void;
+
 
 // Everything related to Forest permissions
 
 export class PermissionMiddlewareCreator {
-  constructor(collectionName: string);
+  constructor(collectionName: string)
   list(): RequestHandler;
   export(): RequestHandler;
   details(): RequestHandler;
@@ -232,16 +198,16 @@ export class PermissionMiddlewareCreator {
 
 export interface StatSerialized {
   data: {
-    type: string;
-    id: string;
+    type: string,
+    id: string,
     attributes: {
-      value: any[];
-    };
+      value: any[]
+    }
   };
 }
 
 export class StatSerializer {
-  constructor(stats: { value: any[] });
+  constructor(stats: { value: any[] })
   perform(): StatSerialized;
 }
 
@@ -252,41 +218,17 @@ export interface Page {
   size: number;
 }
 
-export type FilterOperator =
+export type FilterOperator = 
   // Classic
-  | "not"
-  | "greater_than"
-  | "less_than"
-  | "after"
-  | "before"
-  | "contains"
-  | "starts_with"
-  | "ends_with"
-  | "not_contains"
-  | "present"
-  | "blank"
-  | "not_equal"
-  | "equal"
-  | "includes_all"
-  | "in"
+  | "not" | "greater_than" | "less_than" | "after" | "before" | "contains"
+  | "starts_with" | "ends_with" | "not_contains" | "present" | "blank"
+  | "not_equal" | "equal" | "includes_all" | "in"
 
   // Date
-  | "today"
-  | "yesterday"
-  | "previous_week"
-  | "previous_month"
-  | "previous_quater"
-  | "previous_year"
-  | "previous_week_to_date"
-  | "previous_month_to_date"
-  | "previous_quarter_to_date"
-  | "previous_year_to_date"
-  | "previous_x_days"
-  | "previous_x_days_to_date"
-  | "past"
-  | "future"
-  | "before_x_hours_ago"
-  | "after_x_hours_ago";
+  | "today" | "yesterday" | "previous_week" | "previous_month" | "previous_quater"
+  | "previous_year" | "previous_week_to_date" | "previous_month_to_date"
+  | "previous_quarter_to_date" | "previous_year_to_date" | "previous_x_days"
+  | "previous_x_days_to_date" | "past" | "future" | "before_x_hours_ago" | "after_x_hours_ago" ;
 
 export interface Filter {
   field: string;
@@ -297,7 +239,7 @@ export interface Filter {
 export interface Query {
   timezone?: string;
   search?: string;
-  fields?: { [key: string]: string };
+  fields?: {[key: string]: string};
   sort?: string;
   filters?: string;
   page?: Page;
@@ -319,32 +261,19 @@ export interface SmartFieldSearcher {
 }
 
 export interface SmartFieldFiltererFilter {
-  condition: FilterQuery<any>;
-  where: Record<symbol, Record<symbol, any> | any>;
+  condition: FilterQuery<any>,
+  where: Record<symbol, Record<symbol, any> | any>,
 }
 
 export interface SmartFieldFilterer {
-  (filter: SmartFieldFiltererFilter):
-    | FilterQuery<any>
-    | Promise<FilterQuery<any>>;
+  (filter: SmartFieldFiltererFilter): FilterQuery<any> | Promise<FilterQuery<any>>;
 }
 
 export interface SegmentAggregationCreator<T = any> {
   (model: Model<T>): FilterQuery<any>;
 }
 
-type FieldType =
-  | "Boolean"
-  | "Date"
-  | "Dateonly"
-  | "Enum"
-  | "File"
-  | "Number"
-  | "String"
-  | "Json"
-  | ["Enum"]
-  | ["Number"]
-  | ["String"];
+type FieldType = 'Boolean' | 'Date' | 'Dateonly' | 'Enum' | 'File' | 'Number' | 'String' | 'Json' | ['Enum'] | ['Number'] | ['String'];
 
 type FieldEnumsType = string[] | number[] | Date[] | boolean[];
 
@@ -366,42 +295,35 @@ export interface SmartFieldOptions {
 }
 
 export interface SmartActionField {
-  field: string;
-  description?: string;
-  type: FieldType;
-  isRequired?: boolean;
-  isReadOnly?: boolean;
-  enums?: FieldEnumsType;
-  defaultValue?: any;
-  reference?: string;
-  hook?: string;
+  field: string,
+  description?: string,
+  type: FieldType,
+  isRequired?: boolean,
+  isReadOnly?: boolean,
+  enums?: FieldEnumsType,
+  defaultValue?: any,
+  reference?: string,
+  hook?: string,
 }
 
 export interface SmartActionHookField extends SmartActionField {
-  value: any;
+  value: any,
 }
 
 export interface SmartActionLoadHookField extends SmartActionHookField {
-  position: number;
+  position: number,
 }
 
 export interface SmartActionLoadHook {
-  (context: {
-    fields: SmartActionLoadHookField[];
-    request: SmartActionLoadHookRequest;
-  }): SmartActionLoadHookField[] | Promise<SmartActionLoadHookField[]>;
+  (context: { fields: SmartActionLoadHookField[], request: SmartActionLoadHookRequest }): SmartActionLoadHookField[] | Promise<SmartActionLoadHookField[]>
 }
 
 export interface SmartActionChangeHookField extends SmartActionHookField {
-  previousValue: any;
+  previousValue: any,
 }
 
 export interface SmartActionChangeHook {
-  (context: {
-    fields: SmartActionChangeHookField[];
-    changedField: SmartActionChangeHookField;
-    request: SmartActionChangeHookRequest;
-  }): SmartActionChangeHookField[] | Promise<SmartActionChangeHookField[]>;
+  (context: { fields: SmartActionChangeHookField[], changedField: SmartActionChangeHookField, request: SmartActionChangeHookRequest }): SmartActionChangeHookField[] | Promise<SmartActionChangeHookField[]>
 }
 
 export interface SmartActionHooks {
@@ -411,15 +333,15 @@ export interface SmartActionHooks {
 
 export interface SmartActionOptions {
   name: string;
-  type?: "global" | "bulk" | "single";
+  type?: 'global' | 'bulk' | 'single';
   fields?: SmartActionField[];
   download?: boolean;
   endpoint?: string;
   httpMethod?: string;
   hooks?: SmartActionHooks;
   description?: string;
-  submitButtonLabel?: string;
-  description?: string;
+  submitButtonLabel?: string,
+  description?: string,
 }
 
 export interface SmartSegmentOptions {
@@ -433,7 +355,7 @@ export interface CollectionOptions {
   actions?: SmartActionOptions[];
   segments?: SmartSegmentOptions[];
   searchFields?: string[];
-  fieldsToFlatten?: ({ field: string; level?: number } | string)[];
+  fieldsToFlatten?: ({ field: string, level?: number } | string)[]
 }
 
 export function collection(name: string, options: CollectionOptions): void;
