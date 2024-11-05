@@ -1,3 +1,10 @@
+## [9.4.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.4.1...v9.4.2) (2024-11-05)
+
+
+### Bug Fixes
+
+* submitbuttonlabel and description should be in action interface ([#1110](https://github.com/ForestAdmin/forest-express-mongoose/issues/1110)) ([a19e976](https://github.com/ForestAdmin/forest-express-mongoose/commit/a19e976da86bcb5de6cf0f3d5bda9ddb34512145))
+
 ## [9.4.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.4.0...v9.4.1) (2024-10-17)
 
 
