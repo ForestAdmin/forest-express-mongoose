@@ -4804,10 +4804,10 @@ flatted@^2.0.0:
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-2.0.2.tgz#4575b21e2bcee7434aa9be662f4b7b5f9c2b5138"
   integrity sha512-r5wGx7YeOwNWNlCA0wQ86zKyDLMQr+/RB8xy74M4hTphfmjlijTSSXGuH8rnvKZnfT9i+75zmd8jcKdMR4O6jA==
 
-forest-express@10.4.0:
-  version "10.4.0"
-  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-10.4.0.tgz#cb704cec46cdc0383973032ae53ae73f1be75965"
-  integrity sha512-Ool2MhOmfFU1pDpdUIkK2+gfdSnR5KhoVL/YE6s53qREWoSJsWvhhzw0P8l2hBWBjdY4eX+WQ9tNQbFIlGxuUA==
+forest-express@10.5.0:
+  version "10.5.0"
+  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-10.5.0.tgz#73d1be3342daa0367adab1dc63a6990e35d9cecd"
+  integrity sha512-qN9xWZmxrwnKYUcXcj46mikj9RIjyYWxRVL2Hz4emOTRRx4kWijHPnx31ftVfstwbA/KwyyW2X7lWY/Uo9vhAw==
   dependencies:
     "@babel/runtime" "7.19.0"
     "@forestadmin/context" "1.31.0"
