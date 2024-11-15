@@ -1,3 +1,10 @@
+# [9.5.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.4.2...v9.5.0) (2024-11-15)
+
+
+### Features
+
+* improve timeout logs ([#1112](https://github.com/ForestAdmin/forest-express-mongoose/issues/1112)) ([b40a305](https://github.com/ForestAdmin/forest-express-mongoose/commit/b40a305a5af729988568c79213c64bafb7463c5f))
+
 ## [9.4.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.4.1...v9.4.2) (2024-11-05)
 
 
