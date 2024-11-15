@@ -1608,10 +1608,10 @@
   resolved "https://registry.yarnpkg.com/@forestadmin/context/-/context-1.31.0.tgz#b4b5a3b589e52d337a1f45807db22c2860e640a7"
   integrity sha512-RQkDBkq+6ySMv+YNezz9VWSyCsqD7fj/+bXrXhQ6lJ62nbRUIUheH7ApvXwfnwFR1u55oT6Yhar11t6DaiE9Ig==
 
-"@forestadmin/forestadmin-client@1.26.2":
-  version "1.26.2"
-  resolved "https://registry.yarnpkg.com/@forestadmin/forestadmin-client/-/forestadmin-client-1.26.2.tgz#4831eec2b073c377a3672f622e6c8603ec2625dd"
-  integrity sha512-FIDt+2TGR0vcjob5zkErMhodFQeKhXiqWOzDvETskXToOW1x9wV+NBY/7npoY7uvUk4tF3Bx+ZCoerTZAEIZUg==
+"@forestadmin/forestadmin-client@1.35.0":
+  version "1.35.0"
+  resolved "https://registry.yarnpkg.com/@forestadmin/forestadmin-client/-/forestadmin-client-1.35.0.tgz#0cc7279f95b07f2c01b9b67cc21f1fc0b04e161a"
+  integrity sha512-ND3u2iFw1CLCcBEMNVCWAGJIG8P9voxcw9nJAX60IxnIdnlhk950HMB4R9YQ8Yj4mxN5nlw1MVMwzwy/dc3K1Q==
   dependencies:
     eventsource "2.0.2"
     json-api-serializer "^2.6.6"
@@ -4804,14 +4804,14 @@ flatted@^2.0.0:
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-2.0.2.tgz#4575b21e2bcee7434aa9be662f4b7b5f9c2b5138"
   integrity sha512-r5wGx7YeOwNWNlCA0wQ86zKyDLMQr+/RB8xy74M4hTphfmjlijTSSXGuH8rnvKZnfT9i+75zmd8jcKdMR4O6jA==
 
-forest-express@10.4.0:
-  version "10.4.0"
-  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-10.4.0.tgz#cb704cec46cdc0383973032ae53ae73f1be75965"
-  integrity sha512-Ool2MhOmfFU1pDpdUIkK2+gfdSnR5KhoVL/YE6s53qREWoSJsWvhhzw0P8l2hBWBjdY4eX+WQ9tNQbFIlGxuUA==
+forest-express@10.6.0:
+  version "10.6.0"
+  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-10.6.0.tgz#a13ec3b1164739c73a71d16fd6bde840f9fe79f4"
+  integrity sha512-tW2uE6aYjQ9BIzFgzcoNVEirdZYvmXq1Ldm/BeAtQjV8uDl1HSw7TWI8KC5cox9opMiTOEgNFZg0ml43PQwgAg==
   dependencies:
     "@babel/runtime" "7.19.0"
     "@forestadmin/context" "1.31.0"
-    "@forestadmin/forestadmin-client" "1.26.2"
+    "@forestadmin/forestadmin-client" "1.35.0"
     base32-encode "1.1.1"
     bitwise-xor "0.0.0"
     bluebird "3.7.1"
