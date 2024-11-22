@@ -1,3 +1,11 @@
+## [9.5.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.5.0...v9.5.1) (2024-11-22)
+
+
+### Bug Fixes
+
+* **security:** patch cross-spawn dependency vulnerabilities ([#1114](https://github.com/ForestAdmin/forest-express-mongoose/issues/1114)) ([c7959f8](https://github.com/ForestAdmin/forest-express-mongoose/commit/c7959f88e901d93b78026a0f126aa93611d128a6))
+* **security:** patch micromatch dependency vulnerabilities ([#1113](https://github.com/ForestAdmin/forest-express-mongoose/issues/1113)) ([1390942](https://github.com/ForestAdmin/forest-express-mongoose/commit/1390942aca52bbc1c66fa1c30e3612b993e544e3))
+
 # [9.5.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.4.2...v9.5.0) (2024-11-15)
 
 
