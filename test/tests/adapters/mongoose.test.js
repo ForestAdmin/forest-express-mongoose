@@ -682,7 +682,7 @@ describe('adapters > schema-adapter', () => {
     it('should have the correct schema', async () => {
       expect.assertions(1);
       // eslint-disable-next-line global-require
-      const complexModel = require('./schemas/complex-shema');
+      const complexModel = require('./schemas/complex-schema');
 
       const result = await createSchemaAdapter(complexModel, {
         Mongoose: mongoose,
