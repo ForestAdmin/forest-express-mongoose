@@ -86,7 +86,7 @@ class FieldAnalyser {
       }
       return this._objectType(type, (key) => this._getTypeFromNative(type[key]));
     }
-    if (_.isFunction(type) && type.name === 'ObjectId') {
+    if (_.isFunction(type) && (type.name === 'ObjectId' || type.name === 'SchemaObjectId')) {
       return 'String';
     }
     if (type instanceof this.lianaOptions.Mongoose.Schema) {
