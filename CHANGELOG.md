@@ -1,3 +1,10 @@
+## [9.5.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.5.3...v9.5.4) (2025-01-09)
+
+
+### Bug Fixes
+
+* upgrade FE to fix permission cache issue ([#1119](https://github.com/ForestAdmin/forest-express-mongoose/issues/1119)) ([3f99492](https://github.com/ForestAdmin/forest-express-mongoose/commit/3f99492cc1b608088bdfc9a8a3d323b2a5172181))
+
 ## [9.5.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.5.2...v9.5.3) (2024-12-12)
 
 
