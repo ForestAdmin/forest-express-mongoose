@@ -1608,10 +1608,10 @@
   resolved "https://registry.yarnpkg.com/@forestadmin/context/-/context-1.42.11.tgz#50b7ad703ab8010d32dc30a6719d395890a2407a"
   integrity sha512-y6lRxvjpjBjlCfJDCA4dd3RRtDKHT2RNvaMhB+MXLrvKSi/OEF403ADTcuCMku2M2X67cFkLWoWS+WHLOnlgvg==
 
-"@forestadmin/forestadmin-client@1.36.3":
-  version "1.36.3"
-  resolved "https://registry.yarnpkg.com/@forestadmin/forestadmin-client/-/forestadmin-client-1.36.3.tgz#1c0c87a0ee54ac6956ce3b1b6e0253ab16e8d50a"
-  integrity sha512-uwzkXy69NRWdPSwg5crStirgEQSCABh+uxRbEGi6YgYDGTM9pcgUIIvwDsh7eNoLOM4oxo6oU6WHWCl5RInokQ==
+"@forestadmin/forestadmin-client@1.36.6":
+  version "1.36.6"
+  resolved "https://registry.yarnpkg.com/@forestadmin/forestadmin-client/-/forestadmin-client-1.36.6.tgz#b424049214a4c1298da3ffc7dcadfecd9f5fc81d"
+  integrity sha512-oC1/ffJoY8tFK29xmmxe/elE9I270hdxE8USuPIxvNEPCbTG4dU3ybbJ/B0PRRzkw3GTUQlYGQND5Wt8kwmS7A==
   dependencies:
     eventsource "2.0.2"
     json-api-serializer "^2.6.6"
@@ -4804,14 +4804,14 @@ flatted@^2.0.0:
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-2.0.2.tgz#4575b21e2bcee7434aa9be662f4b7b5f9c2b5138"
   integrity sha512-r5wGx7YeOwNWNlCA0wQ86zKyDLMQr+/RB8xy74M4hTphfmjlijTSSXGuH8rnvKZnfT9i+75zmd8jcKdMR4O6jA==
 
-forest-express@10.6.4:
-  version "10.6.4"
-  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-10.6.4.tgz#2e79e0610c2b35ed0db7b56d04fdf460f1800943"
-  integrity sha512-UFMTTemjZ9tDpkELagPdfnWf2mBtokCud5dxN22qDR43qniifRF9VIYGErG9rU30d2Gz2IyLqFNrAGx1FZFDcA==
+forest-express@10.6.5:
+  version "10.6.5"
+  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-10.6.5.tgz#6c940e8a2b11caf4e9fce8e0894d182da1fae5ed"
+  integrity sha512-gXXAPkc0rZiUaO0SQaybYWVkA3XU9haONBmmYFTRzXomfH9424/udBKRtckSuJ+mqj9QjQudaj4ozVC1SSs9zw==
   dependencies:
     "@babel/runtime" "7.19.0"
     "@forestadmin/context" "1.42.11"
-    "@forestadmin/forestadmin-client" "1.36.3"
+    "@forestadmin/forestadmin-client" "1.36.6"
     base32-encode "1.1.1"
     bitwise-xor "0.0.0"
     bluebird "3.7.1"
