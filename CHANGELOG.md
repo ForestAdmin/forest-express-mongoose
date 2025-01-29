@@ -1,3 +1,10 @@
+## [9.5.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.5.4...v9.5.5) (2025-01-29)
+
+
+### Bug Fixes
+
+* upgrade FE to fix user perm cache issue ([#1120](https://github.com/ForestAdmin/forest-express-mongoose/issues/1120)) ([d029080](https://github.com/ForestAdmin/forest-express-mongoose/commit/d02908095bcf43c6787fd7ef9f65fb4591e9182a))
+
 ## [9.5.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.5.3...v9.5.4) (2025-01-09)
 
 
