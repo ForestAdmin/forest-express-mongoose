@@ -1,3 +1,10 @@
+## [9.5.6](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.5.5...v9.5.6) (2025-01-30)
+
+
+### Bug Fixes
+
+* **security:** patch mongoose dependency vulnerabilities ([#1121](https://github.com/ForestAdmin/forest-express-mongoose/issues/1121)) ([5187e6e](https://github.com/ForestAdmin/forest-express-mongoose/commit/5187e6eb503a7a6f45ee9842e716ec29afe3a241))
+
 ## [9.5.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.5.4...v9.5.5) (2025-01-29)
 
 
