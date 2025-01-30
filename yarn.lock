@@ -7268,10 +7268,10 @@ mongoose-fixture-loader@1.0.2:
   resolved "https://registry.yarnpkg.com/mongoose-fixture-loader/-/mongoose-fixture-loader-1.0.2.tgz#f2daf6d8072398e555b582d751feeea462d142ac"
   integrity sha1-8tr22AcjmOVVtYLXUf7upGLRQqw=
 
-mongoose@7.8.3:
-  version "7.8.3"
-  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-7.8.3.tgz#d6d3305268fc93a425c4a5f41478b0c1771a5b1c"
-  integrity sha512-eFnbkKgyVrICoHB6tVJ4uLanS7d5AIo/xHkEbQeOv6g2sD7gh/1biRwvFifsmbtkIddQVNr3ROqHik6gkknN3g==
+mongoose@7.8.4:
+  version "7.8.4"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-7.8.4.tgz#d6f123bf88ceba528f79d74a1e9fbba3beb20f11"
+  integrity sha512-qqQ7imsb9lyrW1jmYj6/wDiSewRtd/gpOU2Vdy1AMRBT7jrghKnoDMbC3keFUzZ0iyo3ZcYumisPKFnap5R4zQ==
   dependencies:
     bson "^5.5.0"
     kareem "2.5.1"
