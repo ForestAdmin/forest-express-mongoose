@@ -1,3 +1,24 @@
+## [9.5.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.5.4...v9.5.5) (2025-01-29)
+
+
+### Bug Fixes
+
+* upgrade FE to fix user perm cache issue ([#1120](https://github.com/ForestAdmin/forest-express-mongoose/issues/1120)) ([d029080](https://github.com/ForestAdmin/forest-express-mongoose/commit/d02908095bcf43c6787fd7ef9f65fb4591e9182a))
+
+## [9.5.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.5.3...v9.5.4) (2025-01-09)
+
+
+### Bug Fixes
+
+* upgrade FE to fix permission cache issue ([#1119](https://github.com/ForestAdmin/forest-express-mongoose/issues/1119)) ([3f99492](https://github.com/ForestAdmin/forest-express-mongoose/commit/3f99492cc1b608088bdfc9a8a3d323b2a5172181))
+
+## [9.5.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.5.2...v9.5.3) (2024-12-12)
+
+
+### Bug Fixes
+
+* **security:** patch path-to-regexp dependency vulnerabilities ([#1116](https://github.com/ForestAdmin/forest-express-mongoose/issues/1116)) ([6fc3cd5](https://github.com/ForestAdmin/forest-express-mongoose/commit/6fc3cd55ad0682a6aeb0f7da93e03b7698ac554f))
+
 ## [9.5.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.5.1...v9.5.2) (2024-12-05)
 
 
