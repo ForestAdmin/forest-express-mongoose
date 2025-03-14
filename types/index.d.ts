@@ -48,6 +48,7 @@ interface ActionRequestAttributes {
   all_records_subset_query: Query,
   all_records_ids_excluded: string[],
   smart_action_id: string,
+  action_intent_params: Record<string, unknown> | null,
 }
 
 // Base body from requests for action routes / hooks
