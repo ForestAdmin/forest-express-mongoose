@@ -1,3 +1,10 @@
+## [9.5.7](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.5.6...v9.5.7) (2025-03-28)
+
+
+### Bug Fixes
+
+* **vulnerability:** bump openid-client ([#1123](https://github.com/ForestAdmin/forest-express-mongoose/issues/1123)) ([1739e63](https://github.com/ForestAdmin/forest-express-mongoose/commit/1739e6392cb45a55b4b7cad79d4fcb4f8724bcde))
+
 ## [9.5.6](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.5.5...v9.5.6) (2025-01-30)
 
 
