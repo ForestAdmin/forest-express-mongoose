@@ -1,3 +1,10 @@
+# [9.6.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.5.7...v9.6.0) (2025-05-09)
+
+
+### Features
+
+* **typings:** add support for action_intent_params in smart action hooks ([#1122](https://github.com/ForestAdmin/forest-express-mongoose/issues/1122)) ([6035245](https://github.com/ForestAdmin/forest-express-mongoose/commit/603524586d85a407b4f1a18018d29a10b85aa310))
+
 ## [9.5.7](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.5.6...v9.5.7) (2025-03-28)
 
 
