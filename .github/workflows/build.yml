@@ -42,21 +42,54 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
+        with:
+          node-version: 18.20.1
       - name: Cache node_modules
         uses: actions/cache@v4
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - name: install dependencies
+        run: yarn install --frozen-lockfile --non-interactive --production=false
       - name: Login on dockerhub
         run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
       - name: Start docker container
-        run: docker compose up -d
-      - name: Send coverage
-        uses: paambaati/codeclimate-action@v2.7.4
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        run: docker compose up -d; sleep 20
+      - name: Run tests with coverage
+        run: yarn test:coverage
+      - name: Upload coverage artifacts
+        uses: actions/upload-artifact@v4
         with:
-          coverageCommand: yarn test:coverage
+          name: coverage-reports
+          path: coverage/clover.xml
+
+  send-coverage:
+    name: Send coverage
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: [test]
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18.20.1
+      - uses: actions/cache@v4
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}  # Ton pattern
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: reports
+      - name: Send coverage
+        uses: qltysh/qlty-action/coverage@8d5c844f32f80364ccc135534671640466e7f610 #v1.1
+        with:
+          oidc: true
+          files: ${{github.workspace}}/reports/**/clover.xml
 
   deploy:
     name: Release package
