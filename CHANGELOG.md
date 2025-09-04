@@ -1,3 +1,10 @@
+## [9.6.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.6.0...v9.6.1) (2025-09-04)
+
+
+### Bug Fixes
+
+* upgrade FE timeout 30sec ([#1124](https://github.com/ForestAdmin/forest-express-mongoose/issues/1124)) ([e6cdeb3](https://github.com/ForestAdmin/forest-express-mongoose/commit/e6cdeb3157faf0e5d41e46a518f15daf86169d51))
+
 # [9.6.0](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.5.7...v9.6.0) (2025-05-09)
 
 
