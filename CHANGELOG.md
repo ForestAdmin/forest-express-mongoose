@@ -1,3 +1,10 @@
+## [9.6.2](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.6.1...v9.6.2) (2026-02-03)
+
+
+### Bug Fixes
+
+* upgrade FE to fix sa load hook fields transmition ([#1126](https://github.com/ForestAdmin/forest-express-mongoose/issues/1126)) ([d0c63a2](https://github.com/ForestAdmin/forest-express-mongoose/commit/d0c63a228488d8920db9024863b79e02254f07f4))
+
 ## [9.6.1](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.6.0...v9.6.1) (2025-09-04)
 
 
