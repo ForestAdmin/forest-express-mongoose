@@ -1,3 +1,5 @@
+## [9.6.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.6.4...v9.6.5) (2026-06-26)
+
 ## [9.6.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.6.3...v9.6.4) (2026-06-24)
 
 ## [9.6.3](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.6.2...v9.6.3) (2026-06-09)
