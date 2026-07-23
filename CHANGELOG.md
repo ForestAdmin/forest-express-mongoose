@@ -1,3 +1,10 @@
+## [9.6.6](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.6.5...v9.6.6) (2026-07-23)
+
+
+### Bug Fixes
+
+* bump FE to fix vulnerabilities ([#1130](https://github.com/ForestAdmin/forest-express-mongoose/issues/1130)) ([522fb27](https://github.com/ForestAdmin/forest-express-mongoose/commit/522fb27f9764d05c163477cf5a898c64d5966787))
+
 ## [9.6.5](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.6.4...v9.6.5) (2026-06-26)
 
 ## [9.6.4](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.6.3...v9.6.4) (2026-06-24)
