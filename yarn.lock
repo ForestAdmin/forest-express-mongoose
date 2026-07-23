@@ -4869,10 +4869,10 @@ flatted@^2.0.0:
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-2.0.2.tgz#4575b21e2bcee7434aa9be662f4b7b5f9c2b5138"
   integrity sha512-r5wGx7YeOwNWNlCA0wQ86zKyDLMQr+/RB8xy74M4hTphfmjlijTSSXGuH8rnvKZnfT9i+75zmd8jcKdMR4O6jA==
 
-forest-express@10.9.0:
-  version "10.9.0"
-  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-10.9.0.tgz#d7768f6aadc806ee934f515cffc97dbb869b1429"
-  integrity sha512-9u4Ezb/YvwcAhPdZXAWAnNpg7PUqlmmLaP+FmH/fmJS0vwu8TfGOBkR1CMY3glwkVv1Pio2HhupQOIrEA+nEGw==
+forest-express@10.9.1:
+  version "10.9.1"
+  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-10.9.1.tgz#a7dcdb0b32ad114f9eb281eb19da1a8646ca4397"
+  integrity sha512-HFjXDq9ODUjcD0KeSyj9EDOHw4r6BEwBgywN66NQhwlT3VJPZa4buvDq/0MhSxEicpo4NoOKT477Olxo/OaROg==
   dependencies:
     "@babel/runtime" "7.19.0"
     "@forestadmin/context" "1.42.11"
@@ -4886,7 +4886,6 @@ forest-express@10.9.0:
     csv-stringify "5.6.5"
     express "^4.18.2"
     express-jwt "8.4.1"
-    forest-ip-utils "1.0.1"
     http-errors "1.7.3"
     inflected "2.0.4"
     ip-regex "4.3.0"
@@ -4902,17 +4901,9 @@ forest-express@10.9.0:
     require-all "3.0.0"
     semver "6.3.1"
     superagent "^8.0.6"
-    uuid "3.3.3"
+    uuid "11.1.1"
     verror "1.10.0"
     winston "3.2.1"
-
-forest-ip-utils@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/forest-ip-utils/-/forest-ip-utils-1.0.1.tgz#4c53a4c1e16f20beed71ee862315e18b34508d0c"
-  integrity sha512-m/pXGliPvJ6pt5/kyTgNT3X4AKHBdeKJX+cg1RVHWrQiqvD7Qs6WbSaP8/l1nJz1FhrLC/EQJAWXTj/kdJjDEQ==
-  dependencies:
-    ip-address "^5.8.9"
-    range_check "^1.4.0"
 
 form-data@^4.0.0:
   version "4.0.0"
@@ -5588,15 +5579,6 @@ ip-address@^10.0.1:
   resolved "https://registry.yarnpkg.com/ip-address/-/ip-address-10.1.0.tgz#d8dcffb34d0e02eb241427444a6e23f5b0595aa4"
   integrity sha512-XXADHxXmvT9+CRxhXg56LJovE+bmWnEWB78LB83VZTprKTmaC5QfruXocxzTZ2Kl0DNwKuBdlIhjL8LeY8Sf8Q==
 
-ip-address@^5.8.9:
-  version "5.9.4"
-  resolved "https://registry.yarnpkg.com/ip-address/-/ip-address-5.9.4.tgz#4660ac261ad61bd397a860a007f7e98e4eaee386"
-  integrity sha512-dHkI3/YNJq4b/qQaz+c8LuarD3pY24JqZWfjB8aZx1gtpc2MDILu9L9jpZe1sHpzo/yWFweQVn+U//FhazUxmw==
-  dependencies:
-    jsbn "1.1.0"
-    lodash "^4.17.15"
-    sprintf-js "1.1.2"
-
 ip-regex@4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/ip-regex/-/ip-regex-4.3.0.tgz#687275ab0f57fa76978ff8f4dddc8a23d5990db5"
@@ -5607,20 +5589,10 @@ ip-regex@5.0.0:
   resolved "https://registry.yarnpkg.com/ip-regex/-/ip-regex-5.0.0.tgz#cd313b2ae9c80c07bd3851e12bf4fa4dc5480632"
   integrity sha512-fOCG6lhoKKakwv+C6KdsOnGvgXnmgfmp0myi3bcNwj3qfwPAxRKWEuFhvEFF7ceYIz6+1jRZ+yguLFAmUNPEfw==
 
-ip6@0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/ip6/-/ip6-0.0.4.tgz#44c5a9db79e39d405201b4d78d13b3870e48db31"
-  integrity sha512-0FJ0rKtTQYCp92ru/hNzNpmy2sa8nINqbuyiiVOI75+ltMtAly9dtEparm+xh//kndXL/s6FOdWzSYvUDiBpbg==
-
 ip@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/ip/-/ip-2.0.1.tgz#e8f3595d33a3ea66490204234b77636965307105"
   integrity sha512-lJUL9imLTNi1ZfXT+DU6rBBdbiKGBuay9B6xGSPVjUeQwaH1RIGqef8RZkUtHioLmSNpPR5M4HVKJGm1j8FWVQ==
-
-ipaddr.js@1.2:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.2.0.tgz#8aba49c9192799585bdd643e0ccb50e8ae777ba4"
-  integrity sha512-ku//LD7ie/m9UVGCm9KweBIIHP4mB0maNGvav6Hz778fQCNLQF7iZ+H/UuHuqmjJCHCpA5hw8hOeRKxZl8IlXw==
 
 ipaddr.js@1.9.1:
   version "1.9.1"
@@ -6368,11 +6340,6 @@ js-yaml@^4.1.0:
   integrity sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==
   dependencies:
     argparse "^2.0.1"
-
-jsbn@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/jsbn/-/jsbn-1.1.0.tgz#b01307cb29b618a1ed26ec79e911f803c4da0040"
-  integrity sha512-4bYVV3aAMtDTTu4+xsDYa6sy9GyJ69/amsu9sYF2zqjiEoZA5xJi3BrfX3uY+/IekIu7MwdObdbDWpoZdBv3/A==
 
 jsesc@^2.5.1:
   version "2.5.2"
@@ -8341,14 +8308,6 @@ range-parser@~1.2.1:
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.1.tgz#3cf37023d199e1c24d1a55b84800c2f3e6468031"
   integrity sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==
 
-range_check@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/range_check/-/range_check-1.4.0.tgz#cd87c7ac62c40ba9df69b8703c604f60c3748635"
-  integrity sha512-UhRtGxKoAm7NQqAPj3P6JVUlgs3hehoV+pA593il2FiHYZUK49/535laoi3Rvz7lP04XLCAdgbL4TprpVZZ/IQ==
-  dependencies:
-    ip6 "0.0.4"
-    ipaddr.js "1.2"
-
 raw-body@2.5.2:
   version "2.5.2"
   resolved "https://registry.yarnpkg.com/raw-body/-/raw-body-2.5.2.tgz#99febd83b90e08975087e8f1f9419a149366b68a"
@@ -9178,11 +9137,6 @@ split2@~1.0.0:
   dependencies:
     through2 "~2.0.0"
 
-sprintf-js@1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.1.2.tgz#da1765262bf8c0f571749f2ad6c26300207ae673"
-  integrity sha512-VE0SOVEHCk7Qc8ulkWw3ntAzXuqf7S2lvwQaDLRnUeIEaKNQJzV6BwmLKhOqT61aGhfUMrXeaBk+oDGCzvhcug==
-
 sprintf-js@~1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
@@ -9945,10 +9899,10 @@ utils-merge@1.0.1:
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==
 
-uuid@3.3.3:
-  version "3.3.3"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.3.tgz#4568f0216e78760ee1dbf3a4d2cf53e224112866"
-  integrity sha512-pW0No1RGHgzlpHJO1nsVrHKpOEIxkGg1xB+v0ZmdNH5OAeAwzAVrCnI2/6Mtx+Uys6iaylxa+D3g4j63IKKjSQ==
+uuid@11.1.1:
+  version "11.1.1"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-11.1.1.tgz#f6d81d2e1c65d00762e5e29b16c5d2d995e208ad"
+  integrity sha512-vIYxrBCC/N/K+Js3qSN88go7kIfNPssr/hHCesKCQNAjmgvYS2oqr69kIufEG+O4+PfezOH4EbIeHCfFov8ZgQ==
 
 v8-compile-cache-lib@^3.0.1:
   version "3.0.1"
