@@ -418,6 +418,21 @@ describe('service > resources-getter', () => {
         expect(result[0][0].title).toBe('Terminator');
         expect(result[0][1].title).toBe('Titanic');
       });
+
+      it('should return results sorted on every comma-separated field', async () => {
+        expect.assertions(1);
+
+        const parameters = {
+          fields: { Film: 'title' },
+          page: { number: '1', size: '15' },
+          sort: 'title,-rating',
+          timezone: 'Europe/Paris',
+        };
+
+        const [records] = await new ResourcesGetter(FilmModel, options, parameters, user).perform();
+
+        expect(records.map(({ title }) => title)).toStrictEqual(['Matrix', 'Terminator', 'Titanic']);
+      });
     });
   });
 });
