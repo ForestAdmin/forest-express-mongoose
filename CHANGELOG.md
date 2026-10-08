@@ -1,3 +1,10 @@
+## [9.6.8](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.6.7...v9.6.8) (2026-10-08)
+
+
+### Bug Fixes
+
+* **sort:** apply every comma-separated sort field ([#1132](https://github.com/ForestAdmin/forest-express-mongoose/issues/1132)) ([422f066](https://github.com/ForestAdmin/forest-express-mongoose/commit/422f066d1b21a77bdba6fdc5d01ab959e41a625b))
+
 ## [9.6.7](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.6.6...v9.6.7) (2026-07-28)
 
 ## [9.6.6](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.6.5...v9.6.6) (2026-07-23)
