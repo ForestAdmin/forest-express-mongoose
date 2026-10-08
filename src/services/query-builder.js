@@ -33,13 +33,9 @@ class QueryBuilder {
       ? await this._filterParser.getAssociations(this._params.filters)
       : [];
 
-    if (this._params.sort && this._params.sort.includes('.')) {
-      let [associationFromSorting] = this._params.sort.split('.');
-      if (associationFromSorting[0] === '-') {
-        associationFromSorting = associationFromSorting.substring(1);
-      }
-      associations.push(associationFromSorting);
-    }
+    this._getSortChunks()
+      .filter(({ association }) => association)
+      .forEach(({ association }) => associations.push(association));
 
     return _.union(
       this._params.fields[this._model.modelName].split(','),
@@ -108,16 +104,34 @@ class QueryBuilder {
     jsonQuery.push(await this._filterParser.perform(newFiltersString));
   }
 
+  _getSortChunks() {
+    if (!this._params.sort) return [];
+
+    return this._params.sort.split(',').filter(Boolean).map((sortChunk) => {
+      const order = sortChunk.startsWith('-') ? -1 : 1;
+      const field = order > 0 ? sortChunk : sortChunk.substring(1);
+      const [association] = field.split('.');
+
+      return { field, order, association: field.includes('.') ? association : null };
+    });
+  }
+
   addSortToQuery(jsonQuery) {
-    const order = this._params.sort.startsWith('-') ? -1 : 1;
-    let sortParam = order > 0 ? this._params.sort : this._params.sort.substring(1);
-    if (this._params.sort.split('.').length > 1) {
-      [sortParam] = this._params.sort.split('.');
-      const [association] = this._params.sort.split('.');
-      this.addJoinToQuery(association, jsonQuery);
-    }
-    if (Flattener._isFieldFlattened(sortParam)) sortParam = Flattener.unflattenFieldName(sortParam);
-    jsonQuery.push({ $sort: { [sortParam]: order } });
+    const sort = {};
+
+    this._getSortChunks().forEach(({ field, order, association }) => {
+      let sortParam = field;
+      if (association) {
+        sortParam = association;
+        this.addJoinToQuery(association, jsonQuery);
+      }
+      if (Flattener._isFieldFlattened(sortParam)) {
+        sortParam = Flattener.unflattenFieldName(sortParam);
+      }
+      sort[sortParam] = order;
+    });
+
+    jsonQuery.push({ $sort: sort });
 
     return this;
   }

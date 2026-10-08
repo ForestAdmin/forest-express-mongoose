@@ -418,6 +418,37 @@ describe('service > resources-getter', () => {
         expect(result[0][0].title).toBe('Terminator');
         expect(result[0][1].title).toBe('Titanic');
       });
+
+      it('should break ties on the first sort field with the next one', async () => {
+        expect.assertions(1);
+
+        const remake = await FilmModel.create({
+          _id: '41224d776a326fb40f000014',
+          title: 'Matrix',
+          duration: 148,
+          rating: 5,
+        });
+        const parameters = {
+          fields: { Film: 'title,rating' },
+          page: { number: '1', size: '15' },
+          sort: 'title,-rating',
+          timezone: 'Europe/Paris',
+        };
+
+        try {
+          const [records] = await new ResourcesGetter(FilmModel, options, parameters, user)
+            .perform();
+
+          expect(records.map(({ title, rating }) => [title, rating])).toStrictEqual([
+            ['Matrix', 5],
+            ['Matrix', undefined],
+            ['Terminator', 4.5],
+            ['Titanic', 4],
+          ]);
+        } finally {
+          await remake.deleteOne();
+        }
+      });
     });
   });
 });

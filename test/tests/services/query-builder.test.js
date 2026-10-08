@@ -237,5 +237,32 @@ describe('service > query-builder', () => {
           .toStrictEqual(expectedSort);
       });
     });
+    describe('on several comma-separated fields', () => {
+      it('should sort on each field in turn, each with its own direction', () => {
+        expect.assertions(2);
+        const queryBuilder = new QueryBuilder(TreeModel, {
+          timezone: 'Europe/Paris',
+          sort: `-age,some${FLATTEN_SEPARATOR}flattened${FLATTEN_SEPARATOR}field,-name`,
+        }, options);
+        const jsonQuery = [];
+        queryBuilder.addSortToQuery(jsonQuery);
+        expect(jsonQuery).toStrictEqual([
+          { $sort: { age: -1, 'some.flattened.field': 1, name: -1 } },
+        ]);
+        expect(Object.keys(jsonQuery[0].$sort)).toStrictEqual(['age', 'some.flattened.field', 'name']);
+      });
+    });
+  });
+
+  describe('getFieldNamesRequested function', () => {
+    it('should request the association of every sort on a relation, not only the first', async () => {
+      expect.assertions(1);
+      const queryBuilder = new QueryBuilder(TreeModel, {
+        timezone: 'Europe/Paris',
+        fields: { Tree: 'name' },
+        sort: 'name,-owner.name',
+      }, options);
+      expect(await queryBuilder.getFieldNamesRequested()).toStrictEqual(['name', 'owner']);
+    });
   });
 });
