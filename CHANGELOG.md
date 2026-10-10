@@ -1,3 +1,10 @@
+## [9.6.9](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.6.8...v9.6.9) (2026-10-10)
+
+
+### Bug Fixes
+
+* **license:** relicense from GPL-3.0 to Apache-2.0 ([#1133](https://github.com/ForestAdmin/forest-express-mongoose/issues/1133)) ([5ea5960](https://github.com/ForestAdmin/forest-express-mongoose/commit/5ea596025d09055a055fd93c872516e5d4198c26))
+
 ## [9.6.8](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.6.7...v9.6.8) (2026-10-08)
 
 
