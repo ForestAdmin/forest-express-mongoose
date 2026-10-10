@@ -9,7 +9,7 @@
     "Lucas Scariot <scluckas@gmail.com>",
     "Chris Lahaye <dev@chrislahaye.com>"
   ],
-  "license": "GPL-3.0",
+  "license": "Apache-2.0",
   "homepage": "http://www.forestadmin.com",
   "keywords": [
     "forest",
