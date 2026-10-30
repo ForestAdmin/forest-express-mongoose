@@ -1,3 +1,10 @@
+## [9.6.10](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.6.9...v9.6.10) (2026-10-30)
+
+
+### Bug Fixes
+
+* **deps:** bump forest-express to 10.9.7 ([#1135](https://github.com/ForestAdmin/forest-express-mongoose/issues/1135)) ([c5bcee0](https://github.com/ForestAdmin/forest-express-mongoose/commit/c5bcee0515e8d5d9a8c8131933c13d78c3be7aea))
+
 ## [9.6.9](https://github.com/ForestAdmin/forest-express-mongoose/compare/v9.6.8...v9.6.9) (2026-10-10)
 
 
