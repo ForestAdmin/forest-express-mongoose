@@ -4869,10 +4869,10 @@ flatted@^2.0.0:
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-2.0.2.tgz#4575b21e2bcee7434aa9be662f4b7b5f9c2b5138"
   integrity sha512-r5wGx7YeOwNWNlCA0wQ86zKyDLMQr+/RB8xy74M4hTphfmjlijTSSXGuH8rnvKZnfT9i+75zmd8jcKdMR4O6jA==
 
-forest-express@10.9.2:
-  version "10.9.2"
-  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-10.9.2.tgz#3781dbb0431fda178c08ac7c1c84af4e93a3c5d8"
-  integrity sha512-oMgAlBx08ekD9XBiTWcajJYDb3fenDXlj/GJZ/nHhU8lx7EHsAkaSyRWp8CDleTyrbmVzWH0AcTZcXFPt1psjA==
+forest-express@10.9.7:
+  version "10.9.7"
+  resolved "https://registry.yarnpkg.com/forest-express/-/forest-express-10.9.7.tgz#c630feb91ba535517d1fca38df3bfee9bba50141"
+  integrity sha512-R5GWbC21z3sIirjeC4N+ddpDKYs14rHX1tCHuQRCPhNaYP1equqdRIRgoobvpZ9mULXSLuNTIqjsWXxMaHZG2w==
   dependencies:
     "@babel/runtime" "7.19.0"
     "@forestadmin/context" "1.42.11"
@@ -4892,7 +4892,7 @@ forest-express@10.9.2:
     ipaddr.js "2.0.0"
     jsonapi-serializer "3.6.5"
     jsonwebtoken "9.0.0"
-    lodash "4.17.21"
+    lodash "4.18.1"
     moment "2.29.4"
     moment-timezone "0.5.40"
     object-hash "^3.0.0"
@@ -6775,6 +6775,11 @@ lodash@4.17.21, lodash@^4.16.3, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.1
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
+
+lodash@4.18.1:
+  version "4.18.1"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.18.1.tgz#ff2b66c1f6326d59513de2407bf881439812771c"
+  integrity sha512-dMInicTPVE8d1e5otfwmmjlxkZoUpiVLwyeTdUsi/Caj/gfzzblBcCE5sRHV/AsjuCmxWrte2TNGSYuCeCq+0Q==
 
 log-update@^4.0.0:
   version "4.0.0"
